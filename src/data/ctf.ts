@@ -30,13 +30,14 @@ export const getCTFWriteupById = (id: string) => {
 
 export const loadCTFWriteupContent = async (contentPath: string): Promise<string> => {
   try {
-    const response = await fetch(`/src/data/ctf/${contentPath}`);
+    // fetch from /blog/ in the public folder
+    const response = await fetch(`/ctf/${contentPath}`);
     if (!response.ok) {
-      throw new Error(`Failed to load CTF writeup: ${response.statusText}`);
+      throw new Error(`Failed to load ctf post: ${response.statusText}`);
     }
     return await response.text();
   } catch (error) {
-    console.error('Error loading CTF writeup content:', error);
-    return '# Error\n\nFailed to load CTF writeup content.';
+    console.error('Error loading ctf post content:', error);
+    return '# Error\n\nFailed to load ctf post content.';
   }
 };

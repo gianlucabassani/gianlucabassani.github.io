@@ -24,7 +24,8 @@ export const getBlogPostById = (id: string) => {
 
 export const loadBlogPostContent = async (contentPath: string): Promise<string> => {
   try {
-    const response = await fetch(`/src/data/blog/${contentPath}`);
+    // fetch from /blog/ in the public folder
+    const response = await fetch(`/blog/${contentPath}`);
     if (!response.ok) {
       throw new Error(`Failed to load blog post: ${response.statusText}`);
     }

@@ -28,7 +28,8 @@ export const getWriteupById = (id: string) => {
 };
 export const loadWriteupContent = async (contentPath: string): Promise<string> => {
   try {
-    const response = await fetch(`/src/data/writeups/${contentPath}`);
+    // fetch from /writeups/ in the public folder
+    const response = await fetch(`/writeups/${contentPath}`);
     if (!response.ok) {
       throw new Error(`Failed to load writeup: ${response.statusText}`);
     }
@@ -38,4 +39,3 @@ export const loadWriteupContent = async (contentPath: string): Promise<string> =
     return '# Error\n\nFailed to load writeup content.';
   }
 };
-
