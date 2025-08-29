@@ -1,0 +1,227 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Cyber Haven Vault Design System - Modern Tech Aesthetic */
+
+@layer base {
+  :root {
+    /* Core cyber theme colors */
+    --background: 210 11% 4%;
+    --foreground: 210 40% 95%;
+    
+    --card: 210 10% 6%;
+    --card-foreground: 210 40% 95%;
+    
+    --popover: 210 10% 6%;
+    --popover-foreground: 210 40% 95%;
+    
+    /* Cyber accent colors */
+    --primary: 158 64% 52%; /* Neon green */
+    --primary-foreground: 210 11% 4%;
+    
+    --secondary: 220 91% 65%; /* Electric blue */
+    --secondary-foreground: 210 11% 4%;
+    
+    --accent: 280 89% 66%; /* Cyber purple */
+    --accent-foreground: 210 40% 95%;
+    
+    --muted: 210 10% 8%;
+    --muted-foreground: 210 20% 65%;
+    
+    /* Status colors */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 95%;
+    
+    --success: 158 64% 52%;
+    --success-foreground: 210 11% 4%;
+    
+    --warning: 45 93% 58%;
+    --warning-foreground: 210 11% 4%;
+    
+    /* Border and input */
+    --border: 210 10% 12%;
+    --input: 210 10% 12%;
+    --ring: 158 64% 52%;
+    
+    /* Typography gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(158 64% 52%), hsl(220 91% 65%));
+    --gradient-accent: linear-gradient(135deg, hsl(280 89% 66%), hsl(158 64% 52%));
+    --gradient-text: linear-gradient(135deg, hsl(210 40% 95%), hsl(210 20% 75%));
+    
+    /* Glow effects */
+    --glow-primary: 0 0 20px hsl(158 64% 52% / 0.3);
+    --glow-secondary: 0 0 20px hsl(220 91% 65% / 0.3);
+    --glow-accent: 0 0 20px hsl(280 89% 66% / 0.3);
+    
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    
+    /* Spacing and radius */
+    --radius: 0.75rem;
+    --radius-lg: 1rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+@layer components {
+  /* Cyber aesthetic utilities */
+  .gradient-text {
+    background: var(--gradient-primary);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .gradient-text-accent {
+    background: var(--gradient-accent);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .glow-primary {
+    box-shadow: var(--glow-primary);
+  }
+  
+  .glow-secondary {
+    box-shadow: var(--glow-secondary);
+  }
+  
+  .glow-accent {
+    box-shadow: var(--glow-accent);
+  }
+  
+  /* Card hover effects */
+  .card-hover {
+    transition: var(--transition-smooth);
+    @apply hover:border-primary/30 hover:shadow-lg;
+  }
+  
+  .card-hover:hover {
+    box-shadow: 0 10px 25px -3px hsl(158 64% 52% / 0.1), 0 4px 6px -2px hsl(158 64% 52% / 0.05);
+    transform: translateY(-2px);
+  }
+  
+  /* Navigation styles */
+  .nav-link {
+    @apply relative py-2 px-4 text-sm font-medium transition-all duration-300;
+    @apply hover:text-primary;
+  }
+  
+  .nav-link.active {
+    @apply text-primary;
+  }
+  
+  .nav-link.active::after {
+    content: '';
+    @apply absolute bottom-0 left-1/2 w-1/2 h-0.5 bg-primary;
+    transform: translateX(-50%);
+  }
+  
+  /* Tech grid pattern background */
+  .tech-grid {
+    background-image: 
+      linear-gradient(hsl(158 64% 52% / 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(158 64% 52% / 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
+  
+  /* Animated border for hero sections */
+  .animated-border {
+    position: relative;
+    border: 1px solid transparent;
+    background: linear-gradient(hsl(var(--card)), hsl(var(--card))) padding-box,
+                var(--gradient-primary) border-box;
+  }
+  
+  /* Tag styles */
+  .tag {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium;
+    @apply border border-primary/20 bg-primary/10 text-primary;
+    transition: var(--transition-smooth);
+  }
+  
+  .tag:hover {
+    @apply bg-primary/20 border-primary/40;
+  }
+  
+  /* Scrollbar styling */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-muted;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-primary/50 rounded-full;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary/70;
+  }
+  
+  /* Prose styling for markdown content */
+  .prose {
+    @apply text-foreground;
+  }
+  
+  .prose pre {
+    @apply bg-muted border border-border rounded-lg p-4 overflow-x-auto;
+  }
+  
+  .prose code {
+    @apply text-primary;
+  }
+  
+  .prose pre code {
+    @apply text-foreground bg-transparent p-0;
+  }
+  
+  .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+    @apply text-foreground;
+  }
+  
+  .prose a {
+    @apply text-primary hover:text-primary/80 underline;
+  }
+  
+  .prose strong {
+    @apply text-foreground font-semibold;
+  }
+  
+  .prose p {
+    @apply text-muted-foreground leading-relaxed;
+  }
+  
+  .prose ul, .prose ol {
+    @apply text-muted-foreground;
+  }
+  
+  .prose li {
+    @apply mb-2;
+  }
+  
+  .prose hr {
+    @apply border-border my-8;
+  }
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "id": "sample-ctf",
+    "title": "Sample CTF Challenge",
+    "competition": "Example CTF 2024",
+    "category": "web",
+    "difficulty": "medium",
+    "points": 250,
+    "tags": ["SQL Injection", "Authentication Bypass", "PHP"],
+    "date": "2024-03-20",
+    "summary": "A web challenge involving SQL injection and authentication bypass techniques.",
+    "contentPath": "sample-ctf.md"
+  }
+]

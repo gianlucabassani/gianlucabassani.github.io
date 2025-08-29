@@ -1,0 +1,13 @@
+[
+  {
+    "id": "environment",
+    "title": "Environment",
+    "platform": "hackthebox",
+    "difficulty": "medium",
+    "os": "linux",
+    "tags": ["Laravel", "Nginx", "File Upload", "BASH_ENV", "PGP"],
+    "date": "2024-03-15",
+    "summary": "Laravel application with login bypass, file upload vulnerability, and privilege escalation via BASH_ENV exploitation.",
+    "contentPath": "environment.md"
+  }
+]
