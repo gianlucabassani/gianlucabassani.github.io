@@ -1,22 +1,12 @@
 [
   {
-    "id": "web-security-guide",
-    "title": "Getting Started with Web Application Security Testing",
-    "category": "tutorial",
-    "tags": ["Web Security", "Penetration Testing", "Tutorial"],
-    "date": "2024-03-15",
-    "readTime": "5 min read",
-    "summary": "A comprehensive guide to beginning your journey in web application penetration testing, covering essential tools, methodologies, and common vulnerabilities to look for...",
-    "contentPath": "web-security-guide.md"
-  },
-  {
-    "id": "python-security-tools",
-    "title": "Building Custom Security Tools with Python",
+    "id": "0-WelcomePost",
+    "title": "Welcome to my blog!",
     "category": "development",
-    "tags": ["Python", "Tool Development", "Automation"],
-    "date": "2024-03-08",
-    "readTime": "3 min read",
-    "summary": "Learn how to create your own security testing tools using Python. We'll cover script automation, API interactions, and building reusable security libraries...",
-    "contentPath": "python-security-tools.md"
+    "tags": ["General"],
+    "date": "2025-08-30",
+    "readTime": "1 min read",
+    "summary": "An introductory post to welcome readers to the blog and outline what to expect in future posts.",
+    "contentPath": "0-WelcomePost.md"
   }
 ]
