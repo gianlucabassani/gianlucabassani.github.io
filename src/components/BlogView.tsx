@@ -97,7 +97,7 @@ const BlogView = ({ blogPost, onBack }: BlogViewProps) => {
                 <div className="text-muted-foreground">Loading blog post...</div>
               </div>
             ) : (
-              <div className="prose prose-invert prose-green max-w-none">
+              <div className="prose prose-invert prose-green max-w-none [&>*]:max-w-none [&_pre]:overflow-x-hidden [&_pre]:whitespace-pre-wrap [&_pre]:break-words [&_code]:whitespace-pre-wrap [&_code]:break-words">
                 <ReactMarkdown
                   remarkPlugins={[remarkGfm]}
                   rehypePlugins={[rehypeHighlight]}
@@ -107,16 +107,20 @@ const BlogView = ({ blogPost, onBack }: BlogViewProps) => {
                       const isInline = !className;
                       
                       return !isInline && match ? (
-                        <div className="relative">
-                          <div className="absolute top-2 right-2 text-xs text-muted-foreground bg-muted px-2 py-1 rounded">
-                            {match[1]}
+                        <div className="my-4 rounded-lg border border-border bg-muted/20">
+                          <div className="px-3 py-1.5 bg-muted/40 border-b border-border">
+                            <span className="text-xs text-muted-foreground font-mono">
+                              {match[1]}
+                            </span>
                           </div>
-                          <code className={className} {...props}>
-                            {children}
-                          </code>
+                          <pre className="p-4 overflow-x-hidden whitespace-pre-wrap break-words text-sm font-mono leading-relaxed">
+                            <code className={className} {...props}>
+                              {children}
+                            </code>
+                          </pre>
                         </div>
                       ) : (
-                        <code className="bg-muted px-1 py-0.5 rounded text-sm font-mono" {...props}>
+                        <code className="bg-muted px-2 py-1 rounded text-sm font-mono text-foreground" {...props}>
                           {children}
                         </code>
                       );
