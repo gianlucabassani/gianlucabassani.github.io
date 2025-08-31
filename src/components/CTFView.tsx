@@ -73,7 +73,7 @@ const CTFView = ({ ctfWriteup, onBack }: CTFViewProps) => {
       </div>
 
       {/* Header */}
-      <div className="sticky top-0 bg-background/90 backdrop-blur-md border-b border-border z-40">
+      <div className="bg-background border-b border-border">
         <div className="max-w-4xl mx-auto px-4 py-4">
           <Button
             variant="outline"

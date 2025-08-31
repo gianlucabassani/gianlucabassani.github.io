@@ -210,7 +210,77 @@ const Index = () => {
                 <p className="text-lg text-muted-foreground mb-6">
                   Hello! I'm Gianluca Bassani, a passionate cybersecurity professional with a love for solving complex challenges and sharing knowledge with the community. This site serves as my digital portfolio where I document my journey through various security challenges, development projects, and technical discoveries.
                 </p>
-                
+                {/* Technical Skills & Certifications */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                  {/* Technical Skills */}
+                  <Card className="card-hover border-primary/20">
+                    <CardHeader>
+                      <CardTitle className="flex items-center text-lg">
+                        <Code className="w-5 h-5 mr-2 text-primary" />
+                        Technical Skills
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className="font-semibold text-sm mb-2">Programming Languages</h4>
+                          <div className="flex flex-wrap gap-2">
+                            <Badge variant="secondary" className="tag">Python</Badge>
+                            <Badge variant="secondary" className="tag">C++</Badge>
+                            <Badge variant="secondary" className="tag">Javascript / Typescript</Badge>
+                            <Badge variant="secondary" className="tag">Bash</Badge>
+                          </div>
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-sm mb-2">Security Tools</h4>
+                          <div className="flex flex-wrap gap-2">
+                            <Badge variant="secondary" className="tag">Burp Suite</Badge>
+                            <Badge variant="secondary" className="tag">Nmap</Badge>
+                            <Badge variant="secondary" className="tag">Metasploit</Badge>
+                            <Badge variant="secondary" className="tag">Bloodhound</Badge>
+                            <Badge variant="secondary" className="tag">Binary Ninja</Badge>
+                          </div>
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-sm mb-2">Operating Systems</h4>
+                          <div className="flex flex-wrap gap-2">
+                            <Badge variant="secondary" className="tag">Linux (Debian/Arch)</Badge>
+                            <Badge variant="secondary" className="tag">Windows Active Directory</Badge>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Certifications */}
+                  <Card className="card-hover border-secondary/20">
+                    <CardHeader>
+                      <CardTitle className="flex items-center text-lg">
+                        <Shield className="w-5 h-5 mr-2 text-secondary" />
+                        Certifications
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
+                          <div>
+                            <div className="font-medium">CCNA ITN, SRWE, ENSA</div>
+                            <div className="text-sm text-muted-foreground">CISCO</div>
+                          </div>
+                          <Badge className="bg-success/20 border-success/40 text-success">Certified</Badge>
+                        </div>
+                        <div className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
+                          <div>
+                            <div className="font-medium">Certified Penetration Tester Specialist (CPTS)</div>
+                            <div className="text-sm text-muted-foreground">Hack The Box</div>
+                          </div>
+                          <Badge className="bg-warning/20 border-warning/40 text-warning">In Progress</Badge>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+
                 <h3 className="text-xl font-mono font-semibold mb-6">What You'll Find Here</h3>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
