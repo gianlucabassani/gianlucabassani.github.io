@@ -406,15 +406,42 @@ const Index = () => {
                     A comprehensive browser-based OSINT (Open Source Intelligence) toolkit for cybersecurity professionals and researchers. Features automated reconnaissance, data collection, and analysis capabilities.
                   </CardDescription>
                   <div className="flex flex-wrap gap-2 mb-6">
-                    <Badge variant="secondary" className="tag">OSINT</Badge>
+                    <Badge variant="secondary" className="tag">Python</Badge>
                     <Badge variant="secondary" className="tag">Reconnaissance</Badge>
-                    <Badge variant="secondary" className="tag">Web-Scanner</Badge>
-                    <Badge variant="secondary" className="tag">Profilation</Badge>
+                    <Badge variant="secondary" className="tag">OSINT</Badge>
+                    <Badge variant="secondary" className="tag">Crawler</Badge>
                   </div>
                   <Button 
                     variant="outline" 
                     className="w-full border-primary/30 hover:bg-primary/10"
                     onClick={() => window.open('https://github.com/gianlucabassani/browsint', '_blank')}
+                  >
+                    <Github className="w-4 h-4 mr-2" />
+                    View on GitHub
+                    <ExternalLink className="w-4 h-4 ml-2" />
+                  </Button>
+                </CardContent>
+              </Card>
+
+              <Card className="card-hover glow-primary">
+                <CardHeader>
+                  <CardTitle className="text-2xl flex items-center">
+                    <Terminal className="w-6 h-6 mr-2 text-primary" />
+                    C Shell
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-base mb-6">
+                    Study of building a shell in C, covering memory management and pointers, process control, and extending to networking and task management for offensive security scenarios.
+                  </CardDescription>
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    <Badge variant="secondary" className="tag">C</Badge>
+                    <Badge variant="secondary" className="tag">POSIX</Badge>
+                  </div>
+                  <Button 
+                    variant="outline" 
+                    className="w-full border-primary/30 hover:bg-primary/10"
+                    onClick={() => window.open('https://github.com/gianlucabassani/C-shell', '_blank')}
                   >
                     <Github className="w-4 h-4 mr-2" />
                     View on GitHub
