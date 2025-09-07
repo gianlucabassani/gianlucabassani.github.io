@@ -6,8 +6,19 @@
     "difficulty": "medium",
     "os": "linux",
     "tags": ["Laravel", "Nginx", "File Upload", "BASH_ENV", "PGP"],
-    "date": "2024-03-15",
+    "date": "205-08-31",
     "summary": "Laravel application with login bypass, file upload vulnerability, and privilege escalation via BASH_ENV exploitation.",
     "contentPath": "environment.md"
+  },
+  {
+    "id": "editor",
+    "title": "Editor",
+    "platform": "hackthebox",
+    "difficulty": "easy",
+    "os": "linux",
+    "tags": ["Xwiki", "Jetty", "Netdata", "SUID"],
+    "date": "2024-09-07",
+    "summary": "XWiki 15.10.8 vulnerable to RCE (CVE-2025-24893) with subsequent privilege escalation via Netdata SUID binaries, resulting in full system compromise.",
+    "contentPath": "editor.md"
   }
 ]
