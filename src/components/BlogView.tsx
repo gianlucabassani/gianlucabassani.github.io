@@ -107,7 +107,7 @@ const BlogView = ({ blogPost, onBack }: BlogViewProps) => {
                       const isInline = !className;
                       
                       return !isInline && match ? (
-                        <div className="my-4 rounded-lg border border-border bg-muted/20">
+                        <div className="my-2 rounded-lg border border-border bg-muted/20">
                           <div className="px-3 py-1.5 bg-muted/40 border-b border-border">
                             <span className="text-xs text-muted-foreground font-mono">
                               {match[1]}
