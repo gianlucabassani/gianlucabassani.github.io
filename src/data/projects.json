@@ -1,0 +1,37 @@
+[
+  {
+    "id": "browsint",
+    "title": "Browsint",
+    "category": "tool",
+    "status": "active",
+    "technologies": ["Python", "SQLite", "HTML", "APIs"],
+    "tags": ["OSINT", "Reconnaissance", "Scraper", "Crawler"],
+    "date": "2025-05-05",
+    "summary": "Tool for Web OSINT Profilation",
+    "description": "A comprehensive browser-based OSINT (Open Source Intelligence) toolkit for cybersecurity professionals and researchers.",
+    "features": [
+      "Automated reconnaissance and data collection",
+      "Multiple OSINT data sources integration",
+      "Export reports for collected data"
+    ],
+    "githubUrl": "https://github.com/gianlucabassani/browsint"
+  },
+  {
+    "id": "c-shell",
+    "title": "C Shell",
+    "category": "coding",
+    "status": "active",
+    "technologies": ["C", "POSIX"],
+    "tags": ["Low-Level", "Pointers", "Memory Management", "Learning"],
+    "date": "2025-09-03",
+    "summary": "Shell written in C",
+    "description": "Study of building a shell in C, covering memory management and pointers, process control, and extending to networking and task management for offensive security scenarios.",
+    "features": [
+      "Buitin commands",
+      "External command access",
+      "Quoting and escpaing",
+      "Output redirections"
+    ],
+    "githubUrl": "https://github.com/gianlucabassani/C-shell"
+  }
+]

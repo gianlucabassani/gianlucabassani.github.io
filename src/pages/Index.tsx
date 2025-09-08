@@ -7,22 +7,26 @@ import { Badge } from '@/components/ui/badge';
 import { Writeup } from '@/data/writeups';
 import { CTFWriteup, ctfWriteups } from '@/data/ctf';
 import { BlogPost, blogPosts } from '@/data/blog';
+import { Project, projects } from '@/data/projects';
 import WriteupView from '@/components/WriteupView';
 import PlatformView from '@/components/PlatformView';
 import CTFView from '@/components/CTFView';
 import BlogView from '@/components/BlogView';
+import ProjectView from '@/components/ProjectView';
+import ProjectsView from '@/components/ProjectsView';
 import heroImage from '@/assets/hero-cyber.jpg';
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState('about');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [currentView, setCurrentView] = useState<'main' | 'platform' | 'writeup' | 'ctf' | 'blog'>('main');
+  const [currentView, setCurrentView] = useState<'main' | 'platform' | 'writeup' | 'ctf' | 'blog' | 'projects' | 'project'>('main');
   const [selectedPlatform, setSelectedPlatform] = useState<string>('');
   const [selectedWriteup, setSelectedWriteup] = useState<Writeup | null>(null);
   const location = useLocation();
   const [selectedCTFWriteup, setSelectedCTFWriteup] = useState<CTFWriteup | null>(null);
   const [selectedBlogPost, setSelectedBlogPost] = useState<BlogPost | null>(null);
-  
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+
   const navItems = [
     { id: 'about', label: 'About Me', icon: Shield },
     { id: 'blog', label: 'Blog', icon: FileText },
@@ -59,18 +63,33 @@ const Index = () => {
     setCurrentView('blog');
   };
 
+  const handleProjectsClick = () => {
+    setCurrentView('projects');
+  };
+
+  const handleProjectSelect = (project: Project) => {
+    setSelectedProject(project);
+    setCurrentView('project');
+  };
+
   const handleBackToMain = () => {
     setCurrentView('main');
     setSelectedPlatform('');
     setSelectedWriteup(null);
     setSelectedCTFWriteup(null);
     setSelectedBlogPost(null);
+    setSelectedProject(null);
   };
 
   const handleBackToPlatform = () => {
     setCurrentView('platform');
     setSelectedWriteup(null);
   };
+
+  const handleBackToProjects = () => {
+      setCurrentView('projects');
+      setSelectedProject(null);
+    };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -109,6 +128,14 @@ const Index = () => {
 
   if (currentView === 'blog' && selectedBlogPost) {
     return <BlogView blogPost={selectedBlogPost} onBack={handleBackToMain} />;
+  }
+
+  if (currentView === 'projects') {
+    return <ProjectsView onBack={handleBackToMain} onProjectSelect={handleProjectSelect} />;
+  }
+
+  if (currentView === 'project' && selectedProject) {
+    return <ProjectView project={selectedProject} onBack={handleBackToProjects} />;
   }
 
   if (currentView === 'platform' && selectedPlatform) {
@@ -208,7 +235,7 @@ const Index = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-lg text-muted-foreground mb-6">
-                  Hello! I'm Gianluca Bassani, a passionate cybersecurity professional with a love for solving complex challenges and sharing knowledge with the community. This site serves as my digital portfolio where I document my journey through various security challenges, development projects, and technical discoveries.
+                  Hello World! I'm Gianluca Bassani, an offensive security enthusiast always looking for the next cool thing to learn. This is my digital portfolio where I document and share my journey through various security challenges, development projects, and maybe some technical discoveries.
                 </p>
                 {/* Technical Skills & Certifications */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
@@ -266,6 +293,13 @@ const Index = () => {
                           <div>
                             <div className="font-medium">CCNA ITN, SRWE, ENSA</div>
                             <div className="text-sm text-muted-foreground">CISCO</div>
+                          </div>
+                          <Badge className="bg-success/20 border-success/40 text-success">Certified</Badge>
+                        </div>
+                        <div className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
+                          <div>
+                            <div className="font-medium">AWS Academy Graduate</div>
+                            <div className="text-sm text-muted-foreground">Amazon Web Services (AWS)</div>
                           </div>
                           <Badge className="bg-success/20 border-success/40 text-success">Certified</Badge>
                         </div>
@@ -392,74 +426,71 @@ const Index = () => {
         <section id="projects" className="py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-4xl font-mono font-bold mb-12 text-center gradient-text">Projects</h2>
-            
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <Card className="card-hover glow-primary">
-                <CardHeader>
-                  <CardTitle className="text-2xl flex items-center">
-                    <Terminal className="w-6 h-6 mr-2 text-primary" />
-                    Browsint
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-base mb-6">
-                    A comprehensive browser-based OSINT (Open Source Intelligence) toolkit for cybersecurity professionals and researchers. Features automated reconnaissance, data collection, and analysis capabilities.
-                  </CardDescription>
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    <Badge variant="secondary" className="tag">Python</Badge>
-                    <Badge variant="secondary" className="tag">Reconnaissance</Badge>
-                    <Badge variant="secondary" className="tag">OSINT</Badge>
-                    <Badge variant="secondary" className="tag">Crawler</Badge>
-                  </div>
-                  <Button 
-                    variant="outline" 
-                    className="w-full border-primary/30 hover:bg-primary/10"
-                    onClick={() => window.open('https://github.com/gianlucabassani/browsint', '_blank')}
-                  >
-                    <Github className="w-4 h-4 mr-2" />
-                    View on GitHub
-                    <ExternalLink className="w-4 h-4 ml-2" />
-                  </Button>
-                </CardContent>
-              </Card>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+              {projects.slice(0, 2).map((project) => (
+                <Card 
+                  key={project.id}
+                  className="card-hover border-primary/20 cursor-pointer transition-all duration-300 hover:scale-105"
+                  onClick={() => handleProjectSelect(project)}
+                >
+                  <CardHeader>
+                    <CardTitle className="text-2xl flex items-center">
+                      <Terminal className="w-6 h-6 mr-2 text-primary" />
+                      {project.title}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <CardDescription className="text-base mb-6">
+                      {project.summary}
+                    </CardDescription>
+                    <div className="flex flex-wrap gap-2 mb-6">
+                      {project.tags.slice(0, 4).map((tag) => (
+                        <Badge key={tag} variant="secondary" className="tag">{tag}</Badge>
+                      ))}
+                    </div>
+                    <div className="flex gap-2">
+                      {project.githubUrl && (
+                        <Button 
+                          variant="outline" 
+                          className="flex-1 border-primary/30 hover:bg-primary/10"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            window.open(project.githubUrl, '_blank');
+                          }}
+                        >
+                          <Github className="w-4 h-4 mr-2" />
+                          GitHub
+                        </Button>
+                      )}
+                      {project.liveUrl && (
+                        <Button 
+                          variant="outline" 
+                          className="flex-1 border-secondary/30 hover:bg-secondary/10"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            window.open(project.liveUrl, '_blank');
+                          }}
+                        >
+                          <ExternalLink className="w-4 h-4 mr-2" />
+                          Live Demo
+                        </Button>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
 
-              <Card className="card-hover glow-primary">
-                <CardHeader>
-                  <CardTitle className="text-2xl flex items-center">
-                    <Terminal className="w-6 h-6 mr-2 text-primary" />
-                    C Shell
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-base mb-6">
-                    Study of building a shell in C, covering memory management and pointers, process control, and extending to networking and task management for offensive security scenarios.
-                  </CardDescription>
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    <Badge variant="secondary" className="tag">C</Badge>
-                    <Badge variant="secondary" className="tag">POSIX</Badge>
-                  </div>
-                  <Button 
-                    variant="outline" 
-                    className="w-full border-primary/30 hover:bg-primary/10"
-                    onClick={() => window.open('https://github.com/gianlucabassani/C-shell', '_blank')}
-                  >
-                    <Github className="w-4 h-4 mr-2" />
-                    View on GitHub
-                    <ExternalLink className="w-4 h-4 ml-2" />
-                  </Button>
-                </CardContent>
-              </Card>
-
-              <Card className="card-hover border-secondary/20">
-                <CardHeader>
-                  <CardTitle className="text-2xl text-secondary">More Projects Coming Soon</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">
-                    In the meantime, feel free to explore my existing work and reach out if you'd like to collaborate on any projects.
-                  </p>
-                </CardContent>
-              </Card>
+            <div className="text-center">
+              <Button 
+                onClick={handleProjectsClick}
+                size="lg"
+                className="bg-primary hover:bg-primary/80"
+              >
+                View All Projects
+                <ExternalLink className="w-4 h-4 ml-2" />
+              </Button>
+          
             </div>
           </div>
         </section>
