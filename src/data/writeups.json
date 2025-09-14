@@ -20,5 +20,16 @@
     "date": "2024-09-07",
     "summary": "XWiki 15.10.8 vulnerable to RCE (CVE-2025-24893) with subsequent privilege escalation via Netdata SUID binaries, resulting in full system compromise.",
     "contentPath": "editor.md"
+  },
+  {
+    "id": "soulmate",
+    "title": "Soulmate",
+    "platform": "hackthebox",
+    "difficulty": "easy",
+    "os": "linux",
+    "tags": ["CrushFTP", "Erlang", "Local Service Enumeration"],
+    "date": "2024-09-07",
+    "summary": "Exploited a CrushFTP authentication bypass vulnerability (CVE-2025-31161) to gain initial access, then used an exposed internal Erlang service to escalate privileges to root.",
+    "contentPath": "soulmate.md"
   }
 ]
