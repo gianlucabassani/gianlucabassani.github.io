@@ -27,8 +27,8 @@
     "platform": "hackthebox",
     "difficulty": "easy",
     "os": "linux",
-    "tags": ["CrushFTP", "Erlang", "Local Service Enumeration"],
-    "date": "2024-09-07",
+    "tags": ["CrushFTP", "Erlang"],
+    "date": "2025-09-11",
     "summary": "Exploited a CrushFTP authentication bypass vulnerability (CVE-2025-31161) to gain initial access, then used an exposed internal Erlang service to escalate privileges to root.",
     "contentPath": "soulmate.md"
   }

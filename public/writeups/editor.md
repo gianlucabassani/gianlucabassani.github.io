@@ -89,7 +89,6 @@ Access to http://editor.htb
 ![editor_1](https://gianlucabassani.github.io/assets/editor/htb_editor_1.png)
 
 
-
 - Downloadable `.deb` file from main site.
 
 
