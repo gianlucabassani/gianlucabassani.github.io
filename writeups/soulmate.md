@@ -117,7 +117,7 @@ index.php               [Status: 200, Size: 16688, Words: 6110, Lines: 306, Dura
 
 - Subdomain ftp hosts CrushFTP with login panel.
 
-![soulmate_2](https://gianlucabassani.github.io/assets/soulmate/soulmate_2.jpg)
+![soulmate_2](https://gianlucabassani.github.io/assets/soulmate/soulmate_2.png)
 
 ---
 
