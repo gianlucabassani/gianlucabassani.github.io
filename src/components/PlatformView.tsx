@@ -159,7 +159,9 @@ const PlatformView = ({ platform, onBack, onWriteupSelect }: PlatformViewProps) 
                                 <Calendar className="w-3 h-3" />
                                 {new Date(writeup.date).toLocaleDateString()}
                                 <span>•</span>
-                                <span>{writeup.tags.slice(0, 2).join(', ')}</span>
+                                <span className="flex items-center gap-1">
+                                  {writeup.os}
+                                </span>
                               </div>
                             </div>
                           </div>
