@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Shield, Terminal, Code, FileText, Flag, Github, ExternalLink, ChevronDown, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -15,14 +15,48 @@ import BlogView from '@/components/BlogView';
 import ProjectView from '@/components/ProjectView';
 import ProjectsView from '@/components/ProjectsView';
 import heroImage from '@/assets/hero-cyber.jpg';
+import { writeups } from '@/data/writeups';
 
 const Index = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState('about');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [currentView, setCurrentView] = useState<'main' | 'platform' | 'writeup' | 'ctf' | 'blog' | 'projects' | 'project'>('main');
-  const [selectedPlatform, setSelectedPlatform] = useState<string>('');
+    
+  // Parse current route to determine view
+  const parseRoute = () => {
+    const path = location.pathname;
+    const segments = path.split('/').filter(s => s);
+    
+    if (segments.length === 0) return { view: 'main' as const, section: 'about' };
+    
+    const section = segments[0];
+    if (section === 'blog' && segments[1]) {
+      return { view: 'blog' as const, blogId: segments[1] };
+    }
+    if (section === 'projects' && segments[1]) {
+      return { view: 'project' as const, projectId: segments[1] };
+    }
+    if (section === 'projects') {
+      return { view: 'projects' as const };
+    }
+    if (section === 'boxes' && segments[1] && segments[2]) {
+      return { view: 'writeup' as const, platform: segments[1], writeupId: segments[2] };
+    }
+    if (section === 'boxes' && segments[1]) {
+      return { view: 'platform' as const, platform: segments[1] };
+    }
+    if (section === 'ctf' && segments[1]) {
+      return { view: 'ctf' as const, ctfId: segments[1] };
+    }
+    
+    return { view: 'main' as const, section };
+  };
+  
+  const currentRoute = parseRoute();
+  const [currentView, setCurrentView] = useState<'main' | 'platform' | 'writeup' | 'ctf' | 'blog' | 'projects' | 'project'>(currentRoute.view);
+  const [selectedPlatform, setSelectedPlatform] = useState<string>(currentRoute.platform || '');
   const [selectedWriteup, setSelectedWriteup] = useState<Writeup | null>(null);
-  const location = useLocation();
   const [selectedCTFWriteup, setSelectedCTFWriteup] = useState<CTFWriteup | null>(null);
   const [selectedBlogPost, setSelectedBlogPost] = useState<BlogPost | null>(null);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
@@ -35,61 +69,85 @@ const Index = () => {
     { id: 'ctf', label: 'CTF Solves', icon: Flag }
   ];
 
+  // Update view based on route changes
+  useEffect(() => {
+    const route = parseRoute();
+    setCurrentView(route.view);
+    setActiveSection(route.section || 'about');
+    setSelectedPlatform(route.platform || '');
+    
+    // Load specific items based on route
+    if (route.blogId) {
+      const blog = blogPosts.find(b => b.id === route.blogId);
+      setSelectedBlogPost(blog || null);
+    }
+    if (route.projectId) {
+      const project = projects.find(p => p.id === route.projectId);
+      setSelectedProject(project || null);
+    }
+    if (route.ctfId) {
+      const ctf = ctfWriteups.find(c => c.id === route.ctfId);
+      setSelectedCTFWriteup(ctf || null);
+    }
+    if (route.writeupId && route.platform) {
+      const platformWriteups = writeups.filter(w => w.platform.toLowerCase() === route.platform.toLowerCase());
+      const writeup = platformWriteups.find(w => w.id === route.writeupId);
+      setSelectedWriteup(writeup || null);
+    }
+  }, [location.pathname]);
+
   const scrollToSection = (sectionId: string) => {
     setActiveSection(sectionId);
     setIsMenuOpen(false);
-    setCurrentView('main');
-    const element = document.getElementById(sectionId);
-    element?.scrollIntoView({ behavior: 'smooth' });
+    // For projects, just scroll to section instead of navigating
+    if (sectionId === 'projects') {
+      const element = document.getElementById(sectionId);
+      element?.scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+    
+    navigate(`/${sectionId}`);
+    setTimeout(() => {
+      const element = document.getElementById(sectionId);
+      element?.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
   };
 
   const handlePlatformClick = (platform: string) => {
-    setSelectedPlatform(platform);
-    setCurrentView('platform');
+    navigate(`/boxes/${platform}`);
   };
 
   const handleWriteupSelect = (writeup: Writeup) => {
-    setSelectedWriteup(writeup);
-    setCurrentView('writeup');
+    navigate(`/boxes/${selectedPlatform}/${writeup.id}`);
   };
 
   const handleCTFSelect = (ctfWriteup: CTFWriteup) => {
-    setSelectedCTFWriteup(ctfWriteup);
-    setCurrentView('ctf');
+    navigate(`/ctf/${ctfWriteup.id}`);
   };
 
   const handleBlogSelect = (blogPost: BlogPost) => {
-    setSelectedBlogPost(blogPost);
-    setCurrentView('blog');
+    navigate(`/blog/${blogPost.id}`);
   };
 
   const handleProjectsClick = () => {
-    setCurrentView('projects');
+    navigate('/projects');
   };
 
   const handleProjectSelect = (project: Project) => {
-    setSelectedProject(project);
-    setCurrentView('project');
+    navigate(`/projects/${project.id}`);
   };
 
   const handleBackToMain = () => {
-    setCurrentView('main');
-    setSelectedPlatform('');
-    setSelectedWriteup(null);
-    setSelectedCTFWriteup(null);
-    setSelectedBlogPost(null);
-    setSelectedProject(null);
+    navigate('/');
   };
 
   const handleBackToPlatform = () => {
-    setCurrentView('platform');
-    setSelectedWriteup(null);
+    navigate(`/boxes/${selectedPlatform}`);
   };
 
   const handleBackToProjects = () => {
-      setCurrentView('projects');
-      setSelectedProject(null);
-    };
+    navigate('/projects');
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
