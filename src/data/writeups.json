@@ -47,9 +47,9 @@
   "id": "darkzero",
   "title": "DarkZero",
   "platform": "hackthebox",
-  "difficulty": "Hard",
+  "difficulty": "hard",
   "os": "windows",
-  "tags": ["MSSQL", "Linked Servers", "CVE-2024-30088", "Rubeus", "DCSync", "Active Directory"],
+  "tags": ["Active Directory","MSSQL", "DCSync"],
   "date": "2025-10-06",
   "summary": "Compromised a Windows domain by pivoting through MSSQL Linked Servers, escalating to SYSTEM via a Kernel race condition (CVE-2024-30088), and performing a cross-domain DCSync attack by coercing authentication to capture a TGT.",
   "contentPath": "darkzero.md"

