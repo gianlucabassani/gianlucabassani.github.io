@@ -33,5 +33,26 @@
       "Output redirections"
     ],
     "githubUrl": "https://github.com/gianlucabassani/C-shell"
+  },
+
+  {
+    "id": "browphish",
+    "title": "Browphish",
+    "category": "coding",
+    "status": "active",
+    "technologies": ["Python", "Flask", "SQLite"],
+    "tags": ["Phishing", "Social Engineering", "Email"],
+    "date": "2025-11-15",
+    "summary": "Basic phishing toolkit",
+    "description": "Modular toolkit for phishing simulations and social engineering campaings",
+    "features": [
+      "Phishing campaign management",
+      "Web page cloning",
+      "Flask server hosting",
+      "Phishing email support",
+      "Database SQLite for data storage"
+    ],
+    "githubUrl": "https://github.com/gianlucabassani/browphish"
   }
+
 ]

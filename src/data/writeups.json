@@ -42,5 +42,16 @@
   "date": "2025-09-16",
   "summary": "Compromised an Active Directory domain controller by exploiting weak secrets management, abusing overly permissive ACLs, and leveraging DPAPI to recover high-privilege credentials, culminating in a full domain compromise via a DCSync attack.",
   "contentPath": "puppy.md"
+},
+{
+  "id": "darkzero",
+  "title": "DarkZero",
+  "platform": "hackthebox",
+  "difficulty": "Hard",
+  "os": "windows",
+  "tags": ["MSSQL", "Linked Servers", "CVE-2024-30088", "Rubeus", "DCSync", "Active Directory"],
+  "date": "2025-10-06",
+  "summary": "Compromised a Windows domain by pivoting through MSSQL Linked Servers, escalating to SYSTEM via a Kernel race condition (CVE-2024-30088), and performing a cross-domain DCSync attack by coercing authentication to capture a TGT.",
+  "contentPath": "darkzero.md"
 }
 ]

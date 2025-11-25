@@ -311,19 +311,20 @@ const Index = () => {
                           <h4 className="font-semibold text-sm mb-2">Programming Languages</h4>
                           <div className="flex flex-wrap gap-2">
                             <Badge variant="secondary" className="tag">Python</Badge>
-                            <Badge variant="secondary" className="tag">C++</Badge>
+                            <Badge variant="secondary" className="tag">C/C++</Badge>
+                            <Badge variant="secondary" className="tag">GO</Badge>
+                            <Badge variant="secondary" className="tag">Terraform</Badge>
                             <Badge variant="secondary" className="tag">Javascript / Typescript</Badge>
                             <Badge variant="secondary" className="tag">Bash</Badge>
                           </div>
                         </div>
                         <div>
-                          <h4 className="font-semibold text-sm mb-2">Security Tools</h4>
+                          <h4 className="font-semibold text-sm mb-2">Security Fields</h4>
                           <div className="flex flex-wrap gap-2">
-                            <Badge variant="secondary" className="tag">Burp Suite</Badge>
-                            <Badge variant="secondary" className="tag">Nmap</Badge>
-                            <Badge variant="secondary" className="tag">Metasploit</Badge>
-                            <Badge variant="secondary" className="tag">Bloodhound</Badge>
-                            <Badge variant="secondary" className="tag">Binary Ninja</Badge>
+                            <Badge variant="secondary" className="tag">Web Security</Badge>
+                            <Badge variant="secondary" className="tag">Network Pentesting</Badge>
+                            <Badge variant="secondary" className="tag">AI Red Team</Badge>
+                            <Badge variant="secondary" className="tag">Binary Exploitation</Badge>
                           </div>
                         </div>
                         <div>
