@@ -6,7 +6,7 @@
     "difficulty": "medium",
     "os": "linux",
     "tags": ["Laravel", "Nginx", "File Upload", "BASH_ENV", "PGP"],
-    "date": "205-08-31",
+    "date": "2024-08-31",
     "summary": "Laravel application with login bypass, file upload vulnerability, and privilege escalation via BASH_ENV exploitation.",
     "contentPath": "environment.md"
   },
