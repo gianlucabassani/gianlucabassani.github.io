@@ -53,6 +53,8 @@ const CTFView = ({ ctfWriteup, onBack }: CTFViewProps) => {
   const getCategoryIcon = (category: string) => {
     switch (category) {
       case 'web': return '🌐';
+      case 'web3': return '⛓️';
+      case 'ai': return '🤖';
       case 'pwn': return '💥';
       case 'crypto': return '🔐';
       case 'forensics': return '🔍';

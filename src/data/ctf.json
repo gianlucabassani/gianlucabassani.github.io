@@ -1,3 +1,26 @@
 [
-
+  {
+    "id": "fittest",
+    "title": "Fittest",
+    "competition": "HackTheBox",
+    "category": "web3",
+    "difficulty": "easy",
+    "points": 100,
+    "tags": ["Solidity", "Smart Contracts", "Foundry", "EVM"],
+    "date": "2025-11-16",
+    "summary": "Defeat a vulnerable smart‑contract creature by reducing its life points and looting its balance using a single strong attack.",
+    "contentPath": "fittest.md"
+  },
+  {
+    "id": "space",
+    "title": "Space",
+    "competition": "HackTheBox",
+    "category": "ai",
+    "difficulty": "easy",
+    "points": 100,
+    "tags": ["MDS", "PCA", "Python", "Distance Matrix", "Dimensionality Reduction"],
+    "date": "2025-11-26",
+    "summary": "Reconstruct hidden coordinates from a distance matrix using MDS and PCA to reveal the flag embedded in 2D point clouds.",
+    "contentPath": "space.md"
+  }
 ]

@@ -2,7 +2,7 @@
   {
     "id": "browsint",
     "title": "Browsint",
-    "category": "tool",
+    "category": "security",
     "status": "active",
     "technologies": ["Python", "SQLite", "HTML", "APIs"],
     "tags": ["OSINT", "Reconnaissance", "Scraper", "Crawler"],
@@ -19,8 +19,8 @@
   {
     "id": "c-shell",
     "title": "C Shell",
-    "category": "coding",
-    "status": "active",
+    "category": "general",
+    "status": "in-progress",
     "technologies": ["C", "POSIX"],
     "tags": ["Low-Level", "Pointers", "Memory Management", "Learning"],
     "date": "2025-09-03",
@@ -38,8 +38,8 @@
   {
     "id": "browphish",
     "title": "Browphish",
-    "category": "coding",
-    "status": "active",
+    "category": "security",
+    "status": "in-progress",
     "technologies": ["Python", "Flask", "SQLite"],
     "tags": ["Phishing", "Social Engineering", "Email"],
     "date": "2025-11-15",
@@ -53,6 +53,26 @@
       "Database SQLite for data storage"
     ],
     "githubUrl": "https://github.com/gianlucabassani/browphish"
+  },
+  {
+    "id": "web3-pentest-tool",
+    "title": "Web3 Pentest Tool",
+    "category": "security",
+    "status": "in-progress",
+    "technologies": ["Go", "Viper", "Zap", "Ethereum RPC"],
+    "tags": ["Web3", "Smart Contracts", "Security", "Blockchain"],
+    "date": "2025-11-26",
+    "summary": "Framework for Web3 smart contract and blockchain security analysis",
+    "description": "Scalable toolkit for RPC failover, ABI parsing, bytecode inspection and static analysis of Ethereum smart contracts.",
+    "features": [
+      "RPC failover and retry system",
+      "Bytecode fetcher and opcode detection",
+      "ABI parsing and contract analysis",
+      "Structured JSON logging",
+      "Config via YAML or environment variables"
+    ],
+    "githubUrl": "https://github.com/gianlucabassani/web3-pentest-tool"
   }
+
 
 ]

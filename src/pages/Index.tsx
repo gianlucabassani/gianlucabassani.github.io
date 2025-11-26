@@ -649,7 +649,7 @@ const Index = () => {
                       >
                         <div className="flex items-center justify-between mb-2">
                           <h3 className="font-semibold">{ctf.title}</h3>
-                          <Badge variant="secondary">{ctf.points} pts</Badge>
+                          <span className="text-xs text-muted-foreground uppercase">{ctf.category}</span> {/* Category/type */}
                         </div>
                         <p className="text-sm text-muted-foreground mb-2">{ctf.competition}</p>
                         <div className="flex flex-wrap gap-1">
@@ -674,11 +674,25 @@ const Index = () => {
                       SQL injection, XSS, CSRF, and authentication bypass techniques with practical examples and prevention methods.
                     </p>
                   </div>
-                  
+
+                  <div>
+                    <h3 className="font-semibold text-primary mb-1">⛓️ Web3 Blockchain</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Smart contracts, code exploration, routing attacks, stolen keys and more.
+                    </p>
+                  </div>
+
+                  <div>
+                    <h3 className="font-semibold text-primary mb-1">🤖 AI/ML Attacks</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Prompt injections, Data/Output attacks, MCP vulnerabilities .
+                    </p>
+                  </div>
+
                   <div>
                     <h3 className="font-semibold text-secondary mb-1">⚙️ Binary Exploitation</h3>
                     <p className="text-sm text-muted-foreground">
-                      Binary analysis, malware reverse engineering, and program flow analysis.
+                      Binary analysis, reverse engineering, and program flow analysis.
                     </p>
                   </div>
                   
@@ -705,7 +719,7 @@ const Index = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">
-                  I regularly practice on platforms like PicoCTF, OverTheWire, and participate in weekend CTF competitions. These challenges help me stay sharp and learn new techniques that I then document and share through detailed writeups.
+                  I regularly practice on platforms like HackTheBox, PortSwigger, Olicyber.. and sometimes participate in weekend CTF competitions. These challenges help me stay sharp and learn new techniques that I will try to document and share through writeups.
                 </p>
               </CardContent>
             </Card>

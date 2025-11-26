@@ -54,14 +54,14 @@ const PlatformView = ({ platform, onBack, onWriteupSelect }: PlatformViewProps) 
       case 'tryhackme':
         return {
           name: 'TryHackMe',
-          description: 'TryHackMe room walkthroughs and learning paths',
+          description: 'INCOMING: TryHackMe room walkthroughs and learning paths',
           icon: '🎯',
           color: 'secondary'
         };
       case 'vulnhub':
         return {
           name: 'VulnHub',
-          description: 'VulnHub boot-to-root challenges and vulnerable machines',
+          description: 'INCOMING: VulnHub boot-to-root challenges and vulnerable machines',
           icon: '🏛️',
           color: 'accent'
         };
@@ -199,9 +199,9 @@ const PlatformView = ({ platform, onBack, onWriteupSelect }: PlatformViewProps) 
           </CardHeader>
           <CardContent>
             <CardDescription className="text-base">
-              Each writeup follows a structured methodology: reconnaissance, enumeration, exploitation, 
-              privilege escalation, and post-exploitation. All writeups include detailed explanations of 
-              tools used, thought processes, and lessons learned for educational purposes.
+              Each writeup tries to follow a structured methodology: reconnaissance, enumeration, exploitation, 
+              privilege escalation, and post-exploitation. All writeups include explanations of 
+              tools used, attack paths, and lessons learned.
             </CardDescription>
             <div className="mt-6 grid grid-cols-1 md:grid-cols-4 gap-4">
               <div className="text-center">
