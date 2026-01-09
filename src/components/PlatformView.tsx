@@ -47,7 +47,7 @@ const PlatformView = ({ platform, onBack, onWriteupSelect }: PlatformViewProps) 
       case 'hackthebox':
         return {
           name: 'HackTheBox',
-          description: 'Retired HackTheBox machines with detailed exploitation methodologies',
+          description: 'Retired HackTheBox machines with my exploitation methodologies and considerations',
           icon: '📦',
           color: 'primary'
         };
@@ -189,52 +189,6 @@ const PlatformView = ({ platform, onBack, onWriteupSelect }: PlatformViewProps) 
           })}
         </div>
 
-        {/* Methodology Section */}
-        <Card className="mt-12 animated-border">
-          <CardHeader>
-            <CardTitle className="text-xl flex items-center">
-              <Shield className="w-5 h-5 mr-2 text-primary" />
-              Methodology & Approach
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <CardDescription className="text-base">
-              Each writeup tries to follow a structured methodology: reconnaissance, enumeration, exploitation, 
-              privilege escalation, and post-exploitation. All writeups include explanations of 
-              tools used, attack paths, and lessons learned.
-            </CardDescription>
-            <div className="mt-6 grid grid-cols-1 md:grid-cols-4 gap-4">
-              <div className="text-center">
-                <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <span className="text-primary font-bold">1</span>
-                </div>
-                <h4 className="font-semibold text-sm">Reconnaissance</h4>
-                <p className="text-xs text-muted-foreground mt-1">Information gathering</p>
-              </div>
-              <div className="text-center">
-                <div className="w-12 h-12 bg-secondary/20 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <span className="text-secondary font-bold">2</span>
-                </div>
-                <h4 className="font-semibold text-sm">Enumeration</h4>
-                <p className="text-xs text-muted-foreground mt-1">Service discovery</p>
-              </div>
-              <div className="text-center">
-                <div className="w-12 h-12 bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <span className="text-accent font-bold">3</span>
-                </div>
-                <h4 className="font-semibold text-sm">Exploitation</h4>
-                <p className="text-xs text-muted-foreground mt-1">Initial access</p>
-              </div>
-              <div className="text-center">
-                <div className="w-12 h-12 bg-warning/20 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <span className="text-warning font-bold">4</span>
-                </div>
-                <h4 className="font-semibold text-sm">Privilege Escalation</h4>
-                <p className="text-xs text-muted-foreground mt-1">Root access</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
       </div>
     </div>
   );

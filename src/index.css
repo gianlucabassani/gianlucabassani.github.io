@@ -111,29 +111,92 @@
   
   /* Card hover effects */
   .card-hover {
-    transition: var(--transition-smooth);
-    @apply hover:border-primary/30 hover:shadow-lg;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
   }
   
   .card-hover:hover {
-    box-shadow: 0 10px 25px -3px hsl(158 64% 52% / 0.1), 0 4px 6px -2px hsl(158 64% 52% / 0.05);
-    transform: translateY(-2px);
+    box-shadow: 
+      0 20px 40px -5px hsl(158 64% 52% / 0.15),
+      0 0 30px hsl(158 64% 52% / 0.1);
+    transform: translateY(-4px);
+    border-color: hsl(158 64% 52% / 0.4);
   }
   
-  /* Navigation styles */
+  /* Fade in animation for sections */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .fade-in-section {
+    animation: fadeInUp 0.6s ease-out forwards;
+    opacity: 0;
+  }
+  
+  /* Staggered animations */
+  .fade-in-section:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+  
+  .fade-in-section:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  
+  .fade-in-section:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+  
+  .fade-in-section:nth-child(4) {
+    animation-delay: 0.4s;
+  }
+  
+  .fade-in-section:nth-child(5) {
+    animation-delay: 0.5s;
+  }
+  
+  /* Navigation styles with animated indicator */
   .nav-link {
-    @apply relative py-2 px-4 text-sm font-medium transition-all duration-300;
-    @apply hover:text-primary;
+    @apply relative py-2 px-1 text-sm font-medium transition-colors duration-300;
+    @apply hover:text-primary text-muted-foreground;
   }
   
   .nav-link.active {
     @apply text-primary;
   }
   
-  .nav-link.active::after {
+  .nav-link::after {
     content: '';
-    @apply absolute bottom-0 left-1/2 w-1/2 h-0.5 bg-primary;
-    transform: translateX(-50%);
+    @apply absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-primary to-secondary;
+    width: 0;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .nav-link.active::after {
+    width: 100%;
+  }
+  
+  .nav-link:hover::after {
+    width: 100%;
+  }
+  
+  /* Scroll progress bar */
+  .scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    background: var(--gradient-primary);
+    width: 0%;
+    z-index: 999;
+    box-shadow: var(--glow-primary);
+    transition: width 0.1s ease-out;
   }
   
   /* Tech grid pattern background */
@@ -142,14 +205,21 @@
       linear-gradient(hsl(158 64% 52% / 0.03) 1px, transparent 1px),
       linear-gradient(90deg, hsl(158 64% 52% / 0.03) 1px, transparent 1px);
     background-size: 50px 50px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  
+
   /* Animated border for hero sections */
   .animated-border {
     position: relative;
     border: 1px solid transparent;
-    background: linear-gradient(hsl(var(--card)), hsl(var(--card))) padding-box,
-                var(--gradient-primary) border-box;
+    background: linear-gradient(hsl(var(--card)), hsl(var(--card))) padding-box, var(--gradient-primary) border-box;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .animated-border.card-hover:hover {
+    box-shadow: 0 20px 40px -5px hsl(158 64% 52% / 0.15), 0 0 30px hsl(158 64% 52% / 0.1);
+    transform: translateY(-4px);
+    background: linear-gradient(hsl(var(--card)), hsl(var(--card))) padding-box, linear-gradient(135deg, hsl(158 64% 52%), hsl(220 91% 65%)) border-box;
   }
   
   /* Tag styles */

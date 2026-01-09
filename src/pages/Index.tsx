@@ -6,12 +6,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Writeup } from '@/data/writeups';
 import { CTFWriteup, ctfWriteups } from '@/data/ctf';
-import { BlogPost, blogPosts } from '@/data/blog';
 import { Project, projects } from '@/data/projects';
 import WriteupView from '@/components/WriteupView';
 import PlatformView from '@/components/PlatformView';
 import CTFView from '@/components/CTFView';
-import BlogView from '@/components/BlogView';
 import ProjectView from '@/components/ProjectView';
 import ProjectsView from '@/components/ProjectsView';
 import heroImage from '@/assets/hero-cyber.jpg';
@@ -22,6 +20,7 @@ const Index = () => {
   const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState('about');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
     
   // Parse current route to determine view
   const parseRoute = () => {
@@ -31,9 +30,6 @@ const Index = () => {
     if (segments.length === 0) return { view: 'main' as const, section: 'about' };
     
     const section = segments[0];
-    if (section === 'blog' && segments[1]) {
-      return { view: 'blog' as const, blogId: segments[1] };
-    }
     if (section === 'projects' && segments[1]) {
       return { view: 'project' as const, projectId: segments[1] };
     }
@@ -54,16 +50,14 @@ const Index = () => {
   };
   
   const currentRoute = parseRoute();
-  const [currentView, setCurrentView] = useState<'main' | 'platform' | 'writeup' | 'ctf' | 'blog' | 'projects' | 'project'>(currentRoute.view);
+  const [currentView, setCurrentView] = useState<'main' | 'platform' | 'writeup' | 'ctf' | 'projects' | 'project'>(currentRoute.view);
   const [selectedPlatform, setSelectedPlatform] = useState<string>(currentRoute.platform || '');
   const [selectedWriteup, setSelectedWriteup] = useState<Writeup | null>(null);
   const [selectedCTFWriteup, setSelectedCTFWriteup] = useState<CTFWriteup | null>(null);
-  const [selectedBlogPost, setSelectedBlogPost] = useState<BlogPost | null>(null);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   const navItems = [
     { id: 'about', label: 'About Me', icon: Shield },
-    { id: 'blog', label: 'Blog', icon: FileText },
     { id: 'projects', label: 'Projects', icon: Code },
     { id: 'boxes', label: 'Box Writeups', icon: Terminal },
     { id: 'ctf', label: 'CTF Solves', icon: Flag }
@@ -77,10 +71,6 @@ const Index = () => {
     setSelectedPlatform(route.platform || '');
     
     // Load specific items based on route
-    if (route.blogId) {
-      const blog = blogPosts.find(b => b.id === route.blogId);
-      setSelectedBlogPost(blog || null);
-    }
     if (route.projectId) {
       const project = projects.find(p => p.id === route.projectId);
       setSelectedProject(project || null);
@@ -99,18 +89,9 @@ const Index = () => {
   const scrollToSection = (sectionId: string) => {
     setActiveSection(sectionId);
     setIsMenuOpen(false);
-    // For projects, just scroll to section instead of navigating
-    if (sectionId === 'projects') {
-      const element = document.getElementById(sectionId);
-      element?.scrollIntoView({ behavior: 'smooth' });
-      return;
-    }
-    
-    navigate(`/${sectionId}`);
-    setTimeout(() => {
-      const element = document.getElementById(sectionId);
-      element?.scrollIntoView({ behavior: 'smooth' });
-    }, 100);
+    // Scroll to the section element on the main page
+    const element = document.getElementById(sectionId);
+    element?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const handlePlatformClick = (platform: string) => {
@@ -123,10 +104,6 @@ const Index = () => {
 
   const handleCTFSelect = (ctfWriteup: CTFWriteup) => {
     navigate(`/ctf/${ctfWriteup.id}`);
-  };
-
-  const handleBlogSelect = (blogPost: BlogPost) => {
-    navigate(`/blog/${blogPost.id}`);
   };
 
   const handleProjectsClick = () => {
@@ -149,6 +126,18 @@ const Index = () => {
     navigate('/projects');
   };
 
+  // Handle scroll progress
+  useEffect(() => {
+    const handleScroll = () => {
+      const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (window.scrollY / windowHeight) * 100;
+      setScrollProgress(scrolled);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname, currentView]);
@@ -156,7 +145,8 @@ const Index = () => {
   useEffect(() => {
     if (currentView !== 'main') return;
     
-    const observer = new IntersectionObserver(
+    // Observer for nav active state
+    const navObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
@@ -169,10 +159,37 @@ const Index = () => {
 
     navItems.forEach((item) => {
       const element = document.getElementById(item.id);
-      if (element) observer.observe(element);
+      if (element) navObserver.observe(element);
     });
 
-    return () => observer.disconnect();
+    return () => navObserver.disconnect();
+  }, [currentView]);
+
+  // Fade-in animations observer
+  useEffect(() => {
+    if (currentView !== 'main') return;
+
+    const fadeObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.remove('opacity-0');
+            entry.target.classList.add('fade-in-section');
+            fadeObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    // Observe all card elements
+    const cards = document.querySelectorAll('[data-fade-in]');
+    cards.forEach((card) => {
+      card.classList.add('opacity-0');
+      fadeObserver.observe(card);
+    });
+
+    return () => fadeObserver.disconnect();
   }, [currentView]);
 
   // Handle different views
@@ -182,10 +199,6 @@ const Index = () => {
 
   if (currentView === 'ctf' && selectedCTFWriteup) {
     return <CTFView ctfWriteup={selectedCTFWriteup} onBack={handleBackToMain} />;
-  }
-
-  if (currentView === 'blog' && selectedBlogPost) {
-    return <BlogView blogPost={selectedBlogPost} onBack={handleBackToMain} />;
   }
 
   if (currentView === 'projects') {
@@ -207,12 +220,18 @@ const Index = () => {
   }
   return (
     <div className="min-h-screen bg-background text-foreground tech-grid">
+      {/* Scroll Progress Bar */}
+      <div 
+        className="scroll-progress" 
+        style={{ width: `${scrollProgress}%` }}
+      />
+      
       {/* Navigation */}
       <nav className="fixed top-0 w-full bg-background/90 backdrop-blur-md border-b border-border z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div className="font-mono text-xl font-bold gradient-text">
-              Gianluca Bassani
+              Gianluca Bassani | InfoSec
             </div>
             
             {/* Desktop Navigation */}
@@ -258,10 +277,10 @@ const Index = () => {
 
       <main className="pt-20">
         {/* About Section */}
-        <section id="about" className="py-20">
+        <section id="about" className="py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Hero */}
-            <div className="relative text-center mb-16">
+            <div className="relative text-center mb-12">
               <div 
                 className="absolute inset-0 opacity-10 bg-cover bg-center rounded-3xl"
                 style={{ backgroundImage: `url(${heroImage})` }}
@@ -287,7 +306,7 @@ const Index = () => {
             </div>
 
             {/* About Content */}
-            <Card className="animated-border card-hover mb-12">
+            <Card className="animated-border card-hover mb-6" data-fade-in>
               <CardHeader>
                 <CardTitle className="text-2xl font-mono">About Me</CardTitle>
               </CardHeader>
@@ -438,51 +457,8 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Blog Section */}
-        <section id="blog" className="py-20 bg-muted/30">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-4xl font-mono font-bold mb-12 text-center gradient-text">Blog</h2>
-            
-            <div className="space-y-8">
-              {blogPosts.map((post) => (
-                <Card 
-                  key={post.id}
-                  className="card-hover cursor-pointer transition-all duration-300 hover:scale-105"
-                  onClick={() => handleBlogSelect(post)}
-                >
-                  <CardHeader>
-                    <div className="text-sm text-muted-foreground mb-2">{new Date(post.date).toLocaleDateString()} • {post.readTime}</div>
-                    <CardTitle className="text-xl">{post.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <CardDescription className="text-base mb-4">
-                      {post.summary}
-                    </CardDescription>
-                    <div className="flex flex-wrap gap-2">
-                      {post.tags.map((tag) => (
-                        <Badge key={tag} variant="secondary" className="tag">{tag}</Badge>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-
-              <Card className="card-hover border-primary/20">
-                <CardHeader>
-                  <CardTitle className="text-xl text-primary">Coming Soon</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">
-                    More blog posts are in the works! Topics will include advanced penetration testing techniques, malware analysis, and cybersecurity career guidance.
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </section>
-
         {/* Projects Section */}
-        <section id="projects" className="py-20">
+        <section id="projects" className="py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-4xl font-mono font-bold mb-12 text-center gradient-text">Projects</h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
@@ -491,6 +467,7 @@ const Index = () => {
                   key={project.id}
                   className="card-hover border-primary/20 cursor-pointer transition-all duration-300 hover:scale-105"
                   onClick={() => handleProjectSelect(project)}
+                  data-fade-in
                 >
                   <CardHeader>
                     <CardTitle className="text-2xl flex items-center">
@@ -555,7 +532,7 @@ const Index = () => {
         </section>
 
         {/* Boxes Writeups Section */}
-        <section id="boxes" className="py-20 bg-muted/30">
+        <section id="boxes" className="py-16 bg-muted/30">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-4xl font-mono font-bold mb-12 text-center gradient-text">Box Writeups</h2>
             
@@ -563,6 +540,7 @@ const Index = () => {
               <Card 
                 className="card-hover border-success/20 cursor-pointer transition-all duration-300 hover:scale-105"
                 onClick={() => handlePlatformClick('hackthebox')}
+                data-fade-in
               >
                 <CardHeader>
                   <CardTitle>HackTheBox</CardTitle>
@@ -580,7 +558,7 @@ const Index = () => {
                 </CardContent>
               </Card>
 
-              <Card className="card-hover border-secondary/20">
+              <Card className="card-hover border-secondary/20" data-fade-in>
                 <CardHeader>
                   <CardTitle>TryHackMe</CardTitle>
                 </CardHeader>
@@ -596,7 +574,7 @@ const Index = () => {
                 </CardContent>
               </Card>
 
-              <Card className="card-hover border-accent/20">
+              <Card className="card-hover border-accent/20" data-fade-in>
                 <CardHeader>
                   <CardTitle>VulnHub</CardTitle>
                 </CardHeader>
@@ -613,13 +591,13 @@ const Index = () => {
               </Card>
             </div>
 
-            <Card className="animated-border card-hover">
+            <Card className="animated-border card-hover" data-fade-in>
               <CardHeader>
                 <CardTitle className="text-xl">Methodology & Approach</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground mb-4">
-                  Each writeup follows a structured methodology: reconnaissance, enumeration, exploitation, privilege escalation, and post-exploitation. All writeups include detailed explanations of tools used, thought processes, and lessons learned for educational purposes.
+                  Each writeup follows a structured methodology: reconnaissance, enumeration, exploitation, privilege escalation, and post-exploitation. All writeups include explanations and considerations of tools used, thought processes, and lessons learned for educational purposes.
                 </p>
                 <p className="text-sm text-primary">
                   Click on any platform above to explore the available writeups organized by difficulty level.
@@ -630,12 +608,12 @@ const Index = () => {
         </section>
 
         {/* CTF Section */}
-        <section id="ctf" className="py-20">
+        <section id="ctf" className="py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-4xl font-mono font-bold mb-12 text-center gradient-text">CTF Solves</h2>
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-              <Card className="card-hover">
+              <Card className="card-hover" data-fade-in>
                 <CardHeader>
                   <CardTitle className="text-xl">Recent CTF Writeups</CardTitle>
                 </CardHeader>
@@ -663,7 +641,7 @@ const Index = () => {
                 </CardContent>
               </Card>
 
-              <Card className="card-hover">
+              <Card className="card-hover" data-fade-in>
                 <CardHeader>
                   <CardTitle className="text-xl">Challenge Categories</CardTitle>
                 </CardHeader>
@@ -713,7 +691,7 @@ const Index = () => {
               </Card>
             </div>
 
-            <Card className="card-hover border-primary/20">
+            <Card className="card-hover border-primary/20" data-fade-in>
               <CardHeader>
                 <CardTitle className="text-xl">Learning Resources</CardTitle>
               </CardHeader>

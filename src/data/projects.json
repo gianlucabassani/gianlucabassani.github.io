@@ -3,7 +3,7 @@
     "id": "browsint",
     "title": "Browsint",
     "category": "security",
-    "status": "active",
+    "status": "completed",
     "technologies": ["Python", "SQLite", "HTML", "APIs"],
     "tags": ["OSINT", "Reconnaissance", "Scraper", "Crawler"],
     "date": "2025-05-05",
@@ -17,22 +17,23 @@
     "githubUrl": "https://github.com/gianlucabassani/browsint"
   },
   {
-    "id": "c-shell",
-    "title": "C Shell",
+    "id": "ShellCy",
+    "title": "ShellCy",
     "category": "general",
-    "status": "in-progress",
-    "technologies": ["C", "POSIX"],
-    "tags": ["Low-Level", "Pointers", "Memory Management", "Learning"],
+    "status": "completed",
+    "technologies": ["C", "POSIX", "Bash"],
+    "tags": ["Low-Level", "Pointers", "Memory Management", "Pipeliens"],
     "date": "2025-09-03",
-    "summary": "Shell written in C",
-    "description": "Study of building a shell in C, covering memory management and pointers, process control, and extending to networking and task management for offensive security scenarios.",
+    "summary": "POSIX Shell in C built from Codecrafters project",
+    "description": "The Peaky ShellCy is the result of my study of a POSIX compliant shell, capable of interpreting shell commands, running builtin and external programs and more...",
     "features": [
       "Buitin commands",
       "External command access",
-      "Quoting and escpaing",
-      "Output redirections"
+      "I/O redirections",
+      "Multi-stage pipeliens",
+      "Tab completition"
     ],
-    "githubUrl": "https://github.com/gianlucabassani/C-shell"
+    "githubUrl": "https://github.com/gianlucabassani/ShellCy"
   },
 
   {
