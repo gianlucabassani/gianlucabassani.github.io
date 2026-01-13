@@ -39,9 +39,6 @@ export default function CertificationsView({ onBack }: { onBack: () => void }) {
               </p>
             </div>
           </div>
-          <Button onClick={() => navigate('/')} variant="outline" size="icon" className="rounded-full">
-            <Home className="w-4 h-4" />
-          </Button>
         </div>
 
         {/* Roadmap Grid */}

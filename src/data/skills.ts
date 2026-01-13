@@ -25,9 +25,9 @@ const skills: Skill[] = [
   { id: 'windows', name: 'Windows Active Directory', level: 65, variant: 'warning' },
 
   // General development
-  { id: 'bash', name: 'Bash', level: 85, variant: 'accent' },
+  { id: 'bash', name: 'Bash', level: 75, variant: 'accent' },
   { id: 'terraform', name: 'Terraform', level: 70, variant: 'accent' },
-  { id: 'docker', name: 'Docker', level: 80, variant: 'accent' },
+  { id: 'docker', name: 'Docker', level: 60, variant: 'accent' },
 ];
 
 export default skills;

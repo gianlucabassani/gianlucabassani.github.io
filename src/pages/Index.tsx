@@ -334,7 +334,7 @@ const Index = () => {
                 <span className="gradient-text-accent">digital space</span>
               </h1>
               <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-8">
-                Cybersecurity enthusiast, developer, and problem solver sharing knowledge through writeups and projects.
+                Cybersecurity enthusiast and extremly curious mind. Exploring the world of offensive security, networking and development.
               </p>
                 <Button 
                   onClick={() => scrollToSection('projects')} 
@@ -354,7 +354,7 @@ const Index = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-lg text-muted-foreground mb-6">
-                  Hello World! I'm Gianluca Bassani, an offensive security enthusiast always looking for the next cool thing to learn. This is my digital portfolio where I document and share my journey through various security challenges, development projects, and maybe some technical discoveries.
+                  Hello World! I'm Gianluca Bassani, an offensive security enthusiast always looking for the next cool thing to learn. This is my digital portfolio where I document and share my journey through various security challenges and some development projects.
                 </p>
                 {/* Skills are available on the dedicated Skills page — click the Technical Skills card below to view in-depth */}
                 {/* Technical Skills & Certifications */}
@@ -471,7 +471,7 @@ const Index = () => {
                     </CardHeader>
                     <CardContent>
                       <p className="text-muted-foreground">
-                        Writeups of penetration testing challenges, vulnerability research, and security tool development.
+                        Writeups of penetration testing challenges from various platforms.
                       </p>
                     </CardContent>
                   </Card>
@@ -499,7 +499,7 @@ const Index = () => {
                     </CardHeader>
                     <CardContent>
                       <p className="text-muted-foreground">
-                        Tutorials, blog posts, and educational content to help others learn and grow in cybersecurity.
+                        Tutorials, blog posts, and educational content that helped me grow in cybersecurity.
                       </p>
                     </CardContent>
                   </Card>
@@ -616,7 +616,7 @@ const Index = () => {
                     Writeups for retired HackTheBox machines, organized by difficulty level.
                   </p>
                   <div className="flex flex-wrap gap-2">
-                    <Badge variant="secondary" className="tag">Penetration Testing</Badge>
+                    <Badge variant="secondary" className="tag">Pentesting</Badge>
                     <Badge variant="secondary" className="tag">CTF</Badge>
                     <Badge variant="secondary" className="tag">Linux</Badge>
                     <Badge variant="secondary" className="tag">Windows</Badge>
@@ -634,8 +634,7 @@ const Index = () => {
                   </p>
                   <div className="flex flex-wrap gap-2">
                     <Badge variant="secondary" className="tag">Beginner Friendly</Badge>
-                    <Badge variant="secondary" className="tag">Learning Path</Badge>
-                    <Badge variant="secondary" className="tag">Practical Skills</Badge>
+                    <Badge variant="secondary" className="tag">Basic Skills</Badge>
                   </div>
                 </CardContent>
               </Card>
@@ -651,7 +650,6 @@ const Index = () => {
                   <div className="flex flex-wrap gap-2">
                     <Badge variant="secondary" className="tag">Local Lab</Badge>
                     <Badge variant="secondary" className="tag">Offline Practice</Badge>
-                    <Badge variant="secondary" className="tag">Varied Scenarios</Badge>
                   </div>
                 </CardContent>
               </Card>
@@ -663,7 +661,7 @@ const Index = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground mb-4">
-                  Each writeup follows a structured methodology: reconnaissance, enumeration, exploitation, privilege escalation, and post-exploitation. All writeups include explanations and considerations of tools used, thought processes, and lessons learned for educational purposes.
+                  Each writeup tries to follow the same methodology: reconnaissance, enumeration, exploitation, privilege escalation, and post-exploitation. All writeups include explanations and considerations of tools used, thought processes, and lessons learned for educational purposes.
                 </p>
                 <p className="text-sm text-primary">
                   Click on any platform above to explore the available writeups organized by difficulty level.
@@ -736,7 +734,7 @@ const Index = () => {
                   <div>
                     <h3 className="font-semibold text-secondary mb-1">⚙️ Binary Exploitation</h3>
                     <p className="text-sm text-muted-foreground">
-                      Binary analysis, reverse engineering, and program flow analysis.
+                      Binary analysis, reverse engineering, BoF and ROPs.
                     </p>
                   </div>
                   
@@ -763,7 +761,7 @@ const Index = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">
-                  I regularly practice on platforms like HackTheBox, PortSwigger, Olicyber.. and sometimes participate in weekend CTF competitions. These challenges help me stay sharp and learn new techniques that I will try to document and share through writeups.
+                  I usually practice on platforms like HackTheBox, PortSwigger, Olicyber.. and sometimes participate CTF competitions. These challenges are useful to learn new techniques and edge cases.
                 </p>
               </CardContent>
             </Card>
@@ -776,7 +774,7 @@ const Index = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <p className="text-muted-foreground">
-              &copy; 2025 Gianluca Bassani | Cybersecurity & Knowledge Sharing
+              &copy; 2026 Gianluca Bassani | Cybersecurity & Knowledge Sharing
             </p>
           </div>
         </div>

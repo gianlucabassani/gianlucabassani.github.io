@@ -36,9 +36,6 @@ export default function SkillsView({ onBack }: { onBack: () => void }) {
               <span className="gradient-text">Technical Skills</span>
             </h1>
           </div>
-          <Button onClick={() => navigate('/')} variant="outline" size="icon" className="rounded-full">
-            <Home className="w-4 h-4" />
-          </Button>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -51,7 +48,7 @@ export default function SkillsView({ onBack }: { onBack: () => void }) {
               <SkillCard 
                 icon={<Terminal className="w-5 h-5 text-primary" />}
                 title="Coding"
-                description="Primary languages for tool development and scripting."
+                description="Languages I studied or used for projects development"
               >
                 <div className="space-y-6">
                   {programming.map((skill) => (
@@ -66,7 +63,7 @@ export default function SkillsView({ onBack }: { onBack: () => void }) {
               <SkillCard 
                 icon={<Database className="w-5 h-5 text-accent" />}
                 title="Infra & Automation"
-                description="IaC, scripting and DevOps workflows."
+                description="IaC scripting and deployments workflows."
               >
                 <div className="space-y-6">
                   {scripting.map((skill) => (
@@ -90,7 +87,7 @@ export default function SkillsView({ onBack }: { onBack: () => void }) {
                     Offensive Security
                   </CardTitle>
                   <p className="text-sm text-muted-foreground">
-                    Specialized areas of security research and exploitation.
+                    Specialized areas of security 
                   </p>
                 </CardHeader>
                 <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -136,7 +133,7 @@ export default function SkillsView({ onBack }: { onBack: () => void }) {
               <SkillCard 
                 icon={<Server className="w-5 h-5 text-warning" />}
                 title="Operating Environment"
-                description="Understanding and management of the OS"
+                description="Low level understanding and management of the OS"
               >
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {systems.map((skill) => (
@@ -290,7 +287,7 @@ function getSecurityDescription(id: string) {
     case 'ai':
       return 'LLM Injection, model inversion & poisoning.';
     case 'binary':
-      return 'Reverse engineering, buffer overflows & malware analysis.';
+      return 'Reverse engineering, buffer overflows & rop chains.';
     default:
       return 'Security research and testing.';
   }
