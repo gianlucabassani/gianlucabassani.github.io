@@ -1,7 +1,7 @@
 export interface Project {
   id: string;
   title: string;
-  category: 'tool' | 'webapp' | 'library' | 'security' | 'other';
+  category: 'tool' | 'webapp' | 'library' | 'security' | 'devops' | 'other';
   status: 'active' | 'completed' | 'archived' | 'in-progress';
   technologies: string[];
   tags: string[];

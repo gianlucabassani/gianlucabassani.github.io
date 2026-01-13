@@ -12,6 +12,8 @@ import PlatformView from '@/components/PlatformView';
 import CTFView from '@/components/CTFView';
 import ProjectView from '@/components/ProjectView';
 import ProjectsView from '@/components/ProjectsView';
+import SkillsView from '@/components/SkillsView';
+import CertificationsView from '@/components/CertificationsView';
 import heroImage from '@/assets/hero-cyber.jpg';
 import { writeups } from '@/data/writeups';
 
@@ -45,12 +47,18 @@ const Index = () => {
     if (section === 'ctf' && segments[1]) {
       return { view: 'ctf' as const, ctfId: segments[1] };
     }
+    if (section === 'skills') {
+      return { view: 'skills' as const };
+    }
+    if (section === 'certifications') {
+      return { view: 'certifications' as const };
+    }
     
     return { view: 'main' as const, section };
   };
   
   const currentRoute = parseRoute();
-  const [currentView, setCurrentView] = useState<'main' | 'platform' | 'writeup' | 'ctf' | 'projects' | 'project'>(currentRoute.view);
+  const [currentView, setCurrentView] = useState<'main' | 'platform' | 'writeup' | 'ctf' | 'projects' | 'project' | 'skills' | 'certifications'>(currentRoute.view);
   const [selectedPlatform, setSelectedPlatform] = useState<string>(currentRoute.platform || '');
   const [selectedWriteup, setSelectedWriteup] = useState<Writeup | null>(null);
   const [selectedCTFWriteup, setSelectedCTFWriteup] = useState<CTFWriteup | null>(null);
@@ -116,6 +124,14 @@ const Index = () => {
 
   const handleBackToMain = () => {
     navigate('/');
+  };
+
+  const handleSkillsClick = () => {
+    navigate('/skills');
+  };
+
+  const handleCertsClick = () => {
+    navigate('/certifications');
   };
 
   const handleBackToPlatform = () => {
@@ -209,6 +225,14 @@ const Index = () => {
     return <ProjectView project={selectedProject} onBack={handleBackToProjects} />;
   }
 
+  if (currentView === 'skills') {
+    return <SkillsView onBack={handleBackToMain} />;
+  }
+
+  if (currentView === 'certifications') {
+    return <CertificationsView onBack={handleBackToMain} />;
+  }
+
   if (currentView === 'platform' && selectedPlatform) {
     return (
       <PlatformView 
@@ -231,7 +255,7 @@ const Index = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div className="font-mono text-xl font-bold gradient-text">
-              Gianluca Bassani | InfoSec
+              Gianluca Bassani | CyberSecurity
             </div>
             
             {/* Desktop Navigation */}
@@ -314,10 +338,14 @@ const Index = () => {
                 <p className="text-lg text-muted-foreground mb-6">
                   Hello World! I'm Gianluca Bassani, an offensive security enthusiast always looking for the next cool thing to learn. This is my digital portfolio where I document and share my journey through various security challenges, development projects, and maybe some technical discoveries.
                 </p>
+                {/* Skills are available on the dedicated Skills page — click the Technical Skills card below to view in-depth */}
                 {/* Technical Skills & Certifications */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
                   {/* Technical Skills */}
-                  <Card className="card-hover border-primary/20">
+                  <Card
+                    className="relative card-hover border-primary/20 cursor-pointer transition-all duration-300 hover:scale-105 overflow-hidden"
+                    onClick={handleSkillsClick}
+                  >
                     <CardHeader>
                       <CardTitle className="flex items-center text-lg">
                         <Code className="w-5 h-5 mr-2 text-primary" />
@@ -332,9 +360,9 @@ const Index = () => {
                             <Badge variant="secondary" className="tag">Python</Badge>
                             <Badge variant="secondary" className="tag">C/C++</Badge>
                             <Badge variant="secondary" className="tag">GO</Badge>
+                            <Badge variant="secondary" className="tag">Java</Badge>
                             <Badge variant="secondary" className="tag">Terraform</Badge>
-                            <Badge variant="secondary" className="tag">Javascript / Typescript</Badge>
-                            <Badge variant="secondary" className="tag">Bash</Badge>
+                            <Badge variant="secondary" className="tag">Javascript</Badge>
                           </div>
                         </div>
                         <div>
@@ -354,11 +382,19 @@ const Index = () => {
                           </div>
                         </div>
                       </div>
+                      <div className="absolute top-3 right-3">
+                        <div className="text-xs text-muted-foreground bg-background/40 px-2 py-1 rounded-md border border-border/20 backdrop-blur-sm">
+                          Click to open
+                        </div>
+                      </div>
                     </CardContent>
                   </Card>
 
                   {/* Certifications */}
-                  <Card className="card-hover border-secondary/20">
+                  <Card
+                    className="relative card-hover border-secondary/20 cursor-pointer transition-all duration-200 hover:scale-102 overflow-hidden"
+                    onClick={handleCertsClick}
+                  >
                     <CardHeader>
                       <CardTitle className="flex items-center text-lg">
                         <Shield className="w-5 h-5 mr-2 text-secondary" />
@@ -387,6 +423,11 @@ const Index = () => {
                             <div className="text-sm text-muted-foreground">Hack The Box</div>
                           </div>
                           <Badge className="bg-warning/20 border-warning/40 text-warning">In Progress</Badge>
+                        </div>
+                      </div>
+                      <div className="absolute top-3 right-3">
+                        <div className="text-xs text-muted-foreground bg-background/40 px-2 py-1 rounded-md border border-border/20 backdrop-blur-sm">
+                          Click to open
                         </div>
                       </div>
                     </CardContent>

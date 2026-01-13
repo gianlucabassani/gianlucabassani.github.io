@@ -43,8 +43,8 @@ const ProjectView = ({ project, onBack }: ProjectViewProps) => {
     switch (status) {
       case 'active': return 'text-success border-success/40 bg-success/20';
       case 'completed': return 'text-primary border-primary/40 bg-primary/20';
-      case 'in-progress': return 'text-warning border-warning/40 bg-warning/20';
-      case 'archived': return 'text-muted-foreground border-muted/40 bg-muted/20';
+      case 'in-progress': return 'text-warning border-warning/40 bg-warning/20'; 
+      case 'archived': return 'text-muted-foreground border-muted-foreground/40 bg-muted-foreground/20';
       default: return 'text-secondary border-secondary/40 bg-secondary/20';
     }
   };
@@ -55,6 +55,7 @@ const ProjectView = ({ project, onBack }: ProjectViewProps) => {
       case 'webapp': return '🌐';
       case 'library': return '📚';
       case 'security': return '🔒';
+      case 'devops': return '⚙️';
       default: return '📦';
     }
   };

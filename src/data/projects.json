@@ -73,6 +73,38 @@
       "Config via YAML or environment variables"
     ],
     "githubUrl": "https://github.com/gianlucabassani/web3-pentest-tool"
+  },
+  {
+    "id": "cyberguard",
+    "title": "CyberGuard",
+    "category": "devops",
+    "status": "completed",
+    "technologies": ["Terraform", "Python", "Js", "Bash"],
+    "tags": ["IaC", "Automation", "Security", "PurpleTeam"],
+    "date": "2025-11-13",
+    "summary": "IaC for Cybersecurity Training Environments",
+    "description": "Infrastructure-as-Code system for creating and managing cybersecurity training environments on OpenStack.",
+    "features": [
+      "One-Click Deployment using Terraform/OpenTofu.",
+      "Live Topology: Real-time visualization of the network graph",
+      "Blue Team Ready: Pre-configured SOC node with Wazuh, Suricata, and MinIO",
+      "Red Team Ready: Kali Linux node auto-configured",
+      "Multi-Tenancy: Support for parallel labs via isolated Terraform states on GitLab"
+    ],
+    "githubUrl": "https://github.com/gianlucabassani/CyberGuard"
+  },
+  {
+    "id":"Ida",
+    "title":"IdaMCP - IDA Pro MCP Plugin",
+    "category":"tool",
+    "status":"archived",
+    "technologies":["Python","IDA Pro SDK"],
+    "tags":["IDA Pro","MCP","Reverse Engineering","Plugin"],
+    "date":"2025-06-20",
+    "summary":"Plugin to speed up binary reversing via AI analysis",
+    "description":"IDA Pro plugin for MCP files analysis that enables users to leverage AI models for binary function analysis.",
+    "features": ["Vulnerability Detection","Code Explanation","Security Review"],
+    "githubUrl": "https://github.com/AndreaGordanelli/IdaMCP"
   }
 
 
