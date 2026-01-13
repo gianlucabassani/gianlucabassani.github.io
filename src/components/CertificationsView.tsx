@@ -191,7 +191,7 @@ function CertCard({ cert, variant }: { cert: Certification, variant: 'taken' | '
         {/* Progress Variant: Animated Bar */}
         {variant === 'progress' && (
           <div className="mt-3 w-full h-1 bg-muted rounded-full overflow-hidden">
-             <div className="h-full bg-warning w-1/3 animate-[loading_2s_ease-in-out_infinite]" />
+             <div className="h-full bg-warning animate-[loading_2s_ease-in-out_infinite]" style={{ width: `${cert.progress || 33}%` }} />
           </div>
         )}
       </CardContent>

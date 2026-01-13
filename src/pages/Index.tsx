@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Writeup } from '@/data/writeups';
 import { CTFWriteup, ctfWriteups } from '@/data/ctf';
 import { Project, projects } from '@/data/projects';
+import skillsData, { Skill } from '@/data/skills';
 import WriteupView from '@/components/WriteupView';
 import PlatformView from '@/components/PlatformView';
 import CTFView from '@/components/CTFView';
@@ -140,6 +141,23 @@ const Index = () => {
 
   const handleBackToProjects = () => {
     navigate('/projects');
+  };
+
+  // Helper function to get skill variant classes
+  const getSkillClasses = (skillName: string): string => {
+    const skill = skillsData.find(s => s.name === skillName);
+    const variant = skill?.variant || 'secondary';
+    
+    const colorClasses = {
+      primary: 'bg-primary/20 text-primary border-primary/30',
+      secondary: 'bg-secondary/20 text-secondary border-secondary/30',
+      accent: 'bg-accent/20 text-accent border-accent/30',
+      warning: 'bg-warning/20 text-warning border-warning/30',
+      success: 'bg-success/20 text-success border-success/30',
+      destructive: 'bg-destructive/20 text-destructive border-destructive/30'
+    };
+    
+    return colorClasses[variant] || colorClasses.secondary;
   };
 
   // Handle scroll progress
@@ -355,30 +373,37 @@ const Index = () => {
                     <CardContent>
                       <div className="space-y-4">
                         <div>
-                          <h4 className="font-semibold text-sm mb-2">Programming Languages</h4>
+                          <h4 className="font-semibold text-sm mb-2">Offensive Security</h4>
                           <div className="flex flex-wrap gap-2">
-                            <Badge variant="secondary" className="tag">Python</Badge>
-                            <Badge variant="secondary" className="tag">C/C++</Badge>
-                            <Badge variant="secondary" className="tag">GO</Badge>
-                            <Badge variant="secondary" className="tag">Java</Badge>
-                            <Badge variant="secondary" className="tag">Terraform</Badge>
-                            <Badge variant="secondary" className="tag">Javascript</Badge>
+                            <Badge variant="outline" className={`tag ${getSkillClasses('Web Security')}`}>Web Security</Badge>
+                            <Badge variant="outline" className={`tag ${getSkillClasses('Network Pentesting')}`}>Network Pentesting</Badge>
+                            <Badge variant="outline" className={`tag ${getSkillClasses('AI Red Team')}`}>AI Red Team</Badge>
+                            <Badge variant="outline" className={`tag ${getSkillClasses('Binary Exploitation')}`}>Binary Exploitation</Badge>
                           </div>
                         </div>
                         <div>
-                          <h4 className="font-semibold text-sm mb-2">Security Fields</h4>
+                          <h4 className="font-semibold text-sm mb-2">Coding</h4>
                           <div className="flex flex-wrap gap-2">
-                            <Badge variant="secondary" className="tag">Web Security</Badge>
-                            <Badge variant="secondary" className="tag">Network Pentesting</Badge>
-                            <Badge variant="secondary" className="tag">AI Red Team</Badge>
-                            <Badge variant="secondary" className="tag">Binary Exploitation</Badge>
+                            <Badge variant="outline" className={`tag ${getSkillClasses('Python')}`}>Python</Badge>
+                            <Badge variant="outline" className={`tag ${getSkillClasses('C/C++')}`}>C/C++</Badge>
+                            <Badge variant="outline" className={`tag ${getSkillClasses('GO')}`}>GO</Badge>
+                            <Badge variant="outline" className={`tag ${getSkillClasses('Java')}`}>Java</Badge>
+                            <Badge variant="outline" className={`tag ${getSkillClasses('Javascript')}`}>Javascript</Badge>
+                          </div>
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-sm mb-2">Infra & Automation</h4>
+                          <div className="flex flex-wrap gap-2">
+                            <Badge variant="outline" className={`tag ${getSkillClasses('Bash')}`}>Bash</Badge>
+                            <Badge variant="outline" className={`tag ${getSkillClasses('Terraform')}`}>Terraform</Badge>
+                            <Badge variant="outline" className={`tag ${getSkillClasses('Docker')}`}>Docker</Badge>
                           </div>
                         </div>
                         <div>
                           <h4 className="font-semibold text-sm mb-2">Operating Systems</h4>
                           <div className="flex flex-wrap gap-2">
-                            <Badge variant="secondary" className="tag">Linux (Debian/Arch)</Badge>
-                            <Badge variant="secondary" className="tag">Windows Active Directory</Badge>
+                            <Badge variant="outline" className={`tag ${getSkillClasses('Linux (Debian/Arch)')}`}>Linux (Debian/Arch)</Badge>
+                            <Badge variant="outline" className={`tag ${getSkillClasses('Windows Active Directory')}`}>Windows Active Directory</Badge>
                           </div>
                         </div>
                       </div>
@@ -412,8 +437,8 @@ const Index = () => {
                         </div>
                         <div className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
                           <div>
-                            <div className="font-medium">AWS Academy Graduate</div>
-                            <div className="text-sm text-muted-foreground">Amazon Web Services (AWS)</div>
+                            <div className="font-medium">AI Red Teamer Course</div>
+                            <div className="text-sm text-muted-foreground">Hack The Box</div>
                           </div>
                           <Badge className="bg-success/20 border-success/40 text-success">Certified</Badge>
                         </div>

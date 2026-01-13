@@ -83,10 +83,10 @@ export default function SkillsView({ onBack }: { onBack: () => void }) {
             {/* Security Fields - Featured Section */}
             <div className="fade-in-section" style={{ animationDelay: '0.3s' }}>
               <Card className="border-border/50 bg-card/40 backdrop-blur-md shadow-xl overflow-hidden relative">
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-secondary via-primary to-accent opacity-50" />
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-destructive  via-warning to-destructive opacity-70" />
                 <CardHeader>
                   <CardTitle className="flex items-center gap-3 text-xl font-mono">
-                    <Shield className="w-6 h-6 text-secondary" />
+                    <Shield className="w-6 h-6 text-destructive" />
                     Offensive Security
                   </CardTitle>
                   <p className="text-sm text-muted-foreground">
@@ -121,7 +121,7 @@ export default function SkillsView({ onBack }: { onBack: () => void }) {
                       {/* Progress Bar Mini */}
                       <div className="mt-4 w-full bg-background rounded-full h-1.5 overflow-hidden">
                         <div 
-                          className="h-full bg-gradient-to-r from-secondary to-primary" 
+                          className="h-full bg-gradient-to-r from-destructive to-destructive/80" 
                           style={{ width: `${skill.level}%` }}
                         />
                       </div>
@@ -151,7 +151,13 @@ export default function SkillsView({ onBack }: { onBack: () => void }) {
                         </div>
                         <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
                           <div 
-                            className="h-full bg-foreground/70"
+                            className={`h-full rounded-full transition-all duration-1000 ease-out
+                              ${skill.variant === 'primary' ? 'bg-primary' : 
+                                skill.variant === 'secondary' ? 'bg-secondary' : 
+                                skill.variant === 'accent' ? 'bg-accent' : 
+                                skill.variant === 'warning' ? 'bg-warning' : 
+                                skill.variant === 'destructive' ? 'bg-destructive' : 'bg-success'}
+                            `}
                             style={{ width: `${skill.level}%` }}
                           />
                         </div>
@@ -223,7 +229,8 @@ function SkillRow({ skill, icon }: { skill: Skill, icon: React.ReactNode }) {
             ${skill.variant === 'primary' ? 'bg-primary' : 
               skill.variant === 'secondary' ? 'bg-secondary' : 
               skill.variant === 'accent' ? 'bg-accent' : 
-              skill.variant === 'warning' ? 'bg-warning' : 'bg-success'}
+              skill.variant === 'warning' ? 'bg-warning' : 
+              skill.variant === 'destructive' ? 'bg-destructive' : 'bg-success'}
           `}
           style={{ width: `${skill.level}%` }}
         />
