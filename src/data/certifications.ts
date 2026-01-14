@@ -61,8 +61,8 @@ const certifications: Certification[] = [
     issuer: 'PortSwigger',
     status: 'in-progress',
     description: 'Demonstrates a deep knowledge of web security vulnerabilities, the correct mindset to exploit them, and of course, the Burp Suite skills needed to carry this out',
-    link: 'https://portswigger.net/certification',
-    progress: 80,
+    link: 'https://portswigger.net/web-security/certification',
+    progress: 70,
   },
   {
     id: 'oscp',

@@ -4,7 +4,7 @@ import {
   ArrowLeft, Home, Terminal, Shield, Cpu, 
   Code2, Globe, Network, Lock, Server, 
   Binary, Bot, Database, Command, FileCode, 
-  Ship
+  Ship, Info
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -72,6 +72,63 @@ export default function SkillsView({ onBack }: { onBack: () => void }) {
                 </div>
               </SkillCard>
             </div>
+
+            {/* Proficiency Scale - Left Column */}
+            <div className="fade-in-section" style={{ animationDelay: '0.3s' }}>
+               <div className="rounded-xl border border-dashed border-border p-6 bg-muted/5">
+                  
+                  {/* Header */}
+                  <div className="flex items-center gap-2 mb-4">
+                    <Info className="w-5 h-5 text-muted-foreground" />
+                    <h4 className="text-sm font-mono font-bold uppercase tracking-widest text-muted-foreground">Progress Key</h4>
+                  </div>
+
+                  {/* List */}
+                  <div className="space-y-4">
+                    
+                    {/* Level 1: Gray / Fundamental */}
+                    <div className="flex items-start gap-3">
+                      <Badge variant="outline" className="h-6 w-20 justify-center px-0 text-xs bg-muted/50 border-muted-foreground/20 text-muted-foreground font-mono shrink-0">
+                        0-30%
+                      </Badge>
+                      <div>
+                        <span className="text-sm font-bold text-muted-foreground block mb-0.5">Fundamental</span>
+                        <p className="text-xs text-muted-foreground/70 leading-relaxed">
+                          Concepts and syntax understood. Relies on documentation/guides.
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Level 2: Secondary / Operational */}
+                    <div className="flex items-start gap-3">
+                      <Badge variant="outline" className="h-6 w-20 justify-center px-0 text-xs bg-secondary/10 border-secondary/20 text-secondary font-mono shrink-0">
+                        30-70%
+                      </Badge>
+                      <div>
+                        <span className="text-sm font-bold text-foreground/90 block mb-0.5">Operational</span>
+                        <p className="text-xs text-muted-foreground/80 leading-relaxed">
+                          Autonomous execution. Can script, debug, and troubleshoot common issues.
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Level 3: Primary / Advanced */}
+                    <div className="flex items-start gap-3">
+                      <Badge variant="outline" className="h-6 w-20 justify-center px-0 text-xs bg-primary/10 border-primary/20 text-primary font-mono shrink-0">
+                        70-100%
+                      </Badge>
+                      <div>
+                        <span className="text-sm font-bold text-foreground/90 block mb-0.5">Specialist</span>
+                        <p className="text-xs text-muted-foreground/80 leading-relaxed">
+                          Internal knowledge, optimization & best practices.
+                        </p>
+                      </div>
+                    </div>
+
+                  </div>
+               </div>
+            </div>
+
           </div>
 
           {/* RIGHT COLUMN: SECURITY & SYSTEMS (7 cols) */}
@@ -87,7 +144,7 @@ export default function SkillsView({ onBack }: { onBack: () => void }) {
                     Offensive Security
                   </CardTitle>
                   <p className="text-sm text-muted-foreground">
-                    Specialized areas of security 
+                    Specialized areas of security practice.
                   </p>
                 </CardHeader>
                 <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -132,7 +189,7 @@ export default function SkillsView({ onBack }: { onBack: () => void }) {
             <div className="fade-in-section" style={{ animationDelay: '0.4s' }}>
               <SkillCard 
                 icon={<Server className="w-5 h-5 text-warning" />}
-                title="Operating Environment"
+                title="Operating Systems"
                 description="Low level understanding and management of the OS"
               >
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -169,8 +226,8 @@ export default function SkillsView({ onBack }: { onBack: () => void }) {
             <div className="fade-in-section" style={{ animationDelay: '0.5s' }}>
                <div className="rounded-xl border border-dashed border-border p-6 text-center bg-muted/5">
                  <p className="text-sm text-muted-foreground">
-                   Proficiency metrics are estimated based on project usage and study/certification criteria.
-                   <br />
+                   Proficiency metrics are estimated based on my study and project usage from a penetration testing context.
+                   <br /> <br />  
                    <span className="opacity-50">Last updated: 01/2026</span>
                  </p>
                </div>
