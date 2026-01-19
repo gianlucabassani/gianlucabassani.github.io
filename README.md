@@ -63,5 +63,7 @@ I am a cybersecurity enthusiast focused on **Offensive Security**, **Web Exploit
 
 <img src="https://github-readme-streak-stats.herokuapp.com/?user=gianlucabassani&theme=tokyonight&hide_border=true&background=00000000" height="170" alt="streak" />
 
+---
+
 
 </div>
