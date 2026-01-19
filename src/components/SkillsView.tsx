@@ -4,7 +4,7 @@ import {
   ArrowLeft, Home, Terminal, Shield, Cpu, 
   Code2, Globe, Network, Lock, Server, 
   Binary, Bot, Database, Command, FileCode, 
-  Ship, Info
+  Ship, Info, LucidePhoneCall, Wifi
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -17,7 +17,7 @@ export default function SkillsView({ onBack }: { onBack: () => void }) {
   // Filter Data
   const programming = skillsData.filter(s => ['python', 'js', 'go', 'ccpp', 'java'].includes(s.id));
   const scripting = skillsData.filter(s => ['bash', 'terraform', 'docker'].includes(s.id));
-  const security = skillsData.filter(s => ['web', 'network', 'ai', 'binary'].includes(s.id));
+  const security = skillsData.filter(s => ['web', 'network', 'ai', 'binary', 'mobile', 'wifi'].includes(s.id));
   const systems = skillsData.filter(s => ['linux', 'windows'].includes(s.id));
 
   return (
@@ -43,12 +43,13 @@ export default function SkillsView({ onBack }: { onBack: () => void }) {
           {/* LEFT COLUMN: DEVELOPMENT (5 cols) */}
           <div className="lg:col-span-5 space-y-8">
             
-            {/* Programming Languages */}
+            {/* Programming Languages - Green/Success Theme */}
             <div className="fade-in-section" style={{ animationDelay: '0.1s' }}>
               <SkillCard 
-                icon={<Terminal className="w-5 h-5 text-primary" />}
+                icon={<Terminal className="w-5 h-5 text-success" />}
                 title="Coding"
                 description="Languages I studied or used for projects development"
+                variant="success" 
               >
                 <div className="space-y-6">
                   {programming.map((skill) => (
@@ -58,16 +59,22 @@ export default function SkillsView({ onBack }: { onBack: () => void }) {
               </SkillCard>
             </div>
 
-            {/* Infrastructure & Scripting */}
+            {/* Infrastructure & Scripting - Purple/Accent Theme */}
             <div className="fade-in-section" style={{ animationDelay: '0.2s' }}>
               <SkillCard 
                 icon={<Database className="w-5 h-5 text-accent" />}
                 title="Infra & Automation"
                 description="IaC scripting and deployments workflows."
+                variant="accent"
               >
                 <div className="space-y-6">
                   {scripting.map((skill) => (
-                    <SkillRow key={skill.id} skill={skill} icon={getSkillIcon(skill.id)} />
+                    <SkillRow 
+                      key={skill.id} 
+                      skill={skill} 
+                      icon={getSkillIcon(skill.id)} 
+                      variant="accent" // <--- Pass the variant here to enable purple hover
+                    />
                   ))}
                 </div>
               </SkillCard>
@@ -134,9 +141,12 @@ export default function SkillsView({ onBack }: { onBack: () => void }) {
           {/* RIGHT COLUMN: SECURITY & SYSTEMS (7 cols) */}
           <div className="lg:col-span-7 space-y-8">
             
-            {/* Security Fields - Featured Section */}
+            {/* Security Fields - Featured Section - Red/Destructive Theme */}
             <div className="fade-in-section" style={{ animationDelay: '0.3s' }}>
-              <Card className="border-border/50 bg-card/40 backdrop-blur-md shadow-xl overflow-hidden relative">
+              <Card 
+                className="border-border/50 bg-card/40 backdrop-blur-md shadow-xl overflow-hidden relative card-hover"
+                style={{ '--hover-theme': 'var(--destructive)' } as React.CSSProperties}
+              >
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-destructive  via-warning to-destructive opacity-70" />
                 <CardHeader>
                   <CardTitle className="flex items-center gap-3 text-xl font-mono">
@@ -151,21 +161,21 @@ export default function SkillsView({ onBack }: { onBack: () => void }) {
                   {security.map((skill) => (
                     <div 
                       key={skill.id} 
-                      className="group relative p-4 rounded-xl border border-border/50 bg-muted/20 hover:bg-muted/40 transition-all duration-300 hover:border-primary/30"
+                      className="group relative p-4 rounded-xl border border-border/50 bg-muted/20 hover:bg-muted/40 transition-all duration-300 hover:border-destructive/30"
                     >
                       <div className="flex items-start justify-between mb-3">
-                        <div className="p-2 rounded-lg bg-background border border-border group-hover:border-primary/50 transition-colors">
+                        <div className="p-2 rounded-lg bg-background border border-border group-hover:border-destructive/50 transition-colors">
                           {getSkillIcon(skill.id)}
                         </div>
                         <Badge variant="outline" className={`
                           bg-background/50 backdrop-blur font-mono
-                          ${skill.level > 80 ? 'text-primary border-primary/30' : 'text-muted-foreground'}
+                          ${skill.level > 80 ? 'text-destructive border-destructive/30' : 'text-muted-foreground'}
                         `}>
                           {skill.level}%
                         </Badge>
                       </div>
                       
-                      <h3 className="font-bold text-foreground mb-1 group-hover:text-primary transition-colors">
+                      <h3 className="font-bold text-foreground mb-1 group-hover:text-destructive transition-colors">
                         {skill.name}
                       </h3>
                       <p className="text-xs text-muted-foreground leading-relaxed h-10">
@@ -185,27 +195,39 @@ export default function SkillsView({ onBack }: { onBack: () => void }) {
               </Card>
             </div>
 
-            {/* Operating Systems */}
+            {/* Operating Systems - Yellow/Warning Theme */}
             <div className="fade-in-section" style={{ animationDelay: '0.4s' }}>
               <SkillCard 
                 icon={<Server className="w-5 h-5 text-warning" />}
                 title="Operating Systems"
                 description="Low level understanding and management of the OS"
+                variant="warning"
               >
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {systems.map((skill) => (
-                    <div key={skill.id} className="flex items-center gap-4 p-3 rounded-lg border border-border/40 bg-muted/10">
-                      <div className="text-foreground">
+                    <div 
+                      key={skill.id} 
+                      // 1. Added 'group', 'transition', and hover effects for border/bg
+                      className="group flex items-center gap-4 p-3 rounded-lg border border-border/40 bg-muted/10 transition-all duration-300 hover:border-warning/50 hover:bg-muted/20"
+                    >
+                      {/* 2. Icon now highlights to warning color on hover */}
+                      <div className="text-muted-foreground transition-colors group-hover:text-warning">
                         {getSkillIcon(skill.id)}
                       </div>
+                      
                       <div className="flex-1">
                         <div className="flex justify-between items-center mb-1">
-                          <span className="font-medium text-sm">{skill.name}</span>
+                          {/* 3. Title highlights on hover */}
+                          <span className="font-medium text-sm transition-colors group-hover:text-warning">
+                            {skill.name}
+                          </span>
                           <span className="text-xs text-muted-foreground">{skill.level}%</span>
                         </div>
+                        
                         <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
                           <div 
-                            className={`h-full rounded-full transition-all duration-1000 ease-out
+                            // 4. Added brightness boost on hover
+                            className={`h-full rounded-full transition-all duration-1000 ease-out group-hover:brightness-125
                               ${skill.variant === 'primary' ? 'bg-primary' : 
                                 skill.variant === 'secondary' ? 'bg-secondary' : 
                                 skill.variant === 'accent' ? 'bg-accent' : 
@@ -242,9 +264,25 @@ export default function SkillsView({ onBack }: { onBack: () => void }) {
 
 // --- Helper Components ---
 
-function SkillCard({ icon, title, description, children }: { icon: React.ReactNode, title: string, description: string, children: React.ReactNode }) {
+function SkillCard({ 
+  icon, 
+  title, 
+  description, 
+  children, 
+  variant = 'primary' 
+}: { 
+  icon: React.ReactNode, 
+  title: string, 
+  description: string, 
+  children: React.ReactNode,
+  variant?: 'primary' | 'secondary' | 'accent' | 'warning' | 'success' | 'destructive'
+}) {
   return (
-    <Card className="border-border/50 bg-card/40 backdrop-blur-sm card-hover">
+    <Card 
+      className="border-border/50 bg-card/40 backdrop-blur-sm card-hover"
+      // Inject the variant color into the CSS variable
+      style={{ '--hover-theme': `var(--${variant})` } as React.CSSProperties}
+    >
       <CardHeader className="pb-4">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-medium flex items-center gap-2">
@@ -261,15 +299,38 @@ function SkillCard({ icon, title, description, children }: { icon: React.ReactNo
   );
 }
 
-function SkillRow({ skill, icon }: { skill: Skill, icon: React.ReactNode }) {
+function SkillRow({ 
+  skill, 
+  icon, 
+  variant = 'primary' // Default to primary/green
+}: { 
+  skill: Skill, 
+  icon: React.ReactNode,
+  variant?: 'primary' | 'secondary' | 'accent' | 'warning' | 'success' | 'destructive'
+}) {
+  
+  // Map variants to specific text hover classes
+  const hoverColorClass: Record<string, string> = {
+    primary: 'group-hover:text-primary',
+    secondary: 'group-hover:text-secondary',
+    accent: 'group-hover:text-accent', // This enables the purple highlight
+    warning: 'group-hover:text-warning',
+    success: 'group-hover:text-success',
+    destructive: 'group-hover:text-destructive',
+  };
+
+  const activeHoverClass = hoverColorClass[variant] || hoverColorClass.primary;
+
   return (
     <div className="group">
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-3">
-          <div className="text-muted-foreground group-hover:text-foreground transition-colors">
+          {/* Icon highlights on hover to match the text */}
+          <div className={`text-muted-foreground transition-colors ${activeHoverClass}`}>
             {icon}
           </div>
-          <span className="font-medium text-sm group-hover:text-primary transition-colors">
+          {/* Name highlights on hover */}
+          <span className={`font-medium text-sm transition-colors ${activeHoverClass}`}>
             {skill.name}
           </span>
         </div>
@@ -308,6 +369,8 @@ function getSkillIcon(id: string) {
     network: <Network className="w-5 h-5" />,
     ai: <Bot className="w-5 h-5" />,
     binary: <Binary className="w-5 h-5" />,
+    mobile: <LucidePhoneCall className="w-5 h-5" />,
+    wifi:<Wifi className="w-5 h-5" />,
     linux: <Terminal className="w-5 h-5" />,
     windows: <Monitor className="w-5 h-5" />,
     docker: <Ship className="w-5 h-5" />,
@@ -345,6 +408,10 @@ function getSecurityDescription(id: string) {
       return 'LLM Injection, model inversion & poisoning.';
     case 'binary':
       return 'Reverse engineering, buffer overflows & rop chains.';
+    case 'mobile':
+      return 'API analysis, JADX static analysis, firda-tools';
+    case 'wifi':
+      return 'WEP, WPS, aricrack-ng basics'
     default:
       return 'Security research and testing.';
   }
