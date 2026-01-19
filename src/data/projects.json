@@ -56,23 +56,23 @@
     "githubUrl": "https://github.com/gianlucabassani/browphish"
   },
   {
-    "id": "web3-pentest-tool",
-    "title": "Web3 Pentest Tool",
+    "id": "blockcheat",
+    "title": "BlockCheat",
     "category": "security",
     "status": "in-progress",
-    "technologies": ["Go", "Viper", "Zap", "Ethereum RPC"],
-    "tags": ["Web3", "Smart Contracts", "Security", "Blockchain"],
-    "date": "2025-11-26",
-    "summary": "Framework for Web3 smart contract and blockchain security analysis",
-    "description": "Scalable toolkit for RPC failover, ABI parsing, bytecode inspection and static analysis of Ethereum smart contracts.",
+    "technologies": ["Go", "Solidity", "Foundry", "ETH"],
+    "tags": ["Web3", "CTF","EVM"],
+    "date": "2026-01-19",
+    "summary": "A lightweight CLI for Ethereum reconnaissance and exploitation.",
+    "description": "Interactive multi-use tool for analyzing smart contracts. Features direct EVM interaction to bypass privacy, simulate transactions, and detect basic vulnerabilities",
     "features": [
-      "RPC failover and retry system",
-      "Bytecode fetcher and opcode detection",
-      "ABI parsing and contract analysis",
-      "Structured JSON logging",
-      "Config via YAML or environment variables"
+      "Storage Scan: Read 'private' variables and decode state",
+      "Impersonation: Simulate calls as any address (spoofing)",
+      "Static Analysis: Regex-based vulnerability scanner",
+      "Mapping Calculator: Compute non-sequential storage slots",
+      "Bytecode Inspector: Detect dangerous opcodes"
     ],
-    "githubUrl": "https://github.com/gianlucabassani/web3-pentest-tool"
+    "githubUrl": "https://github.com/gianlucabassani/blockcheat"
   },
   {
     "id": "cyberguard",
