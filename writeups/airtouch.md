@@ -186,7 +186,7 @@ ssh -L 8080:192.168.3.1:80 consultant@airtouch.htb
 ````
 
 Navigating to `http://localhost:8080` displayed a login panel for the router’s management interface.
-![airtouch_2.png](https://gianlucabassani.github.io/assets/airtouch/airtouch_2.png)
+![airtouch_2.jpg](https://gianlucabassani.github.io/assets/airtouch/airtouch_2.jpg)
 
 ---
 ### Wireless Traffic Decryption (Wireshark)
@@ -194,7 +194,7 @@ Navigating to `http://localhost:8080` displayed a login panel for the router’s
 At this stage, no valid credentials were available for the web application. However, because we had already cracked the WPA2-PSK for **AirTouch-Internet** (`challenge`), we could decrypt captured wireless traffic.
 
 **Encrypted view:**
-![airtouch_3.png](https://gianlucabassani.github.io/assets/airtouch/airtouch_3.png)
+![airtouch_3.jpg](https://gianlucabassani.github.io/assets/airtouch/airtouch_3.jpg)
 
 
 We loaded the previously captured `.cap` file into Wireshark and configured Wi-Fi decryption:
@@ -210,7 +210,7 @@ wpa-pwd:challenge:AirTouch-Internet
 
 Once configured, the previously encrypted 802.11 traffic was transparently decrypted, revealing cleartext HTTP requests and responses.
 
-![airtouch_4.png](https://gianlucabassani.github.io/assets/airtouch/airtouch_4.png)
+![airtouch_4.jpg](https://gianlucabassani.github.io/assets/airtouch/airtouch_4.jpg)
 
 
 By following the HTTP streams, we identified:
@@ -222,11 +222,11 @@ By following the HTTP streams, we identified:
 
 Using the captured session cookie, we authenticated to the web interface without valid credentials. 
 
-![airtouch_5.png](https://gianlucabassani.github.io/assets/airtouch/airtouch_5.png)
+![airtouch_5.jpg](https://gianlucabassani.github.io/assets/airtouch/airtouch_5.jpg)
 
 By manually modifying the `UserRole` cookie from `user` to `admin` (via browser developer tools), we unlocked additional administrative functionality.
 
-![airtouch_6.png](https://gianlucabassani.github.io/assets/airtouch/airtouch_6.png)
+![airtouch_6.jpg](https://gianlucabassani.github.io/assets/airtouch/airtouch_6.jpg)
 
 
 This included a previously hidden **file upload** feature.
