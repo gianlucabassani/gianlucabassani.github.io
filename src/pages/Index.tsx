@@ -334,7 +334,7 @@ const Index = () => {
                 <span className="gradient-text-accent">digital space</span>
               </h1>
               <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-8">
-                Cybersecurity enthusiast and extremly curious mind. Exploring the world of offensive security, networking and development.
+                Cybersecurity enthusiast and curious mind. Exploring the world of offensive security, networking and development.
               </p>
                 <Button 
                   onClick={() => scrollToSection('projects')} 

@@ -1,5 +1,16 @@
 [
   {
+  "id": "airtouch",
+  "title": "AirTouch",
+  "platform": "hackthebox",
+  "difficulty": "medium",
+  "os": "linux",
+  "tags": ["WiFi", "Evil Twin", "WPA2", "RADIUS"],
+  "date": "2026-01-31",
+  "summary": "Compromised a multi-tier wireless environment by exploiting SNMP info leakage, pivoting through a WPA2-PSK network to a router, and executing Evil Twin attack against WPA2-Enterprise to capture administrative creds.",
+  "contentPath": "airtouch.md"
+  },
+  {
     "id": "environment",
     "title": "Environment",
     "platform": "hackthebox",
