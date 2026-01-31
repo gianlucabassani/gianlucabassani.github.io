@@ -109,20 +109,22 @@
     box-shadow: var(--glow-accent);
   }
   
-  /* Card hover effects */
+    /* Card hover effects */
   .card-hover {
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
+    /* Default to primary if no theme is set */
+    --hover-theme: var(--primary); 
   }
-  
+
   .card-hover:hover {
+    /* Use the variable for shadow and border colors */
     box-shadow: 
-      0 20px 40px -5px hsl(158 64% 52% / 0.15),
-      0 0 30px hsl(158 64% 52% / 0.1);
+      0 20px 40px -5px hsl(var(--hover-theme) / 0.15),
+      0 0 30px hsl(var(--hover-theme) / 0.1);
     transform: translateY(-4px);
-    border-color: hsl(158 64% 52% / 0.4);
+    border-color: hsl(var(--hover-theme) / 0.4);
   }
-  
   /* Fade in animation for sections */
   @keyframes fadeInUp {
     from {

@@ -18,7 +18,9 @@ const skills: Skill[] = [
   { id: 'web', name: 'Web Security', level: 80, variant: 'destructive' },
   { id: 'network', name: 'Network Pentesting', level: 70, variant: 'destructive' },
   { id: 'ai', name: 'AI Red Team', level: 50, variant: 'destructive' },
-  { id: 'binary', name: 'Binary Exploitation', level: 30, variant: 'destructive' },
+  { id: 'binary', name: 'Binary Exploitation', level: 40, variant: 'destructive' },
+  { id: 'mobile', name: 'Mobile Pentesting', level: 20, variant: 'destructive' },
+  { id: 'wifi', name: 'WiFi Pentesting', level: 10, variant: 'destructive' },
 
   // Operating Systems
   { id: 'linux', name: 'Linux (Debian/Arch)', level: 90, variant: 'warning' },
