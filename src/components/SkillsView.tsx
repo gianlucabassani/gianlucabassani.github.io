@@ -1,28 +1,123 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import { 
-  ArrowLeft, Home, Terminal, Shield, Cpu, 
-  Code2, Globe, Network, Lock, Server, 
-  Binary, Bot, Database, Command, FileCode, 
-  Ship, Info, LucidePhoneCall, Wifi
+  ArrowLeft, Terminal, Shield, Cpu, 
+  Code2, Globe, Network, Bot, Database, Command, FileCode, 
+  Ship, Phone, Wifi, Binary, Server, Info
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import skillsData, { Skill } from '@/data/skills';
 
-export default function SkillsView({ onBack }: { onBack: () => void }) {
-  const navigate = useNavigate();
+// --- DATA FALLBACK ---
+// Mappa locale per garantire che le descrizioni appaiano subito
+const skillDetails: Record<string, { description: string, tags: string[] }> = {
+  python: {
+    description: 'Automation scripting, exploit development & Data Analysis. Experience with async, socket programming and API integration.',
+    tags: ['Requests', 'Scapy', 'Pandas', 'FastAPI']
+  },
+  ccpp: {
+    description: 'Low-level programming and memory management. Essential for buffer overflow analysis and writing custom shellcode.',
+    tags: ['Pointers', 'Memory Ops', 'Buffer Overflow', 'GDB']
+  },
+  go: {
+    description: 'High-performance concurrency and network tools. Used for building fast scanners and blockchain interactions.',
+    tags: ['Concurrency', 'Networking', 'CLI Tools']
+  },
+  java: {
+    description: 'Enterprise app structure and OOP. Key for analyzing Android APKs and legacy web applications.',
+    tags: ['OOP', 'Spring', 'Android Analysis']
+  },
+  js: {
+    description: 'Client-side analysis, DOM manipulation and XSS vector crafting. Node.js for backend scripting.',
+    tags: ['DOM', 'XSS', 'Node.js', 'React']
+  },
+  bash: {
+    description: 'Advanced system automation and recon scripting. Piping, text processing (grep/sed/awk) and cron jobs.',
+    tags: ['Scripting', 'Automation', 'Text Proc']
+  },
+  terraform: {
+    description: 'Infrastructure as Code (IaC) for deploying scalable pentest labs and cloud environments quickly.',
+    tags: ['IaC', 'AWS', 'State Mgmt']
+  },
+  docker: {
+    description: 'Containerization for isolated testing environments and vulnerable labs creation.',
+    tags: ['Compose', 'Isolation', 'Networking']
+  },
+  web: {
+    description: 'Comprehensive web app testing: Auth bypass, SQLi, XSS, SSRF, IDOR and business logic flaws.',
+    tags: ['OWASP Top 10', 'Burp Suite', 'Injection']
+  },
+  network: {
+    description: 'Active Directory exploitation, pivoting, Kerberoasting, and internal infrastructure mapping.',
+    tags: ['Active Directory', 'Pivoting', 'Kerberos']
+  },
+  ai: {
+    description: 'Testing LLMs for prompt injection, jailbreaking, and model inversion attacks.',
+    tags: ['Prompt Injection', 'LLM Security']
+  },
+  binary: {
+    description: 'Reverse engineering and binary exploitation. Stack/Heap overflows and ROP chains.',
+    tags: ['Ghidra', 'ROP', 'Buffer Overflow']
+  },
+  mobile: {
+    description: 'Android/iOS security assessment. Static analysis with JADX and dynamic instrumentation with Frida.',
+    tags: ['JADX', 'Frida', 'APK Analysis']
+  },
+  wifi: {
+    description: 'Wireless network auditing. WEP/WPA2 cracking and rogue access point analysis.',
+    tags: ['Aircrack-ng', 'WPA2', 'Handshake']
+  },
+  linux: {
+    description: 'Deep knowledge of Linux internals, permissions, and kernel space for server management and CTFs.',
+    tags: ['Kernel', 'Permissions', 'Hardening']
+  },
+  windows: {
+    description: 'Windows administration and AD management. GPOs, PowerShell automation and registry manipulation.',
+    tags: ['Active Directory', 'PowerShell', 'GPO']
+  },
+};
 
-  // Filter Data
-  const programming = skillsData.filter(s => ['python', 'js', 'go', 'ccpp', 'java'].includes(s.id));
-  const scripting = skillsData.filter(s => ['bash', 'terraform', 'docker'].includes(s.id));
-  const security = skillsData.filter(s => ['web', 'network', 'ai', 'binary', 'mobile', 'wifi'].includes(s.id));
-  const systems = skillsData.filter(s => ['linux', 'windows'].includes(s.id));
+// Interfaccia estesa
+interface SkillWithDetails extends Skill {
+  description?: string;
+  tags?: string[];
+}
+
+export default function SkillsView({ onBack }: { onBack: () => void }) {
+  // Arricchiamo i dati con le descrizioni locali
+  const enrichedSkills = skillsData.map(s => ({
+    ...s,
+    description: skillDetails[s.id]?.description || s.description,
+    tags: skillDetails[s.id]?.tags || (s as any).tags
+  }));
+
+  // Filtri Categorie
+  const programming = enrichedSkills.filter(s => ['python', 'js', 'go', 'ccpp', 'java'].includes(s.id));
+  const scripting = enrichedSkills.filter(s => ['bash', 'terraform', 'docker'].includes(s.id));
+  const security = enrichedSkills.filter(s => ['web', 'network', 'ai', 'binary', 'mobile', 'wifi'].includes(s.id));
+  const systems = enrichedSkills.filter(s => ['linux', 'windows'].includes(s.id));
+
+  // Stato Popup
+  const [activeSkillId, setActiveSkillId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest('.skill-interactive-item')) {
+        setActiveSkillId(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleToggle = (id: string) => {
+    setActiveSkillId(activeSkillId === id ? null : id);
+  };
 
   return (
     <div className="min-h-screen bg-background text-foreground bg-[url('/grid-pattern.svg')]">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 pb-32">
         
         {/* Navigation Header */}
         <div className="flex items-center justify-between mb-10 fade-in-section">
@@ -51,9 +146,15 @@ export default function SkillsView({ onBack }: { onBack: () => void }) {
                 description="Languages I studied or used for projects development"
                 variant="success" 
               >
-                <div className="space-y-6">
+                <div className="space-y-4">
                   {programming.map((skill) => (
-                    <SkillRow key={skill.id} skill={skill} icon={getSkillIcon(skill.id)} />
+                    <InteractiveSkillRow 
+                      key={skill.id} 
+                      skill={skill} 
+                      icon={getSkillIcon(skill.id)}
+                      isActive={activeSkillId === skill.id}
+                      onToggle={() => handleToggle(skill.id)}
+                    />
                   ))}
                 </div>
               </SkillCard>
@@ -67,72 +168,28 @@ export default function SkillsView({ onBack }: { onBack: () => void }) {
                 description="IaC scripting and deployments workflows."
                 variant="accent"
               >
-                <div className="space-y-6">
+                <div className="space-y-4">
                   {scripting.map((skill) => (
-                    <SkillRow 
+                    <InteractiveSkillRow 
                       key={skill.id} 
                       skill={skill} 
                       icon={getSkillIcon(skill.id)} 
-                      variant="accent" // <--- Pass the variant here to enable purple hover
+                      variant="accent"
+                      isActive={activeSkillId === skill.id}
+                      onToggle={() => handleToggle(skill.id)}
                     />
                   ))}
                 </div>
               </SkillCard>
             </div>
-
-            {/* Proficiency Scale - Left Column */}
-            <div className="fade-in-section" style={{ animationDelay: '0.3s' }}>
-               <div className="rounded-xl border border-dashed border-border p-6 bg-muted/5">
-                  
-                  {/* Header */}
-                  <div className="flex items-center gap-2 mb-4">
-                    <Info className="w-5 h-5 text-muted-foreground" />
-                    <h4 className="text-sm font-mono font-bold uppercase tracking-widest text-muted-foreground">Progress Key</h4>
-                  </div>
-
-                  {/* List */}
-                  <div className="space-y-4">
-                    
-                    {/* Level 1: Gray / Fundamental */}
-                    <div className="flex items-start gap-3">
-                      <Badge variant="outline" className="h-6 w-20 justify-center px-0 text-xs bg-muted/50 border-muted-foreground/20 text-muted-foreground font-mono shrink-0">
-                        0-30%
-                      </Badge>
-                      <div>
-                        <span className="text-sm font-bold text-muted-foreground block mb-0.5">Fundamental</span>
-                        <p className="text-xs text-muted-foreground/70 leading-relaxed">
-                          Concepts and syntax understood. Relies on documentation/guides.
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Level 2: Secondary / Operational */}
-                    <div className="flex items-start gap-3">
-                      <Badge variant="outline" className="h-6 w-20 justify-center px-0 text-xs bg-secondary/10 border-secondary/20 text-secondary font-mono shrink-0">
-                        30-70%
-                      </Badge>
-                      <div>
-                        <span className="text-sm font-bold text-foreground/90 block mb-0.5">Operational</span>
-                        <p className="text-xs text-muted-foreground/80 leading-relaxed">
-                          Autonomous execution. Can script, debug, and troubleshoot common issues.
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Level 3: Primary / Advanced */}
-                    <div className="flex items-start gap-3">
-                      <Badge variant="outline" className="h-6 w-20 justify-center px-0 text-xs bg-primary/10 border-primary/20 text-primary font-mono shrink-0">
-                        70-100%
-                      </Badge>
-                      <div>
-                        <span className="text-sm font-bold text-foreground/90 block mb-0.5">Specialist</span>
-                        <p className="text-xs text-muted-foreground/80 leading-relaxed">
-                          Internal knowledge, optimization & best practices.
-                        </p>
-                      </div>
-                    </div>
-
-                  </div>
+            
+            {/* Hint Footer */}
+             <div className="fade-in-section" style={{ animationDelay: '0.5s' }}>
+               <div className="rounded-xl border border-dashed border-border p-4 text-center bg-muted/5">
+                 <p className="text-xs text-muted-foreground flex items-center justify-center gap-2">
+                   <Info className="w-4 h-4" />
+                   Click on any skill to view details.
+                 </p>
                </div>
             </div>
 
@@ -141,58 +198,26 @@ export default function SkillsView({ onBack }: { onBack: () => void }) {
           {/* RIGHT COLUMN: SECURITY & SYSTEMS (7 cols) */}
           <div className="lg:col-span-7 space-y-8">
             
-            {/* Security Fields - Featured Section - Red/Destructive Theme */}
+            {/* Security Fields - Red/Destructive Theme */}
             <div className="fade-in-section" style={{ animationDelay: '0.3s' }}>
-              <Card 
-                className="border-border/50 bg-card/40 backdrop-blur-md shadow-xl overflow-hidden relative card-hover"
-                style={{ '--hover-theme': 'var(--destructive)' } as React.CSSProperties}
+              {/* Usa SkillCard anche qui per consistenza, ma con layout interno diverso */}
+              <SkillCard 
+                icon={<Shield className="w-6 h-6 text-destructive" />}
+                title="Offensive Security"
+                description="Specialized areas of security practice."
+                variant="destructive"
               >
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-destructive  via-warning to-destructive opacity-70" />
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-3 text-xl font-mono">
-                    <Shield className="w-6 h-6 text-destructive" />
-                    Offensive Security
-                  </CardTitle>
-                  <p className="text-sm text-muted-foreground">
-                    Specialized areas of security practice.
-                  </p>
-                </CardHeader>
-                <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 relative">
                   {security.map((skill) => (
-                    <div 
-                      key={skill.id} 
-                      className="group relative p-4 rounded-xl border border-border/50 bg-muted/20 hover:bg-muted/40 transition-all duration-300 hover:border-destructive/30"
-                    >
-                      <div className="flex items-start justify-between mb-3">
-                        <div className="p-2 rounded-lg bg-background border border-border group-hover:border-destructive/50 transition-colors">
-                          {getSkillIcon(skill.id)}
-                        </div>
-                        <Badge variant="outline" className={`
-                          bg-background/50 backdrop-blur font-mono
-                          ${skill.level > 80 ? 'text-destructive border-destructive/30' : 'text-muted-foreground'}
-                        `}>
-                          {skill.level}%
-                        </Badge>
-                      </div>
-                      
-                      <h3 className="font-bold text-foreground mb-1 group-hover:text-destructive transition-colors">
-                        {skill.name}
-                      </h3>
-                      <p className="text-xs text-muted-foreground leading-relaxed h-10">
-                        {getSecurityDescription(skill.id)}
-                      </p>
-                      
-                      {/* Progress Bar Mini */}
-                      <div className="mt-4 w-full bg-background rounded-full h-1.5 overflow-hidden">
-                        <div 
-                          className="h-full bg-gradient-to-r from-destructive to-destructive/80" 
-                          style={{ width: `${skill.level}%` }}
-                        />
-                      </div>
-                    </div>
+                    <InteractiveSecurityCard 
+                      key={skill.id}
+                      skill={skill}
+                      isActive={activeSkillId === skill.id}
+                      onToggle={() => handleToggle(skill.id)}
+                    />
                   ))}
-                </CardContent>
-              </Card>
+                </div>
+              </SkillCard>
             </div>
 
             {/* Operating Systems - Yellow/Warning Theme */}
@@ -205,56 +230,19 @@ export default function SkillsView({ onBack }: { onBack: () => void }) {
               >
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {systems.map((skill) => (
-                    <div 
+                    <InteractiveSkillRow 
                       key={skill.id} 
-                      // 1. Added 'group', 'transition', and hover effects for border/bg
-                      className="group flex items-center gap-4 p-3 rounded-lg border border-border/40 bg-muted/10 transition-all duration-300 hover:border-warning/50 hover:bg-muted/20"
-                    >
-                      {/* 2. Icon now highlights to warning color on hover */}
-                      <div className="text-muted-foreground transition-colors group-hover:text-warning">
-                        {getSkillIcon(skill.id)}
-                      </div>
-                      
-                      <div className="flex-1">
-                        <div className="flex justify-between items-center mb-1">
-                          {/* 3. Title highlights on hover */}
-                          <span className="font-medium text-sm transition-colors group-hover:text-warning">
-                            {skill.name}
-                          </span>
-                          <span className="text-xs text-muted-foreground">{skill.level}%</span>
-                        </div>
-                        
-                        <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
-                          <div 
-                            // 4. Added brightness boost on hover
-                            className={`h-full rounded-full transition-all duration-1000 ease-out group-hover:brightness-125
-                              ${skill.variant === 'primary' ? 'bg-primary' : 
-                                skill.variant === 'secondary' ? 'bg-secondary' : 
-                                skill.variant === 'accent' ? 'bg-accent' : 
-                                skill.variant === 'warning' ? 'bg-warning' : 
-                                skill.variant === 'destructive' ? 'bg-destructive' : 'bg-success'}
-                            `}
-                            style={{ width: `${skill.level}%` }}
-                          />
-                        </div>
-                      </div>
-                    </div>
+                      skill={skill} 
+                      icon={getSkillIcon(skill.id)}
+                      variant="warning"
+                      isActive={activeSkillId === skill.id}
+                      onToggle={() => handleToggle(skill.id)}
+                      layout="grid"
+                    />
                   ))}
                 </div>
               </SkillCard>
             </div>
-
-            {/* CV / Export Info */}
-            <div className="fade-in-section" style={{ animationDelay: '0.5s' }}>
-               <div className="rounded-xl border border-dashed border-border p-6 text-center bg-muted/5">
-                 <p className="text-sm text-muted-foreground">
-                   Proficiency metrics are estimated based on my study and project usage from a penetration testing context.
-                   <br /> <br />  
-                   <span className="opacity-50">Last updated: 01/2026</span>
-                 </p>
-               </div>
-            </div>
-
           </div>
         </div>
       </div>
@@ -262,7 +250,156 @@ export default function SkillsView({ onBack }: { onBack: () => void }) {
   );
 }
 
-// --- Helper Components ---
+// --- Interactive Components ---
+
+function InteractiveSkillRow({ 
+  skill, 
+  icon, 
+  variant = 'primary',
+  isActive,
+  onToggle,
+  layout = 'row'
+}: { 
+  skill: SkillWithDetails, 
+  icon: React.ReactNode,
+  variant?: string,
+  isActive: boolean,
+  onToggle: () => void,
+  layout?: 'row' | 'grid'
+}) {
+  
+  const hoverColorClass: Record<string, string> = {
+    primary: 'group-hover:text-primary group-hover:border-primary',
+    secondary: 'group-hover:text-secondary group-hover:border-secondary',
+    accent: 'group-hover:text-accent group-hover:border-accent',
+    warning: 'group-hover:text-warning group-hover:border-warning',
+    success: 'group-hover:text-success group-hover:border-success',
+    destructive: 'group-hover:text-destructive group-hover:border-destructive',
+  };
+
+  const activeClass = hoverColorClass[variant] || hoverColorClass.primary;
+  const borderColor = activeClass.split(' ')[1]; 
+
+  return (
+    <div className="relative skill-interactive-item h-full">
+      <div 
+        onClick={onToggle}
+        className={`
+          group relative cursor-pointer h-full
+          ${layout === 'grid' 
+            ? 'flex items-center gap-4 p-3 rounded-lg border border-border/40 bg-muted/10 transition-all duration-300 hover:bg-muted/20' 
+            : 'flex items-center justify-between p-2 rounded-lg border border-transparent hover:bg-muted/30 transition-all duration-300'}
+        `}
+      >
+        <CornerBorders colorClass={borderColor} />
+
+        <div className="flex items-center gap-3 w-full">
+          <div className={`text-muted-foreground transition-colors ${activeClass.split(' ')[0]}`}>
+            {icon}
+          </div>
+          <div className="flex-1 flex justify-between items-center">
+             <span className={`font-medium text-sm transition-colors ${activeClass.split(' ')[0]}`}>
+              {skill.name}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {isActive && (
+        <DetailedSkillPopup skill={skill} variant={variant} icon={icon} />
+      )}
+    </div>
+  );
+}
+
+function InteractiveSecurityCard({
+  skill,
+  isActive,
+  onToggle
+}: {
+  skill: SkillWithDetails,
+  isActive: boolean,
+  onToggle: () => void
+}) {
+  return (
+    <div className="relative skill-interactive-item h-full">
+      <div 
+        onClick={onToggle}
+        className="group relative p-4 h-full rounded-xl border border-border/50 bg-muted/20 hover:bg-muted/40 transition-all duration-300 cursor-pointer"
+      >
+        <CornerBorders colorClass="group-hover:border-destructive" />
+        
+        <div className="flex items-start justify-between mb-3">
+          <div className="p-2 rounded-lg bg-background border border-border group-hover:border-destructive/50 transition-colors text-muted-foreground group-hover:text-destructive">
+            {getSkillIcon(skill.id)}
+          </div>
+        </div>
+        
+        <h3 className="font-bold text-foreground mb-1 group-hover:text-destructive transition-colors">
+          {skill.name}
+        </h3>
+        <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">
+           {skill.description}
+        </p>
+      </div>
+
+      {isActive && (
+        <DetailedSkillPopup 
+          skill={skill} 
+          variant="destructive" 
+          icon={getSkillIcon(skill.id)} 
+        />
+      )}
+    </div>
+  );
+}
+
+function DetailedSkillPopup({ 
+  skill, 
+  variant, 
+  icon,
+}: { 
+  skill: SkillWithDetails, 
+  variant?: string, 
+  icon: React.ReactNode,
+}) {
+  const textColor = variant === 'destructive' ? 'text-destructive' 
+    : variant === 'success' ? 'text-success'
+    : variant === 'warning' ? 'text-warning'
+    : variant === 'accent' ? 'text-accent'
+    : 'text-primary';
+
+  return (
+    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[115%] z-50">
+      <div className="bg-popover border border-border shadow-2xl rounded-xl p-5 flex flex-col gap-3 animate-in fade-in zoom-in-95 duration-200 ring-1 ring-border/50">
+        
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className={textColor}>{icon}</div>
+            <h4 className="font-bold font-mono text-base">{skill.name}</h4>
+          </div>
+          <div className="text-[10px] uppercase tracking-widest opacity-50 font-mono">Info</div>
+        </div>
+
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          {skill.description}
+        </p>
+
+        {skill.tags && skill.tags.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 mt-2 pt-2 border-t border-border/30">
+            {skill.tags.map(tag => (
+              <span key={tag} className="text-[10px] px-2 py-0.5 bg-secondary/50 text-secondary-foreground rounded-md border border-border/10">
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// --- Helper & UI Components ---
 
 function SkillCard({ 
   icon, 
@@ -275,14 +412,28 @@ function SkillCard({
   title: string, 
   description: string, 
   children: React.ReactNode,
-  variant?: 'primary' | 'secondary' | 'accent' | 'warning' | 'success' | 'destructive'
+  variant?: string
 }) {
+
+  // Gradiente "Ricco" con barra spessa (h-1)
+  // from-color via-lighter-color to-color
+  const gradientClass = {
+     success: "from-success via-emerald-400 to-success",
+     accent: "from-accent via-violet-400 to-accent",
+     warning: "from-warning via-orange-300 to-warning",
+     destructive: "from-destructive via-warning to-destructive", // Come richiesto
+     primary: "from-primary via-blue-400 to-primary",
+  }[variant] || "from-primary via-blue-400 to-primary";
+
   return (
     <Card 
-      className="border-border/50 bg-card/40 backdrop-blur-sm card-hover"
-      // Inject the variant color into the CSS variable
+      // rounded-xl per mantenere lo stile originale curvy ma non troppo
+      className="border-border/50 bg-card/40 backdrop-blur-sm overflow-visible relative card-hover rounded-xl"
       style={{ '--hover-theme': `var(--${variant})` } as React.CSSProperties}
     >
+      {/* Barra superiore spessa h-1 */}
+      <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${gradientClass} opacity-70 rounded-t-xl`} />
+
       <CardHeader className="pb-4">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-medium flex items-center gap-2">
@@ -292,69 +443,23 @@ function SkillCard({
         </div>
         <p className="text-xs text-muted-foreground">{description}</p>
       </CardHeader>
-      <CardContent>
+      <CardContent className="overflow-visible relative">
         {children}
       </CardContent>
     </Card>
   );
 }
 
-function SkillRow({ 
-  skill, 
-  icon, 
-  variant = 'primary' // Default to primary/green
-}: { 
-  skill: Skill, 
-  icon: React.ReactNode,
-  variant?: 'primary' | 'secondary' | 'accent' | 'warning' | 'success' | 'destructive'
-}) {
-  
-  // Map variants to specific text hover classes
-  const hoverColorClass: Record<string, string> = {
-    primary: 'group-hover:text-primary',
-    secondary: 'group-hover:text-secondary',
-    accent: 'group-hover:text-accent', // This enables the purple highlight
-    warning: 'group-hover:text-warning',
-    success: 'group-hover:text-success',
-    destructive: 'group-hover:text-destructive',
-  };
-
-  const activeHoverClass = hoverColorClass[variant] || hoverColorClass.primary;
-
+function CornerBorders({ colorClass }: { colorClass: string }) {
   return (
-    <div className="group">
-      <div className="flex items-center justify-between mb-2">
-        <div className="flex items-center gap-3">
-          {/* Icon highlights on hover to match the text */}
-          <div className={`text-muted-foreground transition-colors ${activeHoverClass}`}>
-            {icon}
-          </div>
-          {/* Name highlights on hover */}
-          <span className={`font-medium text-sm transition-colors ${activeHoverClass}`}>
-            {skill.name}
-          </span>
-        </div>
-        <span className="text-xs font-mono text-muted-foreground">
-          {skill.level}%
-        </span>
-      </div>
-      <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
-        <div 
-          className={`h-full rounded-full transition-all duration-1000 ease-out group-hover:brightness-125
-            ${skill.variant === 'primary' ? 'bg-primary' : 
-              skill.variant === 'secondary' ? 'bg-secondary' : 
-              skill.variant === 'accent' ? 'bg-accent' : 
-              skill.variant === 'warning' ? 'bg-warning' : 
-              skill.variant === 'destructive' ? 'bg-destructive' : 'bg-success'}
-          `}
-          style={{ width: `${skill.level}%` }}
-        />
-      </div>
-    </div>
+    <>
+      <div className={`absolute top-0 left-0 w-2 h-2 border-t border-l border-transparent transition-colors duration-300 rounded-tl-sm ${colorClass}`} />
+      <div className={`absolute top-0 right-0 w-2 h-2 border-t border-r border-transparent transition-colors duration-300 rounded-tr-sm ${colorClass}`} />
+      <div className={`absolute bottom-0 left-0 w-2 h-2 border-b border-l border-transparent transition-colors duration-300 rounded-bl-sm ${colorClass}`} />
+      <div className={`absolute bottom-0 right-0 w-2 h-2 border-b border-r border-transparent transition-colors duration-300 rounded-br-sm ${colorClass}`} />
+    </>
   );
 }
-
-// --- Data Helpers ---
 
 function getSkillIcon(id: string) {
   const icons: Record<string, React.ReactNode> = {
@@ -364,55 +469,16 @@ function getSkillIcon(id: string) {
     js: <FileCode className="w-4 h-4" />,
     bash: <Command className="w-4 h-4" />,
     terraform: <Server className="w-4 h-4" />,
-    dev: <Terminal className="w-4 h-4" />,
     web: <Globe className="w-5 h-5" />,
     network: <Network className="w-5 h-5" />,
     ai: <Bot className="w-5 h-5" />,
     binary: <Binary className="w-5 h-5" />,
-    mobile: <LucidePhoneCall className="w-5 h-5" />,
-    wifi:<Wifi className="w-5 h-5" />,
+    mobile: <Phone className="w-5 h-5" />,
+    wifi: <Wifi className="w-5 h-5" />,
     linux: <Terminal className="w-5 h-5" />,
-    windows: <Monitor className="w-5 h-5" />,
+    windows: <Shield className="w-5 h-5" />, 
     docker: <Ship className="w-5 h-5" />,
     java: <Code2 className="w-4 h-4" />,
   };
   return icons[id] || <Terminal className="w-4 h-4" />;
-}
-
-// Fallback for Monitor icon if not imported
-const Monitor = ({ className }: { className?: string }) => (
-  <svg 
-    xmlns="http://www.w3.org/2000/svg" 
-    viewBox="0 0 24 24" 
-    fill="none" 
-    stroke="currentColor" 
-    strokeWidth="2" 
-    strokeLinecap="round" 
-    strokeLinejoin="round" 
-    className={className}
-  >
-    <rect width="20" height="14" x="2" y="3" rx="2" />
-    <line x1="8" x2="16" y1="21" y2="21" />
-    <line x1="12" x2="12" y1="17" y2="21" />
-  </svg>
-);
-
-
-function getSecurityDescription(id: string) {
-  switch (id) {
-    case 'web':
-      return 'Auth, sessions, injection vectors & business logic.';
-    case 'network':
-      return 'Active Directory, pivoting & infrastructure attacks.';
-    case 'ai':
-      return 'LLM Injection, model inversion & poisoning.';
-    case 'binary':
-      return 'Reverse engineering, buffer overflows & rop chains.';
-    case 'mobile':
-      return 'API analysis, JADX static analysis, firda-tools';
-    case 'wifi':
-      return 'WEP, WPS, aricrack-ng basics'
-    default:
-      return 'Security research and testing.';
-  }
 }
