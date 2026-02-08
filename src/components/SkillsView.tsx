@@ -9,71 +9,71 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import skillsData, { Skill } from '@/data/skills';
 
 // --- DATA FALLBACK ---
-// Mappa locale per garantire che le descrizioni appaiano subito
+// Updated with accurate descriptions and tags from source
 const skillDetails: Record<string, { description: string, tags: string[] }> = {
   python: {
-    description: 'Automation scripting, exploit development & Data Analysis. Experience with async, socket programming and API integration.',
-    tags: ['Requests', 'Scapy', 'Pandas', 'FastAPI']
+    description: 'Core language for security automation, script development, and tooling. Experience with db management, network socket manipulation, and data analysis.',
+    tags: ['Requests', 'Scapy', 'Pandas', 'FastAPI', 'Automation']
   },
   ccpp: {
-    description: 'Low-level programming and memory management. Essential for buffer overflow analysis and writing custom shellcode.',
-    tags: ['Pointers', 'Memory Ops', 'Buffer Overflow', 'GDB']
+    description: 'Low-level programming and memory management. Understanding of pointers, buffer handling, and system calls essential for binary analysis.',
+    tags: ['Pointers', 'Memory Management', 'System Calls', 'Buffer Overflow']
   },
   go: {
-    description: 'High-performance concurrency and network tools. Used for building fast scanners and blockchain interactions.',
-    tags: ['Concurrency', 'Networking', 'CLI Tools']
+    description: 'Learning through development of optimized tools and CLI utilities.',
+    tags: ['Concurrency', 'CLI Tools', 'Networking', 'Web3']
   },
   java: {
-    description: 'Enterprise app structure and OOP. Key for analyzing Android APKs and legacy web applications.',
-    tags: ['OOP', 'Spring', 'Android Analysis']
+    description: 'Understanding of OOP concepts. Necessary for analyzing Android APKs and legacy web apps.',
+    tags: ['OOP', 'Android Logic', 'Static Analysis']
   },
   js: {
-    description: 'Client-side analysis, DOM manipulation and XSS vector crafting. Node.js for backend scripting.',
-    tags: ['DOM', 'XSS', 'Node.js', 'React']
+    description: 'Client-side analysis and DOM manipulation. Critical for identifying XSS vectors and understanding modern frontend frameworks.',
+    tags: ['DOM', 'XSS', 'React']
   },
   bash: {
-    description: 'Advanced system automation and recon scripting. Piping, text processing (grep/sed/awk) and cron jobs.',
-    tags: ['Scripting', 'Automation', 'Text Proc']
+    description: 'System automation and reconnaissance scripting. Everyday usage for data visualization and computer management',
+    tags: ['Scripting', 'Automation']
   },
   terraform: {
-    description: 'Infrastructure as Code (IaC) for deploying scalable pentest labs and cloud environments quickly.',
-    tags: ['IaC', 'AWS', 'State Mgmt']
+    description: 'Infrastructure as Code (IaC) for deploying scalable pentest labs and cloud environments (AWS/OpenStack).',
+    tags: ['IaC', 'AWS', 'Cloud']
   },
   docker: {
-    description: 'Containerization for isolated testing environments and vulnerable labs creation.',
-    tags: ['Compose', 'Isolation', 'Networking']
+    description: 'Containerization for isolated testing environments. creation of vulnerable labs and general service orchestration.',
+    tags: ['Container', 'Kubernetes', 'Networking']
   },
   web: {
-    description: 'Comprehensive web app testing: Auth bypass, SQLi, XSS, SSRF, IDOR and business logic flaws.',
-    tags: ['OWASP Top 10', 'Burp Suite', 'Injection']
+    description: 'Comprehensive testing of web applications including Auth bypass, SQLi, XSS, SSRF, logic flaws and more..',
+    tags: ['Burp Suite', 'server/client-side vuln', 'Auth Bypass']
   },
   network: {
-    description: 'Active Directory exploitation, pivoting, Kerberoasting, and internal infrastructure mapping.',
-    tags: ['Active Directory', 'Pivoting', 'Kerberos']
+    description: 'Active Directory enumeration/exploitation, lateral movement, pivoting, and persistence',
+    tags: ['Active Directory', 'Kerberos', 'netexec', 'Responder']
   },
   ai: {
-    description: 'Testing LLMs for prompt injection, jailbreaking, and model inversion attacks.',
-    tags: ['Prompt Injection', 'LLM Security']
+    description: 'Security testing of LLMs including prompt injection, jailbreaking and some model inversion, training data poisoning.',
+    tags: ['Prompt Injection', 'Jailbreaking', 'Model Inversion']
   },
   binary: {
-    description: 'Reverse engineering and binary exploitation. Stack/Heap overflows and ROP chains.',
-    tags: ['Ghidra', 'ROP', 'Buffer Overflow']
+    description: 'Experience with reverse engineering and pwn challenges. Stack/Heap overflows, ROP chains, and bypassing protections like ASLR/DEP.',
+    tags: ['IDA', 'Binja', 'GDB', 'ROP', 'BoF']
   },
   mobile: {
-    description: 'Android/iOS security assessment. Static analysis with JADX and dynamic instrumentation with Frida.',
-    tags: ['JADX', 'Frida', 'APK Analysis']
+    description: 'Android/iOS security assessment. Static analysis with JADX, dynamic instrumentation with Frida, and API traffic interception with Burp.',
+    tags: ['JADX', 'Frida', 'APK Analysis', 'SSL Pinning']
   },
   wifi: {
-    description: 'Wireless network auditing. WEP/WPA2 cracking and rogue access point analysis.',
-    tags: ['Aircrack-ng', 'WPA2', 'Handshake']
+    description: 'Wireless network auditing. WEP/WPS/WPA2 cracking, Rogue Access Points, and protocol analysis.',
+    tags: ['Aircrack-ng', 'WPA2', 'Evil Twin']
   },
   linux: {
-    description: 'Deep knowledge of Linux internals, permissions, and kernel space for server management and CTFs.',
-    tags: ['Kernel', 'Permissions', 'Hardening']
+    description: 'Knowledge of Linux internals, kernel space, permissions, and service management used for servers and CTFs.',
+    tags: ['Kernel', 'Systemd', 'Hardening']
   },
   windows: {
-    description: 'Windows administration and AD management. GPOs, PowerShell automation and registry manipulation.',
-    tags: ['Active Directory', 'PowerShell', 'GPO']
+    description: 'Management and exploitation of Windows environments. Active Directory structures, GPOs.',
+    tags: ['Active Directory', 'GPO', 'Registry Analysis']
   },
 };
 
