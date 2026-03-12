@@ -33,7 +33,7 @@ export const getProjectById = (id: string) => {
 
 export const loadProjectContent = async (contentPath: string): Promise<string> => {
   try {
-    const response = await fetch(`/src/data/projects/${contentPath}`);
+    const response = await fetch(`/projects/${contentPath}`);
     if (!response.ok) {
       throw new Error(`Failed to load project content: ${response.statusText}`);
     }

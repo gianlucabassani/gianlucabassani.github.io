@@ -16,7 +16,7 @@ const certifications: Certification[] = [
     issuer: 'Hack The Box',
     year: '2025',
     status: 'taken',
-    description: 'Course Completition. Technical competency in the WAPT and bug bounty hunting domains at an intermediate level. Ability to assess the risk at which a web application, service, or API is exposed ',
+    description: 'Course Completion. Technical competency in the WAPT and bug bounty hunting domains at an intermediate level. Ability to assess the risk at which a web application, service, or API is exposed ',
     link: 'https://academy.hackthebox.com/achievement/553946/path/17',
   },
   {

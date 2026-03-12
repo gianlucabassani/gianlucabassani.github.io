@@ -7,7 +7,7 @@
     "technologies": ["Python", "SQLite", "HTML", "APIs"],
     "tags": ["OSINT", "Reconnaissance", "Scraper", "Crawler"],
     "date": "2025-05-05",
-    "summary": "Tool for Web OSINT Profilation",
+    "summary": "Tool for Web OSINT Profiling",
     "description": "A comprehensive browser-based OSINT (Open Source Intelligence) toolkit for cybersecurity professionals and researchers.",
     "features": [
       "Automated reconnaissance and data collection",
@@ -22,16 +22,16 @@
     "category": "general",
     "status": "completed",
     "technologies": ["C", "POSIX", "Bash"],
-    "tags": ["Low-Level", "Pointers", "Memory Management", "Pipeliens"],
+    "tags": ["Low-Level", "Pointers", "Memory Management", "Pipelines"],
     "date": "2025-09-03",
     "summary": "POSIX Shell in C built from Codecrafters project",
     "description": "The Peaky ShellCy is the result of my study of a POSIX compliant shell, capable of interpreting shell commands, running builtin and external programs and more...",
     "features": [
-      "Buitin commands",
+      "Builtin commands",
       "External command access",
       "I/O redirections",
-      "Multi-stage pipeliens",
-      "Tab completition"
+      "Multi-stage pipelines",
+      "Tab completion"
     ],
     "githubUrl": "https://github.com/gianlucabassani/ShellCy"
   },
@@ -45,7 +45,7 @@
     "tags": ["Phishing", "Social Engineering", "Email"],
     "date": "2025-11-15",
     "summary": "Basic phishing toolkit",
-    "description": "Modular toolkit for phishing simulations and social engineering campaings",
+    "description": "Modular toolkit for phishing simulations and social engineering campaigns",
     "features": [
       "Phishing campaign management",
       "Web page cloning",

@@ -14,14 +14,34 @@ const PlatformView = ({ platform, onBack, onWriteupSelect }: PlatformViewProps) 
   const allWriteups = getWriteupsByPlatform(platform);
   const difficulties = ['easy', 'medium', 'hard', 'insane'];
   
-  const getDifficultyColor = (difficulty: string) => {
-    switch (difficulty) {
-      case 'easy': return 'success';
-      case 'medium': return 'warning';
-      case 'hard': return 'destructive';
-      case 'insane': return 'accent';
-      default: return 'secondary';
-    }
+  const getDifficultyBorderClass = (difficulty: string) => {
+    const map: Record<string, string> = {
+      easy: 'border-success/20',
+      medium: 'border-warning/20',
+      hard: 'border-destructive/20',
+      insane: 'border-accent/20',
+    };
+    return map[difficulty] || 'border-secondary/20';
+  };
+
+  const getDifficultyTextClass = (difficulty: string) => {
+    const map: Record<string, string> = {
+      easy: 'text-success',
+      medium: 'text-warning',
+      hard: 'text-destructive',
+      insane: 'text-accent',
+    };
+    return map[difficulty] || 'text-secondary';
+  };
+
+  const getDifficultyBadgeClass = (difficulty: string) => {
+    const map: Record<string, string> = {
+      easy: 'bg-success/20 border-success/40 text-success',
+      medium: 'bg-warning/20 border-warning/40 text-warning',
+      hard: 'bg-destructive/20 border-destructive/40 text-destructive',
+      insane: 'bg-accent/20 border-accent/40 text-accent',
+    };
+    return map[difficulty] || 'bg-secondary/20 border-secondary/40 text-secondary';
   };
 
   const getDifficultyIcon = (difficulty: string) => {
@@ -109,22 +129,21 @@ const PlatformView = ({ platform, onBack, onWriteupSelect }: PlatformViewProps) 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {difficulties.map((difficulty) => {
             const writeups = getWriteupsByDifficulty(platform, difficulty);
-            const difficultyColor = getDifficultyColor(difficulty);
             
             return (
               <Card 
                 key={difficulty} 
-                className={`card-hover border-${difficultyColor}/20 ${writeups.length === 0 ? 'opacity-60' : ''}`}
+                className={`card-hover ${getDifficultyBorderClass(difficulty)} ${writeups.length === 0 ? 'opacity-60' : ''}`}
               >
                 <CardHeader>
                   <CardTitle className="flex items-center text-xl">
                     <span className="text-2xl mr-3">{getDifficultyIcon(difficulty)}</span>
-                    <span className={`text-${difficultyColor}`}>
+                    <span className={getDifficultyTextClass(difficulty)}>
                       {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)} Boxes
                     </span>
                     <Badge 
                       variant="secondary" 
-                      className={`ml-auto bg-${difficultyColor}/20 border-${difficultyColor}/40 text-${difficultyColor}`}
+                      className={`ml-auto ${getDifficultyBadgeClass(difficulty)}`}
                     >
                       {writeups.length}
                     </Badge>

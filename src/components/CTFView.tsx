@@ -40,14 +40,14 @@ const CTFView = ({ ctfWriteup, onBack }: CTFViewProps) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const getDifficultyColor = (difficulty: string) => {
-    switch (difficulty) {
-      case 'easy': return 'success';
-      case 'medium': return 'warning';
-      case 'hard': return 'destructive';
-      case 'insane': return 'accent';
-      default: return 'secondary';
-    }
+  const getDifficultyClasses = (difficulty: string) => {
+    const classMap: Record<string, string> = {
+      easy: 'bg-success/20 border-success/40 text-success',
+      medium: 'bg-warning/20 border-warning/40 text-warning',
+      hard: 'bg-destructive/20 border-destructive/40 text-destructive',
+      insane: 'bg-accent/20 border-accent/40 text-accent',
+    };
+    return classMap[difficulty] || 'bg-secondary/20 border-secondary/40 text-secondary';
   };
 
   const getCategoryIcon = (category: string) => {
@@ -89,7 +89,7 @@ const CTFView = ({ ctfWriteup, onBack }: CTFViewProps) => {
           <div className="flex items-center gap-4 mb-4">
             <Badge 
               variant="secondary" 
-              className={`tag bg-${getDifficultyColor(ctfWriteup.difficulty)}/20 border-${getDifficultyColor(ctfWriteup.difficulty)}/40 text-${getDifficultyColor(ctfWriteup.difficulty)}`}
+              className={`tag ${getDifficultyClasses(ctfWriteup.difficulty)}`}
             >
               {ctfWriteup.difficulty.toUpperCase()}
             </Badge>
