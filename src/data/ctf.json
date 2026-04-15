@@ -1,4 +1,16 @@
 [
+    {
+    "id": "webdav",
+    "title": "WebDAV",
+    "competition": "ITS CyberGame",
+    "category": "web",
+    "difficulty": "medium",
+    "points": 200,
+    "tags": ["WebDAV", "RCE"],
+    "date": "2026-03-27",
+    "summary": "Discover a WebDAV endpoint via fuzzing and exploit unsafe HTTP methods to bypass file upload restrictions and achieve RCE.",
+    "contentPath": "webdav.md"
+  },
   {
     "id": "fittest",
     "title": "Fittest",

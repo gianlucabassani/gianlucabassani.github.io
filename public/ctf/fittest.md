@@ -247,5 +247,5 @@ This transfers the remaining ether to your address, satisfying the challenge con
 Accessing `/flag` yields:
 
 ```
-HTB{g0t_y0u2_f1r5t_b100d}
+HTB{g0<SNIP>0d}
 ```
