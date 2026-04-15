@@ -188,5 +188,5 @@ The plotted reconstruction clearly reveals:
 ![space](https://gianlucabassani.github.io/assets/ctf/space.jpg)
 
 ```
-HTB{d1st4nt_spac3}
+HTB{d1s<SNIP>c3}
 ```
