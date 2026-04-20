@@ -72,6 +72,14 @@ const certifications: Certification[] = [
     description: 'Core pentesting skills including enumeration, exploitation, and evidence gathering for proof of work.',
     link: 'https://www.offsec.com/courses/pen-200/',
   },
+  {
+    id: 'coae',
+    title: 'Certified Offensive AI Expert (COAE)',
+    issuer: 'Hack The Box',
+    status: 'todo',
+    description: 'Certification assessing knowledge gained on identifying and exploiting vulnerabilities in AI and ML systems, co-developed with Google. Demonstrates competency in adversarial machine learning, LLM prompt injection and jailbreaking, LLM output exploitation, AI application and system security, AI defense, and AI privacy.',
+    link: 'https://academy.hackthebox.com/app/exams/9',
+  },
 ];
 
 export default certifications;
