@@ -474,15 +474,19 @@
   }
   
   .prose ul {
-    @apply list-disc list-inside text-muted-foreground mb-4 space-y-1 pl-2;
+    @apply list-disc list-outside text-muted-foreground mb-4 space-y-1 pl-5;
   }
 
   .prose ol {
-    @apply list-decimal list-inside text-muted-foreground mb-4 space-y-1 pl-2;
+    @apply list-decimal list-outside text-muted-foreground mb-4 space-y-1 pl-5;
   }
   
   .prose li {
     @apply mb-1;
+  }
+
+  .prose li p {
+    @apply m-0;
   }
   
   .prose hr {
