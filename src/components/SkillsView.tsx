@@ -7,6 +7,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import skillsData, { Skill } from '@/data/skills';
+import PageBackground from '@/components/PageBackground';
 
 // --- DATA FALLBACK ---
 // Updated with accurate descriptions and tags from source
@@ -51,9 +52,17 @@ const skillDetails: Record<string, { description: string, tags: string[] }> = {
     description: 'Active Directory enumeration/exploitation, lateral movement, pivoting, and persistence',
     tags: ['Active Directory', 'Kerberos', 'netexec', 'Responder']
   },
-  ai: {
-    description: 'Security testing of LLMs including prompt injection, jailbreaking and some model inversion, training data poisoning.',
-    tags: ['Prompt Injection', 'Jailbreaking', 'Model Inversion']
+  'ai-red': {
+    description: 'Security testing of LLMs and AI pipelines, including prompt injection, jailbreaking, data poisoning, and model output validation.',
+    tags: ['Prompt Injection', 'Jailbreaking', 'OWASP Top 10 for LLM']
+  },
+  mcp: {
+    description: 'Model Context Protocol (MCP) server development. Integrating AI tools, APIs, and file systems to allow LLMs to interact with environments safely.',
+    tags: ['MCP Servers', 'JSON-RPC', 'AI Integration', 'Node/Python SDKs']
+  },
+  'ai-agents': {
+    description: 'Developing multi-agent orchestration frameworks, automation routines, and context retrieval systems to streamline offensive and defensive security operations.',
+    tags: ['LangChain', 'CrewAI', 'Agentic Workflows', 'Task Automation']
   },
   binary: {
     description: 'Experience with reverse engineering and pwn challenges. Stack/Heap overflows, ROP chains, and bypassing protections like ASLR/DEP.',
@@ -94,7 +103,8 @@ export default function SkillsView({ onBack }: { onBack: () => void }) {
   // Filtri Categorie
   const programming = enrichedSkills.filter(s => ['python', 'js', 'go', 'ccpp', 'java'].includes(s.id));
   const scripting = enrichedSkills.filter(s => ['bash', 'terraform', 'docker'].includes(s.id));
-  const security = enrichedSkills.filter(s => ['web', 'network', 'ai', 'binary', 'mobile', 'wifi'].includes(s.id));
+  const aiAgents = enrichedSkills.filter(s => ['mcp', 'ai-agents'].includes(s.id));
+  const security = enrichedSkills.filter(s => ['web', 'network', 'ai-red', 'binary', 'mobile', 'wifi'].includes(s.id));
   const systems = enrichedSkills.filter(s => ['linux', 'windows'].includes(s.id));
 
   // Stato Popup
@@ -116,18 +126,28 @@ export default function SkillsView({ onBack }: { onBack: () => void }) {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground bg-[url('/grid-pattern.svg')]">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 pb-32">
+    <div className="min-h-screen bg-background text-foreground cyber-grid relative overflow-hidden">
+      <PageBackground
+        primary="hsl(270,85%,65%)"
+        secondary="hsl(185,95%,48%)"
+        variant="scattered"
+      />
+
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 pb-32 relative z-10">
         
         {/* Navigation Header */}
-        <div className="flex items-center justify-between mb-10 fade-in-section">
+        <div className="mb-8 fade-in-section">
+          <Button 
+            variant="outline" 
+            onClick={onBack} 
+            className="mb-6 border-primary/30 text-primary hover:bg-primary/10 hover:text-primary"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" /> 
+            Back to Home
+          </Button>
+
           <div className="flex items-center gap-4">
-            <Button variant="ghost" onClick={onBack} className="group hover:bg-primary/10 hover:text-primary">
-              <ArrowLeft className="w-5 h-5 mr-2 transition-transform group-hover:-translate-x-1" /> 
-              Back
-            </Button>
-            <div className="h-8 w-[1px] bg-border mx-2 hidden sm:block"></div>
-            <h1 className="text-3xl md:text-4xl font-mono font-bold tracking-tight">
+            <h1 className="text-3xl md:text-4xl font-display font-bold tracking-tight">
               <span className="gradient-text">Technical Skills</span>
             </h1>
           </div>
@@ -152,6 +172,7 @@ export default function SkillsView({ onBack }: { onBack: () => void }) {
                       key={skill.id} 
                       skill={skill} 
                       icon={getSkillIcon(skill.id)}
+                      variant="success"
                       isActive={activeSkillId === skill.id}
                       onToggle={() => handleToggle(skill.id)}
                     />
@@ -175,6 +196,29 @@ export default function SkillsView({ onBack }: { onBack: () => void }) {
                       skill={skill} 
                       icon={getSkillIcon(skill.id)} 
                       variant="accent"
+                      isActive={activeSkillId === skill.id}
+                      onToggle={() => handleToggle(skill.id)}
+                    />
+                  ))}
+                </div>
+              </SkillCard>
+            </div>
+
+            {/* AI Agents & MCP - Blue/Secondary Theme */}
+            <div className="fade-in-section" style={{ animationDelay: '0.25s' }}>
+              <SkillCard 
+                icon={<Bot className="w-5 h-5 text-secondary" />}
+                title="AI Automation & Agents"
+                description="Developing MCP servers and AI orchestration systems."
+                variant="secondary"
+              >
+                <div className="space-y-4">
+                  {aiAgents.map((skill) => (
+                    <InteractiveSkillRow 
+                      key={skill.id} 
+                      skill={skill} 
+                      icon={getSkillIcon(skill.id)} 
+                      variant="secondary"
                       isActive={activeSkillId === skill.id}
                       onToggle={() => handleToggle(skill.id)}
                     />
@@ -280,19 +324,38 @@ function InteractiveSkillRow({
   const activeClass = hoverColorClass[variant] || hoverColorClass.primary;
   const borderColor = activeClass.split(' ')[1]; 
 
+  const hoverThemeMap: Record<string, string> = {
+    primary: 'var(--primary)',
+    secondary: 'var(--secondary)',
+    accent: 'var(--accent)',
+    warning: 'var(--warning)',
+    success: 'var(--success)',
+    destructive: 'var(--destructive)',
+  };
+  const hoverTheme = hoverThemeMap[variant] || 'var(--primary)';
+
+  const ringColorMap: Record<string, string> = {
+    primary: 'hover:ring-1 hover:ring-primary/20',
+    secondary: 'hover:ring-1 hover:ring-secondary/20',
+    accent: 'hover:ring-1 hover:ring-accent/20',
+    warning: 'hover:ring-1 hover:ring-warning/20',
+    success: 'hover:ring-1 hover:ring-success/20',
+    destructive: 'hover:ring-1 hover:ring-destructive/20',
+  };
+  const ringClass = ringColorMap[variant] || 'hover:ring-1 hover:ring-primary/20';
+
   return (
     <div className="relative skill-interactive-item h-full">
       <div 
         onClick={onToggle}
+        style={{ "--hover-theme": hoverTheme } as React.CSSProperties}
         className={`
-          group relative cursor-pointer h-full
+          group relative cursor-pointer h-full card-hover
           ${layout === 'grid' 
-            ? 'flex items-center gap-4 p-3 rounded-lg border border-border/40 bg-muted/10 transition-all duration-300 hover:bg-muted/20' 
+            ? `flex items-center gap-4 p-3 rounded-lg border border-border/40 bg-muted/10 transition-all duration-300 ${ringClass}` 
             : 'flex items-center justify-between p-2 rounded-lg border border-transparent hover:bg-muted/30 transition-all duration-300'}
         `}
       >
-        <CornerBorders colorClass={borderColor} />
-
         <div className="flex items-center gap-3 w-full">
           <div className={`text-muted-foreground transition-colors ${activeClass.split(' ')[0]}`}>
             {icon}
@@ -325,9 +388,9 @@ function InteractiveSecurityCard({
     <div className="relative skill-interactive-item h-full">
       <div 
         onClick={onToggle}
-        className="group relative p-4 h-full rounded-xl border border-border/50 bg-muted/20 hover:bg-muted/40 transition-all duration-300 cursor-pointer"
+        style={{ "--hover-theme": "var(--destructive)" } as React.CSSProperties}
+        className="group relative p-4 h-full rounded-xl border border-border/50 bg-muted/20 transition-all duration-300 cursor-pointer card-hover hover:ring-1 hover:ring-destructive/20"
       >
-        <CornerBorders colorClass="group-hover:border-destructive" />
         
         <div className="flex items-start justify-between mb-3">
           <div className="p-2 rounded-lg bg-background border border-border group-hover:border-destructive/50 transition-colors text-muted-foreground group-hover:text-destructive">
@@ -418,12 +481,13 @@ function SkillCard({
   // Gradiente "Ricco" con barra spessa (h-1)
   // from-color via-lighter-color to-color
   const gradientClass = {
-     success: "from-success via-emerald-400 to-success",
-     accent: "from-accent via-violet-400 to-accent",
-     warning: "from-warning via-orange-300 to-warning",
-     destructive: "from-destructive via-warning to-destructive", // Come richiesto
-     primary: "from-primary via-blue-400 to-primary",
-  }[variant] || "from-primary via-blue-400 to-primary";
+     success: "from-success via-cyan-300 to-success",
+     accent: "from-accent via-fuchsia-400 to-accent",
+     warning: "from-warning via-amber-300 to-warning",
+     destructive: "from-destructive via-fuchsia-400 to-destructive",
+     primary: "from-primary via-fuchsia-300 to-primary",
+     secondary: "from-secondary via-cyan-300 to-secondary",
+  }[variant] || "from-primary via-fuchsia-300 to-primary";
 
   return (
     <Card 
@@ -450,16 +514,7 @@ function SkillCard({
   );
 }
 
-function CornerBorders({ colorClass }: { colorClass: string }) {
-  return (
-    <>
-      <div className={`absolute top-0 left-0 w-2 h-2 border-t border-l border-transparent transition-colors duration-300 rounded-tl-sm ${colorClass}`} />
-      <div className={`absolute top-0 right-0 w-2 h-2 border-t border-r border-transparent transition-colors duration-300 rounded-tr-sm ${colorClass}`} />
-      <div className={`absolute bottom-0 left-0 w-2 h-2 border-b border-l border-transparent transition-colors duration-300 rounded-bl-sm ${colorClass}`} />
-      <div className={`absolute bottom-0 right-0 w-2 h-2 border-b border-r border-transparent transition-colors duration-300 rounded-br-sm ${colorClass}`} />
-    </>
-  );
-}
+
 
 function getSkillIcon(id: string) {
   const icons: Record<string, React.ReactNode> = {
@@ -471,7 +526,9 @@ function getSkillIcon(id: string) {
     terraform: <Server className="w-4 h-4" />,
     web: <Globe className="w-5 h-5" />,
     network: <Network className="w-5 h-5" />,
-    ai: <Bot className="w-5 h-5" />,
+    'ai-red': <Bot className="w-5 h-5" />,
+    mcp: <Command className="w-4 h-4" />,
+    'ai-agents': <Bot className="w-4 h-4" />,
     binary: <Binary className="w-5 h-5" />,
     mobile: <Phone className="w-5 h-5" />,
     wifi: <Wifi className="w-5 h-5" />,

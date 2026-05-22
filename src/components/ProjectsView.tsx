@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Project, projects } from '@/data/projects';
+import PageBackground from '@/components/PageBackground';
 
 interface ProjectsViewProps {
   onBack: () => void;
@@ -27,7 +28,7 @@ const ProjectsView = ({ onBack, onProjectSelect }: ProjectsViewProps) => {
   const getStatusColor = (status: string): string => {
     switch (status) {
       case 'active': return 'text-success border-success/40 bg-success/20';
-      case 'completed': return 'text-primary border-primary/40 bg-primary/20';
+      case 'completed': return 'text-success border-success/40 bg-success/20';
       case 'in-progress': return 'text-warning border-warning/40 bg-warning/20';
       case 'archived': return 'text-muted-foreground border-muted-foreground/40 bg-muted-foreground/20';
       default: return 'text-secondary border-secondary/40 bg-secondary/20';
@@ -46,15 +47,22 @@ const ProjectsView = ({ onBack, onProjectSelect }: ProjectsViewProps) => {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <div className="pt-8 pb-20">
+    <div className="min-h-screen bg-background text-foreground cyber-grid relative overflow-hidden">
+      <PageBackground
+        primary="hsl(152,75%,52%)"
+        secondary="hsl(152,75%,42%)"
+        tertiary="hsl(185,95%,48%)"
+        variant="scattered"
+      />
+
+      <div className="pt-8 pb-20 relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="mb-8">
             <Button 
-              variant="ghost" 
+              variant="outline" 
               onClick={onBack}
-              className="mb-6 hover:bg-muted/50"
+              className="mb-6 border-success/30 text-success hover:bg-success/10 hover:text-success"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Home
@@ -62,7 +70,7 @@ const ProjectsView = ({ onBack, onProjectSelect }: ProjectsViewProps) => {
 
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h1 className="text-4xl md:text-5xl font-mono font-bold gradient-text mb-4">
+                <h1 className="text-4xl md:text-5xl font-display font-bold gradient-text-green mb-4 tracking-tight">
                   Projects
                 </h1>
                 <p className="text-xl text-muted-foreground">
@@ -75,6 +83,7 @@ const ProjectsView = ({ onBack, onProjectSelect }: ProjectsViewProps) => {
                   variant={viewMode === 'grid' ? 'default' : 'outline'}
                   size="sm"
                   onClick={() => setViewMode('grid')}
+                  className={viewMode === 'grid' ? 'bg-success text-success-foreground hover:bg-success/90' : 'border-success/30 text-success hover:bg-success/10'}
                 >
                   <Grid className="w-4 h-4" />
                 </Button>
@@ -82,6 +91,7 @@ const ProjectsView = ({ onBack, onProjectSelect }: ProjectsViewProps) => {
                   variant={viewMode === 'list' ? 'default' : 'outline'}
                   size="sm"
                   onClick={() => setViewMode('list')}
+                  className={viewMode === 'list' ? 'bg-success text-success-foreground hover:bg-success/90' : 'border-success/30 text-success hover:bg-success/10'}
                 >
                   <List className="w-4 h-4" />
                 </Button>
@@ -90,7 +100,7 @@ const ProjectsView = ({ onBack, onProjectSelect }: ProjectsViewProps) => {
           </div>
 
           {/* Filters */}
-          <Card className="card-hover mb-8">
+          <Card className="card-hover theme-green border-success/20 mb-8">
             <CardHeader>
               <CardTitle className="flex items-center">
                 <Filter className="w-5 h-5 mr-2" />
@@ -108,7 +118,11 @@ const ProjectsView = ({ onBack, onProjectSelect }: ProjectsViewProps) => {
                         variant={selectedCategory === category ? 'default' : 'outline'}
                         size="sm"
                         onClick={() => setSelectedCategory(category)}
-                        className="capitalize"
+                        className={`capitalize ${
+                          selectedCategory === category
+                            ? 'bg-success text-success-foreground hover:bg-success/90'
+                            : 'border-success/30 text-success hover:bg-success/10 hover:text-success'
+                        }`}
                       >
                         {category === 'all' ? 'All' : `${getCategoryIcon(category)} ${category}`}
                       </Button>
@@ -125,7 +139,11 @@ const ProjectsView = ({ onBack, onProjectSelect }: ProjectsViewProps) => {
                         variant={selectedStatus === status ? 'default' : 'outline'}
                         size="sm"
                         onClick={() => setSelectedStatus(status)}
-                        className="capitalize"
+                        className={`capitalize ${
+                          selectedStatus === status
+                            ? 'bg-success text-success-foreground hover:bg-success/90'
+                            : 'border-success/30 text-success hover:bg-success/10 hover:text-success'
+                        }`}
                       >
                         {status === 'all' ? 'All' : status.replace('-', ' ')}
                       </Button>
@@ -141,7 +159,7 @@ const ProjectsView = ({ onBack, onProjectSelect }: ProjectsViewProps) => {
             {filteredProjects.map((project) => (
               <Card 
                 key={project.id}
-                className={`card-hover cursor-pointer transition-all duration-300 hover:scale-105 ${
+                className={`card-hover theme-green border-success/20 hover:ring-1 hover:ring-success/20 cursor-pointer transition-all duration-300 hover:scale-105 ${
                   viewMode === 'list' ? 'flex flex-col md:flex-row' : ''
                 }`}
                 onClick={() => onProjectSelect(project)}
@@ -187,7 +205,7 @@ const ProjectsView = ({ onBack, onProjectSelect }: ProjectsViewProps) => {
                           e.stopPropagation();
                           window.open(project.githubUrl, '_blank');
                         }}
-                        className="border-primary/30 hover:bg-primary/10"
+                        className="border-success/30 hover:bg-success/10 text-success hover:text-success"
                       >
                         <Github className="w-4 h-4" />
                       </Button>
@@ -200,7 +218,7 @@ const ProjectsView = ({ onBack, onProjectSelect }: ProjectsViewProps) => {
                           e.stopPropagation();
                           window.open(project.liveUrl, '_blank');
                         }}
-                        className="border-secondary/30 hover:bg-secondary/10"
+                        className="border-success/30 hover:bg-success/10 text-success hover:text-success"
                       >
                         <ExternalLink className="w-4 h-4" />
                       </Button>
@@ -212,7 +230,7 @@ const ProjectsView = ({ onBack, onProjectSelect }: ProjectsViewProps) => {
           </div>
 
           {filteredProjects.length === 0 && (
-            <Card className="card-hover text-center py-12">
+            <Card className="card-hover theme-green border-success/20 text-center py-12">
               <CardContent>
                 <p className="text-muted-foreground text-lg">
                   No projects found matching the selected filters.
@@ -222,14 +240,14 @@ const ProjectsView = ({ onBack, onProjectSelect }: ProjectsViewProps) => {
           )}
 
           {/* Stats */}
-          <Card className="card-hover mt-8">
+          <Card className="card-hover theme-green border-success/20 mt-8">
             <CardHeader>
               <CardTitle>Project Statistics</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
                 <div>
-                  <div className="text-2xl font-bold text-primary">{projects.length}</div>
+                  <div className="text-2xl font-bold text-success">{projects.length}</div>
                   <div className="text-sm text-muted-foreground">Total Projects</div>
                 </div>
                 <div>
@@ -245,7 +263,7 @@ const ProjectsView = ({ onBack, onProjectSelect }: ProjectsViewProps) => {
                   <div className="text-sm text-muted-foreground">In Progress</div>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-secondary">
+                  <div className="text-2xl font-bold text-success">
                     {projects.filter(p => p.status === 'completed').length}
                   </div>
                   <div className="text-sm text-muted-foreground">Completed</div>

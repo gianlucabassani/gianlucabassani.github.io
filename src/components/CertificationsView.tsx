@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import certifications, { Certification } from '@/data/certifications';
+import PageBackground from '@/components/PageBackground';
 
 export default function CertificationsView({ onBack }: { onBack: () => void }) {
   const navigate = useNavigate();
@@ -19,19 +20,29 @@ export default function CertificationsView({ onBack }: { onBack: () => void }) {
   const todo = certifications.filter((c) => c.status === 'todo');
 
   return (
-    <div className="min-h-screen bg-background text-foreground bg-[url('/grid-pattern.svg')]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div className="min-h-screen bg-background text-foreground cyber-grid relative overflow-hidden">
+      <PageBackground
+        primary="hsl(270,85%,65%)"
+        secondary="hsl(185,95%,48%)"
+        variant="scattered"
+      />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 relative z-10">
         
-        {/* Header Section */}
-        <div className="flex items-center justify-between mb-12 fade-in-section">
+        {/* Navigation Header */}
+        <div className="mb-8 fade-in-section">
+          <Button
+            variant="outline"
+            onClick={onBack}
+            className="mb-6 border-primary/30 text-primary hover:bg-primary/10 hover:text-primary"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to Home
+          </Button>
+
           <div className="flex items-center gap-4">
-            <Button variant="ghost" onClick={onBack} className="group hover:bg-primary/10 hover:text-primary">
-              <ArrowLeft className="w-5 h-5 mr-2 transition-transform group-hover:-translate-x-1" /> 
-              Back
-            </Button>
-            <div className="h-8 w-[1px] bg-border mx-2 hidden sm:block"></div>
             <div>
-              <h1 className="text-3xl md:text-4xl font-mono font-bold tracking-tight">
+              <h1 className="text-3xl md:text-4xl font-display font-bold tracking-tight">
                 <span className="gradient-text">Roadmap</span>
               </h1>
               <p className="text-sm text-muted-foreground mt-1 font-mono">
@@ -99,7 +110,7 @@ export default function CertificationsView({ onBack }: { onBack: () => void }) {
   );
 }
 
-// --- Helper Components ---
+
 
 function RoadmapHeader({ icon, title, subtitle, color }: { icon: React.ReactNode, title: string, subtitle: string, color: string }) {
   const colorClasses: Record<string, string> = {
@@ -129,9 +140,9 @@ function RoadmapHeader({ icon, title, subtitle, color }: { icon: React.ReactNode
 function CertCard({ cert, variant }: { cert: Certification, variant: 'taken' | 'progress' | 'todo' }) {
   // Dynamic Styles based on variant
   const styles = {
-    taken: "border-success/40 bg-success/5 hover:border-success/60 hover:bg-success/10",
-    progress: "border-warning/50 bg-warning/5 hover:border-warning/70 hover:bg-warning/10 ring-1 ring-warning/20",
-    todo: "border-destructive/40 bg-destructive/5 hover:border-destructive/60 hover:bg-destructive/10 border-dashed opacity-95 hover:opacity-100"
+    taken: "border-success/40 bg-success/5 hover:ring-1 hover:ring-success/20",
+    progress: "border-warning/50 bg-warning/5 hover:ring-1 hover:ring-warning/20",
+    todo: "border-destructive/40 bg-destructive/5 border-dashed opacity-95 hover:opacity-100 hover:ring-1 hover:ring-destructive/20"
   };
 
   const badgeStyles = {
@@ -140,11 +151,20 @@ function CertCard({ cert, variant }: { cert: Certification, variant: 'taken' | '
     todo: "bg-destructive/20 text-destructive hover:bg-destructive/30 border-destructive/20"
   };
 
+  const hoverTheme = {
+    taken: "var(--success)",
+    progress: "var(--warning)",
+    todo: "var(--destructive)"
+  }[variant];
+
   return (
-    <Card className={`
-      relative transition-all duration-300 group
-      ${styles[variant]}
-    `}>
+    <Card 
+      style={{ "--hover-theme": hoverTheme } as React.CSSProperties}
+      className={`
+        relative transition-all duration-300 group overflow-hidden card-hover
+        ${styles[variant]}
+      `}
+    >
       <CardHeader className="pb-2 pt-4 px-4">
         <div className="flex justify-between items-start gap-2">
           <Badge variant="outline" className={`text-[10px] h-5 ${badgeStyles[variant]}`}>

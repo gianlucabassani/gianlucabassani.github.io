@@ -7,6 +7,7 @@ import { Project, loadProjectContent } from '@/data/projects';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
+import PageBackground from '@/components/PageBackground';
 
 interface ProjectViewProps {
   project: Project;
@@ -42,7 +43,7 @@ const ProjectView = ({ project, onBack }: ProjectViewProps) => {
   const getStatusColor = (status: string): string => {
     switch (status) {
       case 'active': return 'text-success border-success/40 bg-success/20';
-      case 'completed': return 'text-primary border-primary/40 bg-primary/20';
+      case 'completed': return 'text-success border-success/40 bg-success/20';
       case 'in-progress': return 'text-warning border-warning/40 bg-warning/20'; 
       case 'archived': return 'text-muted-foreground border-muted-foreground/40 bg-muted-foreground/20';
       default: return 'text-secondary border-secondary/40 bg-secondary/20';
@@ -61,23 +62,30 @@ const ProjectView = ({ project, onBack }: ProjectViewProps) => {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground cyber-grid relative overflow-hidden">
+      <PageBackground
+        primary="hsl(152,75%,52%)"
+        secondary="hsl(152,75%,42%)"
+        tertiary="hsl(185,95%,48%)"
+        variant="scattered"
+      />
+
       {/* Scroll Progress Bar */}
       <div className="fixed top-0 left-0 w-full h-1 bg-muted z-50">
         <div 
-          className="h-full bg-gradient-to-r from-primary to-secondary transition-all duration-150"
+          className="h-full bg-gradient-green transition-all duration-150"
           style={{ width: `${scrollProgress}%` }}
         />
       </div>
 
-      <div className="pt-8 pb-20">
+      <div className="pt-8 pb-20 relative z-10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="mb-8">
             <Button 
-              variant="ghost" 
+              variant="outline" 
               onClick={onBack}
-              className="mb-6 hover:bg-muted/50"
+              className="mb-6 border-success/30 text-success hover:bg-success/10 hover:text-success"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Projects
@@ -87,7 +95,7 @@ const ProjectView = ({ project, onBack }: ProjectViewProps) => {
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-2">
                   <span className="text-2xl">{getCategoryIcon(project.category)}</span>
-                  <h1 className="text-3xl md:text-4xl font-mono font-bold gradient-text">
+                  <h1 className="text-3xl md:text-4xl font-display font-bold gradient-text-green tracking-tight">
                     {project.title}
                   </h1>
                 </div>
@@ -113,7 +121,7 @@ const ProjectView = ({ project, onBack }: ProjectViewProps) => {
                 <Button 
                   variant="outline" 
                   onClick={() => window.open(project.githubUrl, '_blank')}
-                  className="border-primary/30 hover:bg-primary/10"
+                  className="border-success/30 hover:bg-success/10 text-success hover:text-success"
                 >
                   <Github className="w-4 h-4 mr-2" />
                   View Source
@@ -123,7 +131,7 @@ const ProjectView = ({ project, onBack }: ProjectViewProps) => {
               {project.liveUrl && (
                 <Button 
                   onClick={() => window.open(project.liveUrl, '_blank')}
-                  className="bg-primary hover:bg-primary/80"
+                  className="bg-success text-success-foreground hover:bg-success/90"
                 >
                   <ExternalLink className="w-4 h-4 mr-2" />
                   Live Demo
@@ -133,7 +141,7 @@ const ProjectView = ({ project, onBack }: ProjectViewProps) => {
           </div>
 
           {/* Project Summary */}
-          <Card className="card-hover mb-8">
+          <Card className="card-hover theme-green border-success/20 hover:ring-1 hover:ring-success/20 mb-8">
             <CardHeader>
               <CardTitle className="flex items-center">
                 <Tag className="w-5 h-5 mr-2" />
@@ -173,7 +181,7 @@ const ProjectView = ({ project, onBack }: ProjectViewProps) => {
 
           {/* Features */}
           {project.features && project.features.length > 0 && (
-            <Card className="card-hover mb-8">
+            <Card className="card-hover theme-green border-success/20 hover:ring-1 hover:ring-success/20 mb-8">
               <CardHeader>
                 <CardTitle>Key Features</CardTitle>
               </CardHeader>
@@ -181,7 +189,7 @@ const ProjectView = ({ project, onBack }: ProjectViewProps) => {
                 <ul className="space-y-2">
                   {project.features.map((feature, index) => (
                     <li key={index} className="flex items-start">
-                      <span className="text-primary mr-2">•</span>
+                      <span className="text-success mr-2">•</span>
                       <span className="text-muted-foreground">{feature}</span>
                     </li>
                   ))}
@@ -192,14 +200,14 @@ const ProjectView = ({ project, onBack }: ProjectViewProps) => {
 
           {/* Detailed Content */}
           {project.contentPath && (
-            <Card className="card-hover">
+            <Card className="card-hover theme-green border-success/20 hover:ring-1 hover:ring-success/20">
               <CardContent className="pt-6">
                 {isLoading ? (
                   <div className="flex items-center justify-center py-12">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-success"></div>
                   </div>
                 ) : (
-                  <div className="prose prose-lg max-w-none dark:prose-invert">
+                  <div className="prose prose-lg prose-green max-w-none dark:prose-invert">
                     <ReactMarkdown
                       remarkPlugins={[remarkGfm]}
                       rehypePlugins={[rehypeHighlight]}
@@ -217,12 +225,12 @@ const ProjectView = ({ project, onBack }: ProjectViewProps) => {
                           );
                         },
                         h1: ({ children }) => (
-                          <h1 className="text-3xl font-bold mb-6 text-foreground border-b border-border pb-3">
+                          <h1 className="text-3xl font-display font-bold mb-6 text-foreground border-b border-border pb-3">
                             {children}
                           </h1>
                         ),
                         h2: ({ children }) => (
-                          <h2 className="text-2xl font-semibold mb-4 text-foreground mt-8">
+                          <h2 className="text-2xl font-display font-semibold mb-4 text-foreground mt-8">
                             {children}
                           </h2>
                         ),
@@ -232,7 +240,7 @@ const ProjectView = ({ project, onBack }: ProjectViewProps) => {
                           </h3>
                         ),
                         blockquote: ({ children }) => (
-                          <blockquote className="border-l-4 border-primary bg-muted/30 p-4 my-4 italic">
+                          <blockquote className="border-l-4 border-success bg-muted/30 p-4 my-4 italic">
                             {children}
                           </blockquote>
                         ),

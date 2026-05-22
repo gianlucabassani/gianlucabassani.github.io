@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Writeup, loadWriteupContent } from '@/data/writeups';
 import 'highlight.js/styles/github-dark.css';
+import PageBackground from '@/components/PageBackground';
 
 interface WriteupViewProps {
   writeup: Writeup;
@@ -58,23 +59,83 @@ const WriteupView = ({ writeup, onBack }: WriteupViewProps) => {
     }
   };
 
+  const getThemeConfig = (platformName: string) => {
+    switch (platformName.toLowerCase()) {
+      case 'hackthebox':
+        return {
+          glowClass: 'theme-green',
+          borderClass: 'border-success/20',
+          ringClass: 'hover:ring-1 hover:ring-success/20',
+          textClass: 'text-success',
+          btnClass: 'border-success/30 text-success hover:bg-success/10 hover:text-success',
+          textGradient: 'gradient-text-green',
+          accentColor: 'hsl(152,75%,52%)',
+          secondaryColor: 'hsl(185,95%,48%)'
+        };
+      case 'tryhackme':
+        return {
+          glowClass: 'theme-blue',
+          borderClass: 'border-blue-500/20',
+          ringClass: 'hover:ring-1 hover:ring-blue-500/20',
+          textClass: 'text-blue-400',
+          btnClass: 'border-blue-500/30 hover:bg-blue-500/10 hover:text-blue-400 text-blue-400',
+          textGradient: 'gradient-text-blue',
+          accentColor: 'hsl(217,91%,60%)',
+          secondaryColor: 'hsl(185,95%,48%)'
+        };
+      case 'vulnhub':
+        return {
+          glowClass: 'theme-yellow',
+          borderClass: 'border-yellow-500/20',
+          ringClass: 'hover:ring-1 hover:ring-yellow-500/20',
+          textClass: 'text-yellow-400',
+          btnClass: 'border-yellow-500/30 hover:bg-yellow-500/10 hover:text-yellow-400 text-yellow-400',
+          textGradient: 'gradient-text-yellow',
+          accentColor: 'hsl(38,92%,50%)',
+          secondaryColor: 'hsl(25,95%,53%)'
+        };
+      default:
+        return {
+          glowClass: 'theme-purple',
+          borderClass: 'border-accent/20',
+          ringClass: 'hover:ring-1 hover:ring-accent/20',
+          textClass: 'text-accent',
+          btnClass: 'border-accent/30 hover:bg-accent/10 hover:text-accent text-accent-foreground',
+          textGradient: 'gradient-text-purple',
+          accentColor: 'hsl(270,85%,65%)',
+          secondaryColor: 'hsl(185,95%,48%)'
+        };
+    }
+  };
+
+  const theme = getThemeConfig(writeup.platform);
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background cyber-grid relative overflow-hidden">
+      <PageBackground
+        primary={theme.accentColor}
+        secondary={theme.secondaryColor}
+        variant="scattered"
+      />
+      
       {/* Progress Bar */}
       <div className="fixed top-0 left-0 w-full h-1 bg-muted z-50">
         <div 
-          className="h-full bg-gradient-primary transition-all duration-100"
-          style={{ width: `${scrollProgress}%` }}
+          className="h-full transition-all duration-100"
+          style={{ 
+            width: `${scrollProgress}%`, 
+            backgroundImage: `var(--gradient-${writeup.platform.toLowerCase() === 'hackthebox' ? 'green' : writeup.platform.toLowerCase() === 'tryhackme' ? 'blue' : writeup.platform.toLowerCase() === 'vulnhub' ? 'yellow' : 'purple'})` 
+          }}
         />
       </div>
 
       {/* Header */}
-      <div className="bg-background border-b border-border">
+      <div className="bg-background/80 backdrop-blur-md border-b border-border relative z-10">
         <div className="max-w-4xl mx-auto px-4 py-4">
           <Button
             variant="outline"
             onClick={onBack}
-            className="mb-4 border-primary/30 hover:bg-primary/10"
+            className={`mb-4 font-mono ${theme.btnClass}`}
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Writeups
@@ -93,7 +154,7 @@ const WriteupView = ({ writeup, onBack }: WriteupViewProps) => {
             </span>
           </div>
           
-          <h1 className="text-3xl font-mono font-bold gradient-text mb-2">
+          <h1 className={`text-3xl font-display font-bold ${theme.textGradient} mb-2 tracking-tight`}>
             {writeup.title}
           </h1>
           
@@ -110,12 +171,12 @@ const WriteupView = ({ writeup, onBack }: WriteupViewProps) => {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="max-w-4xl mx-auto px-4 py-8 relative z-10">
         {/* Summary Card */}
-        <Card className="mb-8 animated-border">
+        <Card className={`mb-8 card-hover ${theme.glowClass} ${theme.ringClass} ${theme.borderClass}`}>
           <CardHeader>
             <CardTitle className="flex items-center text-xl">
-              <Server className="w-5 h-5 mr-2 text-primary" />
+              <Server className={`w-5 h-5 mr-2 ${theme.textClass}`} />
               Summary
             </CardTitle>
           </CardHeader>
@@ -133,14 +194,19 @@ const WriteupView = ({ writeup, onBack }: WriteupViewProps) => {
         </Card>
 
         {/* Writeup Content */}
-        <Card className="card-hover">
+        <Card className={`card-hover ${theme.glowClass} ${theme.ringClass} ${theme.borderClass}`}>
           <CardContent className="p-8">
             {isLoading ? (
               <div className="text-center py-8">
                 <div className="text-muted-foreground">Loading writeup content...</div>
               </div>
             ) : (
-              <div className="prose prose-invert prose-green max-w-none [&>*]:max-w-none [&_pre]:overflow-x-hidden [&_pre]:whitespace-pre-wrap [&_pre]:break-words [&_code]:whitespace-pre-wrap [&_code]:break-words">
+              <div className={`prose prose-invert ${
+                writeup.platform.toLowerCase() === 'hackthebox' ? 'prose-green' :
+                writeup.platform.toLowerCase() === 'tryhackme' ? 'prose-blue' :
+                writeup.platform.toLowerCase() === 'vulnhub' ? 'prose-yellow' :
+                'prose-purple'
+              } max-w-none [&>*]:max-w-none [&_pre]:overflow-x-hidden [&_pre]:whitespace-pre-wrap [&_pre]:break-words [&_code]:whitespace-pre-wrap [&_code]:break-words`}>
                 <ReactMarkdown
                   remarkPlugins={[remarkGfm]}
                   rehypePlugins={[rehypeHighlight]}
@@ -150,8 +216,8 @@ const WriteupView = ({ writeup, onBack }: WriteupViewProps) => {
                       const isInline = !className;
                       
                       return !isInline && match ? (
-                        <div className="my-2 rounded-lg border border-border bg-muted/20">
-                          <div className="px-3 py-1.5 bg-muted/40 border-b border-border">
+                        <div className="my-2 rounded-lg border bg-muted/20" style={{ borderColor: `${theme.accentColor}25` }}>
+                          <div className="px-3 py-1.5 bg-muted/40 border-b" style={{ borderBottomColor: `${theme.accentColor}25` }}>
                             <span className="text-xs text-muted-foreground font-mono">
                               {match[1]}
                             </span>
@@ -169,22 +235,22 @@ const WriteupView = ({ writeup, onBack }: WriteupViewProps) => {
                       );
                     },
                     h1: ({ children }) => (
-                      <h1 className="text-3xl font-mono font-bold gradient-text mb-6 pb-2 border-b border-border">
+                      <h1 className={`text-3xl font-display font-bold ${theme.textGradient} mb-6 pb-2 border-b border-border`}>
                         {children}
                       </h1>
                     ),
                     h2: ({ children }) => (
-                      <h2 className="text-2xl font-mono font-semibold text-primary mt-8 mb-4">
+                      <h2 className={`text-2xl font-display font-semibold ${theme.textClass} mt-8 mb-4`}>
                         {children}
                       </h2>
                     ),
                     h3: ({ children }) => (
-                      <h3 className="text-xl font-mono font-semibold text-secondary mt-6 mb-3">
+                      <h3 className="text-xl font-display font-semibold text-foreground/90 mt-6 mb-3">
                         {children}
                       </h3>
                     ),
                     blockquote: ({ children }) => (
-                      <blockquote className="border-l-4 border-primary pl-4 italic text-muted-foreground my-2">
+                      <blockquote className="border-l-4 pl-4 italic text-muted-foreground my-2" style={{ borderColor: theme.accentColor }}>
                         {children}
                       </blockquote>
                     ),

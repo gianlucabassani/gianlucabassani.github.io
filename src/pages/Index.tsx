@@ -15,7 +15,6 @@ import ProjectView from '@/components/ProjectView';
 import ProjectsView from '@/components/ProjectsView';
 import SkillsView from '@/components/SkillsView';
 import CertificationsView from '@/components/CertificationsView';
-import heroImage from '@/assets/hero-cyber.jpg';
 import { writeups } from '@/data/writeups';
 
 const Index = () => {
@@ -24,6 +23,19 @@ const Index = () => {
   const [activeSection, setActiveSection] = useState('about');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [displayName, setDisplayName] = useState('Gianluca Bassani');
+  const [isFading, setIsFading] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsFading(true);
+      setTimeout(() => {
+        setDisplayName(prev => prev === 'Gianluca Bassani' ? 'Prime' : 'Gianluca Bassani');
+        setIsFading(false);
+      }, 300);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
     
   // Parse current route to determine view
   const parseRoute = () => {
@@ -261,7 +273,44 @@ const Index = () => {
     );
   }
   return (
-    <div className="min-h-screen bg-background text-foreground tech-grid">
+    <div className="min-h-screen bg-background text-foreground cyber-grid">
+      {/* Dynamic Ambient Background Blobs — fixed parallax layer, one per section */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        {/* About Me — Purple vaporwave */}
+        <div 
+          className="absolute top-[8%] left-[8%] w-[550px] h-[550px] rounded-full blur-[200px] opacity-[0.018]"
+          style={{ backgroundColor: 'hsl(270,85%,65%)', animation: 'pulse 12s cubic-bezier(0.4, 0, 0.6, 1) infinite, float-blob-1 25s ease-in-out infinite' }} 
+        />
+        <div 
+          className="absolute top-[12%] right-[8%] w-[600px] h-[600px] rounded-full blur-[200px] opacity-[0.012]"
+          style={{ backgroundColor: 'hsl(325,90%,62%)', animation: 'pulse 16s cubic-bezier(0.4, 0, 0.6, 1) infinite, float-blob-2 30s ease-in-out infinite' }} 
+        />
+        {/* Skills / Certifications — Purple + Cyan */}
+        <div 
+          className="absolute top-[28%] left-[55%] w-[480px] h-[480px] rounded-full blur-[190px] opacity-[0.013]"
+          style={{ backgroundColor: 'hsl(185,95%,48%)', animation: 'pulse 18s cubic-bezier(0.4, 0, 0.6, 1) infinite, float-blob-1 32s ease-in-out infinite' }} 
+        />
+        {/* Projects — Green */}
+        <div 
+          className="absolute top-[42%] left-[12%] w-[650px] h-[650px] rounded-full blur-[200px] opacity-[0.015]"
+          style={{ backgroundColor: 'hsl(152,75%,52%)', animation: 'pulse 14s cubic-bezier(0.4, 0, 0.6, 1) infinite, float-blob-1 28s ease-in-out infinite' }} 
+        />
+        {/* Box Writeups — Blue + Yellow */}
+        <div 
+          className="absolute top-[62%] right-[10%] w-[550px] h-[550px] rounded-full blur-[190px] opacity-[0.013]"
+          style={{ backgroundColor: 'hsl(217,91%,60%)', animation: 'pulse 18s cubic-bezier(0.4, 0, 0.6, 1) infinite, float-blob-2 32s ease-in-out infinite' }} 
+        />
+        <div 
+          className="absolute top-[68%] left-[6%] w-[500px] h-[500px] rounded-full blur-[190px] opacity-[0.011]"
+          style={{ backgroundColor: 'hsl(38,92%,50%)', animation: 'pulse 12s cubic-bezier(0.4, 0, 0.6, 1) infinite, float-blob-1 26s ease-in-out infinite' }} 
+        />
+        {/* CTF Solves — Orange */}
+        <div 
+          className="absolute top-[86%] left-[18%] w-[600px] h-[600px] rounded-full blur-[200px] opacity-[0.016]"
+          style={{ backgroundColor: 'hsl(25,95%,53%)', animation: 'pulse 15s cubic-bezier(0.4, 0, 0.6, 1) infinite, float-blob-2 35s ease-in-out infinite' }} 
+        />
+      </div>
+
       {/* Scroll Progress Bar */}
       <div 
         className="scroll-progress" 
@@ -272,8 +321,12 @@ const Index = () => {
       <nav className="fixed top-0 w-full bg-background/90 backdrop-blur-md border-b border-border z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
-            <div className="font-mono text-xl font-bold gradient-text">
-              Gianluca Bassani | CyberSecurity
+            <div className="font-mono text-lg md:text-xl font-bold flex items-center">
+              <span className={`gradient-text transition-all duration-300 inline-block ${isFading ? 'opacity-0 -translate-y-1' : 'opacity-100 translate-y-0'}`}>
+                {displayName}
+              </span>
+              <span className="text-muted-foreground/30 mx-2 select-none">|</span>
+              <span className="text-foreground/80 font-light text-xs md:text-sm tracking-widest uppercase">CyberSecurity</span>
             </div>
             
             {/* Desktop Navigation */}
@@ -323,34 +376,47 @@ const Index = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Hero */}
             <div className="relative text-center mb-12">
-              <div 
-                className="absolute inset-0 opacity-10 bg-cover bg-center rounded-3xl"
-                style={{ backgroundImage: `url(${heroImage})` }}
-              />
               <div className="relative z-10 py-20">
-              <h1 className="text-5xl md:text-7xl font-mono font-bold mb-6">
-                <span className="gradient-text">Welcome to my</span>
+              <h1 className="text-5xl md:text-7xl font-display font-bold mb-6 tracking-tight">
+                <span className="gradient-text-purple">Welcome to my</span>
                 <br />
                 <span className="gradient-text-accent">digital space</span>
               </h1>
-              <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-8">
-                Cybersecurity enthusiast and curious mind. Exploring the world of offensive security, networking and development.
+              <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-4">
+                Penetration Testing | AI Red Team | Agentic Automation
+                
               </p>
-                <Button 
-                  onClick={() => scrollToSection('projects')} 
-                  size="lg" 
-                  className="glow-primary bg-primary hover:bg-primary/80"
-                >
-                  Explore My Work
-                  <ChevronDown className="ml-2 w-5 h-5" />
-                </Button>
+              <p className="text-base md:text-lg text-muted-foreground/80 max-w-2xl mx-auto mb-8 font-mono">
+                Cybersecurity enthusiast and curious mind building side projects around whatever topics I'm currently breaking into. Occasional CTF player with pwnthem0le in Turin. 
+              </p>
+                <div className="flex justify-center gap-4 flex-wrap">
+                  <Button 
+                    onClick={() => scrollToSection('projects')} 
+                    size="lg" 
+                    className="glow-primary bg-primary hover:bg-primary/80 text-primary-foreground font-mono"
+                  >
+                    Explore My Work
+                    <ChevronDown className="ml-2 w-5 h-5" />
+                  </Button>
+                  <Button
+                      onClick={() => navigate('/terminal')}
+                      variant="outline"
+                      size="lg"
+                      className="border-success/30 text-success hover:bg-success/10 font-mono"
+                    >
+                      Launch CLI Console
+                      <Terminal className="ml-2 w-5 h-5" />
+                  </Button>
+                </div>
               </div>
             </div>
 
             {/* About Content */}
-            <Card className="animated-border card-hover mb-6" data-fade-in>
+            <Card className="card-hover theme-purple border-accent/20 mb-6 group" data-fade-in>
               <CardHeader>
-                <CardTitle className="text-2xl font-mono">About Me</CardTitle>
+                <CardTitle className="text-2xl font-mono">
+                  <span>About Me</span>
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-lg text-muted-foreground mb-6">
@@ -361,13 +427,13 @@ const Index = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
                   {/* Technical Skills */}
                   <Card
-                    className="relative card-hover border-primary/20 cursor-pointer transition-all duration-300 hover:scale-105 overflow-hidden"
+                    className="group relative card-hover theme-purple border-accent/20 hover:ring-1 hover:ring-accent/20 cursor-pointer transition-all duration-300 hover:scale-105 overflow-hidden"
                     onClick={handleSkillsClick}
                   >
                     <CardHeader>
-                      <CardTitle className="flex items-center text-lg">
+                      <CardTitle className="flex items-center text-lg transition-all duration-300">
                         <Code className="w-5 h-5 mr-2 text-primary" />
-                        Technical Skills
+                        <span>Technical Skills</span>
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
@@ -377,8 +443,15 @@ const Index = () => {
                           <div className="flex flex-wrap gap-2">
                             <Badge variant="outline" className={`tag ${getSkillClasses('Web Security')}`}>Web Security</Badge>
                             <Badge variant="outline" className={`tag ${getSkillClasses('Network Pentesting')}`}>Network Pentesting</Badge>
-                            <Badge variant="outline" className={`tag ${getSkillClasses('AI Red Team')}`}>AI Red Team</Badge>
+                            <Badge variant="outline" className={`tag ${getSkillClasses('AI Red Teaming')}`}>AI Red Teaming</Badge>
                             <Badge variant="outline" className={`tag ${getSkillClasses('Binary Exploitation')}`}>Binary Exploitation</Badge>
+                          </div>
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-sm mb-2">AI Automation & Agents</h4>
+                          <div className="flex flex-wrap gap-2">
+                            <Badge variant="outline" className={`tag ${getSkillClasses('Model Context Protocol (MCP)')}`}>Model Context Protocol (MCP)</Badge>
+                            <Badge variant="outline" className={`tag ${getSkillClasses('AI Agents & Automation')}`}>AI Agents & Automation</Badge>
                           </div>
                         </div>
                         <div>
@@ -417,13 +490,13 @@ const Index = () => {
 
                   {/* Certifications */}
                   <Card
-                    className="relative card-hover border-secondary/20 cursor-pointer transition-all duration-200 hover:scale-102 overflow-hidden"
+                    className="group relative card-hover theme-purple border-accent/20 hover:ring-1 hover:ring-accent/20 cursor-pointer transition-all duration-200 hover:scale-102 overflow-hidden"
                     onClick={handleCertsClick}
                   >
                     <CardHeader>
-                      <CardTitle className="flex items-center text-lg">
+                      <CardTitle className="flex items-center text-lg transition-all duration-300">
                         <Shield className="w-5 h-5 mr-2 text-secondary" />
-                        Certifications
+                        <span>Certifications</span>
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
@@ -462,7 +535,7 @@ const Index = () => {
                 <h3 className="text-xl font-mono font-semibold mb-6">What You'll Find Here</h3>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <Card className="card-hover border-primary/20">
+                  <Card className="card-hover theme-purple border-accent/20">
                     <CardHeader>
                       <CardTitle className="flex items-center text-lg">
                         <Shield className="w-5 h-5 mr-2 text-primary" />
@@ -476,7 +549,7 @@ const Index = () => {
                     </CardContent>
                   </Card>
 
-                  <Card className="card-hover border-secondary/20">
+                  <Card className="card-hover theme-purple border-accent/20">
                     <CardHeader>
                       <CardTitle className="flex items-center text-lg">
                         <Code className="w-5 h-5 mr-2 text-secondary" />
@@ -490,7 +563,7 @@ const Index = () => {
                     </CardContent>
                   </Card>
 
-                  <Card className="card-hover border-accent/20">
+                  <Card className="card-hover theme-purple border-accent/20">
                     <CardHeader>
                       <CardTitle className="flex items-center text-lg">
                         <FileText className="w-5 h-5 mr-2 text-accent" />
@@ -504,7 +577,7 @@ const Index = () => {
                     </CardContent>
                   </Card>
 
-                  <Card className="card-hover border-warning/20">
+                  <Card className="card-hover theme-purple border-accent/20">
                     <CardHeader>
                       <CardTitle className="flex items-center text-lg">
                         <Flag className="w-5 h-5 mr-2 text-warning" />
@@ -520,24 +593,66 @@ const Index = () => {
                 </div>
               </CardContent>
             </Card>
+
+            {/* Interactive CLI Console Preview Card */}
+            <Card 
+              className="mt-12 scroll-mt-24 border-accent/20 bg-card/60 backdrop-blur-sm overflow-hidden card-hover theme-purple cursor-pointer transition-all duration-300 group hover:border-accent/40"
+              onClick={() => navigate('/terminal')}
+              data-fade-in
+            >
+              {/* Terminal Titlebar Mock */}
+              <div className="flex items-center justify-between bg-muted/50 px-4 py-2 border-b border-border/40 select-none">
+                <div className="flex items-center gap-2">
+                  <span className="w-3 h-3 rounded-full bg-destructive/80" />
+                  <span className="w-3 h-3 rounded-full bg-warning/80" />
+                  <span className="w-3 h-3 rounded-full bg-success/80" />
+                  <span className="text-[11px] font-mono text-muted-foreground ml-2">
+                    guest@bassani.io: ~ (bash)
+                  </span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="h-2 w-2 rounded-full bg-success animate-pulse" />
+                  <span className="text-[10px] text-muted-foreground font-mono">Live Session</span>
+                </div>
+              </div>
+              <CardContent className="p-6 font-mono text-xs text-muted-foreground/90 space-y-3 bg-black/25">
+                <div className="flex items-center gap-2">
+                  <span className="text-success font-bold">guest@bassani.io</span>
+                  <span>:</span>
+                  <span className="text-accent">~</span>
+                  <span>$</span>
+                  <span className="text-foreground">./init_console.sh</span>
+                </div>
+                <div className="text-muted-foreground pl-4 space-y-1">
+                  <p>[System] Booting virtual developer environment...</p>
+                  <p>[System] Interactive modules loaded: pong (game), joke (memes), ascii (art)</p>
+                  <p>[System] Hoping to not end up in kernel panic...</p>
+                  <p className="text-accent font-bold animate-pulse">Click this card to enter full screen terminal console &gt;</p>
+                </div>
+                <div className="flex items-center gap-2 pt-2 text-[11px] text-muted-foreground border-t border-border/20 justify-between select-none">
+                  <span className="flex items-center gap-1"><Terminal className="w-3.5 h-3.5 text-accent" /> Click to launch shell</span>
+                  <span className="text-accent/80 group-hover:translate-x-1 transition-transform">Run terminal &rarr;</span>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </section>
 
         {/* Projects Section */}
         <section id="projects" className="py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-4xl font-mono font-bold mb-12 text-center gradient-text">Projects</h2>
+            <h2 className="text-4xl font-display font-bold mb-12 text-center gradient-text-green tracking-tight">Projects</h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
               {projects.slice(0, 2).map((project) => (
                 <Card 
                   key={project.id}
-                  className="card-hover border-primary/20 cursor-pointer transition-all duration-300 hover:scale-105"
+                  className="card-hover theme-green border-success/20 hover:ring-1 hover:ring-success/20 cursor-pointer transition-all duration-300 hover:scale-105"
                   onClick={() => handleProjectSelect(project)}
                   data-fade-in
                 >
                   <CardHeader>
                     <CardTitle className="text-2xl flex items-center">
-                      <Terminal className="w-6 h-6 mr-2 text-primary" />
+                      <Terminal className="w-6 h-6 mr-2 text-success" />
                       {project.title}
                     </CardTitle>
                   </CardHeader>
@@ -554,7 +669,7 @@ const Index = () => {
                       {project.githubUrl && (
                         <Button 
                           variant="outline" 
-                          className="flex-1 border-primary/30 hover:bg-primary/10"
+                          className="flex-1 border-success/30 text-success hover:bg-success/10 hover:text-success font-mono"
                           onClick={(e) => {
                             e.stopPropagation();
                             window.open(project.githubUrl, '_blank');
@@ -567,7 +682,7 @@ const Index = () => {
                       {project.liveUrl && (
                         <Button 
                           variant="outline" 
-                          className="flex-1 border-secondary/30 hover:bg-secondary/10"
+                          className="flex-1 border-success/30 text-success hover:bg-success/10 hover:text-success font-mono"
                           onClick={(e) => {
                             e.stopPropagation();
                             window.open(project.liveUrl, '_blank');
@@ -587,7 +702,7 @@ const Index = () => {
               <Button 
                 onClick={handleProjectsClick}
                 size="lg"
-                className="bg-primary hover:bg-primary/80"
+                className="bg-success text-success-foreground hover:bg-success/80 shadow-[0_0_15px_rgba(152,252,152,0.15)] font-mono"
               >
                 View All Projects
                 <ExternalLink className="w-4 h-4 ml-2" />
@@ -600,11 +715,11 @@ const Index = () => {
         {/* Boxes Writeups Section */}
         <section id="boxes" className="py-16 bg-muted/30">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-4xl font-mono font-bold mb-12 text-center gradient-text">Box Writeups</h2>
+            <h2 className="text-4xl font-display font-bold mb-12 text-center gradient-text tracking-tight">Box Writeups</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
               <Card 
-                className="card-hover border-success/20 cursor-pointer transition-all duration-300 hover:scale-105"
+                className="card-hover theme-green border-success/20 hover:ring-1 hover:ring-success/20 cursor-pointer transition-all duration-300 hover:scale-105"
                 onClick={() => handlePlatformClick('hackthebox')}
                 data-fade-in
               >
@@ -624,7 +739,11 @@ const Index = () => {
                 </CardContent>
               </Card>
 
-              <Card className="card-hover border-secondary/20" data-fade-in>
+              <Card 
+                className="card-hover theme-blue border-blue-500/20 hover:ring-1 hover:ring-blue-500/20 cursor-pointer transition-all duration-300 hover:scale-105"
+                onClick={() => handlePlatformClick('tryhackme')}
+                data-fade-in
+              >
                 <CardHeader>
                   <CardTitle>TryHackMe</CardTitle>
                 </CardHeader>
@@ -639,7 +758,11 @@ const Index = () => {
                 </CardContent>
               </Card>
 
-              <Card className="card-hover border-accent/20" data-fade-in>
+              <Card 
+                className="card-hover theme-yellow border-yellow-500/20 hover:ring-1 hover:ring-yellow-500/20 cursor-pointer transition-all duration-300 hover:scale-105"
+                onClick={() => handlePlatformClick('vulnhub')}
+                data-fade-in
+              >
                 <CardHeader>
                   <CardTitle>VulnHub</CardTitle>
                 </CardHeader>
@@ -655,7 +778,7 @@ const Index = () => {
               </Card>
             </div>
 
-            <Card className="animated-border card-hover" data-fade-in>
+            <Card className="card-hover theme-purple border-accent/20 hover:ring-1 hover:ring-accent/20" data-fade-in>
               <CardHeader>
                 <CardTitle className="text-xl">Methodology & Approach</CardTitle>
               </CardHeader>
@@ -663,7 +786,7 @@ const Index = () => {
                 <p className="text-muted-foreground mb-4">
                   Each writeup tries to follow the same methodology: reconnaissance, enumeration, exploitation, privilege escalation, and post-exploitation. All writeups include explanations and considerations of tools used, thought processes, and lessons learned for educational purposes.
                 </p>
-                <p className="text-sm text-primary">
+                <p className="text-sm text-accent">
                   Click on any platform above to explore the available writeups organized by difficulty level.
                 </p>
               </CardContent>
@@ -674,10 +797,10 @@ const Index = () => {
         {/* CTF Section */}
         <section id="ctf" className="py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-4xl font-mono font-bold mb-12 text-center gradient-text">CTF Solves</h2>
+            <h2 className="text-4xl font-display font-bold mb-12 text-center gradient-text-orange tracking-tight">CTF Solves</h2>
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-              <Card className="card-hover" data-fade-in>
+              <Card className="card-hover theme-orange border-orange-500/20 hover:ring-1 hover:ring-orange-500/20" data-fade-in>
                 <CardHeader>
                   <CardTitle className="text-xl">Recent CTF Writeups</CardTitle>
                 </CardHeader>
@@ -686,7 +809,11 @@ const Index = () => {
                     {ctfWriteups.map((ctf) => (
                       <div 
                         key={ctf.id}
-                        className="border border-border rounded-lg p-4 cursor-pointer hover:bg-muted/50 transition-colors"
+                        className={`border border-border/60 rounded-lg p-4 cursor-pointer transition-all duration-300 ${
+                          ['web', 'web3', 'blockchain', 'crypto', 'reversing'].includes(ctf.category.toLowerCase())
+                            ? 'hover:bg-yellow-500/10 hover:border-yellow-500/30 hover:shadow-[0_0_15px_rgba(234,179,8,0.1)]' 
+                            : 'hover:bg-orange-500/10 hover:border-orange-500/30 hover:shadow-[0_0_15px_rgba(249,115,22,0.1)]'
+                        }`}
                         onClick={() => handleCTFSelect(ctf)}
                       >
                         <div className="flex items-center justify-between mb-2">
@@ -705,48 +832,48 @@ const Index = () => {
                 </CardContent>
               </Card>
 
-              <Card className="card-hover" data-fade-in>
+              <Card className="card-hover theme-orange border-orange-500/20 hover:ring-1 hover:ring-orange-500/20" data-fade-in>
                 <CardHeader>
                   <CardTitle className="text-xl">Challenge Categories</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
-                    <h3 className="font-semibold text-primary mb-1">🌐 Web Exploitation</h3>
+                    <h3 className="font-semibold text-cyan-400 mb-1">🌐 Web Exploitation</h3>
                     <p className="text-sm text-muted-foreground">
                       SQL injection, XSS, CSRF, and authentication bypass techniques with practical examples and prevention methods.
                     </p>
                   </div>
 
                   <div>
-                    <h3 className="font-semibold text-primary mb-1">⛓️ Web3 Blockchain</h3>
+                    <h3 className="font-semibold text-emerald-400 mb-1">⛓️ Web3 Blockchain</h3>
                     <p className="text-sm text-muted-foreground">
                       Smart contracts, code exploration, routing attacks, stolen keys and more.
                     </p>
                   </div>
 
                   <div>
-                    <h3 className="font-semibold text-primary mb-1">🤖 AI/ML Attacks</h3>
+                    <h3 className="font-semibold text-violet-400 mb-1">🤖 AI/ML Attacks</h3>
                     <p className="text-sm text-muted-foreground">
                       Prompt injections, Data/Output attacks, MCP vulnerabilities .
                     </p>
                   </div>
 
                   <div>
-                    <h3 className="font-semibold text-secondary mb-1">⚙️ Binary Exploitation</h3>
+                    <h3 className="font-semibold text-red-400 mb-1">⚙️ Binary Exploitation</h3>
                     <p className="text-sm text-muted-foreground">
                       Binary analysis, reverse engineering, BoF and ROPs.
                     </p>
                   </div>
                   
                   <div>
-                    <h3 className="font-semibold text-accent mb-1">🔐 Cryptography</h3>
+                    <h3 className="font-semibold text-amber-400 mb-1">🔐 Cryptography</h3>
                     <p className="text-sm text-muted-foreground">
                       Classical ciphers, modern encryption analysis, and cryptographic protocol vulnerabilities.
                     </p>
                   </div>
                   
                   <div>
-                    <h3 className="font-semibold text-warning mb-1">🕵️ Digital Forensics</h3>
+                    <h3 className="font-semibold text-grey-400 mb-1">🕵️ Digital Forensics</h3>
                     <p className="text-sm text-muted-foreground">
                       Evidence analysis, data recovery, and investigation techniques using industry-standard tools.
                     </p>
@@ -755,13 +882,13 @@ const Index = () => {
               </Card>
             </div>
 
-            <Card className="card-hover border-primary/20" data-fade-in>
+            <Card className="card-hover theme-orange border-orange-500/20 hover:ring-1 hover:ring-orange-500/20" data-fade-in>
               <CardHeader>
                 <CardTitle className="text-xl">Learning Resources</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">
-                  I usually practice on platforms like HackTheBox, PortSwigger, Olicyber.. and sometimes participate CTF competitions. These challenges are useful to learn new techniques and edge cases.
+                  I usually practice on platforms like HackTheBox, PortSwigger, Hextree.io.. and sometimes participate in weekend CTF competitions. These challenges are useful to learn new techniques and edge cases.
                 </p>
               </CardContent>
             </Card>

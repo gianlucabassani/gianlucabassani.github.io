@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { getWriteupsByPlatform, getWriteupsByDifficulty, Writeup } from '@/data/writeups';
+import PageBackground from '@/components/PageBackground';
 
 interface PlatformViewProps {
   platform: string;
@@ -97,22 +98,92 @@ const PlatformView = ({ platform, onBack, onWriteupSelect }: PlatformViewProps) 
 
   const platformInfo = getPlatformInfo(platform);
 
+  // Dynamic color mappings based on platform
+  const getThemeConfig = (platformName: string) => {
+    switch (platformName.toLowerCase()) {
+      case 'hackthebox':
+        return {
+          glowClass: 'theme-green',
+          borderClass: 'border-success/20',
+          ringClass: 'hover:ring-1 hover:ring-success/20',
+          textClass: 'text-success',
+          btnClass: 'border-success/30 text-success hover:bg-success/10 hover:text-success',
+          textGradient: 'gradient-text-green',
+          accentColor: 'hsl(152,75%,52%)',
+          secondaryColor: 'hsl(185,95%,48%)',
+          itemBorderHover: 'hover:border-success/30',
+          itemTextHover: 'group-hover:text-success',
+          chevronColor: 'group-hover:text-success'
+        };
+      case 'tryhackme':
+        return {
+          glowClass: 'theme-blue',
+          borderClass: 'border-blue-500/20',
+          ringClass: 'hover:ring-1 hover:ring-blue-500/20',
+          textClass: 'text-blue-400',
+          btnClass: 'border-blue-500/30 hover:bg-blue-500/10 hover:text-blue-400 text-blue-400',
+          textGradient: 'gradient-text-blue',
+          accentColor: 'hsl(217,91%,60%)',
+          secondaryColor: 'hsl(185,95%,48%)',
+          itemBorderHover: 'hover:border-blue-500/30',
+          itemTextHover: 'group-hover:text-blue-400',
+          chevronColor: 'group-hover:text-blue-400'
+        };
+      case 'vulnhub':
+        return {
+          glowClass: 'theme-yellow',
+          borderClass: 'border-yellow-500/20',
+          ringClass: 'hover:ring-1 hover:ring-yellow-500/20',
+          textClass: 'text-yellow-400',
+          btnClass: 'border-yellow-500/30 hover:bg-yellow-500/10 hover:text-yellow-400 text-yellow-400',
+          textGradient: 'gradient-text-yellow',
+          accentColor: 'hsl(38,92%,50%)',
+          secondaryColor: 'hsl(25,95%,53%)',
+          itemBorderHover: 'hover:border-yellow-500/30',
+          itemTextHover: 'group-hover:text-yellow-400',
+          chevronColor: 'group-hover:text-yellow-400'
+        };
+      default:
+        return {
+          glowClass: 'theme-purple',
+          borderClass: 'border-accent/20',
+          ringClass: 'hover:ring-1 hover:ring-accent/20',
+          textClass: 'text-accent',
+          btnClass: 'border-accent/30 hover:bg-accent/10 hover:text-accent text-accent-foreground',
+          textGradient: 'gradient-text-purple',
+          accentColor: 'hsl(270,85%,65%)',
+          secondaryColor: 'hsl(185,95%,48%)',
+          itemBorderHover: 'hover:border-accent/30',
+          itemTextHover: 'group-hover:text-accent',
+          chevronColor: 'group-hover:text-accent'
+        };
+    }
+  };
+
+  const theme = getThemeConfig(platform);
+
   return (
-    <div className="min-h-screen bg-background py-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-background py-20 cyber-grid relative overflow-hidden">
+      <PageBackground
+        primary={theme.accentColor}
+        secondary={theme.secondaryColor}
+        variant="scattered"
+      />
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <Button
           variant="outline"
           onClick={onBack}
-          className="mb-8 border-primary/30 hover:bg-primary/10"
+          className={`mb-8 font-mono ${theme.btnClass}`}
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to Platforms
+          Back to Home
         </Button>
 
         {/* Platform Header */}
         <div className="text-center mb-12">
           <div className="text-6xl mb-4">{platformInfo.icon}</div>
-          <h1 className="text-4xl font-mono font-bold gradient-text mb-4">
+          <h1 className={`text-4xl font-display font-bold ${theme.textGradient} mb-4 tracking-tight`}>
             {platformInfo.name} Writeups
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
@@ -133,7 +204,7 @@ const PlatformView = ({ platform, onBack, onWriteupSelect }: PlatformViewProps) 
             return (
               <Card 
                 key={difficulty} 
-                className={`card-hover ${getDifficultyBorderClass(difficulty)} ${writeups.length === 0 ? 'opacity-60' : ''}`}
+                className={`card-hover ${theme.glowClass} ${theme.ringClass} ${getDifficultyBorderClass(difficulty)} ${writeups.length === 0 ? 'opacity-60' : ''}`}
               >
                 <CardHeader>
                   <CardTitle className="flex items-center text-xl">
@@ -165,13 +236,13 @@ const PlatformView = ({ platform, onBack, onWriteupSelect }: PlatformViewProps) 
                       {writeups.map((writeup) => (
                         <div
                           key={writeup.id}
-                          className="group flex items-center justify-between p-4 bg-muted/50 rounded-lg hover:bg-muted/80 transition-all duration-200 cursor-pointer border border-transparent hover:border-primary/20"
+                          className={`group flex items-center justify-between p-4 bg-muted/50 rounded-lg hover:bg-muted/80 transition-all duration-200 cursor-pointer border border-transparent ${theme.itemBorderHover}`}
                           onClick={() => onWriteupSelect(writeup)}
                         >
                           <div className="flex items-center space-x-4">
                             <span className="text-2xl">{getOSIcon(writeup.os)}</span>
                             <div>
-                              <div className="font-semibold text-foreground group-hover:text-primary transition-colors">
+                              <div className={`font-semibold text-foreground ${theme.itemTextHover} transition-colors`}>
                                 {writeup.title}
                               </div>
                               <div className="text-sm text-muted-foreground flex items-center gap-2">
@@ -196,7 +267,7 @@ const PlatformView = ({ platform, onBack, onWriteupSelect }: PlatformViewProps) 
                                 </Badge>
                               ))}
                             </div>
-                            <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                            <ChevronRight className={`w-5 h-5 text-muted-foreground ${theme.chevronColor} transition-colors`} />
                           </div>
                         </div>
                       ))}
