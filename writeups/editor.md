@@ -123,11 +123,8 @@ Access to: http://wiki.editor.htb
 
 ### XWiki RCE (CVE-2025-24893)
 
-- Vulnerable version 15.10.8 identified. (https://www.offsec.com/blog/cve-2025-24893/) 
-	
+- Vulnerable version 15.10.8 identified. (https://www.offsec.com/blog/cve-2025-24893/)
 - PoC available at: [GitHub CVE-2025-24893 PoC](https://github.com/a1baradi/Exploit/blob/main/CVE-2025-24893.py)
-
-
 
 ---
 #### Reverse Shell Payload
