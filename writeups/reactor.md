@@ -472,4 +472,3 @@ cat /root/root.txt
 - [React2Shell-HTB-ThreatSpotlight](https://www.hackthebox.com/blog/react2shell-cve-2025-55182-threat-spotlight)
 - [CVE-2025-55182](https://www.cve.org/CVERecord?id=CVE-2025-55182)
 - [Nodejs Debugger Inspector RCE](https://hacktricks.wiki/en/linux-hardening/privilege-escalation/electron-cef-chromium-debugger-abuse.html#rce-in-nodejs-debuggerinspector)
-- 
