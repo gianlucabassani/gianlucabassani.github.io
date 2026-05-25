@@ -1,11 +1,13 @@
 
-# Introduction
+# AirTouch - HackTheBox Writeup
+
+## Introduction
 
 AirTouch is a Linux-based machine simulating a segmented wireless enterprise environment. The attack path requires a combination of standard network enumeration techniques and specialized wireless attacks.  
 The chain involves identifying credentials exposed through an unusual service, performing lateral movement across multiple VLANs via router exploitation, and executing a targeted Evil Twin attack against a WPA2-Enterprise infrastructure to fully compromise the environment.
 
 ---
-# Initial Enumeration
+## Initial Enumeration
 ## 1. External Enumeration
 
 ### TCP Scan
@@ -512,7 +514,7 @@ cat /root/root.txt
 **Root Flag:** `ebc68dd8<SNIP>`
 
 ---
-# Conclusions
+## Conclusions
 
 * **Information Leakage:** The initial foothold was granted solely due to a misconfigured SNMP service exposing plaintext credentials in the system description, highlighting the importance of restricting management protocols.
     
@@ -521,3 +523,5 @@ cat /root/root.txt
 * **Credential Management:** Hardcoded credentials were pervasive throughout the environment—found in SNMP configurations, PHP web application source code, automation scripts (`send_certs.sh`), and RADIUS configuration files (`hostapd_wpe.eap_user`).
     
 * * **Trust Relationships:** The WPA2-Enterprise security relied entirely on the secrecy of the RADIUS server certificates. Once the router was compromised and certificates exfiltrated, the trust chain was broken, allowing a successful Evil Twin attack against corporate clients.
+
+---
