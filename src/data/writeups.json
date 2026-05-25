@@ -1,5 +1,16 @@
 [
   {
+    "id": "reactor",
+    "title": "Reactor", 
+    "platform": "hackthebox",
+    "difficulty": "easy",
+    "os": "linux",
+    "tags": ["React2Shell", "Next.js", "Node.js"],
+    "date": "2026-05-24",
+    "summary": "Gained initial access by exploiting a React/Next.js command execution flaw, retrieved credentials from an internal SQLite database, and escalated to root through an exposed Node.js inspector debugger session.",
+    "contentPath": "reactor.md"
+  },
+  {
   "id": "airtouch",
   "title": "AirTouch",
   "platform": "hackthebox",

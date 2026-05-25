@@ -1,6 +1,6 @@
 # Puppy - HackTheBox Writeup
 
-# Initial Enumeration
+## Initial Enumeration
 
 ---
 
