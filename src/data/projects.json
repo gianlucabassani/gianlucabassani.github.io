@@ -91,6 +91,7 @@
       "Red Team Ready: Kali Linux node auto-configured",
       "Multi-Tenancy: Support for parallel labs via isolated Terraform states on GitLab"
     ],
+    "featured": true,
     "githubUrl": "https://github.com/gianlucabassani/CyberGuard"
   },
   {
@@ -105,5 +106,27 @@
     "description":"IDA Pro plugin for MCP files analysis that enables users to leverage AI models for binary function analysis.",
     "features": ["Vulnerability Detection","Code Explanation","Security Review"],
     "githubUrl": "https://github.com/AndreaGordanelli/IdaMCP"
+  }
+  ,
+  {
+    "id": "gosint",
+    "title": "Gosint",
+    "category": "security",
+    "status": "in-progress",
+    "technologies": ["Go", "SQLite", "Cobra", "pterm"],
+    "tags": ["OSINT", "Reconnaissance", "Fuzzing", "Subdomain", "Crawler"],
+    "date": "2026-02-28",
+    "summary": "Go-based OSINT & web reconnaissance toolkit",
+    "description": "A command-line OSINT and reconnaissance toolkit written in Go, inspired by Browsint. Supports directory and subdomain fuzzing, web crawling, and an interactive CLI with persistent SQLite storage.",
+    "features": [
+      "Domain reconnaissance (DNS, WHOIS, crt.sh)",
+      "Web crawling and email/phone extraction",
+      "Directory and subdomain fuzzing",
+      "Virtual host discovery",
+      "SQLite persistence and statistics",
+      "Interactive menu and CLI automation"
+    ],
+    "featured": true,
+    "githubUrl": "https://github.com/gianlucabassani/gosint"
   }
 ]

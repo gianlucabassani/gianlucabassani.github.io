@@ -643,7 +643,11 @@ const Index = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-4xl font-display font-bold mb-12 text-center gradient-text-green tracking-tight">Projects</h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-              {projects.slice(0, 2).map((project) => (
+              {(() => {
+                // Prefer explicitly featured projects; fall back to first two projects
+                const featured = projects.filter(p => p.featured);
+                const list = featured.length ? featured.slice(0, 2) : projects.slice(0, 2);
+                return list.map((project) => (
                 <Card 
                   key={project.id}
                   className="card-hover theme-green border-success/20 hover:ring-1 hover:ring-success/20 cursor-pointer transition-all duration-300 hover:scale-105"
@@ -695,7 +699,8 @@ const Index = () => {
                     </div>
                   </CardContent>
                 </Card>
-              ))}
+              ));
+            })()}
             </div>
 
             <div className="text-center">

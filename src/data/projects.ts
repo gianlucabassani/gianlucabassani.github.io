@@ -9,6 +9,7 @@ export interface Project {
   summary: string;
   description: string;
   features: string[];
+  featured?: boolean;
   githubUrl?: string;
   liveUrl?: string;
   contentPath?: string;
