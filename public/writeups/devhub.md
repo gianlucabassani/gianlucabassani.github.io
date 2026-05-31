@@ -160,7 +160,7 @@ cat ~/.ssh/mcp_key.pub
 
 ```bash
 mkdir -p ~/.ssh 
-echo "<INSERT_PUB_KEY_HERE>" >> ~/.ssh/authorized_keys
+echo "<PUB_KEY>" >> ~/.ssh/authorized_keys
 chmod 700 ~/.ssh && chmod 600 ~/.ssh/authorized_keys
 ```
 
