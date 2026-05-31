@@ -1,5 +1,16 @@
 [
   {
+    "id": "devhub",
+    "title": "DevHub",
+    "platform": "hackthebox",
+    "difficulty": "medium",
+    "os": "linux",
+    "tags": ["MCPJam", "Jupyter Lab", "Procfs", "API Abuse"],
+    "date": "2026-05-31",
+    "summary": "Exploited an RCE in MCPJam (CVE-2026-23744) for initial access, performed lateral movement by extracting a Jupyter Lab token from procfs and tunneling via SSH, and escalated to root by extracting hardcoded credentials to abuse a hidden endpoint in an internal Flask API.",
+    "contentPath": "devhub.md"
+  },
+  {
     "id": "reactor",
     "title": "Reactor", 
     "platform": "hackthebox",
