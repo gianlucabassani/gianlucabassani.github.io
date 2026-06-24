@@ -75,24 +75,25 @@
     "githubUrl": "https://github.com/gianlucabassani/blockcheat"
   },
   {
-    "id": "cyberguard",
-    "title": "CyberGuard",
-    "category": "devops",
-    "status": "completed",
-    "technologies": ["Terraform", "Python", "Js", "Bash"],
-    "tags": ["IaC", "Automation", "Security", "PurpleTeam"],
+    "id": "nidavellir",
+    "title": "Nidavellir",
+    "category": "security",
+    "status": "in-progress",
+    "technologies": ["Python", "Go", "Docker", "FastAPI", "Celery"],
+    "tags": ["IaC", "Cyber Arena", "Security", "MCP", "AI Agents", "PurpleTeam"],
     "date": "2025-11-13",
-    "summary": "IaC for Cybersecurity Training Environments",
-    "description": "Infrastructure-as-Code system for creating and managing cybersecurity training environments on OpenStack.",
+    "summary": "Enterprise Cyber Arena for testing AI agents & humans",
+    "description": "An enterprise cyber arena for provisioning arbitrary multi-machine vulnerable topologies on demand and exposing them through MCP gateways to BYO agents.",
     "features": [
-      "One-Click Deployment using Terraform/OpenTofu.",
-      "Live Topology: Real-time visualization of the network graph",
-      "Blue Team Ready: Pre-configured SOC node with Wazuh, Suricata, and MinIO",
-      "Red Team Ready: Kali Linux node auto-configured",
-      "Multi-Tenancy: Support for parallel labs via isolated Terraform states on GitLab"
+      "Dynamic Topologies: Compile provider-agnostic specs (arbitrary nodes & segments) to Docker, OpenStack, or AWS.",
+      "MCP Agent Gateway: Wire BYO agents as Attacker, MITM, or Defender with scope enforcement, guardrails, and budget metering.",
+      "Zero-to-Prompt Scenario Gen: Generate validated topology specs from natural language prompts using LLMs.",
+      "Append-Only Audit: Secure event logging, Fernet-encrypted outputs at rest, and API-key authentication.",
+      "Human-in-the-Loop: Fully drivable by human testers with no model required, plus a mission-control dashboard."
     ],
     "featured": true,
-    "githubUrl": "https://github.com/gianlucabassani/CyberGuard"
+    "githubUrl": "https://github.com/gianlucabassani/Nidavellir",
+    "liveUrl": "https://gianlucabassani.github.io/Nidavellir"
   },
   {
     "id":"Ida",

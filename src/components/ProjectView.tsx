@@ -134,7 +134,7 @@ const ProjectView = ({ project, onBack }: ProjectViewProps) => {
                   className="bg-success text-success-foreground hover:bg-success/90"
                 >
                   <ExternalLink className="w-4 h-4 mr-2" />
-                  Live Demo
+                  Official Page
                 </Button>
               )}
             </div>
