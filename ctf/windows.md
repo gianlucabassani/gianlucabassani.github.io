@@ -6,11 +6,6 @@
 "It is the year 2079. JavaScript has become so absurdly strong that Microslop is rebooting Windows XP through the web. You have been given access to a Microslop employee PC, and your task is to activate Windows XP. Are you skilled enough ?"
 
 ---
-## Summary
-
-This challenge required reverse engineering a custom JavaScript RPC protocol used to emulate Windows XP activation. By recovering hidden file identifiers, reconstructing an obfuscated activation database (`wpa.dbl`), and reproducing Microsoft's telephone activation algorithm, it was possible to generate a valid Confirmation ID and activate the virtual machine to retrieve the flag.
-
----
 ## Prerequisites
 
 This challenge revolves around reverse-engineering client-side JavaScript, abusing a custom Web RPC bridge, and reconstructing legacy Windows XP activation database (`wpa.dbl`) records.
