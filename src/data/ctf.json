@@ -44,7 +44,7 @@
     "points": 496,
     "tags": ["Windows", "JavaScript", "RPC", "crypto", "rev"],
     "date": "2026-06-28",
-    "summary": "Reverse engineer a JavaScript RPC activation flow, rebuild a Windows XP activation database, and generate a valid confirmation ID.",
+    "summary": "Decode a custom Windows activation protocol, recover obfuscated license data, and generate a valid activation token to unlock the system.",
     "contentPath": "windows.md"
   }
 ]
