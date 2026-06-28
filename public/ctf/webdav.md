@@ -1,4 +1,4 @@
-## Original Challenge Description
+## Description
 
 **ITA:**
 "Mio cuggino mi ha fatto il nuovo sito per la mia azienda! Bellissimo no? Sempre una persona piena di opzioni."

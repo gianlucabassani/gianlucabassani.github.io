@@ -34,5 +34,17 @@
     "date": "2025-11-26",
     "summary": "Reconstruct hidden coordinates from a distance matrix using MDS and PCA to reveal the flag embedded in 2D point clouds.",
     "contentPath": "space.md"
+  },
+  {
+    "id": "windows",
+    "title": "Windows eXPerience",
+    "competition": "mntcrl",
+    "category": "misc",
+    "difficulty": "hard",
+    "points": 496,
+    "tags": ["Windows", "JavaScript", "RPC", "crypto", "rev"],
+    "date": "2026-06-28",
+    "summary": "Reverse engineer a JavaScript RPC activation flow, rebuild a Windows XP activation database, and generate a valid confirmation ID.",
+    "contentPath": "windows.md"
   }
 ]
