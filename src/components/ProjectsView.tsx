@@ -68,17 +68,17 @@ const ProjectsView = ({ onBack, onProjectSelect }: ProjectsViewProps) => {
               Back to Home
             </Button>
 
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
               <div>
-                <h1 className="text-4xl md:text-5xl font-display font-bold gradient-text-green mb-4 tracking-tight">
+                <h1 className="text-3xl md:text-5xl font-display font-bold gradient-text-green mb-2 md:mb-4 tracking-tight">
                   Projects
                 </h1>
-                <p className="text-xl text-muted-foreground">
+                <p className="text-base md:text-xl text-muted-foreground">
                   A collection of tools, applications, and libraries I've built
                 </p>
               </div>
 
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 shrink-0">
                 <Button
                   variant={viewMode === 'grid' ? 'default' : 'outline'}
                   size="sm"

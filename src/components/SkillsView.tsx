@@ -433,7 +433,7 @@ function DetailedSkillPopup({
     : 'text-primary';
 
   return (
-    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[115%] z-50">
+    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[115%] max-w-[calc(100vw-2rem)] z-50">
       <div className="bg-popover border border-border shadow-2xl rounded-xl p-5 flex flex-col gap-3 animate-in fade-in zoom-in-95 duration-200 ring-1 ring-border/50">
         
         <div className="flex items-center justify-between">

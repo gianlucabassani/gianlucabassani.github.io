@@ -29,9 +29,10 @@ export default function PageBackground({
   tertiary,
   variant = 'scattered',
 }: PageBackgroundProps) {
+  // Desktop only: on phones the blobs span the whole viewport and wash out the content
   if (variant === 'centered') {
     return (
-      <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+      <div className="hidden md:block absolute inset-0 pointer-events-none overflow-hidden z-0">
         {/* Center – large primary blob */}
         <div
           className="absolute top-[8%] left-[50%] -translate-x-[50%] w-[600px] h-[600px] rounded-full blur-[200px] opacity-[0.018]"
@@ -54,7 +55,7 @@ export default function PageBackground({
 
   // 'scattered' variant — three off-center blobs that fill the page height nicely
   return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+    <div className="hidden md:block absolute inset-0 pointer-events-none overflow-hidden z-0">
       {/* Top-left primary blob */}
       <div
         className="absolute top-[8%] left-[8%] w-[520px] h-[520px] rounded-full blur-[190px] opacity-[0.016]"

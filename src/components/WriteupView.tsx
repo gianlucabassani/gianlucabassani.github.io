@@ -141,7 +141,7 @@ const WriteupView = ({ writeup, onBack }: WriteupViewProps) => {
             Back to Writeups
           </Button>
           
-          <div className="flex items-center gap-4 mb-4">
+          <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-4">
             <Badge 
               variant="secondary" 
               className={`tag ${getDifficultyClasses(writeup.difficulty)}`}
@@ -154,11 +154,11 @@ const WriteupView = ({ writeup, onBack }: WriteupViewProps) => {
             </span>
           </div>
           
-          <h1 className={`text-3xl font-display font-bold ${theme.textGradient} mb-2 tracking-tight`}>
+          <h1 className={`text-2xl sm:text-3xl font-display font-bold ${theme.textGradient} mb-2 tracking-tight`}>
             {writeup.title}
           </h1>
-          
-          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+
+          <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-sm text-muted-foreground">
             <div className="flex items-center gap-1">
               <Calendar className="w-4 h-4" />
               {new Date(writeup.date).toLocaleDateString()}
@@ -195,7 +195,7 @@ const WriteupView = ({ writeup, onBack }: WriteupViewProps) => {
 
         {/* Writeup Content */}
         <Card className={`card-hover ${theme.glowClass} ${theme.ringClass} ${theme.borderClass}`}>
-          <CardContent className="p-8">
+          <CardContent className="p-4 sm:p-8">
             {isLoading ? (
               <div className="text-center py-8">
                 <div className="text-muted-foreground">Loading writeup content...</div>

@@ -163,7 +163,7 @@ const PlatformView = ({ platform, onBack, onWriteupSelect }: PlatformViewProps) 
   const theme = getThemeConfig(platform);
 
   return (
-    <div className="min-h-screen bg-background py-20 cyber-grid relative overflow-hidden">
+    <div className="min-h-screen bg-background py-10 md:py-20 cyber-grid relative overflow-hidden">
       <PageBackground
         primary={theme.accentColor}
         secondary={theme.secondaryColor}
@@ -183,10 +183,10 @@ const PlatformView = ({ platform, onBack, onWriteupSelect }: PlatformViewProps) 
         {/* Platform Header */}
         <div className="text-center mb-12">
           <div className="text-6xl mb-4">{platformInfo.icon}</div>
-          <h1 className={`text-4xl font-display font-bold ${theme.textGradient} mb-4 tracking-tight`}>
+          <h1 className={`text-3xl md:text-4xl font-display font-bold ${theme.textGradient} mb-4 tracking-tight`}>
             {platformInfo.name} Writeups
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-base md:text-xl text-muted-foreground max-w-2xl mx-auto">
             {platformInfo.description}
           </p>
           <div className="mt-6">
@@ -255,8 +255,8 @@ const PlatformView = ({ platform, onBack, onWriteupSelect }: PlatformViewProps) 
                               </div>
                             </div>
                           </div>
-                          <div className="flex items-center">
-                            <div className="flex flex-wrap gap-1 mr-3">
+                          <div className="flex items-center shrink-0">
+                            <div className="hidden sm:flex flex-wrap gap-1 mr-3">
                               {writeup.tags.slice(0, 3).map((tag) => (
                                 <Badge 
                                   key={tag} 

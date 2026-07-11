@@ -324,7 +324,7 @@ export default function Terminal({ onClose }: TerminalProps) {
         command: 'system_init',
         output: (
           <div className="font-mono text-sm leading-relaxed">
-            <pre className="text-xs text-[#39ff14]/90 leading-none mb-3 font-bold select-none">
+            <pre className="hidden md:block text-xs text-[#39ff14]/90 leading-none mb-3 font-bold select-none">
 {`  ███╗   ██╗███████╗ ██████╗       ███████╗██╗  ██╗███████╗██╗     ██╗      ██████╗██╗   ██╗
   ████╗  ██║██╔════╝██╔═══██╗      ██╔════╝██║  ██║██╔════╝██║     ██║     ██╔════╝╚██╗ ██╔╝
   ██╔██╗ ██║█████╗  ██║   ██║█████╗███████╗███████║█████╗  ██║     ██║     ██║      ╚████╔╝ 
@@ -332,7 +332,10 @@ export default function Terminal({ onClose }: TerminalProps) {
   ██║ ╚████║███████╗╚██████╔╝      ███████║██║  ██║███████╗███████╗███████╗╚██████╗   ██║   
   ╚═╝  ╚═══╝╚══════╝ ╚═════╝       ╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝ ╚═════╝   ╚═╝   `}
             </pre>
-            <div className="flex items-center gap-2 mb-2">
+            <p className="md:hidden text-[#39ff14] font-bold text-xl tracking-[0.2em] mb-3 select-none">
+              NEO-SHELLCY<span className="terminal-cursor bg-[#39ff14]" />
+            </p>
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 mb-2">
               <span className="text-[#39ff14] font-bold text-sm">Neo-ShellCy</span>
               <span className="text-muted-foreground text-xs">is the little brother of the Peaky ShellCy project</span>
             </div>
@@ -423,7 +426,7 @@ export default function Terminal({ onClose }: TerminalProps) {
                 if (skill.variant === 'secondary') color = 'text-[#00b4ff]';
                 return (
                   <div key={skill.id} className="flex items-center gap-2">
-                    <span className="w-48 text-muted-foreground truncate">{skill.name}</span>
+                    <span className="w-28 sm:w-48 text-muted-foreground truncate">{skill.name}</span>
                     <span className={`font-bold ${color}`}>{bar}</span>
                     <span className="text-muted-foreground text-[10px]">{skill.level}%</span>
                   </div>
@@ -542,8 +545,8 @@ export default function Terminal({ onClose }: TerminalProps) {
             <span className="w-3 h-3 rounded-full bg-[#28c840]" />
           </div>
           <TerminalIcon className="w-3.5 h-3.5 text-[#39ff14]/70" />
-          <span className="text-xs font-bold font-mono tracking-wide text-[#39ff14]/80">
-            neo-shellcy — guest@gianlucabassani.io
+          <span className="text-xs font-bold font-mono tracking-wide text-[#39ff14]/80 truncate">
+            neo-shellcy<span className="hidden sm:inline"> — guest@gianlucabassani.io</span>
           </span>
         </div>
         <div className="flex items-center gap-1.5">

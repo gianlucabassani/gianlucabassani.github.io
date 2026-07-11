@@ -274,8 +274,8 @@ const Index = () => {
   }
   return (
     <div className="min-h-screen bg-background text-foreground cyber-grid">
-      {/* Dynamic Ambient Background Blobs — fixed parallax layer, one per section */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+      {/* Dynamic Ambient Background Blobs — fixed parallax layer, one per section (desktop only: on phones they cover the whole screen and wash out the content) */}
+      <div className="hidden md:block fixed inset-0 pointer-events-none overflow-hidden z-0">
         {/* About Me — Purple vaporwave */}
         <div 
           className="absolute top-[8%] left-[8%] w-[550px] h-[550px] rounded-full blur-[200px] opacity-[0.018]"
@@ -321,12 +321,12 @@ const Index = () => {
       <nav className="fixed top-0 w-full bg-background/90 backdrop-blur-md border-b border-border z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
-            <div className="font-mono text-lg md:text-xl font-bold flex items-center">
-              <span className={`gradient-text transition-all duration-300 inline-block ${isFading ? 'opacity-0 -translate-y-1' : 'opacity-100 translate-y-0'}`}>
+            <div className="font-mono text-base md:text-xl font-bold flex items-center min-w-0 mr-3">
+              <span className={`gradient-text transition-all duration-300 inline-block truncate ${isFading ? 'opacity-0 -translate-y-1' : 'opacity-100 translate-y-0'}`}>
                 {displayName}
               </span>
-              <span className="text-muted-foreground/30 mx-2 select-none">|</span>
-              <span className="text-foreground/80 font-light text-xs md:text-sm tracking-widest uppercase">CyberSecurity</span>
+              <span className="text-muted-foreground/30 mx-2 select-none hidden sm:inline">|</span>
+              <span className="text-foreground/80 font-light text-xs md:text-sm tracking-widest uppercase hidden sm:inline">CyberSecurity</span>
             </div>
             
             {/* Desktop Navigation */}
@@ -372,28 +372,28 @@ const Index = () => {
 
       <main className="pt-20">
         {/* About Section */}
-        <section id="about" className="py-16">
+        <section id="about" className="py-8 md:py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Hero */}
             <div className="relative text-center mb-12">
-              <div className="relative z-10 py-20">
-              <h1 className="text-5xl md:text-7xl font-display font-bold mb-6 tracking-tight">
+              <div className="relative z-10 py-10 md:py-20">
+              <h1 className="text-4xl sm:text-5xl md:text-7xl font-display font-bold mb-6 tracking-tight">
                 <span className="gradient-text-purple">Welcome to my</span>
                 <br />
                 <span className="gradient-text-accent">digital space</span>
               </h1>
-              <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-4">
+              <p className="text-base sm:text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-4 px-2">
                 Penetration Testing | AI Red Team | Agentic Automation
-                
+
               </p>
-              <p className="text-base md:text-lg text-muted-foreground/80 max-w-2xl mx-auto mb-8 font-mono">
+              <p className="text-sm sm:text-base md:text-lg text-muted-foreground/80 max-w-2xl mx-auto mb-8 font-mono px-2">
                 Cybersecurity enthusiast and curious mind building side projects around whatever topics I'm currently breaking into. Occasional CTF player with pwnthem0le in Turin. 
               </p>
-                <div className="flex justify-center gap-4 flex-wrap">
-                  <Button 
-                    onClick={() => scrollToSection('projects')} 
-                    size="lg" 
-                    className="glow-primary bg-primary hover:bg-primary/80 text-primary-foreground font-mono"
+                <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 px-4">
+                  <Button
+                    onClick={() => scrollToSection('projects')}
+                    size="lg"
+                    className="w-full sm:w-auto glow-primary bg-primary hover:bg-primary/80 text-primary-foreground font-mono"
                   >
                     Explore My Work
                     <ChevronDown className="ml-2 w-5 h-5" />
@@ -402,7 +402,7 @@ const Index = () => {
                       onClick={() => navigate('/terminal')}
                       variant="outline"
                       size="lg"
-                      className="border-success/30 text-success hover:bg-success/10 font-mono"
+                      className="w-full sm:w-auto border-success/30 text-success hover:bg-success/10 font-mono"
                     >
                       Launch CLI Console
                       <Terminal className="ml-2 w-5 h-5" />
@@ -501,21 +501,21 @@ const Index = () => {
                     </CardHeader>
                     <CardContent>
                       <div className="space-y-3">
-                        <div className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
+                        <div className="flex flex-wrap items-center justify-between gap-2 p-3 bg-muted/30 rounded-lg">
                           <div>
                             <div className="font-medium">CCNA ITN, SRWE, ENSA</div>
                             <div className="text-sm text-muted-foreground">CISCO</div>
                           </div>
                           <Badge className="bg-success/20 border-success/40 text-success">Certified</Badge>
                         </div>
-                        <div className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
+                        <div className="flex flex-wrap items-center justify-between gap-2 p-3 bg-muted/30 rounded-lg">
                           <div>
                             <div className="font-medium">AI Red Teamer Course</div>
                             <div className="text-sm text-muted-foreground">Hack The Box</div>
                           </div>
                           <Badge className="bg-success/20 border-success/40 text-success">Certified</Badge>
                         </div>
-                        <div className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
+                        <div className="flex flex-wrap items-center justify-between gap-2 p-3 bg-muted/30 rounded-lg">
                           <div>
                             <div className="font-medium">Certified Penetration Tester Specialist (CPTS)</div>
                             <div className="text-sm text-muted-foreground">Hack The Box</div>
@@ -601,22 +601,22 @@ const Index = () => {
               data-fade-in
             >
               {/* Terminal Titlebar Mock */}
-              <div className="flex items-center justify-between bg-muted/50 px-4 py-2 border-b border-border/40 select-none">
-                <div className="flex items-center gap-2">
-                  <span className="w-3 h-3 rounded-full bg-destructive/80" />
-                  <span className="w-3 h-3 rounded-full bg-warning/80" />
-                  <span className="w-3 h-3 rounded-full bg-success/80" />
-                  <span className="text-[11px] font-mono text-muted-foreground ml-2">
-                    guest@bassani.io: ~ (bash)
+              <div className="flex items-center justify-between gap-2 bg-muted/50 px-3 sm:px-4 py-2 border-b border-border/40 select-none">
+                <div className="flex items-center gap-2 min-w-0">
+                  <span className="w-3 h-3 rounded-full bg-destructive/80 shrink-0" />
+                  <span className="w-3 h-3 rounded-full bg-warning/80 shrink-0" />
+                  <span className="w-3 h-3 rounded-full bg-success/80 shrink-0" />
+                  <span className="text-[11px] font-mono text-muted-foreground ml-2 truncate">
+                    <span className="hidden sm:inline">guest@bassani.io: </span>~ (bash)
                   </span>
                 </div>
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center gap-1.5 shrink-0">
                   <span className="h-2 w-2 rounded-full bg-success animate-pulse" />
-                  <span className="text-[10px] text-muted-foreground font-mono">Live Session</span>
+                  <span className="text-[10px] text-muted-foreground font-mono whitespace-nowrap">Live Session</span>
                 </div>
               </div>
-              <CardContent className="p-6 font-mono text-xs text-muted-foreground/90 space-y-3 bg-black/25">
-                <div className="flex items-center gap-2">
+              <CardContent className="p-4 sm:p-6 font-mono text-xs text-muted-foreground/90 space-y-3 bg-black/25">
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
                   <span className="text-success font-bold">guest@bassani.io</span>
                   <span>:</span>
                   <span className="text-accent">~</span>
@@ -629,9 +629,9 @@ const Index = () => {
                   <p>[System] Hoping to not end up in kernel panic...</p>
                   <p className="text-accent font-bold animate-pulse">Click this card to enter full screen terminal console &gt;</p>
                 </div>
-                <div className="flex items-center gap-2 pt-2 text-[11px] text-muted-foreground border-t border-border/20 justify-between select-none">
-                  <span className="flex items-center gap-1"><Terminal className="w-3.5 h-3.5 text-accent" /> Click to launch shell</span>
-                  <span className="text-accent/80 group-hover:translate-x-1 transition-transform">Run terminal &rarr;</span>
+                <div className="flex flex-wrap items-center gap-2 pt-2 text-[11px] text-muted-foreground border-t border-border/20 justify-between select-none">
+                  <span className="flex items-center gap-1"><Terminal className="w-3.5 h-3.5 text-accent shrink-0" /> Click to launch shell</span>
+                  <span className="text-accent/80 group-hover:translate-x-1 transition-transform whitespace-nowrap">Run terminal &rarr;</span>
                 </div>
               </CardContent>
             </Card>
@@ -639,9 +639,9 @@ const Index = () => {
         </section>
 
         {/* Projects Section */}
-        <section id="projects" className="py-16">
+        <section id="projects" className="py-12 md:py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-4xl font-display font-bold mb-12 text-center gradient-text-green tracking-tight">Projects</h2>
+            <h2 className="text-3xl md:text-4xl font-display font-bold mb-8 md:mb-12 text-center gradient-text-green tracking-tight">Projects</h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
               {(() => {
                 // Prefer explicitly featured projects; fall back to first two projects
@@ -669,11 +669,11 @@ const Index = () => {
                         <Badge key={tag} variant="secondary" className="tag">{tag}</Badge>
                       ))}
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex flex-wrap gap-2">
                       {project.githubUrl && (
-                        <Button 
-                          variant="outline" 
-                          className="flex-1 border-success/30 text-success hover:bg-success/10 hover:text-success font-mono"
+                        <Button
+                          variant="outline"
+                          className="flex-1 min-w-[8.5rem] border-success/30 text-success hover:bg-success/10 hover:text-success font-mono"
                           onClick={(e) => {
                             e.stopPropagation();
                             window.open(project.githubUrl, '_blank');
@@ -684,9 +684,9 @@ const Index = () => {
                         </Button>
                       )}
                       {project.liveUrl && (
-                        <Button 
-                          variant="outline" 
-                          className="flex-1 border-success/30 text-success hover:bg-success/10 hover:text-success font-mono"
+                        <Button
+                          variant="outline"
+                          className="flex-1 min-w-[8.5rem] border-success/30 text-success hover:bg-success/10 hover:text-success font-mono"
                           onClick={(e) => {
                             e.stopPropagation();
                             window.open(project.liveUrl, '_blank');
@@ -718,9 +718,9 @@ const Index = () => {
         </section>
 
         {/* Boxes Writeups Section */}
-        <section id="boxes" className="py-16 bg-muted/30">
+        <section id="boxes" className="py-12 md:py-16 bg-muted/30">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-4xl font-display font-bold mb-12 text-center gradient-text tracking-tight">Box Writeups</h2>
+            <h2 className="text-3xl md:text-4xl font-display font-bold mb-8 md:mb-12 text-center gradient-text tracking-tight">Box Writeups</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
               <Card 
@@ -800,9 +800,9 @@ const Index = () => {
         </section>
 
         {/* CTF Section */}
-        <section id="ctf" className="py-16">
+        <section id="ctf" className="py-12 md:py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-4xl font-display font-bold mb-12 text-center gradient-text-orange tracking-tight">CTF Solves</h2>
+            <h2 className="text-3xl md:text-4xl font-display font-bold mb-8 md:mb-12 text-center gradient-text-orange tracking-tight">CTF Solves</h2>
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
               <Card className="card-hover theme-orange border-orange-500/20 hover:ring-1 hover:ring-orange-500/20" data-fade-in>

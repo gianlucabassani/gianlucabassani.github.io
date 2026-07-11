@@ -10,15 +10,16 @@ export default function TerminalPage() {
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col font-mono relative overflow-hidden tech-grid">
       {/* Top Navigation Bar */}
-      <header className="w-full bg-background/80 backdrop-blur-md border-b border-border/60 py-4 px-6 flex justify-between items-center z-10 select-none">
-        <div className="flex items-center gap-3">
-          <Button 
-            variant="ghost" 
-            onClick={() => navigate('/')} 
+      <header className="w-full bg-background/80 backdrop-blur-md border-b border-border/60 py-3 px-3 md:py-4 md:px-6 flex justify-between items-center gap-2 z-10 select-none">
+        <div className="flex items-center gap-3 min-w-0">
+          <Button
+            variant="ghost"
+            onClick={() => navigate('/')}
             className="group hover:bg-secondary/50 text-muted-foreground hover:text-foreground font-mono text-sm py-1.5 px-3"
           >
             <ArrowLeft className="w-4 h-4 mr-2 transition-transform group-hover:-translate-x-1" />
-            Back to Website
+            <span className="hidden sm:inline">Back to Website</span>
+            <span className="sm:hidden">Back</span>
           </Button>
           <div className="h-6 w-[1px] bg-border/60 mx-1 hidden sm:block" />
           <div className="hidden sm:flex items-center gap-2 text-xs text-muted-foreground">
@@ -27,15 +28,16 @@ export default function TerminalPage() {
           </div>
         </div>
 
-        <div className="flex items-center gap-2 text-sm font-bold text-accent">
+        <div className="flex items-center gap-2 text-sm font-bold text-accent shrink-0">
           <TerminalIcon className="w-4 h-4" />
-          <span>guest@bassani.io:~$ CLI Console</span>
+          <span className="hidden sm:inline">guest@bassani.io:~$ CLI Console</span>
+          <span className="sm:hidden">CLI Console</span>
         </div>
       </header>
 
       {/* Terminal Container */}
-      <main className="flex-1 flex items-center justify-center p-4 md:p-8 z-10">
-        <div className="w-full max-w-5xl h-[calc(100vh-180px)] min-h-[450px]">
+      <main className="flex-1 flex items-center justify-center p-2 sm:p-4 md:p-8 z-10">
+        <div className="w-full max-w-5xl h-[calc(100dvh-120px)] md:h-[calc(100vh-180px)] min-h-[400px]">
           <Terminal />
         </div>
       </main>

@@ -106,7 +106,7 @@ const CTFView = ({ ctfWriteup, onBack }: CTFViewProps) => {
             Back to Home
           </Button>
           
-          <div className="flex items-center gap-4 mb-4">
+          <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-4">
             <Badge 
               variant="secondary" 
               className={`tag ${getDifficultyClasses(ctfWriteup.difficulty)}`}
@@ -119,11 +119,11 @@ const CTFView = ({ ctfWriteup, onBack }: CTFViewProps) => {
             </span>
           </div>
           
-          <h1 className={`text-3xl font-display font-bold ${isYellow ? 'gradient-text-yellow' : 'gradient-text-orange'} mb-2`}>
+          <h1 className={`text-2xl sm:text-3xl font-display font-bold ${isYellow ? 'gradient-text-yellow' : 'gradient-text-orange'} mb-2`}>
             {ctfWriteup.title}
           </h1>
-          
-          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+
+          <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-sm text-muted-foreground">
             <div className="flex items-center gap-1">
               <Calendar className="w-4 h-4" />
               {new Date(ctfWriteup.date).toLocaleDateString()}
@@ -160,7 +160,7 @@ const CTFView = ({ ctfWriteup, onBack }: CTFViewProps) => {
 
         {/* CTF Content */}
         <Card className={`card-hover ${isYellow ? 'theme-yellow border-yellow-500/20 hover:ring-1 hover:ring-yellow-500/20' : 'theme-orange border-orange-500/20 hover:ring-1 hover:ring-orange-500/20'}`}>
-          <CardContent className="p-8">
+          <CardContent className="p-4 sm:p-8">
             {isLoading ? (
               <div className="flex items-center justify-center py-12">
                 <div className={`animate-spin rounded-full h-8 w-8 border-b-2 ${isYellow ? 'border-yellow-500' : 'border-orange-500'}`}></div>
