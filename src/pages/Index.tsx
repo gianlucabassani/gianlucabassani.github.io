@@ -387,7 +387,7 @@ const Index = () => {
 
               </p>
               <p className="text-sm sm:text-base md:text-lg text-muted-foreground/80 max-w-2xl mx-auto mb-8 font-mono px-2">
-                Cybersecurity enthusiast and curious mind building side projects around whatever topics I'm currently breaking into. Occasional CTF player with pwnthem0le in Turin. 
+                Cybersecurity enthusiast and curious mind building side projects around whatever topics I'm currently breaking into. CTF player with pwnthem0le in Turin. 
               </p>
                 <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 px-4">
                   <Button
