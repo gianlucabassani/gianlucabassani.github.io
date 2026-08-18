@@ -742,8 +742,3 @@
     border-left-color: hsl(var(--theme-purple)) !important;
   }
 }
-
-.prose.prose-purple blockquote {
-  border-left-color: hsl(var(--theme-purple)) !important;
-}
-}
