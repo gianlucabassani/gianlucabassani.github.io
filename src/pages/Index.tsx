@@ -30,20 +30,20 @@ const Index = () => {
     const interval = setInterval(() => {
       setIsFading(true);
       setTimeout(() => {
-        setDisplayName(prev => prev === 'Gianluca Bassani' ? 'Prime' : 'Gianluca Bassani');
+        setDisplayName(prev => prev === 'Gianluca Bassani' ? '0xPr1m3' : 'Gianluca Bassani');
         setIsFading(false);
       }, 300);
     }, 4000);
     return () => clearInterval(interval);
   }, []);
-    
+
   // Parse current route to determine view
   const parseRoute = () => {
     const path = location.pathname;
     const segments = path.split('/').filter(s => s);
-    
+
     if (segments.length === 0) return { view: 'main' as const, section: 'about' };
-    
+
     const section = segments[0];
     if (section === 'projects' && segments[1]) {
       return { view: 'project' as const, projectId: segments[1] };
@@ -66,10 +66,10 @@ const Index = () => {
     if (section === 'certifications') {
       return { view: 'certifications' as const };
     }
-    
+
     return { view: 'main' as const, section };
   };
-  
+
   const currentRoute = parseRoute();
   const [currentView, setCurrentView] = useState<'main' | 'platform' | 'writeup' | 'ctf' | 'projects' | 'project' | 'skills' | 'certifications'>(currentRoute.view);
   const [selectedPlatform, setSelectedPlatform] = useState<string>(currentRoute.platform || '');
@@ -90,7 +90,7 @@ const Index = () => {
     setCurrentView(route.view);
     setActiveSection(route.section || 'about');
     setSelectedPlatform(route.platform || '');
-    
+
     // Load specific items based on route
     if (route.projectId) {
       const project = projects.find(p => p.id === route.projectId);
@@ -159,7 +159,7 @@ const Index = () => {
   const getSkillClasses = (skillName: string): string => {
     const skill = skillsData.find(s => s.name === skillName);
     const variant = skill?.variant || 'secondary';
-    
+
     const colorClasses = {
       primary: 'bg-primary/20 text-primary border-primary/30',
       secondary: 'bg-secondary/20 text-secondary border-secondary/30',
@@ -168,7 +168,7 @@ const Index = () => {
       success: 'bg-success/20 text-success border-success/30',
       destructive: 'bg-destructive/20 text-destructive border-destructive/30'
     };
-    
+
     return colorClasses[variant] || colorClasses.secondary;
   };
 
@@ -190,7 +190,7 @@ const Index = () => {
 
   useEffect(() => {
     if (currentView !== 'main') return;
-    
+
     // Observer for nav active state
     const navObserver = new IntersectionObserver(
       (entries) => {
@@ -265,58 +265,58 @@ const Index = () => {
 
   if (currentView === 'platform' && selectedPlatform) {
     return (
-      <PlatformView 
-        platform={selectedPlatform} 
-        onBack={handleBackToMain} 
+      <PlatformView
+        platform={selectedPlatform}
+        onBack={handleBackToMain}
         onWriteupSelect={handleWriteupSelect}
       />
     );
   }
   return (
     <div className="min-h-screen bg-background text-foreground cyber-grid">
-      {/* Dynamic Ambient Background Blobs — fixed parallax layer, one per section (desktop only: on phones they cover the whole screen and wash out the content) */}
-      <div className="hidden md:block fixed inset-0 pointer-events-none overflow-hidden z-0">
+      {/* Dynamic Ambient Background Blobs — fixed parallax layer aligned with main sections */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
         {/* About Me — Purple vaporwave */}
-        <div 
-          className="absolute top-[8%] left-[8%] w-[550px] h-[550px] rounded-full blur-[200px] opacity-[0.018]"
-          style={{ backgroundColor: 'hsl(270,85%,65%)', animation: 'pulse 12s cubic-bezier(0.4, 0, 0.6, 1) infinite, float-blob-1 25s ease-in-out infinite' }} 
+        <div
+          className="absolute top-[6%] left-[4%] w-[320px] h-[320px] md:w-[600px] md:h-[600px] rounded-full blur-[140px] md:blur-[220px] opacity-[0.09] md:opacity-[0.14]"
+          style={{ backgroundColor: 'hsl(270,85%,65%)', animation: 'pulse 12s cubic-bezier(0.4, 0, 0.6, 1) infinite, float-blob-1 25s ease-in-out infinite' }}
         />
-        <div 
-          className="absolute top-[12%] right-[8%] w-[600px] h-[600px] rounded-full blur-[200px] opacity-[0.012]"
-          style={{ backgroundColor: 'hsl(325,90%,62%)', animation: 'pulse 16s cubic-bezier(0.4, 0, 0.6, 1) infinite, float-blob-2 30s ease-in-out infinite' }} 
+        <div
+          className="absolute top-[10%] right-[4%] w-[300px] h-[300px] md:w-[650px] md:h-[650px] rounded-full blur-[130px] md:blur-[220px] opacity-[0.07] md:opacity-[0.11]"
+          style={{ backgroundColor: 'hsl(325,90%,62%)', animation: 'pulse 16s cubic-bezier(0.4, 0, 0.6, 1) infinite, float-blob-2 30s ease-in-out infinite' }}
         />
-        {/* Skills / Certifications — Purple + Cyan */}
-        <div 
-          className="absolute top-[28%] left-[55%] w-[480px] h-[480px] rounded-full blur-[190px] opacity-[0.013]"
-          style={{ backgroundColor: 'hsl(185,95%,48%)', animation: 'pulse 18s cubic-bezier(0.4, 0, 0.6, 1) infinite, float-blob-1 32s ease-in-out infinite' }} 
+        {/* Skills / Certifications — Cyber Cyan */}
+        <div
+          className="absolute top-[28%] left-[50%] -translate-x-[50%] w-[280px] h-[280px] md:w-[520px] md:h-[520px] rounded-full blur-[120px] md:blur-[200px] opacity-[0.06] md:opacity-[0.10]"
+          style={{ backgroundColor: 'hsl(185,95%,48%)', animation: 'pulse 18s cubic-bezier(0.4, 0, 0.6, 1) infinite, float-blob-1 32s ease-in-out infinite' }}
         />
-        {/* Projects — Green */}
-        <div 
-          className="absolute top-[42%] left-[12%] w-[650px] h-[650px] rounded-full blur-[200px] opacity-[0.015]"
-          style={{ backgroundColor: 'hsl(152,75%,52%)', animation: 'pulse 14s cubic-bezier(0.4, 0, 0.6, 1) infinite, float-blob-1 28s ease-in-out infinite' }} 
+        {/* Projects — Mint Green */}
+        <div
+          className="absolute top-[45%] left-[8%] w-[320px] h-[320px] md:w-[680px] md:h-[680px] rounded-full blur-[140px] md:blur-[220px] opacity-[0.08] md:opacity-[0.13]"
+          style={{ backgroundColor: 'hsl(152,75%,52%)', animation: 'pulse 14s cubic-bezier(0.4, 0, 0.6, 1) infinite, float-blob-1 28s ease-in-out infinite' }}
         />
-        {/* Box Writeups — Blue + Yellow */}
-        <div 
-          className="absolute top-[62%] right-[10%] w-[550px] h-[550px] rounded-full blur-[190px] opacity-[0.013]"
-          style={{ backgroundColor: 'hsl(217,91%,60%)', animation: 'pulse 18s cubic-bezier(0.4, 0, 0.6, 1) infinite, float-blob-2 32s ease-in-out infinite' }} 
+        {/* Box Writeups — Electric Blue + Gold */}
+        <div
+          className="absolute top-[65%] right-[6%] w-[300px] h-[300px] md:w-[600px] md:h-[600px] rounded-full blur-[130px] md:blur-[210px] opacity-[0.07] md:opacity-[0.11]"
+          style={{ backgroundColor: 'hsl(217,91%,60%)', animation: 'pulse 18s cubic-bezier(0.4, 0, 0.6, 1) infinite, float-blob-2 32s ease-in-out infinite' }}
         />
-        <div 
-          className="absolute top-[68%] left-[6%] w-[500px] h-[500px] rounded-full blur-[190px] opacity-[0.011]"
-          style={{ backgroundColor: 'hsl(38,92%,50%)', animation: 'pulse 12s cubic-bezier(0.4, 0, 0.6, 1) infinite, float-blob-1 26s ease-in-out infinite' }} 
+        <div
+          className="absolute top-[70%] left-[4%] w-[280px] h-[280px] md:w-[550px] md:h-[550px] rounded-full blur-[120px] md:blur-[200px] opacity-[0.06] md:opacity-[0.10]"
+          style={{ backgroundColor: 'hsl(38,92%,50%)', animation: 'pulse 12s cubic-bezier(0.4, 0, 0.6, 1) infinite, float-blob-1 26s ease-in-out infinite' }}
         />
-        {/* CTF Solves — Orange */}
-        <div 
-          className="absolute top-[86%] left-[18%] w-[600px] h-[600px] rounded-full blur-[200px] opacity-[0.016]"
-          style={{ backgroundColor: 'hsl(25,95%,53%)', animation: 'pulse 15s cubic-bezier(0.4, 0, 0.6, 1) infinite, float-blob-2 35s ease-in-out infinite' }} 
+        {/* CTF Solves — Sunset Orange */}
+        <div
+          className="absolute top-[88%] left-[15%] w-[320px] h-[320px] md:w-[650px] md:h-[650px] rounded-full blur-[140px] md:blur-[220px] opacity-[0.08] md:opacity-[0.13]"
+          style={{ backgroundColor: 'hsl(25,95%,53%)', animation: 'pulse 15s cubic-bezier(0.4, 0, 0.6, 1) infinite, float-blob-2 35s ease-in-out infinite' }}
         />
       </div>
 
       {/* Scroll Progress Bar */}
-      <div 
-        className="scroll-progress" 
+      <div
+        className="scroll-progress"
         style={{ width: `${scrollProgress}%` }}
       />
-      
+
       {/* Navigation */}
       <nav className="fixed top-0 w-full bg-background/90 backdrop-blur-md border-b border-border z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -328,7 +328,7 @@ const Index = () => {
               <span className="text-muted-foreground/30 mx-2 select-none hidden sm:inline">|</span>
               <span className="text-foreground/80 font-light text-xs md:text-sm tracking-widest uppercase hidden sm:inline">CyberSecurity</span>
             </div>
-            
+
             {/* Desktop Navigation */}
             <div className="hidden md:flex space-x-8">
               {navItems.map((item) => (
@@ -377,18 +377,18 @@ const Index = () => {
             {/* Hero */}
             <div className="relative text-center mb-12">
               <div className="relative z-10 py-10 md:py-20">
-              <h1 className="text-4xl sm:text-5xl md:text-7xl font-display font-bold mb-6 tracking-tight">
-                <span className="gradient-text-purple">Welcome to my</span>
-                <br />
-                <span className="gradient-text-accent">digital space</span>
-              </h1>
-              <p className="text-base sm:text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-4 px-2">
-                Penetration Testing | AI Red Team | Agentic Automation
+                <h1 className="text-4xl sm:text-5xl md:text-7xl font-display font-bold mb-6 tracking-tight">
+                  <span className="gradient-text-purple">Welcome to my</span>
+                  <br />
+                  <span className="gradient-text-accent">digital space</span>
+                </h1>
+                <p className="text-base sm:text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-4 px-2">
+                  Penetration Testing | AI Red Team | Agentic Automation
 
-              </p>
-              <p className="text-sm sm:text-base md:text-lg text-muted-foreground/80 max-w-2xl mx-auto mb-8 font-mono px-2">
-                Cybersecurity enthusiast and curious mind building side projects around whatever topics I'm currently breaking into. CTF player with pwnthem0le in Turin. 
-              </p>
+                </p>
+                <p className="text-sm sm:text-base md:text-lg text-muted-foreground/80 max-w-2xl mx-auto mb-8 font-mono px-2">
+                  Cybersecurity enthusiast and curious mind building side projects around whatever topics I'm currently breaking into. CTF player with pwnthem0le in Turin.
+                </p>
                 <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 px-4">
                   <Button
                     onClick={() => scrollToSection('projects')}
@@ -399,13 +399,13 @@ const Index = () => {
                     <ChevronDown className="ml-2 w-5 h-5" />
                   </Button>
                   <Button
-                      onClick={() => navigate('/terminal')}
-                      variant="outline"
-                      size="lg"
-                      className="w-full sm:w-auto border-success/30 text-success hover:bg-success/10 font-mono"
-                    >
-                      Launch CLI Console
-                      <Terminal className="ml-2 w-5 h-5" />
+                    onClick={() => navigate('/terminal')}
+                    variant="outline"
+                    size="lg"
+                    className="w-full sm:w-auto border-success/30 text-success hover:bg-success/10 font-mono"
+                  >
+                    Launch CLI Console
+                    <Terminal className="ml-2 w-5 h-5" />
                   </Button>
                 </div>
               </div>
@@ -533,7 +533,7 @@ const Index = () => {
                 </div>
 
                 <h3 className="text-xl font-mono font-semibold mb-6">What You'll Find Here</h3>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <Card className="card-hover theme-purple border-accent/20">
                     <CardHeader>
@@ -595,7 +595,7 @@ const Index = () => {
             </Card>
 
             {/* Interactive CLI Console Preview Card */}
-            <Card 
+            <Card
               className="mt-12 scroll-mt-24 border-accent/20 bg-card/60 backdrop-blur-sm overflow-hidden card-hover theme-purple cursor-pointer transition-all duration-300 group hover:border-accent/40"
               onClick={() => navigate('/terminal')}
               data-fade-in
@@ -648,63 +648,63 @@ const Index = () => {
                 const featured = projects.filter(p => p.featured);
                 const list = featured.length ? featured.slice(0, 2) : projects.slice(0, 2);
                 return list.map((project) => (
-                <Card 
-                  key={project.id}
-                  className="card-hover theme-green border-success/20 hover:ring-1 hover:ring-success/20 cursor-pointer transition-all duration-300 hover:scale-105"
-                  onClick={() => handleProjectSelect(project)}
-                  data-fade-in
-                >
-                  <CardHeader>
-                    <CardTitle className="text-2xl flex items-center">
-                      <Terminal className="w-6 h-6 mr-2 text-success" />
-                      {project.title}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <CardDescription className="text-base mb-6">
-                      {project.summary}
-                    </CardDescription>
-                    <div className="flex flex-wrap gap-2 mb-6">
-                      {project.tags.slice(0, 4).map((tag) => (
-                        <Badge key={tag} variant="secondary" className="tag">{tag}</Badge>
-                      ))}
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {project.githubUrl && (
-                        <Button
-                          variant="outline"
-                          className="flex-1 min-w-[8.5rem] border-success/30 text-success hover:bg-success/10 hover:text-success font-mono"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            window.open(project.githubUrl, '_blank');
-                          }}
-                        >
-                          <Github className="w-4 h-4 mr-2" />
-                          GitHub
-                        </Button>
-                      )}
-                      {project.liveUrl && (
-                        <Button
-                          variant="outline"
-                          className="flex-1 min-w-[8.5rem] border-success/30 text-success hover:bg-success/10 hover:text-success font-mono"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            window.open(project.liveUrl, '_blank');
-                          }}
-                        >
-                          <ExternalLink className="w-4 h-4 mr-2" />
-                          Official Page
-                        </Button>
-                      )}
-                    </div>
-                  </CardContent>
-                </Card>
-              ));
-            })()}
+                  <Card
+                    key={project.id}
+                    className="card-hover theme-green border-success/20 hover:ring-1 hover:ring-success/20 cursor-pointer transition-all duration-300 hover:scale-105"
+                    onClick={() => handleProjectSelect(project)}
+                    data-fade-in
+                  >
+                    <CardHeader>
+                      <CardTitle className="text-2xl flex items-center">
+                        <Terminal className="w-6 h-6 mr-2 text-success" />
+                        {project.title}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <CardDescription className="text-base mb-6">
+                        {project.summary}
+                      </CardDescription>
+                      <div className="flex flex-wrap gap-2 mb-6">
+                        {project.tags.slice(0, 4).map((tag) => (
+                          <Badge key={tag} variant="secondary" className="tag">{tag}</Badge>
+                        ))}
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        {project.githubUrl && (
+                          <Button
+                            variant="outline"
+                            className="flex-1 min-w-[8.5rem] border-success/30 text-success hover:bg-success/10 hover:text-success font-mono"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              window.open(project.githubUrl, '_blank');
+                            }}
+                          >
+                            <Github className="w-4 h-4 mr-2" />
+                            GitHub
+                          </Button>
+                        )}
+                        {project.liveUrl && (
+                          <Button
+                            variant="outline"
+                            className="flex-1 min-w-[8.5rem] border-success/30 text-success hover:bg-success/10 hover:text-success font-mono"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              window.open(project.liveUrl, '_blank');
+                            }}
+                          >
+                            <ExternalLink className="w-4 h-4 mr-2" />
+                            Official Page
+                          </Button>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
+                ));
+              })()}
             </div>
 
             <div className="text-center">
-              <Button 
+              <Button
                 onClick={handleProjectsClick}
                 size="lg"
                 className="bg-success text-success-foreground hover:bg-success/80 shadow-[0_0_15px_rgba(152,252,152,0.15)] font-mono"
@@ -712,7 +712,7 @@ const Index = () => {
                 View All Projects
                 <ExternalLink className="w-4 h-4 ml-2" />
               </Button>
-          
+
             </div>
           </div>
         </section>
@@ -721,9 +721,9 @@ const Index = () => {
         <section id="boxes" className="py-12 md:py-16 bg-muted/30">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-3xl md:text-4xl font-display font-bold mb-8 md:mb-12 text-center gradient-text tracking-tight">Box Writeups</h2>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-              <Card 
+              <Card
                 className="card-hover theme-green border-success/20 hover:ring-1 hover:ring-success/20 cursor-pointer transition-all duration-300 hover:scale-105"
                 onClick={() => handlePlatformClick('hackthebox')}
                 data-fade-in
@@ -744,7 +744,7 @@ const Index = () => {
                 </CardContent>
               </Card>
 
-              <Card 
+              <Card
                 className="card-hover theme-blue border-blue-500/20 hover:ring-1 hover:ring-blue-500/20 cursor-pointer transition-all duration-300 hover:scale-105"
                 onClick={() => handlePlatformClick('tryhackme')}
                 data-fade-in
@@ -763,7 +763,7 @@ const Index = () => {
                 </CardContent>
               </Card>
 
-              <Card 
+              <Card
                 className="card-hover theme-yellow border-yellow-500/20 hover:ring-1 hover:ring-yellow-500/20 cursor-pointer transition-all duration-300 hover:scale-105"
                 onClick={() => handlePlatformClick('vulnhub')}
                 data-fade-in
@@ -803,7 +803,7 @@ const Index = () => {
         <section id="ctf" className="py-12 md:py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-3xl md:text-4xl font-display font-bold mb-8 md:mb-12 text-center gradient-text-orange tracking-tight">CTF Solves</h2>
-            
+
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
               <Card className="card-hover theme-orange border-orange-500/20 hover:ring-1 hover:ring-orange-500/20" data-fade-in>
                 <CardHeader>
@@ -812,13 +812,12 @@ const Index = () => {
                 <CardContent>
                   <div className="space-y-4">
                     {ctfWriteups.map((ctf) => (
-                      <div 
+                      <div
                         key={ctf.id}
-                        className={`border border-border/60 rounded-lg p-4 cursor-pointer transition-all duration-300 ${
-                          ['web', 'web3', 'blockchain', 'crypto', 'reversing'].includes(ctf.category.toLowerCase())
-                            ? 'hover:bg-yellow-500/10 hover:border-yellow-500/30 hover:shadow-[0_0_15px_rgba(234,179,8,0.1)]' 
-                            : 'hover:bg-orange-500/10 hover:border-orange-500/30 hover:shadow-[0_0_15px_rgba(249,115,22,0.1)]'
-                        }`}
+                        className={`border border-border/60 rounded-lg p-4 cursor-pointer transition-all duration-300 ${['web', 'web3', 'blockchain', 'crypto', 'reversing'].includes(ctf.category.toLowerCase())
+                          ? 'hover:bg-yellow-500/10 hover:border-yellow-500/30 hover:shadow-[0_0_15px_rgba(234,179,8,0.1)]'
+                          : 'hover:bg-orange-500/10 hover:border-orange-500/30 hover:shadow-[0_0_15px_rgba(249,115,22,0.1)]'
+                          }`}
                         onClick={() => handleCTFSelect(ctf)}
                       >
                         <div className="flex items-center justify-between mb-2">
@@ -869,14 +868,14 @@ const Index = () => {
                       Binary analysis, reverse engineering, BoF and ROPs.
                     </p>
                   </div>
-                  
+
                   <div>
                     <h3 className="font-semibold text-amber-400 mb-1">🔐 Cryptography</h3>
                     <p className="text-sm text-muted-foreground">
                       Classical ciphers, modern encryption analysis, and cryptographic protocol vulnerabilities.
                     </p>
                   </div>
-                  
+
                   <div>
                     <h3 className="font-semibold text-grey-400 mb-1">🕵️ Digital Forensics</h3>
                     <p className="text-sm text-muted-foreground">

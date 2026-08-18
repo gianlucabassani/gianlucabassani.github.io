@@ -29,13 +29,12 @@ export default function PageBackground({
   tertiary,
   variant = 'scattered',
 }: PageBackgroundProps) {
-  // Desktop only: on phones the blobs span the whole viewport and wash out the content
   if (variant === 'centered') {
     return (
-      <div className="hidden md:block absolute inset-0 pointer-events-none overflow-hidden z-0">
+      <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
         {/* Center – large primary blob */}
         <div
-          className="absolute top-[8%] left-[50%] -translate-x-[50%] w-[600px] h-[600px] rounded-full blur-[200px] opacity-[0.018]"
+          className="absolute top-[8%] left-[50%] -translate-x-[50%] w-[320px] h-[320px] md:w-[650px] md:h-[650px] rounded-full blur-[140px] md:blur-[220px] opacity-[0.14]"
           style={{
             backgroundColor: primary,
             animation: 'pulse 12s cubic-bezier(0.4, 0, 0.6, 1) infinite, float-blob-1 25s ease-in-out infinite',
@@ -43,7 +42,7 @@ export default function PageBackground({
         />
         {/* Bottom-right secondary blob */}
         <div
-          className="absolute bottom-[10%] right-[8%] w-[450px] h-[450px] rounded-full blur-[180px] opacity-[0.012]"
+          className="absolute bottom-[10%] right-[5%] w-[260px] h-[260px] md:w-[500px] md:h-[500px] rounded-full blur-[120px] md:blur-[190px] opacity-[0.10]"
           style={{
             backgroundColor: secondary,
             animation: 'pulse 17s cubic-bezier(0.4, 0, 0.6, 1) infinite, float-blob-2 32s ease-in-out infinite',
@@ -55,10 +54,10 @@ export default function PageBackground({
 
   // 'scattered' variant — three off-center blobs that fill the page height nicely
   return (
-    <div className="hidden md:block absolute inset-0 pointer-events-none overflow-hidden z-0">
+    <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
       {/* Top-left primary blob */}
       <div
-        className="absolute top-[8%] left-[8%] w-[520px] h-[520px] rounded-full blur-[190px] opacity-[0.016]"
+        className="absolute top-[5%] left-[5%] w-[300px] h-[300px] md:w-[580px] md:h-[580px] rounded-full blur-[130px] md:blur-[200px] opacity-[0.14]"
         style={{
           backgroundColor: primary,
           animation: 'pulse 12s cubic-bezier(0.4, 0, 0.6, 1) infinite, float-blob-1 25s ease-in-out infinite',
@@ -66,7 +65,7 @@ export default function PageBackground({
       />
       {/* Bottom-right secondary blob */}
       <div
-        className="absolute bottom-[15%] right-[8%] w-[580px] h-[580px] rounded-full blur-[190px] opacity-[0.012]"
+        className="absolute bottom-[10%] right-[5%] w-[320px] h-[320px] md:w-[620px] md:h-[620px] rounded-full blur-[140px] md:blur-[210px] opacity-[0.10]"
         style={{
           backgroundColor: secondary,
           animation: 'pulse 16s cubic-bezier(0.4, 0, 0.6, 1) infinite, float-blob-2 30s ease-in-out infinite',
@@ -75,7 +74,7 @@ export default function PageBackground({
       {/* Optional tertiary mid-page blob */}
       {tertiary && (
         <div
-          className="absolute top-[50%] left-[55%] w-[400px] h-[400px] rounded-full blur-[180px] opacity-[0.009]"
+          className="absolute top-[45%] left-[50%] -translate-x-[50%] w-[250px] h-[250px] md:w-[450px] md:h-[450px] rounded-full blur-[120px] md:blur-[180px] opacity-[0.08]"
           style={{
             backgroundColor: tertiary,
             animation: 'pulse 20s cubic-bezier(0.4, 0, 0.6, 1) infinite, float-blob-1 35s ease-in-out infinite',
