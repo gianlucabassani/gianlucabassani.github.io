@@ -25,6 +25,8 @@ const App = () => (
           <Route path="/boxes/:platform/:id" element={<Index />} />
           <Route path="/ctf" element={<Index />} />
           <Route path="/ctf/:id" element={<Index />} />
+          <Route path="/blog" element={<Index />} />
+          <Route path="/blog/:id" element={<Index />} />
           <Route path="/skills" element={<Index />} />
           <Route path="/certifications" element={<Index />} />
           <Route path="/terminal" element={<TerminalPage />} />

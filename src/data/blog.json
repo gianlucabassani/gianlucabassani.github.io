@@ -1,0 +1,10 @@
+[
+  {
+    "id": "welcome-to-the-blog",
+    "title": "Welcome to the Blog",
+    "tags": ["Welcome", "Cybersecurity", "Learning"],
+    "date": "2026-09-02",
+    "summary": "A short introduction to the notes, experiments, and lessons that will live in this blog.",
+    "contentPath": "welcome-to-the-blog.md"
+  }
+]

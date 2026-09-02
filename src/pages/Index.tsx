@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Shield, Terminal, Code, FileText, Flag, Github, ExternalLink, ChevronDown, Menu, X } from 'lucide-react';
+import { Shield, Terminal, Code, FileText, Flag, Github, ExternalLink, ChevronDown, Menu, X, BookOpen, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -16,6 +16,9 @@ import ProjectsView from '@/components/ProjectsView';
 import SkillsView from '@/components/SkillsView';
 import CertificationsView from '@/components/CertificationsView';
 import { writeups } from '@/data/writeups';
+import { BlogPost, getBlogPostById, getBlogPosts } from '@/data/blog';
+import BlogListView from '@/components/BlogListView';
+import BlogView from '@/components/BlogView';
 
 const Index = () => {
   const location = useLocation();
@@ -60,6 +63,12 @@ const Index = () => {
     if (section === 'ctf' && segments[1]) {
       return { view: 'ctf' as const, ctfId: segments[1] };
     }
+    if (section === 'blog' && segments[1]) {
+      return { view: 'blogPost' as const, blogPostId: segments[1] };
+    }
+    if (section === 'blog') {
+      return { view: 'blog' as const };
+    }
     if (section === 'skills') {
       return { view: 'skills' as const };
     }
@@ -71,15 +80,18 @@ const Index = () => {
   };
   
   const currentRoute = parseRoute();
-  const [currentView, setCurrentView] = useState<'main' | 'platform' | 'writeup' | 'ctf' | 'projects' | 'project' | 'skills' | 'certifications'>(currentRoute.view);
+  const [currentView, setCurrentView] = useState<'main' | 'platform' | 'writeup' | 'ctf' | 'projects' | 'project' | 'blog' | 'blogPost' | 'skills' | 'certifications'>(currentRoute.view);
   const [selectedPlatform, setSelectedPlatform] = useState<string>(currentRoute.platform || '');
   const [selectedWriteup, setSelectedWriteup] = useState<Writeup | null>(null);
   const [selectedCTFWriteup, setSelectedCTFWriteup] = useState<CTFWriteup | null>(null);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [selectedBlogPost, setSelectedBlogPost] = useState<BlogPost | null>(null);
+  const blogPosts = getBlogPosts();
 
   const navItems = [
     { id: 'about', label: 'About Me', icon: Shield },
     { id: 'projects', label: 'Projects', icon: Code },
+    { id: 'blog', label: 'Blog', icon: BookOpen },
     { id: 'boxes', label: 'Box Writeups', icon: Terminal },
     { id: 'ctf', label: 'CTF Solves', icon: Flag }
   ];
@@ -99,6 +111,9 @@ const Index = () => {
     if (route.ctfId) {
       const ctf = ctfWriteups.find(c => c.id === route.ctfId);
       setSelectedCTFWriteup(ctf || null);
+    }
+    if (route.blogPostId) {
+      setSelectedBlogPost(getBlogPostById(route.blogPostId) || null);
     }
     if (route.writeupId && route.platform) {
       const platformWriteups = writeups.filter(w => w.platform.toLowerCase() === route.platform.toLowerCase());
@@ -135,6 +150,14 @@ const Index = () => {
     navigate(`/projects/${project.id}`);
   };
 
+  const handleBlogClick = () => {
+    navigate('/blog');
+  };
+
+  const handleBlogPostSelect = (post: BlogPost) => {
+    navigate(`/blog/${post.id}`);
+  };
+
   const handleBackToMain = () => {
     navigate('/');
   };
@@ -153,6 +176,10 @@ const Index = () => {
 
   const handleBackToProjects = () => {
     navigate('/projects');
+  };
+
+  const handleBackToBlog = () => {
+    navigate('/blog');
   };
 
   // Helper function to get skill variant classes
@@ -253,6 +280,14 @@ const Index = () => {
 
   if (currentView === 'project' && selectedProject) {
     return <ProjectView project={selectedProject} onBack={handleBackToProjects} />;
+  }
+
+  if (currentView === 'blog') {
+    return <BlogListView onBack={handleBackToMain} onPostSelect={handleBlogPostSelect} />;
+  }
+
+  if (currentView === 'blogPost' && selectedBlogPost) {
+    return <BlogView post={selectedBlogPost} onBack={handleBackToBlog} />;
   }
 
   if (currentView === 'skills') {
@@ -713,6 +748,56 @@ const Index = () => {
                 <ExternalLink className="w-4 h-4 ml-2" />
               </Button>
           
+            </div>
+          </div>
+        </section>
+
+        {/* Blog Section */}
+        <section id="blog" className="py-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-4xl font-display font-bold mb-12 text-center gradient-text-purple tracking-tight">
+              Blog
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+              {blogPosts.slice(0, 2).map((post) => (
+                <Card
+                  key={post.id}
+                  className="card-hover theme-purple border-accent/20 hover:ring-1 hover:ring-accent/20 cursor-pointer transition-all duration-300 hover:scale-[1.02]"
+                  onClick={() => handleBlogPostSelect(post)}
+                  data-fade-in
+                >
+                  <CardHeader>
+                    <CardTitle className="text-2xl flex items-center">
+                      <BookOpen className="w-6 h-6 mr-2 text-accent" />
+                      {post.title}
+                    </CardTitle>
+                    <div className="flex items-center gap-1 text-sm text-muted-foreground font-mono">
+                      <Calendar className="w-4 h-4" />
+                      {new Date(post.date).toLocaleDateString()}
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <CardDescription className="text-base mb-6">{post.summary}</CardDescription>
+                    <div className="flex flex-wrap gap-2">
+                      {post.tags.slice(0, 4).map((tag) => (
+                        <Badge key={tag} variant="secondary" className="tag">{tag}</Badge>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            <div className="text-center">
+              <Button
+                onClick={handleBlogClick}
+                size="lg"
+                className="bg-accent text-accent-foreground hover:bg-accent/80 font-mono"
+              >
+                Browse All Posts
+                <ExternalLink className="w-4 h-4 ml-2" />
+              </Button>
             </div>
           </div>
         </section>
