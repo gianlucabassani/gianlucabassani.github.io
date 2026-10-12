@@ -1,10 +1,10 @@
 [
   {
-    "id": "welcome-to-the-blog",
-    "title": "Welcome to the Blog",
-    "tags": ["Welcome", "Cybersecurity", "Learning"],
-    "date": "2026-09-02",
-    "summary": "A short introduction to the notes, experiments, and lessons that will live in this blog.",
-    "contentPath": "welcome-to-the-blog.md"
+    "id": "dungeonsrev",
+    "title": "Casually Hacking Minecraft Dungeons",
+    "tags": ["minecraft-dungeons", "save-editor", "reverse-engineering", "linux", "python", "gaming"],
+    "date": "2026-10-11",
+    "summary": "What started as \"why are my Minecraft Dungeons characters missing on Linux?\" turned into a reverse-engineering project — an AES-encrypted save format, a shared codec, and a save editor that runs on Windows and Linux.",
+    "contentPath": "dungeonsrev.md"
   }
 ]
