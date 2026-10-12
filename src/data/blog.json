@@ -4,7 +4,7 @@
     "title": "Casually Hacking Minecraft Dungeons",
     "tags": ["minecraft-dungeons", "save-editor", "reverse-engineering", "linux", "python", "gaming"],
     "date": "2026-10-11",
-    "summary": "What started as \"why are my Minecraft Dungeons characters missing on Linux?\" turned into a reverse-engineering project — an AES-encrypted save format, a shared codec, and a save editor that runs on Windows and Linux.",
+    "summary": "Speedrun in getting suspended on github by accidentally creating a Minecraft Dungeons mod for editing your character files. (I just wanted to play on linux without losing my progress)",
     "contentPath": "dungeonsrev.md"
   }
 ]
