@@ -451,6 +451,12 @@ export default function Terminal({ onClose }: TerminalProps) {
                     ↗ {proj.githubUrl}
                   </a>
                 )}
+                {proj.gitlabUrl && (
+                  <a href={proj.gitlabUrl} target="_blank" rel="noreferrer"
+                    className="text-[#00b4ff] hover:underline font-mono text-[10px]">
+                    ↗ {proj.gitlabUrl}
+                  </a>
+                )}
               </div>
             ))}
           </div>

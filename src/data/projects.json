@@ -14,7 +14,8 @@
       "Multiple OSINT data sources integration",
       "Export reports for collected data"
     ],
-    "githubUrl": "https://github.com/gianlucabassani/browsint"
+    "githubUrl": "https://github.com/gianlucabassani/browsint",
+    "gitlabUrl": "https://gitlab.com/prime-cybersec/browsint"
   },
   {
     "id": "ShellCy",
@@ -33,7 +34,8 @@
       "Multi-stage pipelines",
       "Tab completion"
     ],
-    "githubUrl": "https://github.com/gianlucabassani/ShellCy"
+    "githubUrl": "https://github.com/gianlucabassani/ShellCy",
+    "gitlabUrl": "https://gitlab.com/prime-general/c-shellby"
   },
 
   {
@@ -53,7 +55,8 @@
       "Phishing email support",
       "Database SQLite for data storage"
     ],
-    "githubUrl": "https://github.com/gianlucabassani/browphish"
+    "githubUrl": "https://github.com/gianlucabassani/browphish",
+    "gitlabUrl": "https://gitlab.com/prime-cybersec/browphish"
   },
   {
     "id": "blockcheat",
@@ -72,7 +75,8 @@
       "Mapping Calculator: Compute non-sequential storage slots",
       "Bytecode Inspector: Detect dangerous opcodes"
     ],
-    "githubUrl": "https://github.com/gianlucabassani/blockcheat"
+    "githubUrl": "https://github.com/gianlucabassani/blockcheat",
+    "gitlabUrl": "https://gitlab.com/prime-cybersec/blockcheat-web3"
   },
   {
     "id": "nidavellir",
@@ -93,6 +97,7 @@
     ],
     "featured": true,
     "githubUrl": "https://github.com/gianlucabassani/Nidavellir",
+    "gitlabUrl": "https://gitlab.com/prime-cybersec/nidavellir",
     "liveUrl": "https://gianlucabassani.github.io/Nidavellir"
   },
   {
@@ -128,6 +133,7 @@
       "Interactive menu and CLI automation"
     ],
     "featured": true,
-    "githubUrl": "https://github.com/gianlucabassani/gosint"
+    "githubUrl": "https://github.com/gianlucabassani/gosint",
+    "gitlabUrl": "https://gitlab.com/prime-cybersec/gosint"
   }
 ]

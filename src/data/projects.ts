@@ -11,6 +11,7 @@ export interface Project {
   features: string[];
   featured?: boolean;
   githubUrl?: string;
+  gitlabUrl?: string;
   liveUrl?: string;
   contentPath?: string;
 }

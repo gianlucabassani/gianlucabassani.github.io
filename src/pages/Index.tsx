@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Shield, Terminal, Code, FileText, Flag, Github, ExternalLink, ChevronDown, Menu, X, BookOpen, Calendar } from 'lucide-react';
+import { Shield, Terminal, Code, FileText, Flag, Github, Gitlab, ExternalLink, ChevronDown, Menu, X, BookOpen, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -704,7 +704,7 @@ const Index = () => {
                         <Badge key={tag} variant="secondary" className="tag">{tag}</Badge>
                       ))}
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex flex-wrap gap-2">
                       {project.githubUrl && (
                         <Button 
                           variant="outline" 
@@ -716,6 +716,19 @@ const Index = () => {
                         >
                           <Github className="w-4 h-4 mr-2" />
                           GitHub
+                        </Button>
+                      )}
+                      {project.gitlabUrl && (
+                        <Button 
+                          variant="outline" 
+                          className="flex-1 border-success/30 text-success hover:bg-success/10 hover:text-success font-mono"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            window.open(project.gitlabUrl, '_blank');
+                          }}
+                        >
+                          <Gitlab className="w-4 h-4 mr-2" />
+                          GitLab
                         </Button>
                       )}
                       {project.liveUrl && (

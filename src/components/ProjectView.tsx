@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ArrowLeft, Github, ExternalLink, Calendar, Tag, Settings } from 'lucide-react';
+import { ArrowLeft, Github, Gitlab, ExternalLink, Calendar, Tag, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -125,6 +125,17 @@ const ProjectView = ({ project, onBack }: ProjectViewProps) => {
                 >
                   <Github className="w-4 h-4 mr-2" />
                   View Source
+                  <ExternalLink className="w-4 h-4 ml-2" />
+                </Button>
+              )}
+              {project.gitlabUrl && (
+                <Button 
+                  variant="outline" 
+                  onClick={() => window.open(project.gitlabUrl, '_blank')}
+                  className="border-success/30 hover:bg-success/10 text-success hover:text-success"
+                >
+                  <Gitlab className="w-4 h-4 mr-2" />
+                  GitLab Mirror
                   <ExternalLink className="w-4 h-4 ml-2" />
                 </Button>
               )}
