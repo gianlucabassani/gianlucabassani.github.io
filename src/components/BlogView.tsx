@@ -1,13 +1,11 @@
+import ArticleMetadata from '@/components/ArticleMetadata';
+import ArticleContent from '@/components/ArticleContent';
 import { useEffect, useState } from 'react';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import rehypeHighlight from 'rehype-highlight';
 import { ArrowLeft, BookOpen, Calendar, Tag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BlogPost, loadBlogPostContent } from '@/data/blog';
-import 'highlight.js/styles/github-dark.css';
 import PageBackground from '@/components/PageBackground';
 
 interface BlogViewProps {
@@ -21,14 +19,18 @@ const BlogView = ({ post, onBack }: BlogViewProps) => {
   const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
+    let cancelled = false;
     const loadContent = async () => {
       setIsLoading(true);
       const markdownContent = await loadBlogPostContent(post.contentPath);
-      setContent(markdownContent);
-      setIsLoading(false);
+      if (!cancelled) {
+        setContent(markdownContent);
+        setIsLoading(false);
+      }
     };
 
     loadContent();
+    return () => { cancelled = true; };
   }, [post.contentPath]);
 
   useEffect(() => {
@@ -44,7 +46,8 @@ const BlogView = ({ post, onBack }: BlogViewProps) => {
   const accentColor = 'hsl(270,85%,65%)';
 
   return (
-    <div className="min-h-screen bg-background cyber-grid relative overflow-hidden">
+    <div className="min-h-screen bg-background cyber-grid reader-page relative">
+      <ArticleMetadata title={post.title} summary={post.summary} date={post.date} path={`/blog/${post.id}`} />
       <PageBackground
         primary={accentColor}
         secondary="hsl(325,90%,62%)"
@@ -59,7 +62,7 @@ const BlogView = ({ post, onBack }: BlogViewProps) => {
       </div>
 
       <div className="bg-background/80 backdrop-blur-md border-b border-border relative z-10">
-        <div className="max-w-4xl mx-auto px-4 py-4">
+        <div className="reader-container mx-auto px-4 py-4">
           <Button
             variant="outline"
             onClick={onBack}
@@ -74,7 +77,7 @@ const BlogView = ({ post, onBack }: BlogViewProps) => {
             BLOG POST
           </div>
 
-          <h1 className="text-3xl font-display font-bold gradient-text-purple mb-2 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-display font-bold gradient-text-purple mb-2 tracking-tight">
             {post.title}
           </h1>
 
@@ -85,8 +88,8 @@ const BlogView = ({ post, onBack }: BlogViewProps) => {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 py-8 relative z-10">
-        <Card className="mb-8 card-hover theme-purple hover:ring-1 hover:ring-accent/20 border-accent/20">
+      <div className="reader-container mx-auto px-4 py-6 sm:py-8 relative z-10">
+        <Card className="mb-6 reader-summary theme-purple hover:ring-1 hover:ring-accent/20 border-accent/20">
           <CardHeader>
             <CardTitle className="flex items-center text-xl">
               <BookOpen className="w-5 h-5 mr-2 text-accent" />
@@ -106,76 +109,12 @@ const BlogView = ({ post, onBack }: BlogViewProps) => {
           </CardContent>
         </Card>
 
-        <Card className="card-hover theme-purple hover:ring-1 hover:ring-accent/20 border-accent/20">
-          <CardContent className="p-8">
+        <Card className="reader-article theme-purple border-accent/20">
+          <CardContent className="reader-content">
             {isLoading ? (
-              <div className="text-center py-8">
-                <div className="text-muted-foreground">Loading blog post...</div>
-              </div>
+              <p role="status" className="text-muted-foreground py-8 text-center">Loading article...</p>
             ) : (
-              <div className="prose prose-invert prose-purple max-w-none [&>*]:max-w-none [&_pre]:overflow-x-hidden [&_pre]:whitespace-pre-wrap [&_pre]:break-words [&_code]:whitespace-pre-wrap [&_code]:break-words">
-                <ReactMarkdown
-                  remarkPlugins={[remarkGfm]}
-                  rehypePlugins={[rehypeHighlight]}
-                  components={{
-                    code: ({ className, children, ...props }) => {
-                      const match = /language-(\w+)/.exec(className || '');
-                      const isInline = !className;
-
-                      return !isInline && match ? (
-                        <div className="my-2 rounded-lg border bg-muted/20" style={{ borderColor: `${accentColor}25` }}>
-                          <div className="px-3 py-1.5 bg-muted/40 border-b" style={{ borderBottomColor: `${accentColor}25` }}>
-                            <span className="text-xs text-muted-foreground font-mono">{match[1]}</span>
-                          </div>
-                          <pre className="p-4 overflow-x-hidden whitespace-pre-wrap break-words text-sm font-mono leading-relaxed">
-                            <code className={className} {...props}>{children}</code>
-                          </pre>
-                        </div>
-                      ) : (
-                        <code className="bg-muted px-2 py-1 rounded text-sm font-mono text-foreground" {...props}>
-                          {children}
-                        </code>
-                      );
-                    },
-                    h1: ({ children }) => (
-                      <h1 className="text-3xl font-display font-bold gradient-text-purple mb-6 pb-2 border-b border-border">
-                        {children}
-                      </h1>
-                    ),
-                    h2: ({ children }) => (
-                      <h2 className="text-2xl font-display font-semibold text-accent mt-8 mb-4">{children}</h2>
-                    ),
-                    h3: ({ children }) => (
-                      <h3 className="text-xl font-display font-semibold text-foreground/90 mt-6 mb-3">{children}</h3>
-                    ),
-                    blockquote: ({ children }) => (
-                      <blockquote className="border-l-4 pl-4 italic text-muted-foreground my-2" style={{ borderColor: accentColor }}>
-                        {children}
-                      </blockquote>
-                    ),
-                    p: ({ children }) => <p className="mb-4 text-foreground leading-relaxed">{children}</p>,
-                    img: ({ src, alt, ...props }) => (
-                      <img
-                        src={src}
-                        alt={alt}
-                        className="my-6 max-w-full h-auto rounded-lg shadow-lg border border-border"
-                        {...props}
-                      />
-                    ),
-                    table: ({ children }) => (
-                      <div className="overflow-x-auto my-6">
-                        <table className="w-full border-collapse border border-border">{children}</table>
-                      </div>
-                    ),
-                    th: ({ children }) => (
-                      <th className="border border-border bg-muted p-2 text-left font-semibold">{children}</th>
-                    ),
-                    td: ({ children }) => <td className="border border-border p-2">{children}</td>,
-                  }}
-                >
-                  {content}
-                </ReactMarkdown>
-              </div>
+              <ArticleContent content={content} theme={'purple'} />
             )}
           </CardContent>
         </Card>

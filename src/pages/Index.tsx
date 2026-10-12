@@ -1,5 +1,6 @@
+import PageBackground from '@/components/PageBackground';
 import { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Shield, Terminal, Code, FileText, Flag, Github, Gitlab, ExternalLink, ChevronDown, Menu, X, BookOpen, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -40,6 +41,18 @@ const Index = () => {
     return () => clearInterval(interval);
   }, []);
     
+  useEffect(() => {
+    if (!isMenuOpen) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsMenuOpen(false);
+        document.querySelector<HTMLButtonElement>('[aria-controls="mobile-navigation"]')?.focus();
+      }
+    };
+    document.addEventListener('keydown', closeOnEscape);
+    return () => document.removeEventListener('keydown', closeOnEscape);
+  }, [isMenuOpen]);
+
   // Parse current route to determine view
   const parseRoute = () => {
     const path = location.pathname;
@@ -203,7 +216,7 @@ const Index = () => {
   useEffect(() => {
     const handleScroll = () => {
       const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const scrolled = (window.scrollY / windowHeight) * 100;
+      const scrolled = windowHeight > 0 ? (window.scrollY / windowHeight) * 100 : 0;
       setScrollProgress(scrolled);
     };
 
@@ -308,43 +321,8 @@ const Index = () => {
     );
   }
   return (
-    <div className="min-h-screen bg-background text-foreground cyber-grid">
-      {/* Dynamic Ambient Background Blobs — fixed parallax layer, one per section */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        {/* About Me — Purple vaporwave */}
-        <div 
-          className="absolute top-[8%] left-[8%] w-[550px] h-[550px] rounded-full blur-[200px] opacity-[0.018]"
-          style={{ backgroundColor: 'hsl(270,85%,65%)', animation: 'pulse 12s cubic-bezier(0.4, 0, 0.6, 1) infinite, float-blob-1 25s ease-in-out infinite' }} 
-        />
-        <div 
-          className="absolute top-[12%] right-[8%] w-[600px] h-[600px] rounded-full blur-[200px] opacity-[0.012]"
-          style={{ backgroundColor: 'hsl(325,90%,62%)', animation: 'pulse 16s cubic-bezier(0.4, 0, 0.6, 1) infinite, float-blob-2 30s ease-in-out infinite' }} 
-        />
-        {/* Skills / Certifications — Purple + Cyan */}
-        <div 
-          className="absolute top-[28%] left-[55%] w-[480px] h-[480px] rounded-full blur-[190px] opacity-[0.013]"
-          style={{ backgroundColor: 'hsl(185,95%,48%)', animation: 'pulse 18s cubic-bezier(0.4, 0, 0.6, 1) infinite, float-blob-1 32s ease-in-out infinite' }} 
-        />
-        {/* Projects — Green */}
-        <div 
-          className="absolute top-[42%] left-[12%] w-[650px] h-[650px] rounded-full blur-[200px] opacity-[0.015]"
-          style={{ backgroundColor: 'hsl(152,75%,52%)', animation: 'pulse 14s cubic-bezier(0.4, 0, 0.6, 1) infinite, float-blob-1 28s ease-in-out infinite' }} 
-        />
-        {/* Box Writeups — Blue + Yellow */}
-        <div 
-          className="absolute top-[62%] right-[10%] w-[550px] h-[550px] rounded-full blur-[190px] opacity-[0.013]"
-          style={{ backgroundColor: 'hsl(217,91%,60%)', animation: 'pulse 18s cubic-bezier(0.4, 0, 0.6, 1) infinite, float-blob-2 32s ease-in-out infinite' }} 
-        />
-        <div 
-          className="absolute top-[68%] left-[6%] w-[500px] h-[500px] rounded-full blur-[190px] opacity-[0.011]"
-          style={{ backgroundColor: 'hsl(38,92%,50%)', animation: 'pulse 12s cubic-bezier(0.4, 0, 0.6, 1) infinite, float-blob-1 26s ease-in-out infinite' }} 
-        />
-        {/* CTF Solves — Orange */}
-        <div 
-          className="absolute top-[86%] left-[18%] w-[600px] h-[600px] rounded-full blur-[200px] opacity-[0.016]"
-          style={{ backgroundColor: 'hsl(25,95%,53%)', animation: 'pulse 15s cubic-bezier(0.4, 0, 0.6, 1) infinite, float-blob-2 35s ease-in-out infinite' }} 
-        />
-      </div>
+    <div className="min-h-screen bg-background text-foreground cyber-grid home-page">
+      <PageBackground primary="hsl(270,85%,65%)" secondary="hsl(185,95%,48%)" tertiary="hsl(325,90%,62%)" />
 
       {/* Scroll Progress Bar */}
       <div 
@@ -356,16 +334,16 @@ const Index = () => {
       <nav className="fixed top-0 w-full bg-background/90 backdrop-blur-md border-b border-border z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
-            <div className="font-mono text-lg md:text-xl font-bold flex items-center">
+            <div className="font-mono text-sm sm:text-lg lg:text-xl font-bold flex items-center min-w-0">
               <span className={`gradient-text transition-all duration-300 inline-block ${isFading ? 'opacity-0 -translate-y-1' : 'opacity-100 translate-y-0'}`}>
                 {displayName}
               </span>
-              <span className="text-muted-foreground/30 mx-2 select-none">|</span>
-              <span className="text-foreground/80 font-light text-xs md:text-sm tracking-widest uppercase">CyberSecurity</span>
+              <span className="hidden sm:inline text-muted-foreground/30 mx-2 select-none">|</span>
+              <span className="hidden sm:inline text-foreground/80 font-light text-xs lg:text-sm tracking-widest uppercase">CyberSecurity</span>
             </div>
             
             {/* Desktop Navigation */}
-            <div className="hidden md:flex space-x-8">
+            <div className="hidden lg:flex gap-5">
               {navItems.map((item) => (
                 <button
                   key={item.id}
@@ -380,7 +358,10 @@ const Index = () => {
 
             {/* Mobile Menu Button */}
             <button
-              className="md:hidden"
+              className="lg:hidden flex items-center justify-center min-h-11 min-w-11 rounded-md"
+              aria-label={isMenuOpen ? "Close navigation" : "Open navigation"}
+              aria-expanded={isMenuOpen}
+              aria-controls="mobile-navigation"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -389,12 +370,12 @@ const Index = () => {
 
           {/* Mobile Navigation */}
           {isMenuOpen && (
-            <div className="md:hidden pb-4">
+            <div id="mobile-navigation" className="lg:hidden pb-4 max-h-[70dvh] overflow-y-auto">
               {navItems.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
-                  className={`block w-full text-left nav-link py-2 ${activeSection === item.id ? 'active' : ''}`}
+                  className={`block w-full text-left nav-link py-3 ${activeSection === item.id ? 'active' : ''}`}
                 >
                   <item.icon className="w-4 h-4 inline mr-2" />
                   {item.label}
@@ -405,14 +386,14 @@ const Index = () => {
         </div>
       </nav>
 
-      <main className="pt-20">
+      <main className="pt-20 relative z-10">
         {/* About Section */}
-        <section id="about" className="py-16">
+        <section id="about" className="py-10 sm:py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Hero */}
             <div className="relative text-center mb-12">
-              <div className="relative z-10 py-20">
-              <h1 className="text-5xl md:text-7xl font-display font-bold mb-6 tracking-tight">
+              <div className="relative z-10 py-8 sm:py-16 lg:py-20">
+              <h1 className="text-4xl sm:text-5xl lg:text-7xl font-display font-bold mb-6 tracking-tight">
                 <span className="gradient-text-purple">Welcome to my</span>
                 <br />
                 <span className="gradient-text-accent">digital space</span>
@@ -674,10 +655,10 @@ const Index = () => {
         </section>
 
         {/* Projects Section */}
-        <section id="projects" className="py-16">
+        <section id="projects" className="py-10 sm:py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-4xl font-display font-bold mb-12 text-center gradient-text-green tracking-tight">Projects</h2>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+            <h2 className="text-3xl sm:text-4xl font-display font-bold mb-8 sm:mb-12 text-center gradient-text-green tracking-tight">Projects</h2>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-8 mb-8 sm:mb-12">
               {(() => {
                 // Prefer explicitly featured projects; fall back to first two projects
                 const featured = projects.filter(p => p.featured);
@@ -766,18 +747,17 @@ const Index = () => {
         </section>
 
         {/* Blog Section */}
-        <section id="blog" className="py-16">
+        <section id="blog" className="py-10 sm:py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-4xl font-display font-bold mb-12 text-center gradient-text-purple tracking-tight">
+            <h2 className="text-3xl sm:text-4xl font-display font-bold mb-8 sm:mb-12 text-center gradient-text-purple tracking-tight">
               Blog
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-8 mb-8 sm:mb-12">
               {blogPosts.slice(0, 2).map((post) => (
+                <Link key={post.id} to={`/blog/${post.id}`} className="content-card-link">
                 <Card
-                  key={post.id}
                   className="card-hover theme-purple border-accent/20 hover:ring-1 hover:ring-accent/20 cursor-pointer transition-all duration-300 hover:scale-[1.02]"
-                  onClick={() => handleBlogPostSelect(post)}
                   data-fade-in
                 >
                   <CardHeader>
@@ -799,6 +779,7 @@ const Index = () => {
                     </div>
                   </CardContent>
                 </Card>
+                </Link>
               ))}
             </div>
 
@@ -816,11 +797,11 @@ const Index = () => {
         </section>
 
         {/* Boxes Writeups Section */}
-        <section id="boxes" className="py-16 bg-muted/30">
+        <section id="boxes" className="py-10 sm:py-16 bg-muted/30">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-4xl font-display font-bold mb-12 text-center gradient-text tracking-tight">Box Writeups</h2>
+            <h2 className="text-3xl sm:text-4xl font-display font-bold mb-8 sm:mb-12 text-center gradient-text tracking-tight">Box Writeups</h2>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-8 mb-8 sm:mb-12">
               <Card 
                 className="card-hover theme-green border-success/20 hover:ring-1 hover:ring-success/20 cursor-pointer transition-all duration-300 hover:scale-105"
                 onClick={() => handlePlatformClick('hackthebox')}
@@ -898,11 +879,11 @@ const Index = () => {
         </section>
 
         {/* CTF Section */}
-        <section id="ctf" className="py-16">
+        <section id="ctf" className="py-10 sm:py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-4xl font-display font-bold mb-12 text-center gradient-text-orange tracking-tight">CTF Solves</h2>
+            <h2 className="text-3xl sm:text-4xl font-display font-bold mb-8 sm:mb-12 text-center gradient-text-orange tracking-tight">CTF Solves</h2>
             
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-8 mb-8 sm:mb-12">
               <Card className="card-hover theme-orange border-orange-500/20 hover:ring-1 hover:ring-orange-500/20" data-fade-in>
                 <CardHeader>
                   <CardTitle className="text-xl">Recent CTF Writeups</CardTitle>
@@ -910,16 +891,16 @@ const Index = () => {
                 <CardContent>
                   <div className="space-y-4">
                     {ctfWriteups.map((ctf) => (
-                      <div 
+                      <Link
                         key={ctf.id}
-                        className={`border border-border/60 rounded-lg p-4 cursor-pointer transition-all duration-300 ${
+                        to={`/ctf/${ctf.id}`}
+                        className={`block border border-border/60 rounded-lg p-4 cursor-pointer transition-all duration-300 ${
                           ['web', 'web3', 'blockchain', 'crypto', 'reversing'].includes(ctf.category.toLowerCase())
                             ? 'hover:bg-yellow-500/10 hover:border-yellow-500/30 hover:shadow-[0_0_15px_rgba(234,179,8,0.1)]' 
                             : 'hover:bg-orange-500/10 hover:border-orange-500/30 hover:shadow-[0_0_15px_rgba(249,115,22,0.1)]'
                         }`}
-                        onClick={() => handleCTFSelect(ctf)}
                       >
-                        <div className="flex items-center justify-between mb-2">
+                        <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
                           <h3 className="font-semibold">{ctf.title}</h3>
                           <span className="text-xs text-muted-foreground uppercase">{ctf.category}</span> {/* Category/type */}
                         </div>
@@ -929,7 +910,7 @@ const Index = () => {
                             <Badge key={tag} variant="outline" className="text-xs">{tag}</Badge>
                           ))}
                         </div>
-                      </div>
+                      </Link>
                     ))}
                   </div>
                 </CardContent>
@@ -1000,7 +981,7 @@ const Index = () => {
       </main>
 
       {/* Footer */}
-      <footer className="bg-card border-t border-border py-8">
+      <footer className="relative z-10 bg-card border-t border-border py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <p className="text-muted-foreground">

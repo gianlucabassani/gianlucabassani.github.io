@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { ArrowLeft, Calendar, FileText, Tag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -44,10 +45,9 @@ const BlogListView = ({ onBack, onPostSelect }: BlogListViewProps) => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {posts.map((post) => (
+              <Link key={post.id} to={`/blog/${post.id}`} className="content-card-link">
               <Card
-                key={post.id}
                 className="card-hover theme-purple border-accent/20 hover:ring-1 hover:ring-accent/20 cursor-pointer transition-all duration-300 hover:scale-[1.02]"
-                onClick={() => onPostSelect(post)}
               >
                 <CardHeader>
                   <CardTitle className="flex items-start gap-3 text-2xl">
@@ -71,6 +71,7 @@ const BlogListView = ({ onBack, onPostSelect }: BlogListViewProps) => {
                   </div>
                 </CardContent>
               </Card>
+              </Link>
             ))}
           </div>
         </div>

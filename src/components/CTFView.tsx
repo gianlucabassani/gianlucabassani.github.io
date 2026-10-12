@@ -1,13 +1,11 @@
+import ArticleMetadata from '@/components/ArticleMetadata';
+import ArticleContent from '@/components/ArticleContent';
 import { useState, useEffect } from 'react';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import rehypeHighlight from 'rehype-highlight';
 import { ArrowLeft, Calendar, Flag, Trophy, Tag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CTFWriteup, loadCTFWriteupContent } from '@/data/ctf';
-import 'highlight.js/styles/github-dark.css';
 import PageBackground from '@/components/PageBackground';
 
 interface CTFViewProps {
@@ -28,19 +26,24 @@ const CTFView = ({ ctfWriteup, onBack }: CTFViewProps) => {
   const isYellow = isYellowTheme(ctfWriteup.category);
 
   useEffect(() => {
+    let cancelled = false;
     const loadContent = async () => {
       setIsLoading(true);
       const markdownContent = await loadCTFWriteupContent(ctfWriteup.contentPath);
-      setContent(markdownContent);
-      setIsLoading(false);
+      if (!cancelled) {
+        setContent(markdownContent);
+        setIsLoading(false);
+      }
     };
 
     loadContent();
+    return () => { cancelled = true; };
   }, [ctfWriteup.contentPath]);
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+      const height = document.documentElement.scrollHeight - window.innerHeight;
+      const scrolled = height > 0 ? (window.scrollY / height) * 100 : 0;
       setScrollProgress(scrolled);
     };
 
@@ -75,7 +78,8 @@ const CTFView = ({ ctfWriteup, onBack }: CTFViewProps) => {
   const glowColor = isYellow ? 'bg-[hsl(38,92%,50%)]' : 'bg-[hsl(25,95%,53%)]';
 
   return (
-    <div className="min-h-screen bg-background cyber-grid relative overflow-hidden">
+    <div className="min-h-screen bg-background cyber-grid reader-page relative">
+      <ArticleMetadata title={ctfWriteup.title} summary={ctfWriteup.summary} date={ctfWriteup.date} path={`/ctf/${ctfWriteup.id}`} />
       <PageBackground
         primary={isYellow ? 'hsl(38,92%,50%)' : 'hsl(25,95%,53%)'}
         secondary={isYellow ? 'hsl(45,93%,58%)' : 'hsl(15,90%,55%)'}
@@ -92,7 +96,7 @@ const CTFView = ({ ctfWriteup, onBack }: CTFViewProps) => {
 
       {/* Header */}
       <div className="bg-background/80 backdrop-blur-sm border-b border-border relative z-10">
-        <div className="max-w-4xl mx-auto px-4 py-4">
+        <div className="reader-container mx-auto px-4 py-4">
           <Button
             variant="outline"
             onClick={onBack}
@@ -106,7 +110,7 @@ const CTFView = ({ ctfWriteup, onBack }: CTFViewProps) => {
             Back to Home
           </Button>
           
-          <div className="flex items-center gap-4 mb-4">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-4">
             <Badge 
               variant="secondary" 
               className={`tag ${getDifficultyClasses(ctfWriteup.difficulty)}`}
@@ -119,11 +123,11 @@ const CTFView = ({ ctfWriteup, onBack }: CTFViewProps) => {
             </span>
           </div>
           
-          <h1 className={`text-3xl font-display font-bold ${isYellow ? 'gradient-text-yellow' : 'gradient-text-orange'} mb-2`}>
+          <h1 className={`text-2xl sm:text-3xl font-display font-bold ${isYellow ? 'gradient-text-yellow' : 'gradient-text-orange'} mb-2`}>
             {ctfWriteup.title}
           </h1>
           
-          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-foreground">
             <div className="flex items-center gap-1">
               <Calendar className="w-4 h-4" />
               {new Date(ctfWriteup.date).toLocaleDateString()}
@@ -136,9 +140,9 @@ const CTFView = ({ ctfWriteup, onBack }: CTFViewProps) => {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 py-8 relative z-10">
+      <div className="reader-container mx-auto px-4 py-6 sm:py-8 relative z-10">
         {/* Summary Card */}
-        <Card className={`mb-8 ${isYellow ? 'theme-yellow border-yellow-500/20 hover:ring-1 hover:ring-yellow-500/20' : 'theme-orange border-orange-500/20 hover:ring-1 hover:ring-orange-500/20'} card-hover`}>
+        <Card className={`mb-6 reader-summary ${isYellow ? 'theme-yellow border-yellow-500/20 hover:ring-1 hover:ring-yellow-500/20' : 'theme-orange border-orange-500/20 hover:ring-1 hover:ring-orange-500/20'}`}>
           <CardHeader>
             <CardTitle className="flex items-center text-xl font-display">
               <Flag className={`w-5 h-5 mr-2 ${isYellow ? 'text-yellow-500' : 'text-orange-500'}`} />
@@ -159,66 +163,12 @@ const CTFView = ({ ctfWriteup, onBack }: CTFViewProps) => {
         </Card>
 
         {/* CTF Content */}
-        <Card className={`card-hover ${isYellow ? 'theme-yellow border-yellow-500/20 hover:ring-1 hover:ring-yellow-500/20' : 'theme-orange border-orange-500/20 hover:ring-1 hover:ring-orange-500/20'}`}>
-          <CardContent className="p-8">
+        <Card className={`reader-article ${isYellow ? 'theme-yellow border-yellow-500/20 hover:ring-1 hover:ring-yellow-500/20' : 'theme-orange border-orange-500/20 hover:ring-1 hover:ring-orange-500/20'}`}>
+          <CardContent className="reader-content">
             {isLoading ? (
-              <div className="flex items-center justify-center py-12">
-                <div className={`animate-spin rounded-full h-8 w-8 border-b-2 ${isYellow ? 'border-yellow-500' : 'border-orange-500'}`}></div>
-              </div>
+              <p role="status" className="text-muted-foreground py-8 text-center">Loading article...</p>
             ) : (
-              <div className={`prose prose-invert ${isYellow ? 'prose-yellow' : 'prose-orange'} max-w-none [&>*]:max-w-none [&_pre]:overflow-x-hidden [&_pre]:whitespace-pre-wrap [&_pre]:break-words [&_code]:whitespace-pre-wrap [&_code]:break-words`}>
-                <ReactMarkdown
-                  remarkPlugins={[remarkGfm]}
-                  rehypePlugins={[rehypeHighlight]}
-                  components={{
-                    code: ({ className, children, ...props }: any) => {
-                      const match = /language-(\w+)/.exec(className || '');
-                      const isInline = !className;
-                      
-                      return !isInline && match ? (
-                        <div className={`my-2 rounded-lg border ${isYellow ? 'border-yellow-500/20' : 'border-orange-500/20'} bg-muted/20`}>
-                          <div className={`px-3 py-1.5 bg-muted/40 border-b ${isYellow ? 'border-yellow-500/20' : 'border-orange-500/20'}`}>
-                            <span className="text-xs text-muted-foreground font-mono">
-                              {match[1]}
-                            </span>
-                          </div>
-                          <pre className="p-4 overflow-x-hidden whitespace-pre-wrap break-words text-sm font-mono leading-relaxed">
-                            <code className={className} {...props}>
-                              {children}
-                            </code>
-                          </pre>
-                        </div>
-                      ) : (
-                        <code className="bg-muted px-2 py-1 rounded text-sm font-mono text-foreground" {...props}>
-                          {children}
-                        </code>
-                      );
-                    },
-                    h1: ({ children }) => (
-                      <h1 className={`text-3xl font-display font-bold ${isYellow ? 'gradient-text-yellow' : 'gradient-text-orange'} mb-6 pb-2 border-b ${isYellow ? 'border-yellow-500/20' : 'border-orange-500/20'}`}>
-                        {children}
-                      </h1>
-                    ),
-                    h2: ({ children }) => (
-                      <h2 className={`text-2xl font-display font-semibold ${isYellow ? 'text-yellow-500' : 'text-orange-500'} mt-8 mb-4`}>
-                        {children}
-                      </h2>
-                    ),
-                    h3: ({ children }) => (
-                      <h3 className={`text-xl font-display font-semibold ${isYellow ? 'text-yellow-400' : 'text-orange-400'} mt-6 mb-3`}>
-                        {children}
-                      </h3>
-                    ),
-                    blockquote: ({ children }) => (
-                      <blockquote className={`border-l-4 ${isYellow ? 'border-yellow-500' : 'border-orange-500'} pl-4 italic text-muted-foreground my-4`}>
-                        {children}
-                      </blockquote>
-                    ),
-                  }}
-                >
-                  {content}
-                </ReactMarkdown>
-              </div>
+              <ArticleContent content={content} theme={isYellow ? 'yellow' : 'orange'} />
             )}
           </CardContent>
         </Card>

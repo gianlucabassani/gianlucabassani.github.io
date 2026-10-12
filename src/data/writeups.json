@@ -86,5 +86,16 @@
   "date": "2025-10-06",
   "summary": "Compromised a Windows domain by pivoting through MSSQL Linked Servers, escalating to SYSTEM via a Kernel race condition (CVE-2024-30088), and performing a cross-domain DCSync attack by coercing authentication to capture a TGT.",
   "contentPath": "darkzero.md"
+},
+{
+  "id": "touch",
+  "title": "Touch",
+  "platform": "hackthebox",
+  "difficulty": "easy",
+  "os": "windows",
+  "tags": ["Default Credentials", "DeviceHub", "RDP", "MySQL", "UDF Injection"],
+  "date": "2026-10-09",
+  "summary": "Escalated a Windows kiosk appliance from an unauthenticated device-serial leak used as the default web-console password to RDP access as KioskUser, then hunted a cleartext MySQL root password in a readable maintenance batch file and abused a writable MySQL plugin directory to load a UDF DLL, executing commands as SYSTEM.",
+  "contentPath": "touch.md"
 }
 ]

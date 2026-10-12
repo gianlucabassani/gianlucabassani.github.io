@@ -1,67 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://gianlucabassani.github.io/</loc>
+    <loc>https://gianlucabassani.gitlab.io/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://gianlucabassani.github.io/projects</loc>
+    <loc>https://gianlucabassani.gitlab.io/projects</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://gianlucabassani.github.io/skills</loc>
+    <loc>https://gianlucabassani.gitlab.io/skills</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://gianlucabassani.github.io/certifications</loc>
+    <loc>https://gianlucabassani.gitlab.io/certifications</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://gianlucabassani.github.io/boxes/hackthebox</loc>
+    <loc>https://gianlucabassani.gitlab.io/boxes/hackthebox</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://gianlucabassani.github.io/boxes/hackthebox/airtouch</loc>
+    <loc>https://gianlucabassani.gitlab.io/boxes/hackthebox/airtouch</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://gianlucabassani.github.io/boxes/hackthebox/environment</loc>
+    <loc>https://gianlucabassani.gitlab.io/boxes/hackthebox/environment</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://gianlucabassani.github.io/boxes/hackthebox/editor</loc>
+    <loc>https://gianlucabassani.gitlab.io/boxes/hackthebox/editor</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://gianlucabassani.github.io/boxes/hackthebox/soulmate</loc>
+    <loc>https://gianlucabassani.gitlab.io/boxes/hackthebox/soulmate</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://gianlucabassani.github.io/boxes/hackthebox/puppy</loc>
+    <loc>https://gianlucabassani.gitlab.io/boxes/hackthebox/puppy</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://gianlucabassani.github.io/boxes/hackthebox/darkzero</loc>
+    <loc>https://gianlucabassani.gitlab.io/boxes/hackthebox/darkzero</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://gianlucabassani.github.io/ctf/fittest</loc>
+    <loc>https://gianlucabassani.gitlab.io/boxes/hackthebox/touch</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://gianlucabassani.github.io/ctf/space</loc>
+    <loc>https://gianlucabassani.gitlab.io/ctf/fittest</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://gianlucabassani.gitlab.io/ctf/space</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>

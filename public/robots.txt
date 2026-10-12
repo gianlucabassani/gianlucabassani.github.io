@@ -13,4 +13,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://gianlucabassani.github.io/sitemap.xml
+Sitemap: https://gianlucabassani.gitlab.io/sitemap.xml

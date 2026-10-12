@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { ArrowLeft, Calendar, Shield, ExternalLink, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -163,7 +164,7 @@ const PlatformView = ({ platform, onBack, onWriteupSelect }: PlatformViewProps) 
   const theme = getThemeConfig(platform);
 
   return (
-    <div className="min-h-screen bg-background py-20 cyber-grid relative overflow-hidden">
+    <div className="min-h-screen bg-background py-10 sm:py-20 cyber-grid relative overflow-hidden">
       <PageBackground
         primary={theme.accentColor}
         secondary={theme.secondaryColor}
@@ -183,7 +184,7 @@ const PlatformView = ({ platform, onBack, onWriteupSelect }: PlatformViewProps) 
         {/* Platform Header */}
         <div className="text-center mb-12">
           <div className="text-6xl mb-4">{platformInfo.icon}</div>
-          <h1 className={`text-4xl font-display font-bold ${theme.textGradient} mb-4 tracking-tight`}>
+          <h1 className={`text-3xl sm:text-4xl font-display font-bold ${theme.textGradient} mb-4 tracking-tight`}>
             {platformInfo.name} Writeups
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
@@ -234,10 +235,10 @@ const PlatformView = ({ platform, onBack, onWriteupSelect }: PlatformViewProps) 
                   ) : (
                     <div className="space-y-3">
                       {writeups.map((writeup) => (
-                        <div
+                        <Link
                           key={writeup.id}
-                          className={`group flex items-center justify-between p-4 bg-muted/50 rounded-lg hover:bg-muted/80 transition-all duration-200 cursor-pointer border border-transparent ${theme.itemBorderHover}`}
-                          onClick={() => onWriteupSelect(writeup)}
+                          to={`/boxes/${platform}/${writeup.id}`}
+                          className={`group flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3 sm:p-4 bg-muted/50 rounded-lg hover:bg-muted/80 transition-all duration-200 cursor-pointer border border-transparent ${theme.itemBorderHover}`}
                         >
                           <div className="flex items-center space-x-4">
                             <span className="text-2xl">{getOSIcon(writeup.os)}</span>
@@ -245,7 +246,7 @@ const PlatformView = ({ platform, onBack, onWriteupSelect }: PlatformViewProps) 
                               <div className={`font-semibold text-foreground ${theme.itemTextHover} transition-colors`}>
                                 {writeup.title}
                               </div>
-                              <div className="text-sm text-muted-foreground flex items-center gap-2">
+                              <div className="text-sm text-muted-foreground flex flex-wrap items-center gap-2">
                                 <Calendar className="w-3 h-3" />
                                 {new Date(writeup.date).toLocaleDateString()}
                                 <span>•</span>
@@ -269,7 +270,7 @@ const PlatformView = ({ platform, onBack, onWriteupSelect }: PlatformViewProps) 
                             </div>
                             <ChevronRight className={`w-5 h-5 text-muted-foreground ${theme.chevronColor} transition-colors`} />
                           </div>
-                        </div>
+                        </Link>
                       ))}
                     </div>
                   )}
