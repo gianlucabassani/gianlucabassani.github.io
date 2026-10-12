@@ -4,7 +4,7 @@
 
 Minecraft Dungeons `.dat` saves are an 8-byte `D001` header + AES-256-ECB-encrypted JSON, padded to 16-byte blocks, and the key ships with the game, so it's a format puzzle, not a crypto break.
 
-My (random) research chain is: decrypt save, edit, re-encrypt byte-identically, and watch the game accept the result.
+My (improvised) research chain is: decrypt save, edit, re-encrypt byte-identically, and watch the game accept the result.
 A small CLI script linked in this blogpost automates this process, on both Windows and Linux.
 
 ---
@@ -36,7 +36,7 @@ For players, two consequences worth knowing:
 - Moving machines, reinstalling, or starting a new Wine prefix means carrying your characters over by hand.
 - Your progress is a small set of files. You can back them up yourself... and you probably should.
 
-![The Characters folder inside the Lutris prefix — one .dat per character](/assets/dungeonsrev/saves-folder.png)
+![The Characters folder inside the Lutris prefix, one .dat per character](/assets/dungeonsrev/saves-folder.png)
 
 ---
 ## Inside a .dat
@@ -103,11 +103,11 @@ On top of that: JSON export/import, and a backup manager to list and restore ear
 
 The safety bits:
 - Before any write, the tool creates a `.bak` of the original and a timestamped copy in `backups/`.
-- If the JSON is invalid, it refuses to write — a corrupted save is worse than no edit.
+- If the JSON is invalid, it refuses to write, since a corrupted save is worse than no edit.
 - Nothing is written until the new content parses.
 
 >***Note***
->*As a practical choice, there are **zero required dependencies**. The codec ships a pure-Python AES-256 engine as a fallback and uses `cryptography` (or `pycryptodome`) automatically when installed. Anyone with Python 3.8+ can run it — no `pip install`, no toolchain, on either OS.*
+>*As a practical choice, there are **zero required dependencies**. The codec ships a pure-Python AES-256 engine as a fallback and uses `cryptography` (or `pycryptodome`) automatically when installed. Anyone with Python 3.8+ can run it, no `pip install`, no toolchain, on either OS.*
 
 ---
 ## Windows and Linux
@@ -115,7 +115,7 @@ The safety bits:
 Same format, same codec, two editions:
 - **Windows**: `windows/dungeons_cli.py`, launched with `windows/run.bat`, documented in `windows/README.md`
 - **Linux**: `linux/dungeons_cli_linux.py`, launched with `linux/run.sh`, documented in `linux/README.md`
-- **Shared**: `common/dungeons_codec.py` — the decrypt/encrypt logic and backup handling
+- **Shared**: `common/dungeons_codec.py`, the decrypt/encrypt logic and backup handling
 
 Because the `.dat` format is identical on both systems, moving a character is a file copy: close the game, copy `<char-id>.dat` into the `.../Characters/` folder on the other side.
 
@@ -157,8 +157,8 @@ Full guides live in the repo: `windows/README.md` and `linux/README.md`.
 ---
 ## Conclusions (I thought so)
 
-- The saves were never lost. They were local files the whole time — "cloud sync" was my assumption, not the game's behaviour.
-- An encrypted blob is usually less scary than it looks: a header, a standard cipher, a JSON body — probably more common than we think.
+- The saves were never lost. They were local files the whole time, "cloud sync" was my assumption, not the game's behaviour.
+- An encrypted blob is usually less scary than it looks: a header, a standard cipher, a JSON body, probably more common than we think.
 - AI compressed the boring parts of the work. The byte-identical round-trip is what turned a supposition into a standardized format I could safely write to.
 
 I built this because my characters didn't show up on Linux. If yours don't either, now you know where they are ( and can get extra emeralds ;D ) .
