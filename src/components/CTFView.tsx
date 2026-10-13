@@ -1,3 +1,6 @@
+import ArticleNavigation from '@/components/ArticleNavigation';
+import useArticleContent from '@/hooks/use-article-content';
+import { Link } from 'react-router-dom';
 import ArticleMetadata from '@/components/ArticleMetadata';
 import ArticleContent from '@/components/ArticleContent';
 import { useState, useEffect } from 'react';
@@ -11,6 +14,7 @@ import PageBackground from '@/components/PageBackground';
 interface CTFViewProps {
   ctfWriteup: CTFWriteup;
   onBack: () => void;
+  initialContent?: string;
 }
 
 const isYellowTheme = (category: string) => {
@@ -18,27 +22,12 @@ const isYellowTheme = (category: string) => {
   return ['web', 'web3', 'blockchain', 'crypto', 'reversing'].includes(cat);
 };
 
-const CTFView = ({ ctfWriteup, onBack }: CTFViewProps) => {
-  const [content, setContent] = useState<string>('Loading...');
-  const [isLoading, setIsLoading] = useState(true);
+const CTFView = ({ ctfWriteup, onBack, initialContent }: CTFViewProps) => {
   const [scrollProgress, setScrollProgress] = useState(0);
 
   const isYellow = isYellowTheme(ctfWriteup.category);
 
-  useEffect(() => {
-    let cancelled = false;
-    const loadContent = async () => {
-      setIsLoading(true);
-      const markdownContent = await loadCTFWriteupContent(ctfWriteup.contentPath);
-      if (!cancelled) {
-        setContent(markdownContent);
-        setIsLoading(false);
-      }
-    };
-
-    loadContent();
-    return () => { cancelled = true; };
-  }, [ctfWriteup.contentPath]);
+  const {content, isLoading} = useArticleContent(ctfWriteup.contentPath, loadCTFWriteupContent, initialContent);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -79,7 +68,7 @@ const CTFView = ({ ctfWriteup, onBack }: CTFViewProps) => {
 
   return (
     <div className="min-h-screen bg-background cyber-grid reader-page relative">
-      <ArticleMetadata title={ctfWriteup.title} summary={ctfWriteup.summary} date={ctfWriteup.date} path={`/ctf/${ctfWriteup.id}`} />
+      <ArticleMetadata previewImage={ctfWriteup.previewImage} title={ctfWriteup.title} summary={ctfWriteup.summary} date={ctfWriteup.date} path={`/ctf/${ctfWriteup.id}`} />
       <PageBackground
         primary={isYellow ? 'hsl(38,92%,50%)' : 'hsl(25,95%,53%)'}
         secondary={isYellow ? 'hsl(45,93%,58%)' : 'hsl(15,90%,55%)'}
@@ -97,17 +86,20 @@ const CTFView = ({ ctfWriteup, onBack }: CTFViewProps) => {
       {/* Header */}
       <div className="bg-background/80 backdrop-blur-sm border-b border-border relative z-10">
         <div className="reader-container mx-auto px-4 py-4">
+          <ArticleNavigation title={ctfWriteup.title} content={content} parent={{label:'CTF solves', path:'/ctf'}} />
           <Button
             variant="outline"
-            onClick={onBack}
+            asChild
             className={`mb-4 ${
               isYellow 
                 ? 'border-yellow-500/30 text-yellow-500 hover:bg-yellow-500/10 hover:text-yellow-500' 
                 : 'border-orange-500/30 text-orange-500 hover:bg-orange-500/10 hover:text-orange-500'
             }`}
           >
+            <Link to="/ctf">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Home
+            </Link>
           </Button>
           
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-4">
@@ -130,7 +122,7 @@ const CTFView = ({ ctfWriteup, onBack }: CTFViewProps) => {
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-foreground">
             <div className="flex items-center gap-1">
               <Calendar className="w-4 h-4" />
-              {new Date(ctfWriteup.date).toLocaleDateString()}
+              {new Date(ctfWriteup.date).toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric', timeZone:'UTC'})}
             </div>
             <div className="flex items-center gap-1">
               <Trophy className="w-4 h-4" />

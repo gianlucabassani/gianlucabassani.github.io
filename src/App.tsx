@@ -1,41 +1,36 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
-import TerminalPage from "./pages/TerminalPage";
-import NotFound from "./pages/NotFound";
+import { lazy, Suspense, type ComponentType } from 'react';
+import { Toaster } from '@/components/ui/toaster';
+import { TooltipProvider } from '@/components/ui/tooltip';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import type { InitialArticle } from './data/article';
+import type { ArticlePageProps } from './pages/ArticlePage';
 
-const queryClient = new QueryClient();
+const Index = lazy(() => import('./pages/Index'));
+const ArticlePage = lazy(() => import('./pages/ArticlePage'));
+const TerminalPage = lazy(() => import('./pages/TerminalPage'));
+const NotFound = lazy(() => import('./pages/NotFound'));
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/about" element={<Index />} />
-          <Route path="/projects" element={<Index />} />
-          <Route path="/projects/:id" element={<Index />} />
-          <Route path="/boxes" element={<Index />} />
-          <Route path="/boxes/:platform" element={<Index />} />
-          <Route path="/boxes/:platform/:id" element={<Index />} />
-          <Route path="/ctf" element={<Index />} />
-          <Route path="/ctf/:id" element={<Index />} />
-          <Route path="/blog" element={<Index />} />
-          <Route path="/blog/:id" element={<Index />} />
-          <Route path="/skills" element={<Index />} />
-          <Route path="/certifications" element={<Index />} />
-          <Route path="/terminal" element={<TerminalPage />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+interface AppContentProps {
+  initialArticle?: InitialArticle;
+  ArticleComponent?: ComponentType<ArticlePageProps>;
+}
 
-export default App;
+export function AppContent({initialArticle, ArticleComponent = ArticlePage}: AppContentProps) {
+  return <TooltipProvider>
+    <Toaster />
+    <Suspense fallback={<div className="route-loading" role="status">Loading page...</div>}>
+      <Routes>
+        {['/', '/about', '/projects', '/projects/:id', '/boxes', '/boxes/:platform', '/ctf', '/blog', '/skills', '/certifications'].map(path => <Route key={path} path={path} element={<Index />} />)}
+        <Route path="/blog/:id" element={<ArticleComponent kind="blog" initialArticle={initialArticle} />} />
+        <Route path="/boxes/:platform/:id" element={<ArticleComponent kind="writeup" initialArticle={initialArticle} />} />
+        <Route path="/ctf/:id" element={<ArticleComponent kind="ctf" initialArticle={initialArticle} />} />
+        <Route path="/terminal" element={<TerminalPage />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Suspense>
+  </TooltipProvider>;
+}
+
+export default function App({initialArticle}: {initialArticle?:InitialArticle}) {
+  return <BrowserRouter><AppContent initialArticle={initialArticle} /></BrowserRouter>;
+}

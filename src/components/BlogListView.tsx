@@ -49,6 +49,7 @@ const BlogListView = ({ onBack, onPostSelect }: BlogListViewProps) => {
               <Card
                 className="card-hover theme-purple border-accent/20 hover:ring-1 hover:ring-accent/20 cursor-pointer transition-all duration-300 hover:scale-[1.02]"
               >
+                {post.coverImage && <img src={post.coverImage} alt="" className="blog-card-cover" width={1200} height={630} loading="lazy" />}
                 <CardHeader>
                   <CardTitle className="flex items-start gap-3 text-2xl">
                     <FileText className="w-6 h-6 mt-1 shrink-0 text-accent" />

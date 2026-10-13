@@ -5,32 +5,52 @@
     "platform": "hackthebox",
     "difficulty": "medium",
     "os": "linux",
-    "tags": ["MCPJam", "Jupyter Lab", "Procfs", "API Abuse"],
+    "tags": [
+      "MCPJam",
+      "Jupyter Lab",
+      "Procfs",
+      "API Abuse"
+    ],
     "date": "2026-05-31",
     "summary": "Exploited an RCE in MCPJam (CVE-2026-23744) for initial access, performed lateral movement by extracting a Jupyter Lab token from procfs and tunneling via SSH, and escalated to root by extracting hardcoded credentials to abuse a hidden endpoint in an internal Flask API.",
-    "contentPath": "devhub.md"
+    "contentPath": "devhub.md",
+    "previewImage": "/assets/previews/writeup-devhub.png",
+    "icon": "/assets/htb/devhub.png"
   },
   {
     "id": "reactor",
-    "title": "Reactor", 
+    "title": "Reactor",
     "platform": "hackthebox",
     "difficulty": "easy",
     "os": "linux",
-    "tags": ["React2Shell", "Next.js", "Node.js"],
+    "tags": [
+      "React2Shell",
+      "Next.js",
+      "Node.js"
+    ],
     "date": "2026-05-24",
     "summary": "Gained initial access by exploiting a React/Next.js command execution flaw, retrieved credentials from an internal SQLite database, and escalated to root through an exposed Node.js inspector debugger session.",
-    "contentPath": "reactor.md"
+    "contentPath": "reactor.md",
+    "previewImage": "/assets/previews/writeup-reactor.png",
+    "icon": "/assets/htb/reactor.png"
   },
   {
-  "id": "airtouch",
-  "title": "AirTouch",
-  "platform": "hackthebox",
-  "difficulty": "medium",
-  "os": "linux",
-  "tags": ["WiFi", "Evil Twin", "WPA2", "RADIUS"],
-  "date": "2026-01-31",
-  "summary": "Compromised a multi-tier wireless environment by exploiting SNMP info leakage, pivoting through a WPA2-PSK network to a router, and executing Evil Twin attack against WPA2-Enterprise to capture administrative creds.",
-  "contentPath": "airtouch.md"
+    "id": "airtouch",
+    "title": "AirTouch",
+    "platform": "hackthebox",
+    "difficulty": "medium",
+    "os": "linux",
+    "tags": [
+      "WiFi",
+      "Evil Twin",
+      "WPA2",
+      "RADIUS"
+    ],
+    "date": "2026-01-31",
+    "summary": "Compromised a multi-tier wireless environment by exploiting SNMP info leakage, pivoting through a WPA2-PSK network to a router, and executing Evil Twin attack against WPA2-Enterprise to capture administrative creds.",
+    "contentPath": "airtouch.md",
+    "previewImage": "/assets/previews/writeup-airtouch.png",
+    "icon": "/assets/htb/airtouch.png"
   },
   {
     "id": "environment",
@@ -38,10 +58,18 @@
     "platform": "hackthebox",
     "difficulty": "medium",
     "os": "linux",
-    "tags": ["Laravel", "Nginx", "File Upload", "BASH_ENV", "PGP"],
+    "tags": [
+      "Laravel",
+      "Nginx",
+      "File Upload",
+      "BASH_ENV",
+      "PGP"
+    ],
     "date": "2024-08-31",
     "summary": "Laravel application with login bypass, file upload vulnerability, and privilege escalation via BASH_ENV exploitation.",
-    "contentPath": "environment.md"
+    "contentPath": "environment.md",
+    "previewImage": "/assets/previews/writeup-environment.png",
+    "icon": "/assets/htb/environment.png"
   },
   {
     "id": "editor",
@@ -49,10 +77,17 @@
     "platform": "hackthebox",
     "difficulty": "easy",
     "os": "linux",
-    "tags": ["Xwiki", "Jetty", "Netdata", "SUID"],
+    "tags": [
+      "Xwiki",
+      "Jetty",
+      "Netdata",
+      "SUID"
+    ],
     "date": "2024-09-07",
     "summary": "XWiki 15.10.8 vulnerable to RCE (CVE-2025-24893) with subsequent privilege escalation via Netdata SUID binaries, resulting in full system compromise.",
-    "contentPath": "editor.md"
+    "contentPath": "editor.md",
+    "previewImage": "/assets/previews/writeup-editor.png",
+    "icon": "/assets/htb/editor.png"
   },
   {
     "id": "soulmate",
@@ -60,42 +95,69 @@
     "platform": "hackthebox",
     "difficulty": "easy",
     "os": "linux",
-    "tags": ["CrushFTP", "Erlang"],
+    "tags": [
+      "CrushFTP",
+      "Erlang"
+    ],
     "date": "2025-09-11",
     "summary": "Exploited a CrushFTP authentication bypass vulnerability (CVE-2025-31161) to gain initial access, then used an exposed internal Erlang service to escalate privileges to root.",
-    "contentPath": "soulmate.md"
+    "contentPath": "soulmate.md",
+    "previewImage": "/assets/previews/writeup-soulmate.png",
+    "icon": "/assets/htb/soulmate.png"
   },
   {
-  "id": "puppy",
-  "title": "Puppy",
-  "platform": "hackthebox",
-  "difficulty": "medium",
-  "os": "windows",
-  "tags": ["Active Directory", "SMB", "KeePass", "DPAPI", "DCSync"],
-  "date": "2025-09-16",
-  "summary": "Compromised an Active Directory domain controller by exploiting weak secrets management, abusing overly permissive ACLs, and leveraging DPAPI to recover high-privilege credentials, culminating in a full domain compromise via a DCSync attack.",
-  "contentPath": "puppy.md"
-},
-{
-  "id": "darkzero",
-  "title": "DarkZero",
-  "platform": "hackthebox",
-  "difficulty": "hard",
-  "os": "windows",
-  "tags": ["Active Directory","MSSQL", "DCSync"],
-  "date": "2025-10-06",
-  "summary": "Compromised a Windows domain by pivoting through MSSQL Linked Servers, escalating to SYSTEM via a Kernel race condition (CVE-2024-30088), and performing a cross-domain DCSync attack by coercing authentication to capture a TGT.",
-  "contentPath": "darkzero.md"
-},
-{
-  "id": "touch",
-  "title": "Touch",
-  "platform": "hackthebox",
-  "difficulty": "easy",
-  "os": "windows",
-  "tags": ["Default Credentials", "DeviceHub", "RDP", "MySQL", "UDF Injection"],
-  "date": "2026-10-09",
-  "summary": "Escalated a Windows kiosk appliance from an unauthenticated device-serial leak used as the default web-console password to RDP access as KioskUser, then hunted a cleartext MySQL root password in a readable maintenance batch file and abused a writable MySQL plugin directory to load a UDF DLL, executing commands as SYSTEM.",
-  "contentPath": "touch.md"
-}
+    "id": "puppy",
+    "title": "Puppy",
+    "platform": "hackthebox",
+    "difficulty": "medium",
+    "os": "windows",
+    "tags": [
+      "Active Directory",
+      "SMB",
+      "KeePass",
+      "DPAPI",
+      "DCSync"
+    ],
+    "date": "2025-09-16",
+    "summary": "Compromised an Active Directory domain controller by exploiting weak secrets management, abusing overly permissive ACLs, and leveraging DPAPI to recover high-privilege credentials, culminating in a full domain compromise via a DCSync attack.",
+    "contentPath": "puppy.md",
+    "previewImage": "/assets/previews/writeup-puppy.png",
+    "icon": "/assets/htb/puppy.png"
+  },
+  {
+    "id": "darkzero",
+    "title": "DarkZero",
+    "platform": "hackthebox",
+    "difficulty": "hard",
+    "os": "windows",
+    "tags": [
+      "Active Directory",
+      "MSSQL",
+      "DCSync"
+    ],
+    "date": "2025-10-06",
+    "summary": "Compromised a Windows domain by pivoting through MSSQL Linked Servers, escalating to SYSTEM via a Kernel race condition (CVE-2024-30088), and performing a cross-domain DCSync attack by coercing authentication to capture a TGT.",
+    "contentPath": "darkzero.md",
+    "previewImage": "/assets/previews/writeup-darkzero.png",
+    "icon": "/assets/htb/darkzero.png"
+  },
+  {
+    "id": "touch",
+    "title": "Touch",
+    "platform": "hackthebox",
+    "difficulty": "easy",
+    "os": "windows",
+    "tags": [
+      "Default Credentials",
+      "DeviceHub",
+      "RDP",
+      "MySQL",
+      "UDF Injection"
+    ],
+    "date": "2026-10-09",
+    "summary": "Escalated a Windows kiosk appliance from an unauthenticated device-serial leak used as the default web-console password to RDP access as KioskUser, then hunted a cleartext MySQL root password in a readable maintenance batch file and abused a writable MySQL plugin directory to load a UDF DLL, executing commands as SYSTEM.",
+    "contentPath": "touch.md",
+    "previewImage": "/assets/previews/writeup-touch.png",
+    "icon": "/assets/htb/touch.png"
+  }
 ]

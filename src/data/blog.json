@@ -2,9 +2,15 @@
   {
     "id": "dungeonsrev",
     "title": "Casually Hacking Minecraft Dungeons",
-    "tags": ["minecraft-dungeons", "reverse-engineering", "gaming"],
+    "tags": [
+      "minecraft-dungeons",
+      "reverse-engineering",
+      "gaming"
+    ],
     "date": "2026-10-11",
     "summary": "Speedrun in getting suspended on github by accidentally creating a Minecraft Dungeons mod for editing your character files. (I just wanted to play on linux without losing my progress)",
-    "contentPath": "dungeonsrev.md"
+    "contentPath": "dungeonsrev.md",
+    "previewImage": "/assets/previews/blog-dungeonsrev.png",
+    "coverImage": "/assets/covers/dungeonsrev.webp"
   }
 ]

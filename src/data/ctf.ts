@@ -9,6 +9,8 @@ export interface CTFWriteup {
   date: string;
   summary: string;
   contentPath: string;
+  previewImage?: string;
+  icon?: string;
 }
 
 // Load CTF writeups metadata from JSON

@@ -1,3 +1,6 @@
+import ArticleNavigation from '@/components/ArticleNavigation';
+import useArticleContent from '@/hooks/use-article-content';
+import { Link } from 'react-router-dom';
 import ArticleMetadata from '@/components/ArticleMetadata';
 import ArticleContent from '@/components/ArticleContent';
 import { useEffect, useState } from 'react';
@@ -11,27 +14,13 @@ import PageBackground from '@/components/PageBackground';
 interface BlogViewProps {
   post: BlogPost;
   onBack: () => void;
+  initialContent?: string;
 }
 
-const BlogView = ({ post, onBack }: BlogViewProps) => {
-  const [content, setContent] = useState<string>('Loading...');
-  const [isLoading, setIsLoading] = useState(true);
+const BlogView = ({ post, onBack, initialContent }: BlogViewProps) => {
   const [scrollProgress, setScrollProgress] = useState(0);
 
-  useEffect(() => {
-    let cancelled = false;
-    const loadContent = async () => {
-      setIsLoading(true);
-      const markdownContent = await loadBlogPostContent(post.contentPath);
-      if (!cancelled) {
-        setContent(markdownContent);
-        setIsLoading(false);
-      }
-    };
-
-    loadContent();
-    return () => { cancelled = true; };
-  }, [post.contentPath]);
+  const {content, isLoading} = useArticleContent(post.contentPath, loadBlogPostContent, initialContent);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -47,7 +36,7 @@ const BlogView = ({ post, onBack }: BlogViewProps) => {
 
   return (
     <div className="min-h-screen bg-background cyber-grid reader-page relative">
-      <ArticleMetadata title={post.title} summary={post.summary} date={post.date} path={`/blog/${post.id}`} />
+      <ArticleMetadata previewImage={post.previewImage} title={post.title} summary={post.summary} date={post.date} path={`/blog/${post.id}`} />
       <PageBackground
         primary={accentColor}
         secondary="hsl(325,90%,62%)"
@@ -63,13 +52,16 @@ const BlogView = ({ post, onBack }: BlogViewProps) => {
 
       <div className="bg-background/80 backdrop-blur-md border-b border-border relative z-10">
         <div className="reader-container mx-auto px-4 py-4">
+          <ArticleNavigation title={post.title} content={content} parent={{label:'Blog', path:'/blog'}} />
           <Button
             variant="outline"
-            onClick={onBack}
+            asChild
             className="mb-4 font-mono border-accent/30 text-accent hover:bg-accent/10 hover:text-accent"
           >
+            <Link to="/blog">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Blog
+            </Link>
           </Button>
 
           <div className="flex items-center gap-2 mb-4 text-sm text-muted-foreground font-mono">
@@ -83,7 +75,7 @@ const BlogView = ({ post, onBack }: BlogViewProps) => {
 
           <div className="flex items-center gap-1 text-sm text-muted-foreground">
             <Calendar className="w-4 h-4" />
-            {new Date(post.date).toLocaleDateString()}
+            {new Date(post.date).toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric', timeZone:'UTC'})}
           </div>
         </div>
       </div>
@@ -109,6 +101,7 @@ const BlogView = ({ post, onBack }: BlogViewProps) => {
           </CardContent>
         </Card>
 
+        {post.coverImage && <img src={post.coverImage} alt="Voxel dungeon chest and encrypted save file illustration" className="article-cover" width={1200} height={630} />}
         <Card className="reader-article theme-purple border-accent/20">
           <CardContent className="reader-content">
             {isLoading ? (

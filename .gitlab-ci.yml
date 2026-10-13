@@ -5,6 +5,7 @@ create-pages:
   stage: deploy
   script:
     - npm ci
+    - npm test
     - npm run build
   pages:
     # The folder that contains the files to be exposed at the Page URL

@@ -5,6 +5,9 @@ export interface BlogPost {
   date: string;
   summary: string;
   contentPath: string;
+  previewImage?: string;
+  icon?: string;
+  coverImage?: string;
 }
 
 import blogData from './blog.json';

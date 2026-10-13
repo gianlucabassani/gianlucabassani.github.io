@@ -1,15 +1,19 @@
 [
-    {
+  {
     "id": "webdav",
     "title": "WebDAV",
     "competition": "ITS CyberGame",
     "category": "web",
     "difficulty": "medium",
     "points": 200,
-    "tags": ["WebDAV", "RCE"],
+    "tags": [
+      "WebDAV",
+      "RCE"
+    ],
     "date": "2026-03-27",
     "summary": "Discover a WebDAV endpoint via fuzzing and exploit unsafe HTTP methods to bypass file upload restrictions and achieve RCE.",
-    "contentPath": "webdav.md"
+    "contentPath": "webdav.md",
+    "previewImage": "/assets/previews/ctf-webdav.png"
   },
   {
     "id": "fittest",
@@ -18,10 +22,16 @@
     "category": "web3",
     "difficulty": "easy",
     "points": 100,
-    "tags": ["Solidity", "Smart Contracts", "Foundry", "EVM"],
+    "tags": [
+      "Solidity",
+      "Smart Contracts",
+      "Foundry",
+      "EVM"
+    ],
     "date": "2025-11-16",
-    "summary": "Defeat a vulnerable smart‑contract creature by reducing its life points and looting its balance using a single strong attack.",
-    "contentPath": "fittest.md"
+    "summary": "Defeat a vulnerable smart\u2011contract creature by reducing its life points and looting its balance using a single strong attack.",
+    "contentPath": "fittest.md",
+    "previewImage": "/assets/previews/ctf-fittest.png"
   },
   {
     "id": "space",
@@ -30,10 +40,17 @@
     "category": "ai",
     "difficulty": "easy",
     "points": 100,
-    "tags": ["MDS", "PCA", "Python", "Distance Matrix", "Dimensionality Reduction"],
+    "tags": [
+      "MDS",
+      "PCA",
+      "Python",
+      "Distance Matrix",
+      "Dimensionality Reduction"
+    ],
     "date": "2025-11-26",
     "summary": "Reconstruct hidden coordinates from a distance matrix using MDS and PCA to reveal the flag embedded in 2D point clouds.",
-    "contentPath": "space.md"
+    "contentPath": "space.md",
+    "previewImage": "/assets/previews/ctf-space.png"
   },
   {
     "id": "windows",
@@ -42,9 +59,16 @@
     "category": "misc",
     "difficulty": "hard",
     "points": 496,
-    "tags": ["Windows", "JavaScript", "RPC", "crypto", "rev"],
+    "tags": [
+      "Windows",
+      "JavaScript",
+      "RPC",
+      "crypto",
+      "rev"
+    ],
     "date": "2026-06-28",
     "summary": "Decode a custom Windows activation protocol, recover obfuscated license data, and generate a valid activation token to unlock the system.",
-    "contentPath": "windows.md"
+    "contentPath": "windows.md",
+    "previewImage": "/assets/previews/ctf-windows.png"
   }
 ]

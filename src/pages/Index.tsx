@@ -1,5 +1,5 @@
 import PageBackground from '@/components/PageBackground';
-import { useState, useEffect } from 'react';
+import { lazy, useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Shield, Terminal, Code, FileText, Flag, Github, Gitlab, ExternalLink, ChevronDown, Menu, X, BookOpen, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -9,17 +9,14 @@ import { Writeup } from '@/data/writeups';
 import { CTFWriteup, ctfWriteups } from '@/data/ctf';
 import { Project, projects } from '@/data/projects';
 import skillsData, { Skill } from '@/data/skills';
-import WriteupView from '@/components/WriteupView';
-import PlatformView from '@/components/PlatformView';
-import CTFView from '@/components/CTFView';
-import ProjectView from '@/components/ProjectView';
-import ProjectsView from '@/components/ProjectsView';
-import SkillsView from '@/components/SkillsView';
-import CertificationsView from '@/components/CertificationsView';
+const PlatformView = lazy(() => import('@/components/PlatformView'));
+const ProjectView = lazy(() => import('@/components/ProjectView'));
+const ProjectsView = lazy(() => import('@/components/ProjectsView'));
+const SkillsView = lazy(() => import('@/components/SkillsView'));
+const CertificationsView = lazy(() => import('@/components/CertificationsView'));
 import { writeups } from '@/data/writeups';
 import { BlogPost, getBlogPostById, getBlogPosts } from '@/data/blog';
-import BlogListView from '@/components/BlogListView';
-import BlogView from '@/components/BlogView';
+const BlogListView = lazy(() => import('@/components/BlogListView'));
 
 const Index = () => {
   const location = useLocation();
@@ -279,14 +276,6 @@ const Index = () => {
   }, [currentView]);
 
   // Handle different views
-  if (currentView === 'writeup' && selectedWriteup) {
-    return <WriteupView writeup={selectedWriteup} onBack={handleBackToPlatform} />;
-  }
-
-  if (currentView === 'ctf' && selectedCTFWriteup) {
-    return <CTFView ctfWriteup={selectedCTFWriteup} onBack={handleBackToMain} />;
-  }
-
   if (currentView === 'projects') {
     return <ProjectsView onBack={handleBackToMain} onProjectSelect={handleProjectSelect} />;
   }
@@ -297,10 +286,6 @@ const Index = () => {
 
   if (currentView === 'blog') {
     return <BlogListView onBack={handleBackToMain} onPostSelect={handleBlogPostSelect} />;
-  }
-
-  if (currentView === 'blogPost' && selectedBlogPost) {
-    return <BlogView post={selectedBlogPost} onBack={handleBackToBlog} />;
   }
 
   if (currentView === 'skills') {
@@ -760,6 +745,7 @@ const Index = () => {
                   className="card-hover theme-purple border-accent/20 hover:ring-1 hover:ring-accent/20 cursor-pointer transition-all duration-300 hover:scale-[1.02]"
                   data-fade-in
                 >
+                  {post.coverImage && <img src={post.coverImage} alt="" className="blog-card-cover" width={1200} height={630} loading="lazy" />}
                   <CardHeader>
                     <CardTitle className="text-2xl flex items-center">
                       <BookOpen className="w-6 h-6 mr-2 text-accent" />

@@ -8,6 +8,8 @@ export interface Writeup {
   date: string;
   summary: string;
   contentPath: string;
+  previewImage?: string;
+  icon?: string;
 }
 
 // Load writeups metadata from JSON

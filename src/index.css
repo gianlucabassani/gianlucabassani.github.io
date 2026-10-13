@@ -721,3 +721,18 @@ h1, h2, h3 { overflow-wrap: anywhere; }
   .home-page .font-mono { overflow-wrap: anywhere; }
   .home-page section > div > .grid > .bg-card { min-width: 0; }
 }
+
+.route-loading { min-height: 100dvh; display: grid; place-items: center; padding: 1rem; color: hsl(var(--muted-foreground)); }
+.article-navigation { margin-bottom: 1rem; }
+.article-navigation ol { display: flex; flex-wrap: wrap; align-items: center; gap: 0 0.5rem; font-size: 0.8125rem; color: hsl(var(--muted-foreground)); }
+.article-navigation li { display: inline-flex; align-items: center; gap: 0.5rem; min-width: 0; }
+.article-navigation a { display: inline-flex; align-items: center; min-height: 44px; color: hsl(var(--foreground) / 0.86); }
+.article-navigation [aria-current] { overflow-wrap: anywhere; }
+.article-reading-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 0.25rem 1rem; font-size: 0.8125rem; color: hsl(var(--muted-foreground)); }
+.article-reading-tools > span:first-child, .article-reading-tools button { display: inline-flex; align-items: center; gap: 0.5rem; min-height: 44px; }
+.article-reading-tools button { padding-inline: 0.75rem; border-radius: 0.5rem; color: hsl(var(--foreground)); }
+.article-reading-tools button:hover { background: hsl(var(--muted)); }
+.article-reading-tools [role=status]:empty { display: none; }
+.article-cover { display: block; width: 100%; height: auto; aspect-ratio: 1200 / 630; object-fit: cover; border-radius: 0.75rem; margin-bottom: 1.5rem; }
+.blog-card-cover { width: 100%; height: auto; aspect-ratio: 1200 / 630; object-fit: cover; border-radius: 0.75rem 0.75rem 0 0; }
+.machine-icon { width: 48px; height: 48px; object-fit: contain; border-radius: 0.625rem; flex-shrink: 0; }

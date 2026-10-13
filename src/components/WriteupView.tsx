@@ -1,3 +1,6 @@
+import ArticleNavigation from '@/components/ArticleNavigation';
+import useArticleContent from '@/hooks/use-article-content';
+import { Link } from 'react-router-dom';
 import ArticleMetadata from '@/components/ArticleMetadata';
 import ArticleContent from '@/components/ArticleContent';
 import { useState, useEffect } from 'react';
@@ -11,26 +14,12 @@ import PageBackground from '@/components/PageBackground';
 interface WriteupViewProps {
   writeup: Writeup;
   onBack: () => void;
+  initialContent?: string;
 }
 
-const WriteupView = ({ writeup, onBack }: WriteupViewProps) => {
-  const [content, setContent] = useState<string>('Loading...');
-  const [isLoading, setIsLoading] = useState(true);
+const WriteupView = ({ writeup, onBack, initialContent }: WriteupViewProps) => {
 
-  useEffect(() => {
-    let cancelled = false;
-    const loadContent = async () => {
-      setIsLoading(true);
-      const markdownContent = await loadWriteupContent(writeup.contentPath);
-      if (!cancelled) {
-        setContent(markdownContent);
-        setIsLoading(false);
-      }
-    };
-
-    loadContent();
-    return () => { cancelled = true; };
-  }, [writeup.contentPath]);
+  const {content, isLoading} = useArticleContent(writeup.contentPath, loadWriteupContent, initialContent);
   const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
@@ -115,7 +104,7 @@ const WriteupView = ({ writeup, onBack }: WriteupViewProps) => {
 
   return (
     <div className="min-h-screen bg-background cyber-grid reader-page relative">
-      <ArticleMetadata title={writeup.title} summary={writeup.summary} date={writeup.date} path={`/boxes/${writeup.platform}/${writeup.id}`} />
+      <ArticleMetadata previewImage={writeup.previewImage} title={writeup.title} summary={writeup.summary} date={writeup.date} path={`/boxes/${writeup.platform}/${writeup.id}`} />
       <PageBackground
         primary={theme.accentColor}
         secondary={theme.secondaryColor}
@@ -136,13 +125,16 @@ const WriteupView = ({ writeup, onBack }: WriteupViewProps) => {
       {/* Header */}
       <div className="bg-background/80 backdrop-blur-md border-b border-border relative z-10">
         <div className="reader-container mx-auto px-4 py-4">
+          <ArticleNavigation title={writeup.title} content={content} parent={{label:'Box writeups', path:`/boxes/${writeup.platform}`}} />
           <Button
             variant="outline"
-            onClick={onBack}
+            asChild
             className={`mb-4 font-mono ${theme.btnClass}`}
           >
+            <Link to={`/boxes/${writeup.platform}`}>
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Writeups
+            </Link>
           </Button>
           
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-4">
@@ -152,7 +144,7 @@ const WriteupView = ({ writeup, onBack }: WriteupViewProps) => {
             >
               {writeup.difficulty.toUpperCase()}
             </Badge>
-            <span className="text-2xl">{getOSIcon(writeup.os)}</span>
+            {writeup.icon ? <img className="machine-icon" src={writeup.icon} alt={`${writeup.title} machine icon`} width={48} height={48} /> : <span className="text-2xl">{getOSIcon(writeup.os)}</span>}
             <span className="text-sm text-muted-foreground font-mono">
               {writeup.platform.toUpperCase()}
             </span>
@@ -165,7 +157,7 @@ const WriteupView = ({ writeup, onBack }: WriteupViewProps) => {
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-foreground">
             <div className="flex items-center gap-1">
               <Calendar className="w-4 h-4" />
-              {new Date(writeup.date).toLocaleDateString()}
+              {new Date(writeup.date).toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric', timeZone:'UTC'})}
             </div>
             <div className="flex items-center gap-1">
               <Shield className="w-4 h-4" />

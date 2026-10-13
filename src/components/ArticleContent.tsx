@@ -1,4 +1,6 @@
-import { Children, isValidElement, useEffect, useRef, useState, type ReactNode } from 'react';
+import { articleHeadings, headingId } from '@/lib/article-headings';
+import imageSizes from '@/data/image-sizes.json';
+import { Children, isValidElement, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
@@ -16,15 +18,11 @@ function textOf(children: ReactNode): string {
 function headingLinks() {
   return (tree: Root) => {
     const ids = new Set<string>();
-    const nodeText = (node: RootContent): string => 'value' in node ? String(node.value) :
+    const nodeText = (node: RootContent): string => node.type === 'element' && node.tagName === 'img' ? String(node.properties.alt || '') : 'value' in node ? String(node.value) :
       'children' in node ? node.children.map(nodeText).join('') : '';
     const visit = (node: Root | RootContent) => {
       if (node.type === 'element' && /^h[1-6]$/.test(node.tagName)) {
-        const slug = nodeText(node).toLowerCase().replace(/[^\p{L}\p{N}\s-]/gu, '').trim().replace(/\s+/g, '-') || 'section';
-        let id = `section-${slug}`;
-        let count = 1;
-        while (ids.has(id)) id = `section-${slug}-${count++}`;
-        ids.add(id);
+        const id = headingId(nodeText(node), ids);
         node.properties.id = id;
         const link: Element = {type:'element', tagName:'a', properties:{href:`#${id}`, className:['heading-link']}, children:node.children};
         node.children = [link];
@@ -72,15 +70,9 @@ interface ArticleContentProps {
 }
 
 export default function ArticleContent({content, theme = 'purple'}: ArticleContentProps) {
-  const article = useRef<HTMLDivElement>(null);
   const dialog = useRef<HTMLDialogElement>(null);
-  const [headings, setHeadings] = useState<{id:string; title:string; level:number}[]>([]);
+  const headings = useMemo(() => articleHeadings(content), [content]);
   const [image, setImage] = useState<{src:string; alt:string} | null>(null);
-  useEffect(() => {
-    setHeadings(Array.from(article.current?.querySelectorAll('h1, h2, h3') || []).map(heading => ({
-      id:heading.id, title:heading.textContent || '', level:Number(heading.tagName[1]),
-    })));
-  }, [content]);
   useEffect(() => {
     let id: string;
     try { id = decodeURIComponent(window.location.hash.slice(1)); } catch { return; }
@@ -103,11 +95,11 @@ export default function ArticleContent({content, theme = 'purple'}: ArticleConte
           </nav>
         </details>
       )}
-      <div ref={article} className={`prose prose-invert prose-${theme} reader-prose`}>
+      <div className={`prose prose-invert prose-${theme} reader-prose`}>
         <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeHighlight, headingLinks]} components={{
           pre: ({children}) => <CodeBlock>{children}</CodeBlock>,
           img: ({src, alt}) => <button type="button" className="reader-image" aria-label={`Enlarge image: ${alt || 'article screenshot'}`} onClick={() => src && setImage({src, alt:alt || 'Article screenshot'})}>
-            <img src={src} alt={alt || ''} loading="lazy" decoding="async" />
+            <img src={src} alt={alt || ''} {...imageSizes[src as keyof typeof imageSizes]} loading="lazy" decoding="async" />
             <span>Tap to enlarge</span>
           </button>,
           table: ({children}) => <div className="reader-table" tabIndex={0} role="region" aria-label="Horizontally scrollable table"><table>{children}</table></div>,

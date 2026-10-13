@@ -13,11 +13,16 @@ test('article links contain crawler-readable metadata and retain the app entry p
     await mkdir(outputDir);
     await mkdir(dataDir);
     await writeFile(join(outputDir, 'index.html'), '<html><head><title>Home</title><meta property="og:title" content="Home" /><link rel="canonical" href="https://example.com/" /></head><body><div id="root"></div><script type="module" src="/assets/app.js"></script></body></html>');
-    const record = {id:'example', title:'A <test> & "title"', summary:'Preview & description', date:'2026-10-13'};
+    const publicDir = join(root, 'public');
+    for (const folder of ['blog', 'writeups', 'ctf']) {
+      await mkdir(join(publicDir, folder), {recursive:true});
+      await writeFile(join(publicDir, folder, 'example.md'), '# Read immediately\n\nArticle body without JavaScript.\n\n## Commands\n\n```bash\necho "<script>safe</script>"\n```');
+    }
+    const record = {id:'example', title:'A <test> & "title"', summary:'Preview & description', date:'2026-10-13', contentPath:'example.md', tags:[], difficulty:'easy', os:'linux', competition:'Test CTF', category:'web', points:100, previewImage:'/assets/previews/example.png'};
     await writeFile(join(dataDir, 'blog.json'), JSON.stringify([record]));
     await writeFile(join(dataDir, 'writeups.json'), JSON.stringify([{...record, platform:'hackthebox'}]));
     await writeFile(join(dataDir, 'ctf.json'), JSON.stringify([record]));
-    const count = await generateArticlePages({outputDir, dataDir});
+    const count = await generateArticlePages({outputDir, dataDir, publicDir});
     assert.equal(count, 3);
     for (const route of ['blog/example','boxes/hackthebox/example','ctf/example']) {
       const html = await readFile(join(outputDir, route, 'index.html'), 'utf8');
@@ -28,7 +33,14 @@ test('article links contain crawler-readable metadata and retain the app entry p
       assert.ok(html.includes(`href="https://gianlucabassani.gitlab.io/${route}/"`));
       assert.match(html, /src="\/assets\/app.js"/);
       assert.equal((html.match(/property="og:title"/g) || []).length, 1);
-      assert.match(html, /property="og:image" content="https:\/\/gianlucabassani.gitlab.io\/og-image.png"/);
+      assert.match(html, /property="og:image" content="https:\/\/gianlucabassani.gitlab.io\/assets\/previews\/example.png"/);
+      assert.match(html, /Article body without JavaScript/);
+      assert.match(html, /echo/);
+      assert.match(html, /aria-label="Breadcrumb"/);
+      assert.match(html, /min read/);
+      assert.match(html, /id="article-data"/);
+      assert.doesNotMatch(html, /<script>safe<\/script>/);
+      assert.doesNotMatch(html, /Loading article/);
     }
     const sitemap = await readFile(join(outputDir,'sitemap.xml'),'utf8');
     assert.match(sitemap, /blog\/example\//);

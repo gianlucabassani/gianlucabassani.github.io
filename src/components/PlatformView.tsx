@@ -241,7 +241,7 @@ const PlatformView = ({ platform, onBack, onWriteupSelect }: PlatformViewProps) 
                           className={`group flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3 sm:p-4 bg-muted/50 rounded-lg hover:bg-muted/80 transition-all duration-200 cursor-pointer border border-transparent ${theme.itemBorderHover}`}
                         >
                           <div className="flex items-center space-x-4">
-                            <span className="text-2xl">{getOSIcon(writeup.os)}</span>
+                            {writeup.icon ? <img className="machine-icon" src={writeup.icon} alt="" width={48} height={48} loading="lazy" /> : <span className="text-2xl">{getOSIcon(writeup.os)}</span>}
                             <div>
                               <div className={`font-semibold text-foreground ${theme.itemTextHover} transition-colors`}>
                                 {writeup.title}
