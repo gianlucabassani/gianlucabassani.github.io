@@ -32,17 +32,17 @@ Reversing complex client-side obfuscation and debugging cryptographic mismatches
 
 The web desktop loads a simulated Windows XP environment. Opening the activation wizard reveals the telephone activation screen prompting for a Confirmation ID.
 
-![product activation](https://gianlucabassani.github.io/assets/ctf/product_activation.png)
+![product activation](/assets/ctf/product_activation.png)
 
 ## Reconnaissance & Intercepting Traffic
 
 By inspecting the network traffic while navigating the web desktop (such as accessing the Recycle Bin and retrieving the deleted notes), we can intercept the backend communication.
 
-![deleted note request](https://gianlucabassani.github.io/assets/ctf/deleted_note_request.png)
+![deleted note request](/assets/ctf/deleted_note_request.png)
 
 Using CyberChef to reverse and decode the base64-encoded response, we reveal the contents of the deleted support notes. These notes contain critical details for rebuilding the database (including file offsets, rotation step profiles, and validation hashes) and reveal the custom reversed-base64 transport layout used throughout the application.
 
-![CyberChef deleted note](https://gianlucabassani.github.io/assets/ctf/cyber_chef_deleted_note.png)
+![CyberChef deleted note](/assets/ctf/cyber_chef_deleted_note.png)
 
 ## app.js (RPC Transport & shellGhost Mapping)
 

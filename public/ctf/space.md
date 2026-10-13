@@ -185,7 +185,7 @@ This pipeline converts the hacker’s distance signature back into readable text
 
 The plotted reconstruction clearly reveals:
 
-![space](https://gianlucabassani.github.io/assets/ctf/space.jpg)
+![space](/assets/ctf/space.jpg)
 
 ```
 HTB{d1s<SNIP>c3}
