@@ -1,6 +1,6 @@
-import { articleHeadings, headingId } from '@/lib/article-headings';
+import { headingId, withoutArticleTitle } from '@/lib/article-headings';
 import imageSizes from '@/data/image-sizes.json';
-import { Children, isValidElement, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { Children, isValidElement, useEffect, useRef, useState, type ReactNode } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
@@ -22,6 +22,8 @@ function headingLinks() {
       'children' in node ? node.children.map(nodeText).join('') : '';
     const visit = (node: Root | RootContent) => {
       if (node.type === 'element' && /^h[1-6]$/.test(node.tagName)) {
+        // Older writeups use h1 for chapters; the page title owns that level.
+        if (node.tagName === 'h1') node.tagName = 'h2';
         const id = headingId(nodeText(node), ids);
         node.properties.id = id;
         const link: Element = {type:'element', tagName:'a', properties:{href:`#${id}`, className:['heading-link']}, children:node.children};
@@ -66,12 +68,13 @@ function CodeBlock({ children }: { children?: ReactNode }) {
 
 interface ArticleContentProps {
   content: string;
+  title?: string;
   theme?: 'purple' | 'green' | 'blue' | 'yellow' | 'orange';
 }
 
-export default function ArticleContent({content, theme = 'purple'}: ArticleContentProps) {
+export default function ArticleContent({content, title = '', theme = 'purple'}: ArticleContentProps) {
   const dialog = useRef<HTMLDialogElement>(null);
-  const headings = useMemo(() => articleHeadings(content), [content]);
+  const body = withoutArticleTitle(content, title);
   const [image, setImage] = useState<{src:string; alt:string} | null>(null);
   useEffect(() => {
     let id: string;
@@ -87,14 +90,6 @@ export default function ArticleContent({content, theme = 'purple'}: ArticleConte
   }, [image]);
   return (
     <>
-      {headings.length > 1 && (
-        <details className="reader-toc">
-          <summary>On this page <span>{headings.length} sections</span></summary>
-          <nav aria-label="Article sections">
-            {headings.map(heading => <a key={heading.id} href={`#${heading.id}`} className={heading.level === 3 ? 'reader-toc-subsection' : ''}>{heading.title}</a>)}
-          </nav>
-        </details>
-      )}
       <div className={`prose prose-invert prose-${theme} reader-prose`}>
         <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeHighlight, headingLinks]} components={{
           pre: ({children}) => <CodeBlock>{children}</CodeBlock>,
@@ -103,7 +98,7 @@ export default function ArticleContent({content, theme = 'purple'}: ArticleConte
             <span>Tap to enlarge</span>
           </button>,
           table: ({children}) => <div className="reader-table" tabIndex={0} role="region" aria-label="Horizontally scrollable table"><table>{children}</table></div>,
-        }}>{content}</ReactMarkdown>
+        }}>{body}</ReactMarkdown>
       </div>
       <dialog ref={dialog} className="reader-image-dialog" aria-label="Enlarged article image" onClose={() => setImage(null)} onClick={event => {if (event.target === event.currentTarget) dialog.current?.close();}}>
         <button type="button" className="reader-image-close" aria-label="Close image" onClick={() => dialog.current?.close()}><X size={22} /></button>

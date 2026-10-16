@@ -37,7 +37,6 @@ const Index = () => {
     }, 4000);
     return () => clearInterval(interval);
   }, []);
-    
   useEffect(() => {
     if (!isMenuOpen) return;
     const closeOnEscape = (event: KeyboardEvent) => {
@@ -54,9 +53,7 @@ const Index = () => {
   const parseRoute = () => {
     const path = location.pathname;
     const segments = path.split('/').filter(s => s);
-    
     if (segments.length === 0) return { view: 'main' as const, section: 'about' };
-    
     const section = segments[0];
     if (section === 'projects' && segments[1]) {
       return { view: 'project' as const, projectId: segments[1] };
@@ -85,10 +82,8 @@ const Index = () => {
     if (section === 'certifications') {
       return { view: 'certifications' as const };
     }
-    
     return { view: 'main' as const, section };
   };
-  
   const currentRoute = parseRoute();
   const [currentView, setCurrentView] = useState<'main' | 'platform' | 'writeup' | 'ctf' | 'projects' | 'project' | 'blog' | 'blogPost' | 'skills' | 'certifications'>(currentRoute.view);
   const [selectedPlatform, setSelectedPlatform] = useState<string>(currentRoute.platform || '');
@@ -112,7 +107,6 @@ const Index = () => {
     setCurrentView(route.view);
     setActiveSection(route.section || 'about');
     setSelectedPlatform(route.platform || '');
-    
     // Load specific items based on route
     if (route.projectId) {
       const project = projects.find(p => p.id === route.projectId);
@@ -196,7 +190,6 @@ const Index = () => {
   const getSkillClasses = (skillName: string): string => {
     const skill = skillsData.find(s => s.name === skillName);
     const variant = skill?.variant || 'secondary';
-    
     const colorClasses = {
       primary: 'bg-primary/20 text-primary border-primary/30',
       secondary: 'bg-secondary/20 text-secondary border-secondary/30',
@@ -205,7 +198,6 @@ const Index = () => {
       success: 'bg-success/20 text-success border-success/30',
       destructive: 'bg-destructive/20 text-destructive border-destructive/30'
     };
-    
     return colorClasses[variant] || colorClasses.secondary;
   };
 
@@ -222,12 +214,14 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    const section = location.pathname.split('/').filter(Boolean)[0];
+    if (currentView === 'main' && section && document.getElementById(section)) {
+      document.getElementById(section)?.scrollIntoView({behavior:'instant'});
+    } else if (!window.location.hash) window.scrollTo(0, 0);
   }, [location.pathname, currentView]);
 
   useEffect(() => {
     if (currentView !== 'main') return;
-    
     // Observer for nav active state
     const navObserver = new IntersectionObserver(
       (entries) => {
@@ -314,7 +308,6 @@ const Index = () => {
         className="scroll-progress" 
         style={{ width: `${scrollProgress}%` }}
       />
-      
       {/* Navigation */}
       <nav className="fixed top-0 w-full bg-background/90 backdrop-blur-md border-b border-border z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -326,7 +319,6 @@ const Index = () => {
               <span className="hidden sm:inline text-muted-foreground/30 mx-2 select-none">|</span>
               <span className="hidden sm:inline text-foreground/80 font-light text-xs lg:text-sm tracking-widest uppercase">CyberSecurity</span>
             </div>
-            
             {/* Desktop Navigation */}
             <div className="hidden lg:flex gap-5">
               {navItems.map((item) => (
@@ -371,7 +363,7 @@ const Index = () => {
         </div>
       </nav>
 
-      <main className="pt-20 relative z-10">
+      <main id="main-content" tabIndex={-1} className="pt-20 relative z-10">
         {/* About Section */}
         <section id="about" className="py-10 sm:py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -385,7 +377,6 @@ const Index = () => {
               </h1>
               <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-4">
                 Penetration Testing | AI Red Team | Agentic Automation
-                
               </p>
               <p className="text-base md:text-lg text-muted-foreground/80 max-w-2xl mx-auto mb-8 font-mono">
                 Cybersecurity enthusiast and curious mind building side projects around whatever topics I'm currently breaking into. Occasional CTF player with pwnthem0le in Turin. 
@@ -427,9 +418,8 @@ const Index = () => {
                 {/* Technical Skills & Certifications */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
                   {/* Technical Skills */}
-                  <Card
+                  <Link to="/skills" className="content-card-link"><Card
                     className="group relative card-hover theme-purple border-accent/20 hover:ring-1 hover:ring-accent/20 cursor-pointer transition-all duration-300 hover:scale-105 overflow-hidden"
-                    onClick={handleSkillsClick}
                   >
                     <CardHeader>
                       <CardTitle className="flex items-center text-lg transition-all duration-300">
@@ -487,12 +477,11 @@ const Index = () => {
                         </div>
                       </div>
                     </CardContent>
-                  </Card>
+                  </Card></Link>
 
                   {/* Certifications */}
-                  <Card
+                  <Link to="/certifications" className="content-card-link"><Card
                     className="group relative card-hover theme-purple border-accent/20 hover:ring-1 hover:ring-accent/20 cursor-pointer transition-all duration-200 hover:scale-102 overflow-hidden"
-                    onClick={handleCertsClick}
                   >
                     <CardHeader>
                       <CardTitle className="flex items-center text-lg transition-all duration-300">
@@ -530,11 +519,10 @@ const Index = () => {
                         </div>
                       </div>
                     </CardContent>
-                  </Card>
+                  </Card></Link>
                 </div>
 
                 <h3 className="text-xl font-mono font-semibold mb-6">What You'll Find Here</h3>
-                
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <Card className="card-hover theme-purple border-accent/20">
                     <CardHeader>
@@ -596,9 +584,8 @@ const Index = () => {
             </Card>
 
             {/* Interactive CLI Console Preview Card */}
-            <Card 
+            <Link to="/terminal" className="content-card-link"><Card
               className="mt-12 scroll-mt-24 border-accent/20 bg-card/60 backdrop-blur-sm overflow-hidden card-hover theme-purple cursor-pointer transition-all duration-300 group hover:border-accent/40"
-              onClick={() => navigate('/terminal')}
               data-fade-in
             >
               {/* Terminal Titlebar Mock */}
@@ -635,7 +622,7 @@ const Index = () => {
                   <span className="text-accent/80 group-hover:translate-x-1 transition-transform">Run terminal &rarr;</span>
                 </div>
               </CardContent>
-            </Card>
+            </Card></Link>
           </div>
         </section>
 
@@ -652,13 +639,12 @@ const Index = () => {
                 <Card 
                   key={project.id}
                   className="card-hover theme-green border-success/20 hover:ring-1 hover:ring-success/20 cursor-pointer transition-all duration-300 hover:scale-105"
-                  onClick={() => handleProjectSelect(project)}
                   data-fade-in
                 >
                   <CardHeader>
                     <CardTitle className="text-2xl flex items-center">
                       <Terminal className="w-6 h-6 mr-2 text-success" />
-                      {project.title}
+                      <Link className="project-title-link" to={`/projects/${project.id}`}>{project.title}</Link>
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
@@ -726,7 +712,6 @@ const Index = () => {
                 View All Projects
                 <ExternalLink className="w-4 h-4 ml-2" />
               </Button>
-          
             </div>
           </div>
         </section>
@@ -753,7 +738,7 @@ const Index = () => {
                     </CardTitle>
                     <div className="flex items-center gap-1 text-sm text-muted-foreground font-mono">
                       <Calendar className="w-4 h-4" />
-                      {new Date(post.date).toLocaleDateString()}
+                      {new Date(post.date).toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric', timeZone:'UTC'})}
                     </div>
                   </CardHeader>
                   <CardContent>
@@ -786,11 +771,9 @@ const Index = () => {
         <section id="boxes" className="py-10 sm:py-16 bg-muted/30">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-3xl sm:text-4xl font-display font-bold mb-8 sm:mb-12 text-center gradient-text tracking-tight">Box Writeups</h2>
-            
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-8 mb-8 sm:mb-12">
-              <Card 
+              <Link to="/boxes/hackthebox" className="content-card-link"><Card
                 className="card-hover theme-green border-success/20 hover:ring-1 hover:ring-success/20 cursor-pointer transition-all duration-300 hover:scale-105"
-                onClick={() => handlePlatformClick('hackthebox')}
                 data-fade-in
               >
                 <CardHeader>
@@ -807,11 +790,10 @@ const Index = () => {
                     <Badge variant="secondary" className="tag">Windows</Badge>
                   </div>
                 </CardContent>
-              </Card>
+              </Card></Link>
 
-              <Card 
+              <Link to="/boxes/tryhackme" className="content-card-link"><Card
                 className="card-hover theme-blue border-blue-500/20 hover:ring-1 hover:ring-blue-500/20 cursor-pointer transition-all duration-300 hover:scale-105"
-                onClick={() => handlePlatformClick('tryhackme')}
                 data-fade-in
               >
                 <CardHeader>
@@ -826,11 +808,10 @@ const Index = () => {
                     <Badge variant="secondary" className="tag">Basic Skills</Badge>
                   </div>
                 </CardContent>
-              </Card>
+              </Card></Link>
 
-              <Card 
+              <Link to="/boxes/vulnhub" className="content-card-link"><Card
                 className="card-hover theme-yellow border-yellow-500/20 hover:ring-1 hover:ring-yellow-500/20 cursor-pointer transition-all duration-300 hover:scale-105"
-                onClick={() => handlePlatformClick('vulnhub')}
                 data-fade-in
               >
                 <CardHeader>
@@ -845,7 +826,7 @@ const Index = () => {
                     <Badge variant="secondary" className="tag">Offline Practice</Badge>
                   </div>
                 </CardContent>
-              </Card>
+              </Card></Link>
             </div>
 
             <Card className="card-hover theme-purple border-accent/20 hover:ring-1 hover:ring-accent/20" data-fade-in>
@@ -868,7 +849,6 @@ const Index = () => {
         <section id="ctf" className="py-10 sm:py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-3xl sm:text-4xl font-display font-bold mb-8 sm:mb-12 text-center gradient-text-orange tracking-tight">CTF Solves</h2>
-            
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-8 mb-8 sm:mb-12">
               <Card className="card-hover theme-orange border-orange-500/20 hover:ring-1 hover:ring-orange-500/20" data-fade-in>
                 <CardHeader>
@@ -934,14 +914,12 @@ const Index = () => {
                       Binary analysis, reverse engineering, BoF and ROPs.
                     </p>
                   </div>
-                  
                   <div>
                     <h3 className="font-semibold text-amber-400 mb-1">🔐 Cryptography</h3>
                     <p className="text-sm text-muted-foreground">
                       Classical ciphers, modern encryption analysis, and cryptographic protocol vulnerabilities.
                     </p>
                   </div>
-                  
                   <div>
                     <h3 className="font-semibold text-grey-400 mb-1">🕵️ Digital Forensics</h3>
                     <p className="text-sm text-muted-foreground">

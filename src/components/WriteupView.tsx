@@ -1,11 +1,10 @@
+import ReaderLayout from '@/components/ReaderLayout';
 import ArticleNavigation from '@/components/ArticleNavigation';
 import useArticleContent from '@/hooks/use-article-content';
-import { Link } from 'react-router-dom';
 import ArticleMetadata from '@/components/ArticleMetadata';
 import ArticleContent from '@/components/ArticleContent';
 import { useState, useEffect } from 'react';
-import { ArrowLeft, Calendar, Shield, Server, Tag } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Calendar, Shield, Server, Tag } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Writeup, loadWriteupContent } from '@/data/writeups';
@@ -124,18 +123,9 @@ const WriteupView = ({ writeup, onBack, initialContent }: WriteupViewProps) => {
 
       {/* Header */}
       <div className="bg-background/80 backdrop-blur-md border-b border-border relative z-10">
-        <div className="reader-container mx-auto px-4 py-4">
+        <div className="reader-header mx-auto px-4 py-4">
           <ArticleNavigation title={writeup.title} content={content} parent={{label:'Box writeups', path:`/boxes/${writeup.platform}`}} />
-          <Button
-            variant="outline"
-            asChild
-            className={`mb-4 font-mono ${theme.btnClass}`}
-          >
-            <Link to={`/boxes/${writeup.platform}`}>
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Writeups
-            </Link>
-          </Button>
+
           
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-4">
             <Badge 
@@ -150,7 +140,7 @@ const WriteupView = ({ writeup, onBack, initialContent }: WriteupViewProps) => {
             </span>
           </div>
           
-          <h1 className={`text-2xl sm:text-3xl font-display font-bold ${theme.textGradient} mb-2 tracking-tight`}>
+          <h1 className={`text-2xl sm:text-3xl font-display font-bold reader-title mb-2 tracking-tight`}>
             {writeup.title}
           </h1>
           
@@ -167,7 +157,7 @@ const WriteupView = ({ writeup, onBack, initialContent }: WriteupViewProps) => {
         </div>
       </div>
 
-      <div className="reader-container mx-auto px-4 py-6 sm:py-8 relative z-10">
+      <ReaderLayout content={content} title={writeup.title}>
         {/* Summary Card */}
         <Card className={`mb-6 reader-summary ${theme.glowClass} ${theme.ringClass} ${theme.borderClass}`}>
           <CardHeader>
@@ -195,11 +185,11 @@ const WriteupView = ({ writeup, onBack, initialContent }: WriteupViewProps) => {
             {isLoading ? (
               <p role="status" className="text-muted-foreground py-8 text-center">Loading article...</p>
             ) : (
-              <ArticleContent content={content} theme={writeup.platform.toLowerCase() === 'hackthebox' ? 'green' : writeup.platform.toLowerCase() === 'tryhackme' ? 'blue' : writeup.platform.toLowerCase() === 'vulnhub' ? 'yellow' : 'purple'} />
+              <ArticleContent title={writeup.title} content={content} theme={writeup.platform.toLowerCase() === 'hackthebox' ? 'green' : writeup.platform.toLowerCase() === 'tryhackme' ? 'blue' : writeup.platform.toLowerCase() === 'vulnhub' ? 'yellow' : 'purple'} />
             )}
           </CardContent>
         </Card>
-      </div>
+      </ReaderLayout>
     </div>
   );
 };

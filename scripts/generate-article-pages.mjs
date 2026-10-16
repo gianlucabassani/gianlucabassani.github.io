@@ -11,6 +11,7 @@ export async function generateArticlePages({outputDir = 'dist', dataDir = 'src/d
   const template = await readFile(join(outputDir, 'index.html'), 'utf8');
   const css = (await readdir(join(outputDir,'assets')).catch(error => {if (error.code === 'ENOENT') return []; throw error;})).filter(file => /^ArticlePage-.*\.css$/.test(file)).map(file => `<link rel="stylesheet" href="/assets/${escape(file)}" />`).join('\n');
   const records = [];
+  let renderBlogIndex;
   for (const [file, kind, folder, route] of [
     ['blog.json', 'blog', 'blog', entry => `blog/${encodeURIComponent(entry.id)}`],
     ['writeups.json', 'writeup', 'writeups', entry => `boxes/${encodeURIComponent(entry.platform)}/${encodeURIComponent(entry.id)}`],
@@ -22,7 +23,9 @@ export async function generateArticlePages({outputDir = 'dist', dataDir = 'src/d
   const { createServer } = await import('vite');
   const server = await createServer({server:{middlewareMode:true, watch:null, hmr:{server:createHttpServer()}}, appType:'custom', logLevel:'error', optimizeDeps:{noDiscovery:true, include:[]}});
   try {
-  const { renderArticle } = await server.ssrLoadModule('/src/prerender.tsx');
+  const prerender = await server.ssrLoadModule('/src/prerender.tsx');
+  const { renderArticle } = prerender;
+  renderBlogIndex = prerender.renderBlogIndex;
   for (const entry of records) {
     const title = escape(`${entry.title} | Gianluca Bassani`);
     const description = escape(entry.summary);
@@ -69,6 +72,24 @@ export async function generateArticlePages({outputDir = 'dist', dataDir = 'src/d
     if (error.code === 'ENOENT') return '[]';
     throw error;
   }));
+  // GitLab Pages serves these paths directly instead of falling through to
+  // its authenticated missing-page handling. Each index has its own canonical.
+  const labels = {about:'About Me', projects:'Projects', blog:'Blog', boxes:'Box Writeups', ctf:'CTF Solves', skills:'Technical Skills', certifications:'Certifications', terminal:'CLI Console'};
+  const indexRoutes = [...staticRoutes.filter(Boolean), 'terminal/', ...projects.map(entry => `projects/${encodeURIComponent(entry.id)}/`)];
+  for (const route of indexRoutes) {
+    const label = labels[route.split('/')[0]];
+    const title = `${label} | Gianluca Bassani`;
+    const description = `${label} by Gianluca Bassani: cybersecurity research, projects, and practical security lessons.`;
+    const url = `${site}/${route}`;
+    let html = template.replace(/<title>[\s\S]*?<\/title>/, `<title>${escape(title)}</title>`)
+      .replace(/<link\b[^>]*rel="canonical"[^>]*>/, `<link rel="canonical" href="${url}" />`)
+      .replace(/(<meta\b[^>]*(?:name|property)="(?:description|og:description|twitter:description)" content=")[^"]*/g, `$1${escape(description)}`)
+      .replace(/(<meta\b[^>]*(?:name|property)="(?:og:title|twitter:title)" content=")[^"]*/g, `$1${escape(title)}`)
+      .replace(/(<meta\b[^>]*property="og:url" content=")[^"]*/, `$1${url}`);
+    if (route === 'blog/') html = html.replace('<div id="root"></div>', () => `<div id="root">${renderBlogIndex(records.filter(entry => entry.kind === 'blog'))}</div>`);
+    await mkdir(join(outputDir, route), {recursive:true});
+    await writeFile(join(outputDir, route, 'index.html'), html);
+  }
   const urls = [
     ...staticRoutes.map(route => `<url><loc>${site}/${route}</loc></url>`),
     ...projects.map(entry => `<url><loc>${site}/projects/${encodeURIComponent(entry.id)}/</loc></url>`),

@@ -8,11 +8,11 @@ import PageBackground from '@/components/PageBackground';
 
 interface BlogListViewProps {
   onBack: () => void;
-  onPostSelect: (post: BlogPost) => void;
+  onPostSelect?: (post: BlogPost) => void;
+  posts?: BlogPost[];
 }
 
-const BlogListView = ({ onBack, onPostSelect }: BlogListViewProps) => {
-  const posts = getBlogPosts();
+const BlogListView = ({ onBack, posts = getBlogPosts() }: BlogListViewProps) => {
 
   return (
     <div className="min-h-screen bg-background text-foreground cyber-grid relative overflow-hidden">
@@ -23,7 +23,7 @@ const BlogListView = ({ onBack, onPostSelect }: BlogListViewProps) => {
         variant="scattered"
       />
 
-      <div className="pt-8 pb-20 relative z-10">
+      <main id="main-content" tabIndex={-1} className="pt-8 pb-20 relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-8">
             <Button
@@ -57,7 +57,7 @@ const BlogListView = ({ onBack, onPostSelect }: BlogListViewProps) => {
                   </CardTitle>
                   <div className="flex items-center gap-1 text-sm text-muted-foreground font-mono">
                     <Calendar className="w-4 h-4" />
-                    {new Date(post.date).toLocaleDateString()}
+                    {new Date(post.date).toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric', timeZone:'UTC'})}
                   </div>
                 </CardHeader>
                 <CardContent>
@@ -76,7 +76,7 @@ const BlogListView = ({ onBack, onPostSelect }: BlogListViewProps) => {
             ))}
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 };

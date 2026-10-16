@@ -484,7 +484,7 @@ export default function Terminal({ onClose }: TerminalProps) {
         output = <PongGame />;
         break;
 
-      case 'joke':
+      case 'joke': {
         const randomJoke = jokes[Math.floor(Math.random() * jokes.length)];
         output = (
           <div className="text-foreground text-xs leading-relaxed max-w-lg font-mono">
@@ -492,6 +492,8 @@ export default function Terminal({ onClose }: TerminalProps) {
           </div>
         );
         break;
+
+      }
 
       case 'ascii':
         output = (

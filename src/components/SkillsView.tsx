@@ -96,8 +96,8 @@ export default function SkillsView({ onBack }: { onBack: () => void }) {
   // Arricchiamo i dati con le descrizioni locali
   const enrichedSkills = skillsData.map(s => ({
     ...s,
-    description: skillDetails[s.id]?.description || s.description,
-    tags: skillDetails[s.id]?.tags || (s as any).tags
+    description: skillDetails[s.id]?.description || '',
+    tags: skillDetails[s.id]?.tags || []
   }));
 
   // Filtri Categorie

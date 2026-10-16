@@ -38,6 +38,7 @@ test('article links contain crawler-readable metadata and retain the app entry p
       assert.match(html, /echo/);
       assert.match(html, /aria-label="Breadcrumb"/);
       assert.match(html, /min read/);
+      assert.equal((html.match(/<h1\b/g) || []).length, 1);
       assert.match(html, /id="article-data"/);
       assert.doesNotMatch(html, /<script>safe<\/script>/);
       assert.doesNotMatch(html, /Loading article/);
@@ -45,6 +46,14 @@ test('article links contain crawler-readable metadata and retain the app entry p
     const sitemap = await readFile(join(outputDir,'sitemap.xml'),'utf8');
     assert.match(sitemap, /blog\/example\//);
     assert.match(sitemap, /boxes\/hackthebox\/example\//);
+    for (const route of ['blog', 'projects', 'ctf', 'boxes/hackthebox']) {
+      const html = await readFile(join(outputDir, route, 'index.html'), 'utf8');
+      assert.ok(html.includes(`href="https://gianlucabassani.gitlab.io/${route}/"`));
+      assert.match(html, /src="\/assets\/app.js"/);
+    }
+    const blog = await readFile(join(outputDir, 'blog/index.html'), 'utf8');
+    assert.match(blog, /<title>Blog \| Gianluca Bassani<\/title>/);
+    assert.match(blog, /<main/);
   } finally {
     await rm(root, {recursive:true, force:true});
   }

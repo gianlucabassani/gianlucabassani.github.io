@@ -1,11 +1,10 @@
+import ReaderLayout from '@/components/ReaderLayout';
 import ArticleNavigation from '@/components/ArticleNavigation';
 import useArticleContent from '@/hooks/use-article-content';
-import { Link } from 'react-router-dom';
 import ArticleMetadata from '@/components/ArticleMetadata';
 import ArticleContent from '@/components/ArticleContent';
 import { useEffect, useState } from 'react';
-import { ArrowLeft, BookOpen, Calendar, Tag } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { BookOpen, Calendar, Tag } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BlogPost, loadBlogPostContent } from '@/data/blog';
@@ -51,25 +50,13 @@ const BlogView = ({ post, onBack, initialContent }: BlogViewProps) => {
       </div>
 
       <div className="bg-background/80 backdrop-blur-md border-b border-border relative z-10">
-        <div className="reader-container mx-auto px-4 py-4">
+        <div className="reader-header mx-auto px-4 py-4">
           <ArticleNavigation title={post.title} content={content} parent={{label:'Blog', path:'/blog'}} />
-          <Button
-            variant="outline"
-            asChild
-            className="mb-4 font-mono border-accent/30 text-accent hover:bg-accent/10 hover:text-accent"
-          >
-            <Link to="/blog">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Blog
-            </Link>
-          </Button>
 
-          <div className="flex items-center gap-2 mb-4 text-sm text-muted-foreground font-mono">
-            <BookOpen className="w-5 h-5 text-accent" />
-            BLOG POST
-          </div>
 
-          <h1 className="text-2xl sm:text-3xl font-display font-bold gradient-text-purple mb-2 tracking-tight">
+
+
+          <h1 className="text-2xl sm:text-3xl font-display font-bold reader-title mb-2 tracking-tight">
             {post.title}
           </h1>
 
@@ -80,7 +67,7 @@ const BlogView = ({ post, onBack, initialContent }: BlogViewProps) => {
         </div>
       </div>
 
-      <div className="reader-container mx-auto px-4 py-6 sm:py-8 relative z-10">
+      <ReaderLayout content={content} title={post.title}>
         <Card className="mb-6 reader-summary theme-purple hover:ring-1 hover:ring-accent/20 border-accent/20">
           <CardHeader>
             <CardTitle className="flex items-center text-xl">
@@ -107,11 +94,11 @@ const BlogView = ({ post, onBack, initialContent }: BlogViewProps) => {
             {isLoading ? (
               <p role="status" className="text-muted-foreground py-8 text-center">Loading article...</p>
             ) : (
-              <ArticleContent content={content} theme={'purple'} />
+              <ArticleContent title={post.title} content={content} theme={'purple'} />
             )}
           </CardContent>
         </Card>
-      </div>
+      </ReaderLayout>
     </div>
   );
 };

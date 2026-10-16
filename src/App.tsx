@@ -4,6 +4,8 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import type { InitialArticle } from './data/article';
 import type { ArticlePageProps } from './pages/ArticlePage';
+import LatestPublication from './components/LatestPublication';
+import SectionMetadata from './components/SectionMetadata';
 
 const Index = lazy(() => import('./pages/Index'));
 const ArticlePage = lazy(() => import('./pages/ArticlePage'));
@@ -17,8 +19,10 @@ interface AppContentProps {
 
 export function AppContent({initialArticle, ArticleComponent = ArticlePage}: AppContentProps) {
   return <TooltipProvider>
+    <a className="skip-link" href="#route-content">Skip to content</a>
+    <SectionMetadata />
     <Toaster />
-    <Suspense fallback={<div className="route-loading" role="status">Loading page...</div>}>
+    <div id="route-content" tabIndex={-1}><Suspense fallback={<div className="route-loading" role="status">Loading page...</div>}>
       <Routes>
         {['/', '/about', '/projects', '/projects/:id', '/boxes', '/boxes/:platform', '/ctf', '/blog', '/skills', '/certifications'].map(path => <Route key={path} path={path} element={<Index />} />)}
         <Route path="/blog/:id" element={<ArticleComponent kind="blog" initialArticle={initialArticle} />} />
@@ -27,7 +31,8 @@ export function AppContent({initialArticle, ArticleComponent = ArticlePage}: App
         <Route path="/terminal" element={<TerminalPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </Suspense>
+    </Suspense></div>
+    <LatestPublication />
   </TooltipProvider>;
 }
 

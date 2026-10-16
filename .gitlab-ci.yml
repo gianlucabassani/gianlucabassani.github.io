@@ -1,10 +1,12 @@
 # The Docker image that will be used to build your app
-image: node:lts
+image: node:22
 
 create-pages:
   stage: deploy
   script:
     - npm ci
+    - npm run lint
+    - npm run typecheck
     - npm test
     - npm run build
   pages:

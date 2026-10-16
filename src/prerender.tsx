@@ -9,3 +9,10 @@ export function renderArticle(article:InitialArticle) {
     <AppContent initialArticle={article} ArticleComponent={ArticlePage} />
   </StaticRouter>);
 }
+
+import BlogListView from './components/BlogListView';
+import type { BlogPost } from './data/blog';
+
+export function renderBlogIndex(posts: BlogPost[]) {
+  return renderToString(<StaticRouter location="/blog/"><BlogListView posts={posts} onBack={() => {}} /></StaticRouter>);
+}

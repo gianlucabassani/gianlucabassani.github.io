@@ -1,11 +1,10 @@
+import ReaderLayout from '@/components/ReaderLayout';
 import ArticleNavigation from '@/components/ArticleNavigation';
 import useArticleContent from '@/hooks/use-article-content';
-import { Link } from 'react-router-dom';
 import ArticleMetadata from '@/components/ArticleMetadata';
 import ArticleContent from '@/components/ArticleContent';
 import { useState, useEffect } from 'react';
-import { ArrowLeft, Calendar, Flag, Trophy, Tag } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Calendar, Flag, Trophy, Tag } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CTFWriteup, loadCTFWriteupContent } from '@/data/ctf';
@@ -85,22 +84,9 @@ const CTFView = ({ ctfWriteup, onBack, initialContent }: CTFViewProps) => {
 
       {/* Header */}
       <div className="bg-background/80 backdrop-blur-sm border-b border-border relative z-10">
-        <div className="reader-container mx-auto px-4 py-4">
+        <div className="reader-header mx-auto px-4 py-4">
           <ArticleNavigation title={ctfWriteup.title} content={content} parent={{label:'CTF solves', path:'/ctf'}} />
-          <Button
-            variant="outline"
-            asChild
-            className={`mb-4 ${
-              isYellow 
-                ? 'border-yellow-500/30 text-yellow-500 hover:bg-yellow-500/10 hover:text-yellow-500' 
-                : 'border-orange-500/30 text-orange-500 hover:bg-orange-500/10 hover:text-orange-500'
-            }`}
-          >
-            <Link to="/ctf">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Home
-            </Link>
-          </Button>
+
           
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-4">
             <Badge 
@@ -115,7 +101,7 @@ const CTFView = ({ ctfWriteup, onBack, initialContent }: CTFViewProps) => {
             </span>
           </div>
           
-          <h1 className={`text-2xl sm:text-3xl font-display font-bold ${isYellow ? 'gradient-text-yellow' : 'gradient-text-orange'} mb-2`}>
+          <h1 className={`text-2xl sm:text-3xl font-display font-bold reader-title mb-2`}>
             {ctfWriteup.title}
           </h1>
           
@@ -132,7 +118,7 @@ const CTFView = ({ ctfWriteup, onBack, initialContent }: CTFViewProps) => {
         </div>
       </div>
 
-      <div className="reader-container mx-auto px-4 py-6 sm:py-8 relative z-10">
+      <ReaderLayout content={content} title={ctfWriteup.title}>
         {/* Summary Card */}
         <Card className={`mb-6 reader-summary ${isYellow ? 'theme-yellow border-yellow-500/20 hover:ring-1 hover:ring-yellow-500/20' : 'theme-orange border-orange-500/20 hover:ring-1 hover:ring-orange-500/20'}`}>
           <CardHeader>
@@ -160,11 +146,11 @@ const CTFView = ({ ctfWriteup, onBack, initialContent }: CTFViewProps) => {
             {isLoading ? (
               <p role="status" className="text-muted-foreground py-8 text-center">Loading article...</p>
             ) : (
-              <ArticleContent content={content} theme={isYellow ? 'yellow' : 'orange'} />
+              <ArticleContent title={ctfWriteup.title} content={content} theme={isYellow ? 'yellow' : 'orange'} />
             )}
           </CardContent>
         </Card>
-      </div>
+      </ReaderLayout>
     </div>
   );
 };

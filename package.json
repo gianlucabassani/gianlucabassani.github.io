@@ -8,6 +8,7 @@
     "build": "node scripts/prepare-article-assets.mjs && vite build && node scripts/generate-article-pages.mjs",
     "build:dev": "node scripts/prepare-article-assets.mjs && vite build --mode development && node scripts/generate-article-pages.mjs",
     "lint": "eslint .",
+    "typecheck": "tsc --noEmit -p tsconfig.app.json",
     "preview": "vite preview",
     "deploy": "npm run build && gh-pages -d dist",
     "test": "node --test scripts/*.test.mjs"

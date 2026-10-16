@@ -27,3 +27,8 @@ export function articleHeadings(content:string) {
   visit(tree);
   return headings;
 }
+
+/** The page header already names the article; keep only its body headings. */
+export function withoutArticleTitle(content:string, title:string) {
+  return title ? content.replace(/^\s*# [^\n]+\r?\n/, '') : content;
+}
