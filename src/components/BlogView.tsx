@@ -1,12 +1,12 @@
+import ArticleSummary from '@/components/ArticleSummary';
 import ReaderLayout from '@/components/ReaderLayout';
 import ArticleNavigation from '@/components/ArticleNavigation';
 import useArticleContent from '@/hooks/use-article-content';
 import ArticleMetadata from '@/components/ArticleMetadata';
 import ArticleContent from '@/components/ArticleContent';
 import { useEffect, useState } from 'react';
-import { BookOpen, Calendar, Tag } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Calendar } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
 import { BlogPost, loadBlogPostContent } from '@/data/blog';
 import PageBackground from '@/components/PageBackground';
 
@@ -53,9 +53,6 @@ const BlogView = ({ post, onBack, initialContent }: BlogViewProps) => {
         <div className="reader-header mx-auto px-4 py-4">
           <ArticleNavigation title={post.title} content={content} parent={{label:'Blog', path:'/blog'}} />
 
-
-
-
           <h1 className="text-2xl sm:text-3xl font-display font-bold reader-title mb-2 tracking-tight">
             {post.title}
           </h1>
@@ -68,25 +65,7 @@ const BlogView = ({ post, onBack, initialContent }: BlogViewProps) => {
       </div>
 
       <ReaderLayout content={content} title={post.title}>
-        <Card className="mb-6 reader-summary theme-purple hover:ring-1 hover:ring-accent/20 border-accent/20">
-          <CardHeader>
-            <CardTitle className="flex items-center text-xl">
-              <BookOpen className="w-5 h-5 mr-2 text-accent" />
-              Summary
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground mb-4">{post.summary}</p>
-            <div className="flex flex-wrap gap-2">
-              {post.tags.map((tag) => (
-                <Badge key={tag} variant="secondary" className="tag">
-                  <Tag className="w-3 h-3 mr-1" />
-                  {tag}
-                </Badge>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+        <ArticleSummary summary={post.summary} tags={post.tags} />
 
         {post.coverImage && <img src={post.coverImage} alt="Voxel dungeon chest and encrypted save file illustration" className="article-cover" width={1200} height={630} />}
         <Card className="reader-article theme-purple border-accent/20">

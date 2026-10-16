@@ -1,12 +1,13 @@
+import ArticleSummary from '@/components/ArticleSummary';
 import ReaderLayout from '@/components/ReaderLayout';
 import ArticleNavigation from '@/components/ArticleNavigation';
 import useArticleContent from '@/hooks/use-article-content';
 import ArticleMetadata from '@/components/ArticleMetadata';
 import ArticleContent from '@/components/ArticleContent';
 import { useState, useEffect } from 'react';
-import { Calendar, Flag, Trophy, Tag } from 'lucide-react';
+import { Calendar, Trophy } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { CTFWriteup, loadCTFWriteupContent } from '@/data/ctf';
 import PageBackground from '@/components/PageBackground';
 
@@ -87,7 +88,6 @@ const CTFView = ({ ctfWriteup, onBack, initialContent }: CTFViewProps) => {
         <div className="reader-header mx-auto px-4 py-4">
           <ArticleNavigation title={ctfWriteup.title} content={content} parent={{label:'CTF solves', path:'/ctf'}} />
 
-          
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-4">
             <Badge 
               variant="secondary" 
@@ -119,26 +119,7 @@ const CTFView = ({ ctfWriteup, onBack, initialContent }: CTFViewProps) => {
       </div>
 
       <ReaderLayout content={content} title={ctfWriteup.title}>
-        {/* Summary Card */}
-        <Card className={`mb-6 reader-summary ${isYellow ? 'theme-yellow border-yellow-500/20 hover:ring-1 hover:ring-yellow-500/20' : 'theme-orange border-orange-500/20 hover:ring-1 hover:ring-orange-500/20'}`}>
-          <CardHeader>
-            <CardTitle className="flex items-center text-xl font-display">
-              <Flag className={`w-5 h-5 mr-2 ${isYellow ? 'text-yellow-500' : 'text-orange-500'}`} />
-              Challenge Summary
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground mb-4">{ctfWriteup.summary}</p>
-            <div className="flex flex-wrap gap-2">
-              {ctfWriteup.tags.map((tag) => (
-                <Badge key={tag} variant="secondary" className="tag">
-                  <Tag className="w-3 h-3 mr-1" />
-                  {tag}
-                </Badge>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+        <ArticleSummary summary={ctfWriteup.summary} tags={ctfWriteup.tags} />
 
         {/* CTF Content */}
         <Card className={`reader-article ${isYellow ? 'theme-yellow border-yellow-500/20 hover:ring-1 hover:ring-yellow-500/20' : 'theme-orange border-orange-500/20 hover:ring-1 hover:ring-orange-500/20'}`}>

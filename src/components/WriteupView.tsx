@@ -1,12 +1,13 @@
+import ArticleSummary from '@/components/ArticleSummary';
 import ReaderLayout from '@/components/ReaderLayout';
 import ArticleNavigation from '@/components/ArticleNavigation';
 import useArticleContent from '@/hooks/use-article-content';
 import ArticleMetadata from '@/components/ArticleMetadata';
 import ArticleContent from '@/components/ArticleContent';
 import { useState, useEffect } from 'react';
-import { Calendar, Shield, Server, Tag } from 'lucide-react';
+import { Calendar, Shield } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Writeup, loadWriteupContent } from '@/data/writeups';
 import PageBackground from '@/components/PageBackground';
 
@@ -126,7 +127,6 @@ const WriteupView = ({ writeup, onBack, initialContent }: WriteupViewProps) => {
         <div className="reader-header mx-auto px-4 py-4">
           <ArticleNavigation title={writeup.title} content={content} parent={{label:'Box writeups', path:`/boxes/${writeup.platform}`}} />
 
-          
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-4">
             <Badge 
               variant="secondary" 
@@ -158,26 +158,7 @@ const WriteupView = ({ writeup, onBack, initialContent }: WriteupViewProps) => {
       </div>
 
       <ReaderLayout content={content} title={writeup.title}>
-        {/* Summary Card */}
-        <Card className={`mb-6 reader-summary ${theme.glowClass} ${theme.ringClass} ${theme.borderClass}`}>
-          <CardHeader>
-            <CardTitle className="flex items-center text-xl">
-              <Server className={`w-5 h-5 mr-2 ${theme.textClass}`} />
-              Summary
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground mb-4">{writeup.summary}</p>
-            <div className="flex flex-wrap gap-2">
-              {writeup.tags.map((tag) => (
-                <Badge key={tag} variant="secondary" className="tag">
-                  <Tag className="w-3 h-3 mr-1" />
-                  {tag}
-                </Badge>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+        <ArticleSummary summary={writeup.summary} tags={writeup.tags} />
 
         {/* Writeup Content */}
         <Card className={`reader-article ${theme.glowClass} ${theme.borderClass}`}>
