@@ -11,8 +11,9 @@ export function renderArticle(article:InitialArticle) {
 }
 
 import BlogListView from './components/BlogListView';
+import SiteNavigation from './components/SiteNavigation';
 import type { BlogPost } from './data/blog';
 
 export function renderBlogIndex(posts: BlogPost[]) {
-  return renderToString(<StaticRouter location="/blog/"><BlogListView posts={posts} onBack={() => {}} /></StaticRouter>);
+  return renderToString(<StaticRouter location="/blog/"><SiteNavigation /><BlogListView posts={posts} onBack={() => {}} /></StaticRouter>);
 }

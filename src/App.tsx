@@ -6,6 +6,7 @@ import type { InitialArticle } from './data/article';
 import type { ArticlePageProps } from './pages/ArticlePage';
 import LatestPublication from './components/LatestPublication';
 import SectionMetadata from './components/SectionMetadata';
+import SiteNavigation from './components/SiteNavigation';
 
 const Index = lazy(() => import('./pages/Index'));
 const ArticlePage = lazy(() => import('./pages/ArticlePage'));
@@ -22,6 +23,7 @@ export function AppContent({initialArticle, ArticleComponent = ArticlePage}: App
     <a className="skip-link" href="#route-content">Skip to content</a>
     <SectionMetadata />
     <Toaster />
+    <SiteNavigation />
     <div id="route-content" tabIndex={-1}><Suspense fallback={<div className="route-loading" role="status">Loading page...</div>}>
       <Routes>
         {['/', '/about', '/projects', '/projects/:id', '/boxes', '/boxes/:platform', '/ctf', '/blog', '/skills', '/certifications'].map(path => <Route key={path} path={path} element={<Index />} />)}

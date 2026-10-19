@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { getWriteupsByPlatform, getWriteupsByDifficulty, Writeup } from '@/data/writeups';
 import PageBackground from '@/components/PageBackground';
+import PlatformLogo from '@/components/PlatformLogo';
 
 interface PlatformViewProps {
   platform: string;
@@ -70,28 +71,24 @@ const PlatformView = ({ platform, onBack, onWriteupSelect }: PlatformViewProps) 
         return {
           name: 'HackTheBox',
           description: 'Retired HackTheBox machines with my exploitation methodologies and considerations',
-          icon: '📦',
           color: 'primary'
         };
       case 'tryhackme':
         return {
           name: 'TryHackMe',
           description: 'INCOMING: TryHackMe room walkthroughs and learning paths',
-          icon: '🎯',
           color: 'secondary'
         };
       case 'vulnhub':
         return {
           name: 'VulnHub',
           description: 'INCOMING: VulnHub boot-to-root challenges and vulnerable machines',
-          icon: '🏛️',
           color: 'accent'
         };
       default:
         return {
           name: platform,
           description: 'Security challenge writeups',
-          icon: '🔒',
           color: 'primary'
         };
     }
@@ -175,15 +172,15 @@ const PlatformView = ({ platform, onBack, onWriteupSelect }: PlatformViewProps) 
         <Button
           variant="outline"
           onClick={onBack}
-          className={`mb-8 font-mono ${theme.btnClass}`}
+          className="page-back mb-8"
         >
-          <ArrowLeft className="w-4 h-4 mr-2" />
+          <ArrowLeft className="w-4 h-4" aria-hidden="true" />
           Back to Home
         </Button>
 
         {/* Platform Header */}
         <div className="text-center mb-12">
-          <div className="text-6xl mb-4">{platformInfo.icon}</div>
+          <div className="mb-4"><PlatformLogo platform={platform} large decorative /></div>
           <h1 className={`text-3xl sm:text-4xl font-display font-bold ${theme.textGradient} mb-4 tracking-tight`}>
             {platformInfo.name} Writeups
           </h1>

@@ -1,6 +1,7 @@
 [
   {
     "id": "browsint",
+    "logo": "/assets/projects/browsint.webp",
     "title": "Browsint",
     "category": "security",
     "status": "completed",
@@ -80,6 +81,7 @@
   },
   {
     "id": "nidavellir",
+    "logo": "/assets/projects/nidavellir.webp",
     "title": "Nidavellir",
     "category": "security",
     "status": "in-progress",
@@ -116,6 +118,7 @@
   ,
   {
     "id": "gosint",
+    "logo": "/assets/projects/gosint.webp",
     "title": "Gosint",
     "category": "security",
     "status": "in-progress",

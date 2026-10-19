@@ -29,11 +29,12 @@ test('article links contain crawler-readable metadata and retain the app entry p
       {...record, id:'related', relatedLinks},
       {...record, id:'related-no-headings', contentPath:'no-headings.md', relatedLinks},
       {...record, id:'empty-related', relatedLinks:[]},
+      {...record, id:'no-preview', previewImage:undefined},
     ]));
     await writeFile(join(dataDir, 'writeups.json'), JSON.stringify([{...record, platform:'hackthebox'}]));
     await writeFile(join(dataDir, 'ctf.json'), JSON.stringify([record]));
     const count = await generateArticlePages({outputDir, dataDir, publicDir});
-    assert.equal(count, 6);
+    assert.equal(count, 7);
     for (const route of ['blog/example','boxes/hackthebox/example','ctf/example']) {
       const html = await readFile(join(outputDir, route, 'index.html'), 'utf8');
       assert.match(html, /A &lt;test&gt; &amp; &quot;title&quot;/);
@@ -63,6 +64,8 @@ test('article links contain crawler-readable metadata and retain the app entry p
       assert.match(html, /href="\/projects"/);
       assert.match(html, /My projects/);
     }
+    const fallbackPreview = await readFile(join(outputDir, 'blog/no-preview/index.html'), 'utf8');
+    assert.match(fallbackPreview, /property="og:image" content="https:\/\/gianlucabassani.gitlab.io\/assets\/social\/portfolio-v2.png"/);
     const emptyRelated = await readFile(join(outputDir, 'blog/empty-related/index.html'), 'utf8');
     assert.doesNotMatch(emptyRelated, /aria-label="Related links"/);
     const sitemap = await readFile(join(outputDir,'sitemap.xml'),'utf8');

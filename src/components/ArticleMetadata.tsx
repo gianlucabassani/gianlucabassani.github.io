@@ -16,11 +16,15 @@ export default function ArticleMetadata({title, summary, path, date, previewImag
       'og:description': homeSocialDescription,
       'og:type': 'website',
       'og:url': `${site}/`,
-      'og:image': `${site}/og-image.png`,
+      'og:image': `${site}/assets/social/portfolio-v2.png`,
+      'og:image:width': '1200',
+      'og:image:height': '630',
+      'og:image:alt': 'Gianluca Bassani, 0xPr1m3 — Red Teaming, AI Security, Automation',
       'twitter:title': homeTitle,
       'twitter:description': 'Cybersecurity writeups, CTF solutions, and security projects by Gianluca Bassani',
       'twitter:card': 'summary_large_image',
-      'twitter:image': `${site}/og-image.png`,
+      'twitter:image': `${site}/assets/social/portfolio-v2.png`,
+      'twitter:image:alt': 'Gianluca Bassani, 0xPr1m3 — Red Teaming, AI Security, Automation',
     };
     document.title = fullTitle;
     const restore: (() => void)[] = [];
@@ -36,8 +40,8 @@ export default function ArticleMetadata({title, summary, path, date, previewImag
     };
     const url = `${site}${path.replace(/\/$/, '')}/`;
     update('name', 'description', summary);
-    for (const [key,value] of Object.entries({title:fullTitle, description:summary, type:'article', url, 'image:alt':fullTitle, 'image:width':'1200', 'image:height':'630', image:`${site}${previewImage || '/og-image.png'}`})) update('property', `og:${key}`, value);
-    for (const [key,value] of Object.entries({title:fullTitle, description:summary, card:'summary_large_image', 'image:alt':fullTitle, image:`${site}${previewImage || '/og-image.png'}`})) update('name', `twitter:${key}`, value);
+    for (const [key,value] of Object.entries({title:fullTitle, description:summary, type:'article', url, 'image:alt':fullTitle, 'image:width':'1200', 'image:height':'630', image:`${site}${previewImage || '/assets/social/portfolio-v2.png'}`})) update('property', `og:${key}`, value);
+    for (const [key,value] of Object.entries({title:fullTitle, description:summary, card:'summary_large_image', 'image:alt':fullTitle, image:`${site}${previewImage || '/assets/social/portfolio-v2.png'}`})) update('name', `twitter:${key}`, value);
     update('property', 'article:published_time', date);
     const canonical = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
     if (canonical) canonical.href = url;

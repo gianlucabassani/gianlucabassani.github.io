@@ -9,7 +9,7 @@ export default function ReaderLayout({content, title, children, related}: {conte
       let current = headings[0]?.id || '';
       for (const heading of headings) {
         const element = document.getElementById(heading.id);
-        if (element && element.getBoundingClientRect().top <= 48) current = heading.id;
+        if (element && element.getBoundingClientRect().top <= 112) current = heading.id;
       }
       setActive(current);
     };

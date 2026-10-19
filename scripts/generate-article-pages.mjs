@@ -30,7 +30,7 @@ export async function generateArticlePages({outputDir = 'dist', dataDir = 'src/d
     const title = escape(`${entry.title} | Gianluca Bassani`);
     const description = escape(entry.summary);
     const url = `${site}/${entry.route}/`;
-    const image = escape(`${site}${entry.previewImage || '/og-image.png'}`);
+    const image = escape(`${site}${entry.previewImage || '/assets/social/portfolio-v2.png'}`);
     const content = await readFile(join(publicDir, entry.folder, entry.contentPath), 'utf8');
     const article = {kind:entry.kind, entry, route:entry.route, content};
     const body = renderArticle(article);

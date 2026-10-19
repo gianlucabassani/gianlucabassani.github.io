@@ -10,6 +10,7 @@ export interface Project {
   description: string;
   features: string[];
   featured?: boolean;
+  logo?: string;
   githubUrl?: string;
   gitlabUrl?: string;
   liveUrl?: string;

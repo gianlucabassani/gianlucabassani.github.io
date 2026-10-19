@@ -1,294 +1,63 @@
 import { useState } from 'react';
-import { ArrowLeft, Github, Gitlab, ExternalLink, Calendar, Filter, Grid, List } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { ArrowLeft, ArrowUpRight, LayoutGrid, List } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Project, projects } from '@/data/projects';
+import { type Project, projects } from '@/data/projects';
+import ProjectIdentity from '@/components/ProjectIdentity';
+import ProjectShowcase, { ProjectSources } from '@/components/ProjectShowcase';
 import PageBackground from '@/components/PageBackground';
+import ProjectFilter from '@/components/ProjectFilter';
+
+const categoryOptions = [{value:'all', label:'All categories', count:projects.length}, ...[...new Set(projects.map(project => project.category))].map(value => ({value, label:value, count:projects.filter(project => project.category === value).length}))];
+const statusOptions = [{value:'all', label:'All statuses', count:projects.length}, ...[...new Set(projects.map(project => project.status))].map(value => ({value, label:value.replace('-', ' '), count:projects.filter(project => project.status === value).length}))];
 
 interface ProjectsViewProps {
   onBack: () => void;
-  onProjectSelect: (project: Project) => void;
+  onProjectSelect?: (project: Project) => void;
 }
 
-const ProjectsView = ({ onBack, onProjectSelect }: ProjectsViewProps) => {
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [selectedStatus, setSelectedStatus] = useState<string>('all');
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
-  const categories = ['all', ...Array.from(new Set(projects.map(p => p.category)))];
-  const statuses = ['all', ...Array.from(new Set(projects.map(p => p.status)))];
-
-  const filteredProjects = projects.filter(project => {
-    const categoryMatch = selectedCategory === 'all' || project.category === selectedCategory;
-    const statusMatch = selectedStatus === 'all' || project.status === selectedStatus;
-    return categoryMatch && statusMatch;
-  });
-
-  const getStatusColor = (status: string): string => {
-    switch (status) {
-      case 'active': return 'text-success border-success/40 bg-success/20';
-      case 'completed': return 'text-success border-success/40 bg-success/20';
-      case 'in-progress': return 'text-warning border-warning/40 bg-warning/20';
-      case 'archived': return 'text-muted-foreground border-muted-foreground/40 bg-muted-foreground/20';
-      default: return 'text-secondary border-secondary/40 bg-secondary/20';
-    }
-  };
-
-  const getCategoryIcon = (category: string): string => {
-    switch (category) {
-      case 'tool': return '🔧';
-      case 'webapp': return '🌐';
-      case 'library': return '📚';
-      case 'security': return '🔒';
-      case 'devops': return '⚙️';
-      default: return '📦';
-    }
-  };
-
-  return (
-    <div className="min-h-screen bg-background text-foreground cyber-grid relative overflow-hidden">
-      <PageBackground
-        primary="hsl(152,75%,52%)"
-        secondary="hsl(152,75%,42%)"
-        tertiary="hsl(185,95%,48%)"
-        variant="scattered"
-      />
-
-      <div className="pt-8 pb-20 relative z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Header */}
-          <div className="mb-8">
-            <Button 
-              variant="outline" 
-              onClick={onBack}
-              className="mb-6 border-success/30 text-success hover:bg-success/10 hover:text-success"
-            >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Home
-            </Button>
-
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h1 className="text-4xl md:text-5xl font-display font-bold gradient-text-green mb-4 tracking-tight">
-                  Projects
-                </h1>
-                <p className="text-xl text-muted-foreground">
-                  A collection of tools, applications, and libraries I've built
-                </p>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <Button
-                  variant={viewMode === 'grid' ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => setViewMode('grid')}
-                  className={viewMode === 'grid' ? 'bg-success text-success-foreground hover:bg-success/90' : 'border-success/30 text-success hover:bg-success/10'}
-                >
-                  <Grid className="w-4 h-4" />
-                </Button>
-                <Button
-                  variant={viewMode === 'list' ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => setViewMode('list')}
-                  className={viewMode === 'list' ? 'bg-success text-success-foreground hover:bg-success/90' : 'border-success/30 text-success hover:bg-success/10'}
-                >
-                  <List className="w-4 h-4" />
-                </Button>
-              </div>
-            </div>
-          </div>
-
-          {/* Filters */}
-          <Card className="card-hover theme-green border-success/20 mb-8">
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <Filter className="w-5 h-5 mr-2" />
-                Filters
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <h3 className="font-semibold mb-3">Category</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {categories.map((category) => (
-                      <Button
-                        key={category}
-                        variant={selectedCategory === category ? 'default' : 'outline'}
-                        size="sm"
-                        onClick={() => setSelectedCategory(category)}
-                        className={`capitalize ${
-                          selectedCategory === category
-                            ? 'bg-success text-success-foreground hover:bg-success/90'
-                            : 'border-success/30 text-success hover:bg-success/10 hover:text-success'
-                        }`}
-                      >
-                        {category === 'all' ? 'All' : `${getCategoryIcon(category)} ${category}`}
-                      </Button>
-                    ))}
-                  </div>
-                </div>
-                
-                <div>
-                  <h3 className="font-semibold mb-3">Status</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {statuses.map((status) => (
-                      <Button
-                        key={status}
-                        variant={selectedStatus === status ? 'default' : 'outline'}
-                        size="sm"
-                        onClick={() => setSelectedStatus(status)}
-                        className={`capitalize ${
-                          selectedStatus === status
-                            ? 'bg-success text-success-foreground hover:bg-success/90'
-                            : 'border-success/30 text-success hover:bg-success/10 hover:text-success'
-                        }`}
-                      >
-                        {status === 'all' ? 'All' : status.replace('-', ' ')}
-                      </Button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Projects Grid/List */}
-          <div className={`${viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6' : 'space-y-4'}`}>
-            {filteredProjects.map((project) => (
-              <Card 
-                key={project.id}
-                className={`card-hover theme-green border-success/20 hover:ring-1 hover:ring-success/20 cursor-pointer transition-all duration-300 hover:scale-105 ${
-                  viewMode === 'list' ? 'flex flex-col md:flex-row' : ''
-                }`}
-                onClick={() => onProjectSelect(project)}
-              >
-                <CardHeader className={viewMode === 'list' ? 'md:w-1/3' : ''}>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-2xl">{getCategoryIcon(project.category)}</span>
-                    <Badge className={getStatusColor(project.status)}>
-                      {project.status.replace('-', ' ')}
-                    </Badge>
-                  </div>
-                  <CardTitle className="text-xl">{project.title}</CardTitle>
-                  <CardDescription className="flex items-center text-sm">
-                    <Calendar className="w-4 h-4 mr-1" />
-                    {new Date(project.date).toLocaleDateString()}
-                  </CardDescription>
-                </CardHeader>
-                
-                <CardContent className={`${viewMode === 'list' ? 'md:w-2/3 md:pt-6' : 'pt-0'}`}>
-                  <p className="text-muted-foreground mb-4 line-clamp-3">
-                    {project.summary}
-                  </p>
-                  
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {project.technologies.slice(0, 3).map((tech) => (
-                      <Badge key={tech} variant="secondary" className="text-xs tag">
-                        {tech}
-                      </Badge>
-                    ))}
-                    {project.technologies.length > 3 && (
-                      <Badge variant="outline" className="text-xs">
-                        +{project.technologies.length - 3} more
-                      </Badge>
-                    )}
-                  </div>
-                  
-                  <div className="flex gap-2">
-                    {project.githubUrl && (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          window.open(project.githubUrl, '_blank');
-                        }}
-                        className="border-success/30 hover:bg-success/10 text-success hover:text-success"
-                      >
-                        <Github className="w-4 h-4" />
-                      </Button>
-                    )}
-                    {project.gitlabUrl && (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          window.open(project.gitlabUrl, '_blank');
-                        }}
-                        className="border-success/30 hover:bg-success/10 text-success hover:text-success"
-                        title="GitLab"
-                      >
-                        <Gitlab className="w-4 h-4" />
-                      </Button>
-                    )}
-                    {project.liveUrl && (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          window.open(project.liveUrl, '_blank');
-                        }}
-                        className="border-success/30 hover:bg-success/10 text-success hover:text-success"
-                      >
-                        <ExternalLink className="w-4 h-4" />
-                      </Button>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          {filteredProjects.length === 0 && (
-            <Card className="card-hover theme-green border-success/20 text-center py-12">
-              <CardContent>
-                <p className="text-muted-foreground text-lg">
-                  No projects found matching the selected filters.
-                </p>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Stats */}
-          <Card className="card-hover theme-green border-success/20 mt-8">
-            <CardHeader>
-              <CardTitle>Project Statistics</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                <div>
-                  <div className="text-2xl font-bold text-success">{projects.length}</div>
-                  <div className="text-sm text-muted-foreground">Total Projects</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-success">
-                    {projects.filter(p => p.status === 'active').length}
-                  </div>
-                  <div className="text-sm text-muted-foreground">Active</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-warning">
-                    {projects.filter(p => p.status === 'in-progress').length}
-                  </div>
-                  <div className="text-sm text-muted-foreground">In Progress</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-success">
-                    {projects.filter(p => p.status === 'completed').length}
-                  </div>
-                  <div className="text-sm text-muted-foreground">Completed</div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+export default function ProjectsView({onBack}: ProjectsViewProps) {
+  const [category, setCategory] = useState('all');
+  const [status, setStatus] = useState('all');
+  const [view, setView] = useState<'showcase' | 'list'>('showcase');
+  const filtered = projects.filter(project => (category === 'all' || project.category === category) && (status === 'all' || project.status === status))
+    .sort((a,b) => Number(Boolean(b.featured)) - Number(Boolean(a.featured)));
+  const featured = view === 'showcase' ? filtered.filter(project => project.featured) : [];
+  const remaining = filtered.filter(project => !featured.includes(project));
+  return <div className="portfolio-page projects-page min-h-screen bg-background text-foreground relative">
+    <PageBackground primary="hsl(315,80%,65%)" secondary="hsl(185,85%,65%)" tertiary="hsl(265,80%,70%)" />
+    <main id="main-content" tabIndex={-1} className="portfolio-container relative z-10">
+      <Button variant="outline" className="page-back" onClick={onBack}><ArrowLeft size={16} aria-hidden="true" />Back to Home</Button>
+      <header className="portfolio-page-heading">
+        <h1>Projects<span aria-hidden="true">.</span></h1>
+        <p>A collection of tools, applications, and libraries I've built</p>
+      </header>
+      <div className="project-toolbar">
+        <div className="project-filter-controls">
+          <ProjectFilter label="Category" value={category} options={categoryOptions} onChange={setCategory} kind="category" />
+          <ProjectFilter label="Status" value={status} options={statusOptions} onChange={setStatus} kind="status" />
+        </div>
+        <div className="project-view-controls" role="group" aria-label="Project layout">
+          <button type="button" aria-label="Showcase view" aria-pressed={view === 'showcase'} onClick={() => setView('showcase')}><LayoutGrid size={17} /></button>
+          <button type="button" aria-label="List view" aria-pressed={view === 'list'} onClick={() => setView('list')}><List size={17} /></button>
         </div>
       </div>
-    </div>
-  );
-};
-
-export default ProjectsView;
+      {featured.length > 0 && <div className="project-showcases">
+        {featured.map(project => <ProjectShowcase key={project.id} project={project} />)}
+      </div>}
+      {remaining.length > 0 && <section className="project-directory" aria-label="Project directory">
+        {featured.length > 0 && <h2>More projects</h2>}
+        {remaining.map(project => <article className="project-directory-row" key={project.id}>
+          <Link to={`/projects/${project.id}`} className="project-directory-main">
+            <ProjectIdentity project={project} />
+            <div><h3>{project.title}<ArrowUpRight size={18} aria-hidden="true" /></h3><p>{project.summary}</p></div>
+          </Link>
+          <div className="project-directory-details"><span className={`project-status status-${project.status}`}>{project.status.replace('-', ' ')}</span><ProjectSources project={project} /></div>
+        </article>)}
+      </section>}
+      {filtered.length === 0 && <div className="project-empty"><p>No projects match these filters.</p><Button variant="outline" onClick={() => {setCategory('all');setStatus('all');}}>Clear filters</Button></div>}
+      <p className="project-result-count" role="status">{filtered.length} of {projects.length} projects</p>
+    </main>
+  </div>;
+}

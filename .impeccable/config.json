@@ -35,6 +35,24 @@
         "value": "space grotesk",
         "createdAt": "2026-10-19T17:30:22.004Z",
         "reason": "Agent decision: tailwind.config.ts already defines Space Grotesk as the site display font. The related-links card preserves that established typography within a scoped refinement."
+      },
+      {
+        "rule": "border-accent-on-rounded",
+        "value": "*",
+        "files": [
+          "src/components/ProjectView.tsx"
+        ],
+        "createdAt": "2026-10-19T22:15:33.138Z",
+        "reason": "Agent review: this finding targets the existing animate-spin rounded-full loading indicator at line 208, not a rounded card. Preserve the functional circular spinner."
+      },
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "src/components/ProjectView.tsx"
+        ],
+        "createdAt": "2026-10-19T22:15:33.362Z",
+        "reason": "Agent review: this finding targets the existing semantic Markdown blockquote renderer at line 244, not a card side tab. The quotation treatment predates this change and remains intentional within the preserved project reading surface."
       }
     ]
   }

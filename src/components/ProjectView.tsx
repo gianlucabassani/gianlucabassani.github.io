@@ -8,6 +8,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
 import PageBackground from '@/components/PageBackground';
+import ProjectIdentity from '@/components/ProjectIdentity';
 
 interface ProjectViewProps {
   project: Project;
@@ -50,17 +51,6 @@ const ProjectView = ({ project, onBack }: ProjectViewProps) => {
     }
   };
 
-  const getCategoryIcon = (category: string): string => {
-    switch (category) {
-      case 'tool': return '🔧';
-      case 'webapp': return '🌐';
-      case 'library': return '📚';
-      case 'security': return '🔒';
-      case 'devops': return '⚙️';
-      default: return '📦';
-    }
-  };
-
   return (
     <div className="min-h-screen bg-background text-foreground cyber-grid relative overflow-hidden">
       <PageBackground
@@ -85,16 +75,16 @@ const ProjectView = ({ project, onBack }: ProjectViewProps) => {
             <Button 
               variant="outline" 
               onClick={onBack}
-              className="mb-6 border-success/30 text-success hover:bg-success/10 hover:text-success"
+              className="page-back mb-6"
             >
-              <ArrowLeft className="w-4 h-4 mr-2" />
+              <ArrowLeft className="w-4 h-4" aria-hidden="true" />
               Back to Projects
             </Button>
 
             <div className="flex items-start justify-between mb-6">
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-2">
-                  <span className="text-2xl">{getCategoryIcon(project.category)}</span>
+                  <ProjectIdentity project={project} className="project-identity-compact" />
                   <h1 className="text-3xl md:text-4xl font-display font-bold gradient-text-green tracking-tight">
                     {project.title}
                   </h1>

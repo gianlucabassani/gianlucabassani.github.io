@@ -1,7 +1,11 @@
 import PageBackground from '@/components/PageBackground';
+import ProjectRail from '@/components/ProjectRail';
+import HeroHeading from '@/components/HeroHeading';
+import BlogBook from '@/components/BlogBook';
+import PlatformLogo from '@/components/PlatformLogo';
 import { lazy, useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Shield, Terminal, Code, FileText, Flag, Github, Gitlab, ExternalLink, ChevronDown, Menu, X, BookOpen, Calendar } from 'lucide-react';
+import { Shield, Terminal, Code, FileText, Flag, Github, Gitlab, ExternalLink, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -21,33 +25,7 @@ const BlogListView = lazy(() => import('@/components/BlogListView'));
 const Index = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [activeSection, setActiveSection] = useState('about');
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [displayName, setDisplayName] = useState('Gianluca Bassani');
-  const [isFading, setIsFading] = useState(false);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIsFading(true);
-      setTimeout(() => {
-        setDisplayName(prev => prev === 'Gianluca Bassani' ? 'Prime' : 'Gianluca Bassani');
-        setIsFading(false);
-      }, 300);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, []);
-  useEffect(() => {
-    if (!isMenuOpen) return;
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setIsMenuOpen(false);
-        document.querySelector<HTMLButtonElement>('[aria-controls="mobile-navigation"]')?.focus();
-      }
-    };
-    document.addEventListener('keydown', closeOnEscape);
-    return () => document.removeEventListener('keydown', closeOnEscape);
-  }, [isMenuOpen]);
 
   // Parse current route to determine view
   const parseRoute = () => {
@@ -93,19 +71,10 @@ const Index = () => {
   const [selectedBlogPost, setSelectedBlogPost] = useState<BlogPost | null>(null);
   const blogPosts = getBlogPosts();
 
-  const navItems = [
-    { id: 'about', label: 'About Me', icon: Shield },
-    { id: 'projects', label: 'Projects', icon: Code },
-    { id: 'blog', label: 'Blog', icon: BookOpen },
-    { id: 'boxes', label: 'Box Writeups', icon: Terminal },
-    { id: 'ctf', label: 'CTF Solves', icon: Flag }
-  ];
-
   // Update view based on route changes
   useEffect(() => {
     const route = parseRoute();
     setCurrentView(route.view);
-    setActiveSection(route.section || 'about');
     setSelectedPlatform(route.platform || '');
     // Load specific items based on route
     if (route.projectId) {
@@ -127,8 +96,6 @@ const Index = () => {
   }, [location.pathname]);
 
   const scrollToSection = (sectionId: string) => {
-    setActiveSection(sectionId);
-    setIsMenuOpen(false);
     // Scroll to the section element on the main page
     const element = document.getElementById(sectionId);
     element?.scrollIntoView({ behavior: 'smooth' });
@@ -220,28 +187,6 @@ const Index = () => {
     } else if (!window.location.hash) window.scrollTo(0, 0);
   }, [location.pathname, currentView]);
 
-  useEffect(() => {
-    if (currentView !== 'main') return;
-    // Observer for nav active state
-    const navObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
-        });
-      },
-      { threshold: 0.5 }
-    );
-
-    navItems.forEach((item) => {
-      const element = document.getElementById(item.id);
-      if (element) navObserver.observe(element);
-    });
-
-    return () => navObserver.disconnect();
-  }, [currentView]);
-
   // Fade-in animations observer
   useEffect(() => {
     if (currentView !== 'main') return;
@@ -308,78 +253,22 @@ const Index = () => {
         className="scroll-progress" 
         style={{ width: `${scrollProgress}%` }}
       />
-      {/* Navigation */}
-      <nav className="fixed top-0 w-full bg-background/90 backdrop-blur-md border-b border-border z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="font-mono text-sm sm:text-lg lg:text-xl font-bold flex items-center min-w-0">
-              <span className={`gradient-text transition-all duration-300 inline-block ${isFading ? 'opacity-0 -translate-y-1' : 'opacity-100 translate-y-0'}`}>
-                {displayName}
-              </span>
-              <span className="hidden sm:inline text-muted-foreground/30 mx-2 select-none">|</span>
-              <span className="hidden sm:inline text-foreground/80 font-light text-xs lg:text-sm tracking-widest uppercase">CyberSecurity</span>
-            </div>
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex gap-5">
-              {navItems.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => scrollToSection(item.id)}
-                  className={`nav-link ${activeSection === item.id ? 'active' : ''}`}
-                >
-                  <item.icon className="w-4 h-4 inline mr-2" />
-                  {item.label}
-                </button>
-              ))}
-            </div>
-
-            {/* Mobile Menu Button */}
-            <button
-              className="lg:hidden flex items-center justify-center min-h-11 min-w-11 rounded-md"
-              aria-label={isMenuOpen ? "Close navigation" : "Open navigation"}
-              aria-expanded={isMenuOpen}
-              aria-controls="mobile-navigation"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-            >
-              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
-          </div>
-
-          {/* Mobile Navigation */}
-          {isMenuOpen && (
-            <div id="mobile-navigation" className="lg:hidden pb-4 max-h-[70dvh] overflow-y-auto">
-              {navItems.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => scrollToSection(item.id)}
-                  className={`block w-full text-left nav-link py-3 ${activeSection === item.id ? 'active' : ''}`}
-                >
-                  <item.icon className="w-4 h-4 inline mr-2" />
-                  {item.label}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-      </nav>
-
-      <main id="main-content" tabIndex={-1} className="pt-20 relative z-10">
+      <main id="main-content" tabIndex={-1} className="relative z-10">
         {/* About Section */}
         <section id="about" className="py-10 sm:py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Hero */}
             <div className="relative text-center mb-12">
               <div className="relative z-10 py-8 sm:py-16 lg:py-20">
-              <h1 className="text-4xl sm:text-5xl lg:text-7xl font-display font-bold mb-6 tracking-tight">
-                <span className="gradient-text-purple">Welcome to my</span>
-                <br />
-                <span className="gradient-text-accent">digital space</span>
-              </h1>
-              <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-4">
-                Penetration Testing | AI Red Team | Agentic Automation
+              <HeroHeading />
+              <p className="hero-topics" aria-label="Red Teaming, AI Security, Automation">
+                <strong>Red Teaming</strong><span aria-hidden="true">·</span><strong>AI Security</strong><span aria-hidden="true">·</span><strong>Automation</strong>
               </p>
-              <p className="text-base md:text-lg text-muted-foreground/80 max-w-2xl mx-auto mb-8 font-mono">
-                Cybersecurity enthusiast and curious mind building side projects around whatever topics I'm currently breaking into. Occasional CTF player with pwnthem0le in Turin. 
+              <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto mb-5 leading-relaxed">
+                Understand how systems work. Make them stop working. Bring ideas to life.
+              </p>
+              <p className="text-sm md:text-base text-muted-foreground mb-8">
+                CTF Player @ <a href="https://pwnthem0le.polito.it/" target="_blank" rel="noopener noreferrer" className="text-secondary underline decoration-secondary/40 underline-offset-4 hover:decoration-secondary">pwnthem0le</a>
               </p>
                 <div className="flex justify-center gap-4 flex-wrap">
                   <Button 
@@ -412,7 +301,7 @@ const Index = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-lg text-muted-foreground mb-6">
-                  Hello World! I'm Gianluca Bassani, an offensive security enthusiast always looking for the next cool thing to learn. This is my digital portfolio where I document and share my journey through various security challenges and some development projects.
+                  Hello World! I’m Gianluca Bassani. This is where I share my security research, CTF writeups, and the tools I build.
                 </p>
                 {/* Skills are available on the dedicated Skills page — click the Technical Skills card below to view in-depth */}
                 {/* Technical Skills & Certifications */}
@@ -629,90 +518,7 @@ const Index = () => {
         {/* Projects Section */}
         <section id="projects" className="py-10 sm:py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl sm:text-4xl font-display font-bold mb-8 sm:mb-12 text-center gradient-text-green tracking-tight">Projects</h2>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-8 mb-8 sm:mb-12">
-              {(() => {
-                // Prefer explicitly featured projects; fall back to first two projects
-                const featured = projects.filter(p => p.featured);
-                const list = featured.length ? featured.slice(0, 2) : projects.slice(0, 2);
-                return list.map((project) => (
-                <Card 
-                  key={project.id}
-                  className="card-hover theme-green border-success/20 hover:ring-1 hover:ring-success/20 cursor-pointer transition-all duration-300 hover:scale-105"
-                  data-fade-in
-                >
-                  <CardHeader>
-                    <CardTitle className="text-2xl flex items-center">
-                      <Terminal className="w-6 h-6 mr-2 text-success" />
-                      <Link className="project-title-link" to={`/projects/${project.id}`}>{project.title}</Link>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <CardDescription className="text-base mb-6">
-                      {project.summary}
-                    </CardDescription>
-                    <div className="flex flex-wrap gap-2 mb-6">
-                      {project.tags.slice(0, 4).map((tag) => (
-                        <Badge key={tag} variant="secondary" className="tag">{tag}</Badge>
-                      ))}
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {project.githubUrl && (
-                        <Button 
-                          variant="outline" 
-                          className="flex-1 border-success/30 text-success hover:bg-success/10 hover:text-success font-mono"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            window.open(project.githubUrl, '_blank');
-                          }}
-                        >
-                          <Github className="w-4 h-4 mr-2" />
-                          GitHub
-                        </Button>
-                      )}
-                      {project.gitlabUrl && (
-                        <Button 
-                          variant="outline" 
-                          className="flex-1 border-success/30 text-success hover:bg-success/10 hover:text-success font-mono"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            window.open(project.gitlabUrl, '_blank');
-                          }}
-                        >
-                          <Gitlab className="w-4 h-4 mr-2" />
-                          GitLab
-                        </Button>
-                      )}
-                      {project.liveUrl && (
-                        <Button 
-                          variant="outline" 
-                          className="flex-1 border-success/30 text-success hover:bg-success/10 hover:text-success font-mono"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            window.open(project.liveUrl, '_blank');
-                          }}
-                        >
-                          <ExternalLink className="w-4 h-4 mr-2" />
-                          Official Page
-                        </Button>
-                      )}
-                    </div>
-                  </CardContent>
-                </Card>
-              ));
-            })()}
-            </div>
-
-            <div className="text-center">
-              <Button 
-                onClick={handleProjectsClick}
-                size="lg"
-                className="bg-success text-success-foreground hover:bg-success/80 shadow-[0_0_15px_rgba(152,252,152,0.15)] font-mono"
-              >
-                View All Projects
-                <ExternalLink className="w-4 h-4 ml-2" />
-              </Button>
-            </div>
+            <ProjectRail projects={projects} />
           </div>
         </section>
 
@@ -723,36 +529,7 @@ const Index = () => {
               Blog
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-8 mb-8 sm:mb-12">
-              {blogPosts.slice(0, 2).map((post) => (
-                <Link key={post.id} to={`/blog/${post.id}`} className="content-card-link">
-                <Card
-                  className="card-hover theme-purple border-accent/20 hover:ring-1 hover:ring-accent/20 cursor-pointer transition-all duration-300 hover:scale-[1.02]"
-                  data-fade-in
-                >
-                  {post.coverImage && <img src={post.coverImage} alt="" className="blog-card-cover" width={1200} height={630} loading="lazy" />}
-                  <CardHeader>
-                    <CardTitle className="text-2xl flex items-center">
-                      <BookOpen className="w-6 h-6 mr-2 text-accent" />
-                      {post.title}
-                    </CardTitle>
-                    <div className="flex items-center gap-1 text-sm text-muted-foreground font-mono">
-                      <Calendar className="w-4 h-4" />
-                      {new Date(post.date).toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric', timeZone:'UTC'})}
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <CardDescription className="text-base mb-6">{post.summary}</CardDescription>
-                    <div className="flex flex-wrap gap-2">
-                      {post.tags.slice(0, 4).map((tag) => (
-                        <Badge key={tag} variant="secondary" className="tag">{tag}</Badge>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-                </Link>
-              ))}
-            </div>
+            <BlogBook posts={blogPosts} headingAs="h3" />
 
             <div className="text-center">
               <Button
@@ -777,7 +554,7 @@ const Index = () => {
                 data-fade-in
               >
                 <CardHeader>
-                  <CardTitle>HackTheBox</CardTitle>
+                  <CardTitle className="platform-card-title"><PlatformLogo platform="hackthebox" /></CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground mb-4">
@@ -797,7 +574,7 @@ const Index = () => {
                 data-fade-in
               >
                 <CardHeader>
-                  <CardTitle>TryHackMe</CardTitle>
+                  <CardTitle className="platform-card-title"><PlatformLogo platform="tryhackme" /></CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground mb-4">
@@ -815,7 +592,7 @@ const Index = () => {
                 data-fade-in
               >
                 <CardHeader>
-                  <CardTitle>VulnHub</CardTitle>
+                  <CardTitle className="platform-card-title"><PlatformLogo platform="vulnhub" /></CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground mb-4">

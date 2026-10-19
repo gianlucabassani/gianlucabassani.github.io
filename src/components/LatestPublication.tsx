@@ -29,7 +29,7 @@ export default function LatestPublication() {
     return () => window.clearTimeout(timer);
   }, [closing]);
   // Let readers concentrate; show the notice on discovery pages only.
-  if (!latest || !visible || !['/', '/blog', '/boxes', '/ctf'].includes(pathname.replace(/\/$/, '') || '/')) return null;
+  if (!latest || !visible || !['/', '/boxes', '/ctf'].includes(pathname.replace(/\/$/, '') || '/')) return null;
   const dismiss = () => {
     setClosing(true);
     try { localStorage.setItem('latest-publication-dismissed', latest.key); } catch { /* Dismissal still works without storage. */ }

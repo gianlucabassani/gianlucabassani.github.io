@@ -34,9 +34,9 @@ export default function CertificationsView({ onBack }: { onBack: () => void }) {
           <Button
             variant="outline"
             onClick={onBack}
-            className="mb-6 border-primary/30 text-primary hover:bg-primary/10 hover:text-primary"
+            className="page-back mb-6"
           >
-            <ArrowLeft className="w-4 h-4 mr-2" />
+            <ArrowLeft className="w-4 h-4" aria-hidden="true" />
             Back to Home
           </Button>
 
