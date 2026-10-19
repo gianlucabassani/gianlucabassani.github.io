@@ -19,11 +19,21 @@ test('article links contain crawler-readable metadata and retain the app entry p
       await writeFile(join(publicDir, folder, 'example.md'), '# Read immediately\n\nArticle body without JavaScript.\n\n## Commands\n\n```bash\necho "<script>safe</script>"\n```');
     }
     const record = {id:'example', title:'A <test> & "title"', summary:'Preview & description', date:'2026-10-13', contentPath:'example.md', tags:[], difficulty:'easy', os:'linux', competition:'Test CTF', category:'web', points:100, previewImage:'/assets/previews/example.png'};
-    await writeFile(join(dataDir, 'blog.json'), JSON.stringify([record]));
+    const relatedLinks = [
+      {label:'Source on GitLab', href:'https://gitlab.com/example/tool', description:'Code and setup guide'},
+      {label:'My projects', href:'/projects'},
+    ];
+    await writeFile(join(publicDir, 'blog/no-headings.md'), 'An article without chapter headings.');
+    await writeFile(join(dataDir, 'blog.json'), JSON.stringify([
+      record,
+      {...record, id:'related', relatedLinks},
+      {...record, id:'related-no-headings', contentPath:'no-headings.md', relatedLinks},
+      {...record, id:'empty-related', relatedLinks:[]},
+    ]));
     await writeFile(join(dataDir, 'writeups.json'), JSON.stringify([{...record, platform:'hackthebox'}]));
     await writeFile(join(dataDir, 'ctf.json'), JSON.stringify([record]));
     const count = await generateArticlePages({outputDir, dataDir, publicDir});
-    assert.equal(count, 3);
+    assert.equal(count, 6);
     for (const route of ['blog/example','boxes/hackthebox/example','ctf/example']) {
       const html = await readFile(join(outputDir, route, 'index.html'), 'utf8');
       assert.match(html, /A &lt;test&gt; &amp; &quot;title&quot;/);
@@ -36,13 +46,25 @@ test('article links contain crawler-readable metadata and retain the app entry p
       assert.match(html, /property="og:image" content="https:\/\/gianlucabassani.gitlab.io\/assets\/previews\/example.png"/);
       assert.match(html, /Article body without JavaScript/);
       assert.match(html, /echo/);
-      assert.match(html, /aria-label="Breadcrumb"/);
+      assert.match(html, /<nav aria-label="Article navigation"><a[^>]*href="\/">[\s\S]*?Back to Home<\/a><\/nav>/);
+      assert.doesNotMatch(html, /aria-label="Breadcrumb"/);
       assert.match(html, /min read/);
       assert.equal((html.match(/<h1\b/g) || []).length, 1);
       assert.match(html, /id="article-data"/);
       assert.doesNotMatch(html, /<script>safe<\/script>/);
       assert.doesNotMatch(html, /Loading article/);
+      assert.doesNotMatch(html, /aria-label="Related links"/);
     }
+    for (const id of ['related', 'related-no-headings']) {
+      const html = await readFile(join(outputDir, 'blog', id, 'index.html'), 'utf8');
+      assert.match(html, /<aside[^>]*aria-label="Related links"/);
+      assert.match(html, /href="https:\/\/gitlab.com\/example\/tool"/);
+      assert.match(html, /Code and setup guide/);
+      assert.match(html, /href="\/projects"/);
+      assert.match(html, /My projects/);
+    }
+    const emptyRelated = await readFile(join(outputDir, 'blog/empty-related/index.html'), 'utf8');
+    assert.doesNotMatch(emptyRelated, /aria-label="Related links"/);
     const sitemap = await readFile(join(outputDir,'sitemap.xml'),'utf8');
     assert.match(sitemap, /blog\/example\//);
     assert.match(sitemap, /boxes\/hackthebox\/example\//);

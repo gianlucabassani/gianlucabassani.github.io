@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { articleHeadings, withoutArticleTitle } from '@/lib/article-headings';
 
-export default function ReaderLayout({content, title, children}: {content:string; title:string; children:ReactNode}) {
+export default function ReaderLayout({content, title, children, related}: {content:string; title:string; children:ReactNode; related?:ReactNode}) {
   const headings = useMemo(() => articleHeadings(withoutArticleTitle(content, title)), [content, title]);
   const [active, setActive] = useState('');
   useEffect(() => {
@@ -26,7 +26,7 @@ export default function ReaderLayout({content, title, children}: {content:string
         event.currentTarget.closest('details')?.removeAttribute('open');
       }}>{heading.title}</a>)}
   </nav>;
-  return <main id="main-content" className={`reader-layout reader-container mx-auto relative z-10 ${headings.length ? '' : 'reader-layout-no-toc'}`} tabIndex={-1}>
+  return <main id="main-content" className={`reader-layout reader-container mx-auto relative z-10 ${headings.length || related ? '' : 'reader-layout-no-toc'}`} tabIndex={-1}>
     {headings.length > 0 && <aside className="reader-sidebar">
       <div className="reader-toc reader-toc-desktop"><p>On this page</p>{links()}</div>
       <details className="reader-toc reader-toc-mobile">
@@ -35,5 +35,6 @@ export default function ReaderLayout({content, title, children}: {content:string
       </details>
     </aside>}
     <div className="reader-body">{children}</div>
+    {related && <aside className="reader-related" aria-label="Related links">{related}</aside>}
   </main>;
 }

@@ -1,0 +1,41 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "files": [
+          "src/index.css"
+        ],
+        "createdAt": "2026-10-13T06:58:27.618Z",
+        "reason": "Agent: the existing Google Fonts import supplies the preserved Inter typography"
+      },
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "src/index.css"
+        ],
+        "createdAt": "2026-10-16T09:51:01.542Z",
+        "reason": "Agent: preserve the existing homepage and section identity during the approved reading-layout refinement; article titles now use solid colors."
+      },
+      {
+        "rule": "codex-grid-background",
+        "value": "*",
+        "files": [
+          "src/index.css"
+        ],
+        "createdAt": "2026-10-16T09:54:37.724Z",
+        "reason": "Agent: retain the incumbent cybersecurity homepage grid during this approved reading-layout refinement; reader surfaces already reduce its opacity."
+      },
+      {
+        "rule": "overused-font",
+        "value": "space grotesk",
+        "createdAt": "2026-10-19T17:30:22.004Z",
+        "reason": "Agent decision: tailwind.config.ts already defines Space Grotesk as the site display font. The related-links card preserves that established typography within a scoped refinement."
+      }
+    ]
+  }
+}

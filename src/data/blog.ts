@@ -1,3 +1,9 @@
+export interface BlogRelatedLink {
+  label: string;
+  href: string;
+  description?: string;
+}
+
 export interface BlogPost {
   id: string;
   title: string;
@@ -8,6 +14,7 @@ export interface BlogPost {
   previewImage?: string;
   icon?: string;
   coverImage?: string;
+  relatedLinks?: BlogRelatedLink[];
 }
 
 import blogData from './blog.json';

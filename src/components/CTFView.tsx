@@ -86,7 +86,7 @@ const CTFView = ({ ctfWriteup, onBack, initialContent }: CTFViewProps) => {
       {/* Header */}
       <div className="bg-background/80 backdrop-blur-sm border-b border-border relative z-10">
         <div className="reader-header mx-auto px-4 py-4">
-          <ArticleNavigation title={ctfWriteup.title} content={content} parent={{label:'CTF solves', path:'/ctf'}} />
+          <ArticleNavigation content={content} />
 
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-4">
             <Badge 

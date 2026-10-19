@@ -125,7 +125,7 @@ const WriteupView = ({ writeup, onBack, initialContent }: WriteupViewProps) => {
       {/* Header */}
       <div className="bg-background/80 backdrop-blur-md border-b border-border relative z-10">
         <div className="reader-header mx-auto px-4 py-4">
-          <ArticleNavigation title={writeup.title} content={content} parent={{label:'Box writeups', path:`/boxes/${writeup.platform}`}} />
+          <ArticleNavigation content={content} />
 
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-4">
             <Badge 

@@ -705,11 +705,19 @@ h1, h2, h3 { overflow-wrap: anywhere; }
 }
 
 .route-loading { min-height: 100dvh; display: grid; place-items: center; padding: 1rem; color: hsl(var(--muted-foreground)); }
-.article-navigation { margin-bottom: 1rem; }
-.article-navigation ol { display: flex; flex-wrap: wrap; align-items: center; gap: 0 0.5rem; font-size: 0.8125rem; color: hsl(var(--muted-foreground)); }
-.article-navigation li { display: inline-flex; align-items: center; gap: 0.5rem; min-width: 0; }
-.article-navigation a { display: inline-flex; align-items: center; min-height: 44px; color: hsl(var(--foreground) / 0.86); }
-.article-navigation [aria-current] { overflow-wrap: anywhere; }
+.article-navigation .article-back-link {
+  gap: 0.625rem;
+  padding: 0.5rem 0.875rem;
+  border-color: hsl(var(--foreground) / 0.15);
+  border-radius: 0.625rem;
+  background: hsl(var(--muted) / 0.45);
+  color: hsl(var(--foreground) / 0.9);
+}
+.article-navigation .article-back-link:hover {
+  border-color: hsl(var(--foreground) / 0.3);
+  background: hsl(var(--muted) / 0.8);
+  color: hsl(var(--foreground));
+}
 .article-reading-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 0.25rem 1rem; font-size: 0.8125rem; color: hsl(var(--muted-foreground)); }
 .article-reading-tools > span:first-child, .article-reading-tools button { display: inline-flex; align-items: center; gap: 0.5rem; min-height: 44px; }
 .article-reading-tools button { padding-inline: 0.75rem; border-radius: 0.5rem; color: hsl(var(--foreground)); }
@@ -720,14 +728,34 @@ h1, h2, h3 { overflow-wrap: anywhere; }
 .machine-icon { width: 48px; height: 48px; object-fit: contain; border-radius: 0.625rem; flex-shrink: 0; }
 
 /* Reading surfaces: chapter navigation stays beside the work on wide screens. */
-.reader-container { max-width: 1240px; }
-.reader-header { max-width: 1240px; }
+.reader-container { max-width: 960px; }
+.reader-header { max-width: 960px; }
 .reader-layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; padding: 1.5rem max(1rem, env(safe-area-inset-left)); }
 .reader-body { min-width: 0; }
 .reader-layout-no-toc { max-width: 960px; }
 .reader-prose { max-width: 78ch; }
 .reader-content { padding: 1.5rem 2rem; }
 .reader-sidebar { min-width: 0; }
+.reader-related { min-width: 0; }
+.reader-related-card {
+  overflow: hidden;
+  border: 1px solid hsl(var(--accent) / 0.4);
+  border-radius: 1rem;
+  background: hsl(263 35% 12% / 0.9);
+}
+.reader-related-card ul { margin: 0; padding: 0; list-style: none; }
+.reader-related-card li + li { border-top: 1px solid hsl(var(--accent) / 0.25); }
+.reader-related-card a { --resource-accent: var(--accent); display: flex; flex-direction: column; gap: 0.875rem; padding: 1.25rem; text-decoration: none; overflow-wrap: anywhere; transition: background-color 160ms ease; }
+.reader-related-card a[data-source="gitlab"] { --resource-accent: 25 95% 70%; }
+.reader-related-card a[data-source="project"] { --resource-accent: var(--secondary); }
+.reader-related-icon { color: hsl(var(--resource-accent)); flex-shrink: 0; margin-bottom: 0.375rem; }
+.reader-related-link-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.125rem; font-weight: 600; line-height: 1.35; letter-spacing: -0.02em; color: hsl(var(--foreground)); }
+.reader-related-description { font-size: 0.8125rem; line-height: 1.7; color: hsl(var(--foreground) / 0.75); }
+.reader-related-action { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; min-height: 44px; margin-top: 0.375rem; padding: 0.625rem 0.75rem; border-radius: 0.5rem; background: hsl(var(--resource-accent) / 0.14); color: hsl(var(--resource-accent)); font-size: 0.8125rem; font-weight: 600; line-height: 1.5; }
+.reader-related-action svg { flex-shrink: 0; }
+.reader-related-card a:hover { background: hsl(var(--resource-accent) / 0.08); }
+.reader-related-card a:hover .reader-related-action { background: hsl(var(--resource-accent) / 0.23); }
+.reader-related-card a:focus-visible { outline-offset: -4px; }
 .reader-toc { max-width: none; margin: 0; padding-bottom: 0.75rem; }
 .reader-toc-desktop { display: none; }
 .reader-toc nav a { text-decoration: none; line-height: 1.5; }
@@ -759,7 +787,16 @@ h1, h2, h3 { overflow-wrap: anywhere; }
 .reader-summary-topics li { max-width: 100%; overflow-wrap: anywhere; }
 .reader-summary-topics li + li::before { content: '/'; margin-right: 0.75rem; color: hsl(var(--muted-foreground) / 0.65); }
 .reader-page .article-cover { max-height: 260px; }
-.article-navigation ol li:last-child { display: none; }
+.reader-intro {
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  border: 1px solid hsl(280 28% 36% / 0.65);
+  border-radius: 0.75rem;
+  background: hsl(280 24% 17%);
+}
+.reader-intro .reader-summary { margin: 0; padding: clamp(1.25rem, 3vw, 2rem); }
+.reader-intro .reader-summary-text { font-size: clamp(1.125rem, 1.5vw, 1.25rem); line-height: 1.7; }
+.reader-page .reader-intro .article-cover { max-height: none; margin: 0; border-radius: 0; }
 .article-navigation { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
 .article-reading-tools { gap: 0.25rem; }
 .skip-link { position: fixed; top: 0.5rem; left: 1rem; z-index: 100; padding: 0.75rem 1rem; background: hsl(var(--foreground)); color: hsl(var(--background)); border-radius: 0.5rem; transform: translateY(-160%); }
@@ -808,13 +845,31 @@ h1, h2, h3 { overflow-wrap: anywhere; }
   .latest-publication[data-closing] { opacity: 0; }
 }
 @media (min-width: 1100px) {
-  .reader-layout { grid-template-columns: 230px minmax(0, 1fr); gap: 2rem; align-items: start; }
-  .reader-layout-no-toc { grid-template-columns: minmax(0, 1fr); }
-  .reader-sidebar { position: sticky; top: 1.5rem; max-height: calc(100dvh - 3rem); overflow-y: auto; scrollbar-width: thin; }
-  .reader-toc-desktop { display: block; border: 0; }
-  .reader-toc-desktop > p { padding: 0.5rem; font-size: 0.8125rem; font-weight: 600; }
+  /* Equal side columns keep the article centered independently of its contents list. */
+  .reader-layout { max-width: 1484px; grid-template-columns: minmax(0, 1fr) minmax(0, 4fr) minmax(0, 1fr); gap: 2rem; align-items: start; }
+  .reader-body { grid-column: 2; grid-row: 1; }
+  .reader-sidebar { grid-column: 1; grid-row: 1; }
+  .reader-related { grid-column: 3; grid-row: 1; }
+  .reader-layout-no-toc { max-width: 960px; grid-template-columns: minmax(0, 1fr); }
+  .reader-layout-no-toc .reader-body { grid-column: 1; }
+  .reader-sidebar, .reader-related { position: sticky; top: 1.5rem; max-height: calc(100dvh - 3rem); overflow-y: auto; scrollbar-width: thin; }
+  .reader-toc-desktop {
+    display: block;
+    padding: 1rem 0.875rem;
+    border: 1px solid hsl(var(--foreground) / 0.08);
+    border-radius: 0.875rem;
+    background: hsl(var(--card) / 0.4);
+  }
+  .reader-toc-desktop > p { margin: 0 0 0.75rem; padding-left: 0.25rem; font-size: 0.8125rem; font-weight: 600; color: hsl(var(--foreground) / 0.9); }
+  .reader-toc-desktop nav { margin: 0 0 0 0.25rem; border-left: 1px solid hsl(var(--foreground) / 0.12); }
+  .reader-toc-desktop nav a { position: relative; padding: 0.5rem 0.25rem 0.5rem 0.875rem; border-radius: 0; font-size: 0.8125rem; color: hsl(var(--muted-foreground)); }
+  .reader-toc-desktop nav .reader-toc-subsection { padding-left: 1.5rem; font-size: 0.75rem; }
+  .reader-toc-desktop nav a::before { content: ''; position: absolute; left: -1px; top: 50%; width: 2px; height: 1rem; border-radius: 2px; background: hsl(var(--accent)); transform: translateY(-50%); opacity: 0; }
+  .reader-toc-desktop nav a:hover { background: transparent; color: hsl(var(--foreground)); }
+  .reader-toc-desktop nav a[aria-current="location"] { background: transparent; color: hsl(var(--foreground)); font-weight: 600; }
+  .reader-toc-desktop nav a[aria-current="location"]::before { opacity: 1; }
+  .reader-toc-desktop nav a:focus-visible { outline-offset: -2px; }
   .reader-toc-mobile { display: none; }
-  .reader-header { padding-left: calc(230px + 3rem); }
 }
 @media (max-width: 639px) {
   body:has(.latest-publication) .home-page main { padding-top: 10rem; }

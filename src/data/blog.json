@@ -11,6 +11,13 @@
     "summary": "Speedrun in getting suspended on github by accidentally creating a Minecraft Dungeons mod for editing your character files. (I just wanted to play on linux without losing my progress)",
     "contentPath": "dungeonsrev.md",
     "previewImage": "/assets/previews/blog-dungeonsrev.png",
-    "coverImage": "/assets/covers/dungeonsrev.webp"
+    "coverImage": "/assets/covers/dungeonsrev.webp",
+    "relatedLinks": [
+      {
+        "label": "Minecraft Dungeons character mod",
+        "href": "https://gitlab.com/prime-cybersec/mcdungeons-charactermod",
+        "description": "Source code and setup guides for Windows and Linux."
+      }
+    ]
   }
 ]

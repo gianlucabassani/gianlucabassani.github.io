@@ -1,4 +1,5 @@
 import ArticleSummary from '@/components/ArticleSummary';
+import BlogRelatedLinks from '@/components/BlogRelatedLinks';
 import ReaderLayout from '@/components/ReaderLayout';
 import ArticleNavigation from '@/components/ArticleNavigation';
 import useArticleContent from '@/hooks/use-article-content';
@@ -51,7 +52,7 @@ const BlogView = ({ post, onBack, initialContent }: BlogViewProps) => {
 
       <div className="bg-background/80 backdrop-blur-md border-b border-border relative z-10">
         <div className="reader-header mx-auto px-4 py-4">
-          <ArticleNavigation title={post.title} content={content} parent={{label:'Blog', path:'/blog'}} />
+          <ArticleNavigation content={content} />
 
           <h1 className="text-2xl sm:text-3xl font-display font-bold reader-title mb-2 tracking-tight">
             {post.title}
@@ -64,10 +65,12 @@ const BlogView = ({ post, onBack, initialContent }: BlogViewProps) => {
         </div>
       </div>
 
-      <ReaderLayout content={content} title={post.title}>
-        <ArticleSummary summary={post.summary} tags={post.tags} />
-
-        {post.coverImage && <img src={post.coverImage} alt="Voxel dungeon chest and encrypted save file illustration" className="article-cover" width={1200} height={630} />}
+      <ReaderLayout content={content} title={post.title}
+        related={post.relatedLinks?.length ? <BlogRelatedLinks links={post.relatedLinks} /> : undefined}>
+        <div className="reader-intro">
+          {post.coverImage && <img src={post.coverImage} alt="Voxel dungeon chest and encrypted save file illustration" className="article-cover" width={1200} height={630} />}
+          <ArticleSummary summary={post.summary} tags={post.tags} />
+        </div>
         <Card className="reader-article theme-purple border-accent/20">
           <CardContent className="reader-content">
             {isLoading ? (
