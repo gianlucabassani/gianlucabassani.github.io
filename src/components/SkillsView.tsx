@@ -8,6 +8,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import skillsData, { Skill } from '@/data/skills';
 import PageBackground from '@/components/PageBackground';
+import { skillGroups } from '@/data/skillGroups';
+import { useLocation } from 'react-router-dom';
 
 // --- DATA FALLBACK ---
 // Updated with accurate descriptions and tags from source
@@ -93,6 +95,16 @@ interface SkillWithDetails extends Skill {
 }
 
 export default function SkillsView({ onBack }: { onBack: () => void }) {
+  const { hash } = useLocation();
+  useEffect(() => {
+    if (!hash) return;
+    const frame = requestAnimationFrame(() => {
+      const target = document.getElementById(hash.slice(1));
+      target?.focus({ preventScroll: true });
+      target?.scrollIntoView({ block: 'start' });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [hash]);
   // Arricchiamo i dati con le descrizioni locali
   const enrichedSkills = skillsData.map(s => ({
     ...s,
@@ -101,11 +113,15 @@ export default function SkillsView({ onBack }: { onBack: () => void }) {
   }));
 
   // Filtri Categorie
-  const programming = enrichedSkills.filter(s => ['python', 'js', 'go', 'ccpp', 'java'].includes(s.id));
-  const scripting = enrichedSkills.filter(s => ['bash', 'terraform', 'docker'].includes(s.id));
-  const aiAgents = enrichedSkills.filter(s => ['mcp', 'ai-agents'].includes(s.id));
-  const security = enrichedSkills.filter(s => ['web', 'network', 'ai-red', 'binary', 'mobile', 'wifi'].includes(s.id));
-  const systems = enrichedSkills.filter(s => ['linux', 'windows'].includes(s.id));
+  const groupSkills = (id: string) => {
+    const group = skillGroups.find(item => item.id === id);
+    return enrichedSkills.filter(skill => group?.ids.includes(skill.id));
+  };
+  const programming = groupSkills('coding');
+  const scripting = groupSkills('infra-automation');
+  const aiAgents = groupSkills('ai-agents');
+  const security = groupSkills('offensive-security');
+  const systems = groupSkills('operating-systems');
 
   // Stato Popup
   const [activeSkillId, setActiveSkillId] = useState<string | null>(null);
@@ -159,7 +175,7 @@ export default function SkillsView({ onBack }: { onBack: () => void }) {
           <div className="lg:col-span-5 space-y-8">
             
             {/* Programming Languages - Green/Success Theme */}
-            <div className="fade-in-section" style={{ animationDelay: '0.1s' }}>
+            <div id="coding" tabIndex={-1} className="fade-in-section skill-detail-anchor" style={{ animationDelay: '0.1s' }}>
               <SkillCard 
                 icon={<Terminal className="w-5 h-5 text-success" />}
                 title="Coding"
@@ -182,11 +198,11 @@ export default function SkillsView({ onBack }: { onBack: () => void }) {
             </div>
 
             {/* Infrastructure & Scripting - Purple/Accent Theme */}
-            <div className="fade-in-section" style={{ animationDelay: '0.2s' }}>
+            <div id="infra-automation" tabIndex={-1} className="fade-in-section skill-detail-anchor" style={{ animationDelay: '0.2s' }}>
               <SkillCard 
                 icon={<Database className="w-5 h-5 text-accent" />}
-                title="Infra & Automation"
-                description="IaC scripting and deployments workflows."
+                title="Infra / Cloud (IaC)"
+                description="Infrastructure as code, cloud environments, and containers."
                 variant="accent"
               >
                 <div className="space-y-4">
@@ -205,11 +221,11 @@ export default function SkillsView({ onBack }: { onBack: () => void }) {
             </div>
 
             {/* AI Agents & MCP - Blue/Secondary Theme */}
-            <div className="fade-in-section" style={{ animationDelay: '0.25s' }}>
+            <div id="ai-agents" tabIndex={-1} className="fade-in-section skill-detail-anchor" style={{ animationDelay: '0.25s' }}>
               <SkillCard 
                 icon={<Bot className="w-5 h-5 text-secondary" />}
-                title="AI Automation & Agents"
-                description="Developing MCP servers and AI orchestration systems."
+                title="AI & Automation"
+                description="MCP integrations, AI orchestration, and scripting workflows."
                 variant="secondary"
               >
                 <div className="space-y-4">
@@ -243,7 +259,7 @@ export default function SkillsView({ onBack }: { onBack: () => void }) {
           <div className="lg:col-span-7 space-y-8">
             
             {/* Security Fields - Red/Destructive Theme */}
-            <div className="fade-in-section" style={{ animationDelay: '0.3s' }}>
+            <div id="offensive-security" tabIndex={-1} className="fade-in-section skill-detail-anchor" style={{ animationDelay: '0.3s' }}>
               {/* Usa SkillCard anche qui per consistenza, ma con layout interno diverso */}
               <SkillCard 
                 icon={<Shield className="w-6 h-6 text-destructive" />}
@@ -265,7 +281,7 @@ export default function SkillsView({ onBack }: { onBack: () => void }) {
             </div>
 
             {/* Operating Systems - Yellow/Warning Theme */}
-            <div className="fade-in-section" style={{ animationDelay: '0.4s' }}>
+            <div id="operating-systems" tabIndex={-1} className="fade-in-section skill-detail-anchor" style={{ animationDelay: '0.4s' }}>
               <SkillCard 
                 icon={<Server className="w-5 h-5 text-warning" />}
                 title="Operating Systems"

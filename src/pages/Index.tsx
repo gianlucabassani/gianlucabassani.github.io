@@ -1,18 +1,18 @@
 import PageBackground from '@/components/PageBackground';
 import ProjectRail from '@/components/ProjectRail';
 import HeroHeading from '@/components/HeroHeading';
+import AboutProfile from '@/components/AboutProfile';
 import BlogBook from '@/components/BlogBook';
 import PlatformLogo from '@/components/PlatformLogo';
 import { lazy, useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Shield, Terminal, Code, FileText, Flag, Github, Gitlab, ExternalLink, ChevronDown } from 'lucide-react';
+import { Shield, Terminal, Github, Gitlab, ExternalLink, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Writeup } from '@/data/writeups';
 import { CTFWriteup, ctfWriteups } from '@/data/ctf';
 import { Project, projects } from '@/data/projects';
-import skillsData, { Skill } from '@/data/skills';
 const PlatformView = lazy(() => import('@/components/PlatformView'));
 const ProjectView = lazy(() => import('@/components/ProjectView'));
 const ProjectsView = lazy(() => import('@/components/ProjectsView'));
@@ -153,21 +153,6 @@ const Index = () => {
     navigate('/blog');
   };
 
-  // Helper function to get skill variant classes
-  const getSkillClasses = (skillName: string): string => {
-    const skill = skillsData.find(s => s.name === skillName);
-    const variant = skill?.variant || 'secondary';
-    const colorClasses = {
-      primary: 'bg-primary/20 text-primary border-primary/30',
-      secondary: 'bg-secondary/20 text-secondary border-secondary/30',
-      accent: 'bg-accent/20 text-accent border-accent/30',
-      warning: 'bg-warning/20 text-warning border-warning/30',
-      success: 'bg-success/20 text-success border-success/30',
-      destructive: 'bg-destructive/20 text-destructive border-destructive/30'
-    };
-    return colorClasses[variant] || colorClasses.secondary;
-  };
-
   // Handle scroll progress
   useEffect(() => {
     const handleScroll = () => {
@@ -292,185 +277,7 @@ const Index = () => {
               </div>
             </div>
 
-            {/* About Content */}
-            <Card className="card-hover theme-purple border-accent/20 mb-6 group" data-fade-in>
-              <CardHeader>
-                <CardTitle className="text-2xl font-mono">
-                  <span>About Me</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-lg text-muted-foreground mb-6">
-                  Hello World! I’m Gianluca Bassani. This is where I share my security research, CTF writeups, and the tools I build.
-                </p>
-                {/* Skills are available on the dedicated Skills page — click the Technical Skills card below to view in-depth */}
-                {/* Technical Skills & Certifications */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-                  {/* Technical Skills */}
-                  <Link to="/skills" className="content-card-link"><Card
-                    className="group relative card-hover theme-purple border-accent/20 hover:ring-1 hover:ring-accent/20 cursor-pointer transition-all duration-300 hover:scale-105 overflow-hidden"
-                  >
-                    <CardHeader>
-                      <CardTitle className="flex items-center text-lg transition-all duration-300">
-                        <Code className="w-5 h-5 mr-2 text-primary" />
-                        <span>Technical Skills</span>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-4">
-                        <div>
-                          <h4 className="font-semibold text-sm mb-2">Offensive Security</h4>
-                          <div className="flex flex-wrap gap-2">
-                            <Badge variant="outline" className={`tag ${getSkillClasses('Web Security')}`}>Web Security</Badge>
-                            <Badge variant="outline" className={`tag ${getSkillClasses('Network Pentesting')}`}>Network Pentesting</Badge>
-                            <Badge variant="outline" className={`tag ${getSkillClasses('AI Red Teaming')}`}>AI Red Teaming</Badge>
-                            <Badge variant="outline" className={`tag ${getSkillClasses('Binary Exploitation')}`}>Binary Exploitation</Badge>
-                          </div>
-                        </div>
-                        <div>
-                          <h4 className="font-semibold text-sm mb-2">AI Automation & Agents</h4>
-                          <div className="flex flex-wrap gap-2">
-                            <Badge variant="outline" className={`tag ${getSkillClasses('Model Context Protocol (MCP)')}`}>Model Context Protocol (MCP)</Badge>
-                            <Badge variant="outline" className={`tag ${getSkillClasses('AI Agents & Automation')}`}>AI Agents & Automation</Badge>
-                          </div>
-                        </div>
-                        <div>
-                          <h4 className="font-semibold text-sm mb-2">Coding</h4>
-                          <div className="flex flex-wrap gap-2">
-                            <Badge variant="outline" className={`tag ${getSkillClasses('Python')}`}>Python</Badge>
-                            <Badge variant="outline" className={`tag ${getSkillClasses('C/C++')}`}>C/C++</Badge>
-                            <Badge variant="outline" className={`tag ${getSkillClasses('GO')}`}>GO</Badge>
-                            <Badge variant="outline" className={`tag ${getSkillClasses('Java')}`}>Java</Badge>
-                            <Badge variant="outline" className={`tag ${getSkillClasses('Javascript')}`}>Javascript</Badge>
-                          </div>
-                        </div>
-                        <div>
-                          <h4 className="font-semibold text-sm mb-2">Infra & Automation</h4>
-                          <div className="flex flex-wrap gap-2">
-                            <Badge variant="outline" className={`tag ${getSkillClasses('Bash')}`}>Bash</Badge>
-                            <Badge variant="outline" className={`tag ${getSkillClasses('Terraform')}`}>Terraform</Badge>
-                            <Badge variant="outline" className={`tag ${getSkillClasses('Docker')}`}>Docker</Badge>
-                          </div>
-                        </div>
-                        <div>
-                          <h4 className="font-semibold text-sm mb-2">Operating Systems</h4>
-                          <div className="flex flex-wrap gap-2">
-                            <Badge variant="outline" className={`tag ${getSkillClasses('Linux (Debian/Arch)')}`}>Linux (Debian/Arch)</Badge>
-                            <Badge variant="outline" className={`tag ${getSkillClasses('Windows Active Directory')}`}>Windows Active Directory</Badge>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="absolute top-3 right-3">
-                        <div className="text-xs text-muted-foreground bg-background/40 px-2 py-1 rounded-md border border-border/20 backdrop-blur-sm">
-                          Click to open
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card></Link>
-
-                  {/* Certifications */}
-                  <Link to="/certifications" className="content-card-link"><Card
-                    className="group relative card-hover theme-purple border-accent/20 hover:ring-1 hover:ring-accent/20 cursor-pointer transition-all duration-200 hover:scale-102 overflow-hidden"
-                  >
-                    <CardHeader>
-                      <CardTitle className="flex items-center text-lg transition-all duration-300">
-                        <Shield className="w-5 h-5 mr-2 text-secondary" />
-                        <span>Certifications</span>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-3">
-                        <div className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
-                          <div>
-                            <div className="font-medium">CCNA ITN, SRWE, ENSA</div>
-                            <div className="text-sm text-muted-foreground">CISCO</div>
-                          </div>
-                          <Badge className="bg-success/20 border-success/40 text-success">Certified</Badge>
-                        </div>
-                        <div className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
-                          <div>
-                            <div className="font-medium">AI Red Teamer Course</div>
-                            <div className="text-sm text-muted-foreground">Hack The Box</div>
-                          </div>
-                          <Badge className="bg-success/20 border-success/40 text-success">Certified</Badge>
-                        </div>
-                        <div className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
-                          <div>
-                            <div className="font-medium">Certified Penetration Tester Specialist (CPTS)</div>
-                            <div className="text-sm text-muted-foreground">Hack The Box</div>
-                          </div>
-                          <Badge className="bg-warning/20 border-warning/40 text-warning">In Progress</Badge>
-                        </div>
-                      </div>
-                      <div className="absolute top-3 right-3">
-                        <div className="text-xs text-muted-foreground bg-background/40 px-2 py-1 rounded-md border border-border/20 backdrop-blur-sm">
-                          Click to open
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card></Link>
-                </div>
-
-                <h3 className="text-xl font-mono font-semibold mb-6">What You'll Find Here</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <Card className="card-hover theme-purple border-accent/20">
-                    <CardHeader>
-                      <CardTitle className="flex items-center text-lg">
-                        <Shield className="w-5 h-5 mr-2 text-primary" />
-                        Security Research
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-muted-foreground">
-                        Writeups of penetration testing challenges from various platforms.
-                      </p>
-                    </CardContent>
-                  </Card>
-
-                  <Card className="card-hover theme-purple border-accent/20">
-                    <CardHeader>
-                      <CardTitle className="flex items-center text-lg">
-                        <Code className="w-5 h-5 mr-2 text-secondary" />
-                        Development Projects
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-muted-foreground">
-                        Open-source tools, scripts, and applications developed for learning purposes or automation.
-                      </p>
-                    </CardContent>
-                  </Card>
-
-                  <Card className="card-hover theme-purple border-accent/20">
-                    <CardHeader>
-                      <CardTitle className="flex items-center text-lg">
-                        <FileText className="w-5 h-5 mr-2 text-accent" />
-                        Knowledge Sharing
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-muted-foreground">
-                        Tutorials, blog posts, and educational content that helped me grow in cybersecurity.
-                      </p>
-                    </CardContent>
-                  </Card>
-
-                  <Card className="card-hover theme-purple border-accent/20">
-                    <CardHeader>
-                      <CardTitle className="flex items-center text-lg">
-                        <Flag className="w-5 h-5 mr-2 text-warning" />
-                        CTF Challenges
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-muted-foreground">
-                        Solutions and strategies from Capture The Flag competitions.
-                      </p>
-                    </CardContent>
-                  </Card>
-                </div>
-              </CardContent>
-            </Card>
+            <AboutProfile />
 
             {/* Interactive CLI Console Preview Card */}
             <Link to="/terminal" className="content-card-link"><Card

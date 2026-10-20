@@ -7,6 +7,8 @@ export type Certification = {
   description: string;
   link?: string;
   progress?: number; // Progress percentage for in-progress certifications
+  progressLabel?: string;
+  milestone?: string;
 };
 
 const certifications: Certification[] = [
@@ -54,6 +56,8 @@ const certifications: Certification[] = [
     description: 'INCOMING EXAM: Intermediate penetration testing certification focused on identifying, chaining, exploiting vulnerabilities, and delivering professional remediation reports.',
     link: 'https://academy.hackthebox.com/exams/3/',
     progress: 100,
+    progressLabel: 'Course preparation',
+    milestone: 'Exam pending',
   },
   {
     id: 'burp-suite',
@@ -63,6 +67,8 @@ const certifications: Certification[] = [
     description: 'Demonstrates a deep knowledge of web security vulnerabilities, the correct mindset to exploit them, and of course, the Burp Suite skills needed to carry this out',
     link: 'https://portswigger.net/web-security/certification',
     progress: 70,
+    progressLabel: 'Study progress',
+    milestone: 'Studying',
   },
   {
     id: 'oscp',
