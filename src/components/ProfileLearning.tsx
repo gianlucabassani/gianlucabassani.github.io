@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button';
 import { useId, type CSSProperties } from 'react';
 import { ArrowUpRight, Check, ExternalLink } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -11,7 +12,7 @@ export default function ProfileLearning() {
   return <section className="profile-learning" aria-labelledby={headingId}>
     <div className="profile-skills-heading">
       <h3 id={headingId}>Courses & certifications</h3>
-      <Link className="profile-section-action" to="/certifications">Full roadmap <ArrowUpRight size={19} aria-hidden="true" /></Link>
+      <Button asChild variant="outline"><Link to="/certifications">Full roadmap <ArrowUpRight className="action-arrow" size={19} aria-hidden="true" /></Link></Button>
     </div>
     <h4 className="profile-learning-label">In progress</h4>
     <ul className="profile-studies">

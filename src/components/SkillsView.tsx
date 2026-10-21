@@ -178,8 +178,8 @@ export default function SkillsView({ onBack }: { onBack: () => void }) {
             <div id="coding" tabIndex={-1} className="fade-in-section skill-detail-anchor" style={{ animationDelay: '0.1s' }}>
               <SkillCard 
                 icon={<Terminal className="w-5 h-5 text-success" />}
-                title="Coding"
-                description="Languages I studied or used for projects development"
+                title="Programming"
+                description="Programming paradigms, design principles, and patterns across languages."
                 variant="success" 
               >
                 <div className="space-y-4">

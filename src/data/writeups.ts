@@ -6,6 +6,8 @@ export interface Writeup {
   os: 'linux' | 'windows' | 'other';
   tags: string[];
   date: string;
+  /** Optional publication date when different from the original writeup date. */
+  publishedAt?: string;
   summary: string;
   contentPath: string;
   previewImage?: string;

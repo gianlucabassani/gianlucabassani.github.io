@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button';
 import { useEffect, useId, useRef, useState } from 'react';
 import { ArrowUpRight, Shield, Code2, Workflow, Bot, Terminal } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -77,13 +78,13 @@ export default function AboutProfile() {
     <section className="about-profile" aria-labelledby={titleId}>
       <svg className="profile-frame" viewBox="0 0 1200 900" preserveAspectRatio="none" aria-hidden="true"><path d="M1 72V25L25 1H310M890 1H1175L1199 25V300M1199 760V875L1175 899H930M310 899H25L1 875V600" /></svg>
       <header className="profile-intro">
-        <div><h2 id={titleId}>Hello World!</h2><p>I’m Gianluca Bassani.</p></div>
+        <div><h2 id={titleId}><span className="site-section-title">Hello World!</span></h2><p>I’m Gianluca Bassani.</p></div>
         <dl className="profile-player-stats" aria-label="Player profile">
           <div><dt><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M5 0h2v3h2v2h3v2H9v2H7v3H5V9H3V7H0V5h3V3h2Z" /></svg>Lvl</dt><dd>22<span className="sr-only"> years old</span></dd></div>
           <div><dt><svg viewBox="0 0 12 12" aria-hidden="true"><path fillRule="evenodd" d="M3 0h6v1h2v2h1v5h-2v2H8v2H4v-2H2V8H0V3h1V1h2Zm1 3v4h4V3Z" /></svg>Map</dt><dd>Italy</dd></div>
         </dl>
       </header>
-      <div className="profile-skills-heading"><h3>Technical skills</h3><Link className="profile-section-action" to="/skills">Explore all skills <ArrowUpRight size={19} aria-hidden="true" /></Link></div>
+      <div className="profile-skills-heading"><h3>Technical skills</h3><Button asChild variant="outline"><Link to="/skills">Explore all skills <ArrowUpRight className="action-arrow" size={19} aria-hidden="true" /></Link></Button></div>
       <div className="profile-skill-layout">
         <div className="profile-radar" ref={radarRef} data-revealed={revealed}>
           <svg viewBox="0 0 500 500" role="group" aria-label="Explore five technical skill areas">

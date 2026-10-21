@@ -3,16 +3,17 @@ import ProjectRail from '@/components/ProjectRail';
 import HeroHeading from '@/components/HeroHeading';
 import AboutProfile from '@/components/AboutProfile';
 import BlogBook from '@/components/BlogBook';
-import PlatformLogo from '@/components/PlatformLogo';
+import BoxArchive from '@/components/BoxArchive';
+import CTFArchive from '@/components/CTFArchive';
 import { lazy, useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Shield, Terminal, Github, Gitlab, ExternalLink, ChevronDown } from 'lucide-react';
+import { Terminal, Github, Gitlab, ExternalLink, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
 import { Writeup } from '@/data/writeups';
 import { CTFWriteup, ctfWriteups } from '@/data/ctf';
 import { Project, projects } from '@/data/projects';
+const WriteupArchiveView = lazy(() => import('@/components/WriteupArchiveView'));
 const PlatformView = lazy(() => import('@/components/PlatformView'));
 const ProjectView = lazy(() => import('@/components/ProjectView'));
 const ProjectsView = lazy(() => import('@/components/ProjectsView'));
@@ -45,6 +46,8 @@ const Index = () => {
     if (section === 'boxes' && segments[1]) {
       return { view: 'platform' as const, platform: segments[1] };
     }
+    if (section === 'boxes') return { view: 'boxes' as const };
+    if (section === 'ctf' && !segments[1]) return { view: 'ctfs' as const };
     if (section === 'ctf' && segments[1]) {
       return { view: 'ctf' as const, ctfId: segments[1] };
     }
@@ -63,7 +66,7 @@ const Index = () => {
     return { view: 'main' as const, section };
   };
   const currentRoute = parseRoute();
-  const [currentView, setCurrentView] = useState<'main' | 'platform' | 'writeup' | 'ctf' | 'projects' | 'project' | 'blog' | 'blogPost' | 'skills' | 'certifications'>(currentRoute.view);
+  const [currentView, setCurrentView] = useState<'main' | 'boxes' | 'ctfs' | 'platform' | 'writeup' | 'ctf' | 'projects' | 'project' | 'blog' | 'blogPost' | 'skills' | 'certifications'>(currentRoute.view);
   const [selectedPlatform, setSelectedPlatform] = useState<string>(currentRoute.platform || '');
   const [selectedWriteup, setSelectedWriteup] = useState<Writeup | null>(null);
   const [selectedCTFWriteup, setSelectedCTFWriteup] = useState<CTFWriteup | null>(null);
@@ -208,6 +211,10 @@ const Index = () => {
     return <ProjectView project={selectedProject} onBack={handleBackToProjects} />;
   }
 
+  if (currentView === 'boxes' || currentView === 'ctfs') {
+    return <WriteupArchiveView kind={currentView === 'boxes' ? 'boxes' : 'ctf'} />;
+  }
+
   if (currentView === 'blog') {
     return <BlogListView onBack={handleBackToMain} onPostSelect={handleBlogPostSelect} />;
   }
@@ -259,19 +266,19 @@ const Index = () => {
                   <Button 
                     onClick={() => scrollToSection('projects')} 
                     size="lg" 
-                    className="glow-primary bg-primary hover:bg-primary/80 text-primary-foreground font-mono"
+                    className="hero-work-action"
                   >
                     Explore My Work
-                    <ChevronDown className="ml-2 w-5 h-5" />
+                    <ChevronDown className="action-arrow-down" aria-hidden="true" />
                   </Button>
                   <Button
                       onClick={() => navigate('/terminal')}
                       variant="outline"
                       size="lg"
-                      className="border-success/30 text-success hover:bg-success/10 font-mono"
+                      className="hero-cli-action"
                     >
                       Launch CLI Console
-                      <Terminal className="ml-2 w-5 h-5" />
+                      <Terminal aria-hidden="true" />
                   </Button>
                 </div>
               </div>
@@ -332,8 +339,8 @@ const Index = () => {
         {/* Blog Section */}
         <section id="blog" className="py-10 sm:py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl sm:text-4xl font-display font-bold mb-8 sm:mb-12 text-center gradient-text-purple tracking-tight">
-              Blog
+            <h2 className="text-3xl sm:text-4xl font-display font-bold mb-8 sm:mb-12 text-center tracking-tight">
+              <span className="site-section-title">Blog</span>
             </h2>
 
             <BlogBook posts={blogPosts} headingAs="h3" />
@@ -342,188 +349,28 @@ const Index = () => {
               <Button
                 onClick={handleBlogClick}
                 size="lg"
-                className="bg-accent text-accent-foreground hover:bg-accent/80 font-mono"
+                variant="accent"
               >
                 Browse All Posts
-                <ExternalLink className="w-4 h-4 ml-2" />
+                <ExternalLink className="action-arrow" aria-hidden="true" />
               </Button>
             </div>
           </div>
         </section>
 
         {/* Boxes Writeups Section */}
-        <section id="boxes" className="py-10 sm:py-16 bg-muted/30">
+        <section id="boxes" className="home-archive-section archive-section">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl sm:text-4xl font-display font-bold mb-8 sm:mb-12 text-center gradient-text tracking-tight">Box Writeups</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-8 mb-8 sm:mb-12">
-              <Link to="/boxes/hackthebox" className="content-card-link"><Card
-                className="card-hover theme-green border-success/20 hover:ring-1 hover:ring-success/20 cursor-pointer transition-all duration-300 hover:scale-105"
-                data-fade-in
-              >
-                <CardHeader>
-                  <CardTitle className="platform-card-title"><PlatformLogo platform="hackthebox" /></CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground mb-4">
-                    Writeups for retired HackTheBox machines, organized by difficulty level.
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    <Badge variant="secondary" className="tag">Pentesting</Badge>
-                    <Badge variant="secondary" className="tag">CTF</Badge>
-                    <Badge variant="secondary" className="tag">Linux</Badge>
-                    <Badge variant="secondary" className="tag">Windows</Badge>
-                  </div>
-                </CardContent>
-              </Card></Link>
-
-              <Link to="/boxes/tryhackme" className="content-card-link"><Card
-                className="card-hover theme-blue border-blue-500/20 hover:ring-1 hover:ring-blue-500/20 cursor-pointer transition-all duration-300 hover:scale-105"
-                data-fade-in
-              >
-                <CardHeader>
-                  <CardTitle className="platform-card-title"><PlatformLogo platform="tryhackme" /></CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground mb-4">
-                    Solutions and walkthroughs for TryHackMe rooms.
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    <Badge variant="secondary" className="tag">Beginner Friendly</Badge>
-                    <Badge variant="secondary" className="tag">Basic Skills</Badge>
-                  </div>
-                </CardContent>
-              </Card></Link>
-
-              <Link to="/boxes/vulnhub" className="content-card-link"><Card
-                className="card-hover theme-yellow border-yellow-500/20 hover:ring-1 hover:ring-yellow-500/20 cursor-pointer transition-all duration-300 hover:scale-105"
-                data-fade-in
-              >
-                <CardHeader>
-                  <CardTitle className="platform-card-title"><PlatformLogo platform="vulnhub" /></CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground mb-4">
-                    Boot-to-root challenges from VulnHub.
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    <Badge variant="secondary" className="tag">Local Lab</Badge>
-                    <Badge variant="secondary" className="tag">Offline Practice</Badge>
-                  </div>
-                </CardContent>
-              </Card></Link>
-            </div>
-
-            <Card className="card-hover theme-purple border-accent/20 hover:ring-1 hover:ring-accent/20" data-fade-in>
-              <CardHeader>
-                <CardTitle className="text-xl">Methodology & Approach</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground mb-4">
-                  Each writeup tries to follow the same methodology: reconnaissance, enumeration, exploitation, privilege escalation, and post-exploitation. All writeups include explanations and considerations of tools used, thought processes, and lessons learned for educational purposes.
-                </p>
-                <p className="text-sm text-accent">
-                  Click on any platform above to explore the available writeups organized by difficulty level.
-                </p>
-              </CardContent>
-            </Card>
+            <div className="archive-preview-heading"><h2><span className="site-section-title">Box Writeups</span></h2><Button asChild variant="ghost" size="sm"><Link to="/boxes/hackthebox">View archive<ExternalLink className="action-arrow" size={15} aria-hidden="true" /></Link></Button></div>
+            <BoxArchive compact />
           </div>
         </section>
 
         {/* CTF Section */}
-        <section id="ctf" className="py-10 sm:py-16">
+        <section id="ctf" className="home-archive-section archive-section">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl sm:text-4xl font-display font-bold mb-8 sm:mb-12 text-center gradient-text-orange tracking-tight">CTF Solves</h2>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-8 mb-8 sm:mb-12">
-              <Card className="card-hover theme-orange border-orange-500/20 hover:ring-1 hover:ring-orange-500/20" data-fade-in>
-                <CardHeader>
-                  <CardTitle className="text-xl">Recent CTF Writeups</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {ctfWriteups.map((ctf) => (
-                      <Link
-                        key={ctf.id}
-                        to={`/ctf/${ctf.id}`}
-                        className={`block border border-border/60 rounded-lg p-4 cursor-pointer transition-all duration-300 ${
-                          ['web', 'web3', 'blockchain', 'crypto', 'reversing'].includes(ctf.category.toLowerCase())
-                            ? 'hover:bg-yellow-500/10 hover:border-yellow-500/30 hover:shadow-[0_0_15px_rgba(234,179,8,0.1)]' 
-                            : 'hover:bg-orange-500/10 hover:border-orange-500/30 hover:shadow-[0_0_15px_rgba(249,115,22,0.1)]'
-                        }`}
-                      >
-                        <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
-                          <h3 className="font-semibold">{ctf.title}</h3>
-                          <span className="text-xs text-muted-foreground uppercase">{ctf.category}</span> {/* Category/type */}
-                        </div>
-                        <p className="text-sm text-muted-foreground mb-2">{ctf.competition}</p>
-                        <div className="flex flex-wrap gap-1">
-                          {ctf.tags.slice(0, 3).map((tag) => (
-                            <Badge key={tag} variant="outline" className="text-xs">{tag}</Badge>
-                          ))}
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="card-hover theme-orange border-orange-500/20 hover:ring-1 hover:ring-orange-500/20" data-fade-in>
-                <CardHeader>
-                  <CardTitle className="text-xl">Challenge Categories</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <h3 className="font-semibold text-cyan-400 mb-1">🌐 Web Exploitation</h3>
-                    <p className="text-sm text-muted-foreground">
-                      SQL injection, XSS, CSRF, and authentication bypass techniques with practical examples and prevention methods.
-                    </p>
-                  </div>
-
-                  <div>
-                    <h3 className="font-semibold text-emerald-400 mb-1">⛓️ Web3 Blockchain</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Smart contracts, code exploration, routing attacks, stolen keys and more.
-                    </p>
-                  </div>
-
-                  <div>
-                    <h3 className="font-semibold text-violet-400 mb-1">🤖 AI/ML Attacks</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Prompt injections, Data/Output attacks, MCP vulnerabilities .
-                    </p>
-                  </div>
-
-                  <div>
-                    <h3 className="font-semibold text-red-400 mb-1">⚙️ Binary Exploitation</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Binary analysis, reverse engineering, BoF and ROPs.
-                    </p>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-amber-400 mb-1">🔐 Cryptography</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Classical ciphers, modern encryption analysis, and cryptographic protocol vulnerabilities.
-                    </p>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-grey-400 mb-1">🕵️ Digital Forensics</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Evidence analysis, data recovery, and investigation techniques using industry-standard tools.
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            <Card className="card-hover theme-orange border-orange-500/20 hover:ring-1 hover:ring-orange-500/20" data-fade-in>
-              <CardHeader>
-                <CardTitle className="text-xl">Learning Resources</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">
-                  I usually practice on platforms like HackTheBox, PortSwigger, Hextree.io.. and sometimes participate in weekend CTF competitions. These challenges are useful to learn new techniques and edge cases.
-                </p>
-              </CardContent>
-            </Card>
+            <div className="archive-preview-heading"><h2><span className="site-section-title">CTF Solves</span></h2><Button asChild variant="ghost" size="sm"><Link to="/ctf">View archive<ExternalLink className="action-arrow" size={15} aria-hidden="true" /></Link></Button></div>
+            <CTFArchive compact />
           </div>
         </section>
       </main>

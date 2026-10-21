@@ -82,7 +82,7 @@ export default function ProjectRail({projects}: {projects:Project[]}) {
   };
   if (!items.length) return null;
   return <div className="project-rail" ref={rail}>
-    <h2 className="project-rail-title text-3xl sm:text-4xl font-display font-bold text-center gradient-text-green tracking-tight">Projects</h2>
+    <h2 className="project-rail-title text-3xl sm:text-4xl font-display font-bold text-center tracking-tight"><span className="site-section-title">Projects</span></h2>
     <p id="project-rail-help" className="sr-only">Browse all {items.length} projects using the side arrows, swipe, or focus the gallery and use the arrow keys.</p>
     <div className="project-channel">
       <div className="project-channel-particles" aria-hidden="true">
@@ -109,7 +109,7 @@ export default function ProjectRail({projects}: {projects:Project[]}) {
     </div>}
     <div className="project-rail-footer">
       <span className="sr-only" aria-live="polite" aria-atomic="true">Showing {items[position.first]?.title}{position.last !== position.first ? ` and ${items[position.last]?.title}` : ''}</span>
-      <Button asChild size="lg" className="bg-success text-success-foreground hover:bg-success/80 font-mono"><Link to="/projects">View all projects<ArrowUpRight size={18} aria-hidden="true" /></Link></Button>
+      <Button asChild size="lg" variant="secondary"><Link to="/projects">View all projects<ArrowUpRight className="action-arrow" size={18} aria-hidden="true" /></Link></Button>
     </div>
   </div>;
 }

@@ -164,7 +164,7 @@ Full guides live in the repo: `windows/README.md` and `linux/README.md`.
 I built this because my characters didn't show up on Linux. If yours don't either, now you know where they are ( and can get extra emeralds ;D ) .
 
 ---
-## SECRET EPILOGUE: The Microslop Judgement
+## SECRET EPILOGUE: The Microsoft Judgement
 
 Obviously nothing ever goes as planned, and one more thing happened while this was being written: in the same minute the linked repository was pushed on github, my whole account got **SUSPENDED**.
 
@@ -172,7 +172,7 @@ Obviously nothing ever goes as planned, and one more thing happened while this w
 
 This means I couldn't access any public/private repository, nor log into my account. If that wasn't enough, that was also the same account I was using within my company repository for working on different projects and issues (those assigned to me have been directly deleted).
 
-I can't say what exactly triggered this behaviour but here we have our usual suspect: somewhere, deep in microslop github automations, a funny "security-review-agent" got scared reading "Microsoft" close to "MOD" and "Decryption keys" inside a single PR made by another agent.
+I can't say what exactly triggered this behaviour but here we have our usual suspect: somewhere, deep in Microsoft github automations, a funny "security-review-agent" got scared reading "Microsoft" close to "MOD" and "Decryption keys" inside a single PR made by another agent.
 
 This made me regret not having a double remote to sync my repository on both github and gitlab, because it took an entire evening of refactoring git settings to move everything and setup pages and configs.
 

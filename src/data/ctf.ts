@@ -2,11 +2,12 @@ export interface CTFWriteup {
   id: string;
   title: string;
   competition: string;
-  category: 'web' | 'pwn' | 'crypto' | 'forensics' | 'reversing' | 'misc' | 'osint';
+  category: 'web' | 'pwn' | 'crypto' | 'forensics' | 'reversing' | 'misc' | 'osint' | 'ai' | 'web3';
   difficulty: 'easy' | 'medium' | 'hard' | 'insane';
   points: number;
   tags: string[];
   date: string;
+  publishedAt?: string;
   summary: string;
   contentPath: string;
   previewImage?: string;

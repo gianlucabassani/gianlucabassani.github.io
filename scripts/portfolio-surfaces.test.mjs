@@ -22,9 +22,9 @@ test('portfolio navigation, project identities, and blog feature expose real des
     assert.match(projects, /src="\/assets\/projects\/nidavellir.webp"/);
     assert.ok(projects.indexOf('href="/projects/nidavellir"') < projects.indexOf('href="/projects/browsint"'));
     const {default: PlatformView} = await server.ssrLoadModule('/src/components/PlatformView.tsx');
-    for (const platform of ['hackthebox', 'tryhackme', 'vulnhub']) {
-      assert.ok(render(PlatformView, {platform, onBack:()=>{}, onWriteupSelect:()=>{}}, `/boxes/${platform}`).includes(`/assets/platforms/${platform}.svg`));
-    }
+    const platformPage = render(PlatformView, {platform:'hackthebox', onBack:()=>{}, onWriteupSelect:()=>{}}, '/boxes/hackthebox');
+    assert.ok(platformPage.includes('/assets/platforms/hackthebox.svg'));
+    assert.doesNotMatch(platformPage, /assets\/platforms\/(?:tryhackme|vulnhub)/);
     const {default: ProjectRail} = await server.ssrLoadModule('/src/components/ProjectRail.tsx');
     const {projects: projectData} = await server.ssrLoadModule('/src/data/projects.ts');
     const rail = render(ProjectRail, {projects:projectData}, '/');
