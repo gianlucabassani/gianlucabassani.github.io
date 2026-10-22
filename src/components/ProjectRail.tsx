@@ -82,7 +82,7 @@ export default function ProjectRail({projects}: {projects:Project[]}) {
   };
   if (!items.length) return null;
   return <div className="project-rail" ref={rail}>
-    <h2 className="project-rail-title text-3xl sm:text-4xl font-display font-bold text-center tracking-tight"><span className="site-section-title">Projects</span></h2>
+    <h2 className="project-rail-title home-section-title"><span className="site-section-title">Projects</span></h2>
     <p id="project-rail-help" className="sr-only">Browse all {items.length} projects using the side arrows, swipe, or focus the gallery and use the arrow keys.</p>
     <div className="project-channel">
       <div className="project-channel-particles" aria-hidden="true">

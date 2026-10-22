@@ -8,9 +8,9 @@ export default function TerminalPage() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col font-mono relative overflow-hidden tech-grid">
+    <div className="terminal-page min-h-screen bg-background text-foreground flex flex-col font-mono relative overflow-hidden tech-grid">
       {/* Top Navigation Bar */}
-      <header className="w-full bg-background/80 backdrop-blur-md border-b border-border/60 py-4 px-6 flex justify-between items-center z-10 select-none">
+      <header className="terminal-page-heading w-full bg-background/80 backdrop-blur-md border-b border-border/60 py-4 px-6 flex justify-between items-center z-10 select-none">
         <div className="flex items-center gap-3">
           <Button 
             variant="ghost" 
@@ -35,7 +35,7 @@ export default function TerminalPage() {
 
       {/* Terminal Container */}
       <main className="flex-1 flex items-center justify-center p-4 md:p-8 z-10">
-        <div className="w-full max-w-5xl h-[calc(100vh-180px)] min-h-[450px]">
+        <div className="terminal-page-console w-full max-w-5xl h-[calc(100vh-180px)] min-h-[450px]">
           <Terminal />
         </div>
       </main>

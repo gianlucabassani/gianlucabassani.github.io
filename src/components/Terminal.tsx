@@ -535,13 +535,13 @@ export default function Terminal({ onClose }: TerminalProps) {
   return (
     <div
       onClick={focusInput}
-      className="flex flex-col bg-[#050d0f]/97 border border-[#39ff14]/20 rounded-xl overflow-hidden shadow-2xl shadow-black/60 transition-all duration-300 font-mono text-foreground crt-effect h-full w-full"
+      className="terminal-shell flex flex-col bg-[#050d0f]/97 border border-[#39ff14]/20 rounded-xl overflow-hidden shadow-2xl shadow-black/60 transition-all duration-300 font-mono text-foreground crt-effect h-full w-full"
       style={{ boxShadow: '0 0 0 1px rgba(57,255,20,0.08), 0 24px 48px -12px rgba(0,0,0,0.8), 0 0 40px -10px rgba(57,255,20,0.06)' }}
     >
       <div className="crt-scanline" />
 
       {/* Title Bar */}
-      <div className="flex items-center justify-between bg-[#0a1a0f]/90 px-4 py-2.5 border-b border-[#39ff14]/15 select-none">
+      <div className="terminal-shell-heading flex items-center justify-between bg-[#0a1a0f]/90 px-4 py-2.5 border-b border-[#39ff14]/15 select-none">
         <div className="flex items-center gap-2.5">
           {/* Traffic light dots */}
           <div className="flex gap-1.5">
@@ -567,7 +567,7 @@ export default function Terminal({ onClose }: TerminalProps) {
       </div>
 
       {/* Output Area */}
-      <div className="flex-1 p-4 overflow-y-auto space-y-4 custom-scrollbar text-xs">
+      <div className="terminal-output flex-1 p-4 overflow-y-auto space-y-4 custom-scrollbar text-xs">
         {history.map((item, idx) => (
           <div key={idx} className="space-y-1">
             {item.command !== 'system_init' && (
@@ -603,7 +603,7 @@ export default function Terminal({ onClose }: TerminalProps) {
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="flex-1 bg-transparent border-none outline-none font-mono text-xs text-foreground p-0 ml-1 focus:ring-0 focus:outline-none"
+          className="flex-1 min-w-0 bg-transparent border-none outline-none font-mono text-base sm:text-xs text-foreground p-0 ml-1 focus:ring-0 focus:outline-none"
           placeholder="type a command..."
           autoComplete="off"
           autoCapitalize="none"

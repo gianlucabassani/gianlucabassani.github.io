@@ -1,4 +1,4 @@
-import { useState, type CSSProperties } from 'react';
+import { useEffect, useState, type CSSProperties } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, ArrowUpRight, FileText } from 'lucide-react';
 import type { BlogPost } from '@/data/blog';
@@ -23,9 +23,18 @@ const flowPaths = [
 
 export default function BlogBook({posts, headingAs: Heading = 'h2'}: {posts: BlogPost[]; headingAs?: 'h2' | 'h3'}) {
   const [page, setPage] = useState(0);
+  const [singlePage, setSinglePage] = useState(false);
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 767px)');
+    const update = () => setSinglePage(media.matches);
+    update();
+    media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
+  }, []);
+  const visiblePages = singlePage ? 1 : 2;
   const total = posts.length + 1;
-  const start = Math.min(page, Math.max(0, total - 2));
-  const end = Math.min(start + 2, total);
+  const start = Math.min(page, Math.max(0, total - visiblePages));
+  const end = Math.min(start + visiblePages, total);
   return <div className="blog-book" aria-label="Blog book">
     <div className={`blog-book-spread ${total === 1 ? 'blog-book-single' : ''}`}>
       <svg className="book-edge-flow" viewBox="0 0 1200 800" preserveAspectRatio="none" fill="none" aria-hidden="true">
@@ -80,7 +89,7 @@ export default function BlogBook({posts, headingAs: Heading = 'h2'}: {posts: Blo
     </div>
     <div className="blog-book-navigation">
       <button type="button" aria-label="Previous blog page" disabled={start === 0} onClick={() => setPage(start - 1)}><ArrowLeft size={18} aria-hidden="true" /></button>
-      <span aria-live="polite" aria-atomic="true">{total === 1 ? 'Page 1' : `Pages ${start + 1}–${end}`}<span className="book-page-total"> / {total}</span></span>
+      <span aria-live="polite" aria-atomic="true">{visiblePages === 1 || total === 1 ? `Page ${start + 1}` : `Pages ${start + 1}–${end}`}<span className="book-page-total"> / {total}</span></span>
       <button type="button" aria-label="Next blog page" disabled={end >= total} onClick={() => setPage(start + 1)}><ArrowRight size={18} aria-hidden="true" /></button>
     </div>
   </div>;

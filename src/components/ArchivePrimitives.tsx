@@ -1,12 +1,13 @@
 import { difficultyStyle, type ArchiveDifficulty } from '@/lib/writeupArchive';
+import { DecodeText } from './ScrollDecrypt';
 
 const dateFormat = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
 export function ArchiveDate({ date }: { date: string }) {
   const parsed = new Date(date);
-  return <time dateTime={date}>{Number.isNaN(parsed.getTime()) ? date : dateFormat.format(parsed)}</time>;
+  return <time dateTime={date}><DecodeText>{Number.isNaN(parsed.getTime()) ? date : dateFormat.format(parsed)}</DecodeText></time>;
 }
 export function Difficulty({ value }: { value: ArchiveDifficulty }) {
-  return <span className="archive-difficulty" style={difficultyStyle(value)}><span aria-hidden="true" />{value}</span>;
+  return <span className="archive-difficulty" style={difficultyStyle(value)}><span aria-hidden="true" /><DecodeText>{value}</DecodeText></span>;
 }
 const glyphs: Record<string, string> = {
   latest: 'M5 0h2v5h4v2H5ZM1 2h2v2H1ZM0 5h2v3H0Zm1 4h2v2H1Zm3 2h5v1H4Zm6-2h2v2h-2Zm1-7h1v5h-1Z',

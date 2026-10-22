@@ -26,7 +26,7 @@ test('writeup archives preserve destinations, publication order, and actual cate
     assert.match(render(BoxArchive, { entries: [] }), /No writeups/);
     assert.deepEqual(boxes.map(entry => entry.id), ['old', 'new'], 'Rendering must not mutate source metadata');
     const previewBoxes = render(BoxArchive, { compact: true, entries: Array.from({ length: 8 }, (_, index) => ({ ...boxes[0], id: `preview-${index}` })) });
-    assert.equal((previewBoxes.match(/class="htb-machine-unit"/g) ?? []).length, 3);
+    assert.equal((previewBoxes.match(/href="\/boxes\/hackthebox\/preview-\d+"/g) ?? []).length, 3);
     assert.doesNotMatch(previewBoxes, /Show all 8 writeups/);
     const { default: CTFArchive } = await server.ssrLoadModule('/src/components/CTFArchive.tsx');
     const challenges = [
@@ -46,7 +46,7 @@ test('writeup archives preserve destinations, publication order, and actual cate
     assert.equal((previewCTF.match(/class="archive-challenge"/g) ?? []).length, 2);
     assert.match(previewCTF, /digital-flag/);
     assert.match(previewCTF, /href="\/ctf\/ai"/);
-    assert.match(previewCTF, /class="[^"]*ctf-view-more[^"]*"[^>]*href="\/ctf"/);
+    assert.match(previewCTF, /href="\/ctf">View archive/);
     assert.doesNotMatch(previewCTF, /Show more/);
     assert.ok(previewCTF.indexOf('>Latest<') < previewCTF.indexOf('>Web<'));
     const { default: WriteupArchiveView } = await server.ssrLoadModule('/src/components/WriteupArchiveView.tsx');

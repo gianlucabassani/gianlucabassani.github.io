@@ -20,7 +20,7 @@ export default function CertificationsView({ onBack }: { onBack: () => void }) {
   const todo = certifications.filter((c) => c.status === 'todo');
 
   return (
-    <div className="min-h-screen bg-background text-foreground cyber-grid relative overflow-hidden">
+    <div className="certifications-page min-h-screen bg-background text-foreground cyber-grid relative overflow-hidden">
       <PageBackground
         primary="hsl(270,85%,65%)"
         secondary="hsl(185,95%,48%)"

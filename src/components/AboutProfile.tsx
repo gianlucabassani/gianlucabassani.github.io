@@ -55,6 +55,7 @@ export default function AboutProfile() {
   const titleId = `${instanceId}-title`;
   const detailId = `${instanceId}-detail`;
   const fillId = `${instanceId}-fill`;
+  const frameFillId = `${instanceId}-frame-fill`;
   const [selected, setSelected] = useState(0);
   const [revealed, setRevealed] = useState(false);
   const radarRef = useRef<HTMLDivElement>(null);
@@ -76,7 +77,15 @@ export default function AboutProfile() {
 
   return (
     <section className="about-profile" aria-labelledby={titleId}>
-      <svg className="profile-frame" viewBox="0 0 1200 900" preserveAspectRatio="none" aria-hidden="true"><path d="M1 72V25L25 1H310M890 1H1175L1199 25V300M1199 760V875L1175 899H930M310 899H25L1 875V600" /></svg>
+      <svg className="profile-frame" viewBox="0 0 1200 900" preserveAspectRatio="none" aria-hidden="true">
+        <defs><linearGradient id={frameFillId} x1="0" y1="0" x2="1" y2="1">
+          <stop stopColor="hsl(270 29% 13% / 0.98)" />
+          <stop offset="0.6" stopColor="hsl(268 29% 8% / 0.98)" />
+          <stop offset="1" stopColor="hsl(246 31% 12% / 0.98)" />
+        </linearGradient></defs>
+        <path className="profile-frame-surface" fill={`url(#${frameFillId})`} d="M25 1H1199V875L1175 899H1V25Z" />
+        <path className="profile-frame-edge" d="M1 72V25L25 1H310M890 1H1199V300M1199 760V875L1175 899H930M310 899H1V600" />
+      </svg>
       <header className="profile-intro">
         <div><h2 id={titleId}><span className="site-section-title">Hello World!</span></h2><p>I’m Gianluca Bassani.</p></div>
         <dl className="profile-player-stats" aria-label="Player profile">

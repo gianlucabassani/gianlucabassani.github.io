@@ -1,10 +1,12 @@
 import PageBackground from '@/components/PageBackground';
 import ProjectRail from '@/components/ProjectRail';
 import HeroHeading from '@/components/HeroHeading';
+import HomeEffects from '@/components/HomeEffects';
 import AboutProfile from '@/components/AboutProfile';
 import BlogBook from '@/components/BlogBook';
 import BoxArchive from '@/components/BoxArchive';
 import CTFArchive from '@/components/CTFArchive';
+import ScrollDecrypt, { DecodeText } from '@/components/ScrollDecrypt';
 import { lazy, useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Terminal, Github, Gitlab, ExternalLink, ChevronDown } from 'lucide-react';
@@ -23,49 +25,47 @@ import { writeups } from '@/data/writeups';
 import { BlogPost, getBlogPostById, getBlogPosts } from '@/data/blog';
 const BlogListView = lazy(() => import('@/components/BlogListView'));
 
+const parseRoute = (path: string) => {
+  const segments = path.split('/').filter(s => s);
+  if (segments.length === 0) return { view: 'main' as const, section: 'about' };
+  const section = segments[0];
+  if (section === 'projects' && segments[1]) {
+    return { view: 'project' as const, projectId: segments[1] };
+  }
+  if (section === 'projects') {
+    return { view: 'projects' as const };
+  }
+  if (section === 'boxes' && segments[1] && segments[2]) {
+    return { view: 'writeup' as const, platform: segments[1], writeupId: segments[2] };
+  }
+  if (section === 'boxes' && segments[1]) {
+    return { view: 'platform' as const, platform: segments[1] };
+  }
+  if (section === 'boxes') return { view: 'boxes' as const };
+  if (section === 'ctf' && !segments[1]) return { view: 'ctfs' as const };
+  if (section === 'ctf' && segments[1]) {
+    return { view: 'ctf' as const, ctfId: segments[1] };
+  }
+  if (section === 'blog' && segments[1]) {
+    return { view: 'blogPost' as const, blogPostId: segments[1] };
+  }
+  if (section === 'blog') {
+    return { view: 'blog' as const };
+  }
+  if (section === 'skills') {
+    return { view: 'skills' as const };
+  }
+  if (section === 'certifications') {
+    return { view: 'certifications' as const };
+  }
+  return { view: 'main' as const, section };
+};
+
 const Index = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [scrollProgress, setScrollProgress] = useState(0);
 
-  // Parse current route to determine view
-  const parseRoute = () => {
-    const path = location.pathname;
-    const segments = path.split('/').filter(s => s);
-    if (segments.length === 0) return { view: 'main' as const, section: 'about' };
-    const section = segments[0];
-    if (section === 'projects' && segments[1]) {
-      return { view: 'project' as const, projectId: segments[1] };
-    }
-    if (section === 'projects') {
-      return { view: 'projects' as const };
-    }
-    if (section === 'boxes' && segments[1] && segments[2]) {
-      return { view: 'writeup' as const, platform: segments[1], writeupId: segments[2] };
-    }
-    if (section === 'boxes' && segments[1]) {
-      return { view: 'platform' as const, platform: segments[1] };
-    }
-    if (section === 'boxes') return { view: 'boxes' as const };
-    if (section === 'ctf' && !segments[1]) return { view: 'ctfs' as const };
-    if (section === 'ctf' && segments[1]) {
-      return { view: 'ctf' as const, ctfId: segments[1] };
-    }
-    if (section === 'blog' && segments[1]) {
-      return { view: 'blogPost' as const, blogPostId: segments[1] };
-    }
-    if (section === 'blog') {
-      return { view: 'blog' as const };
-    }
-    if (section === 'skills') {
-      return { view: 'skills' as const };
-    }
-    if (section === 'certifications') {
-      return { view: 'certifications' as const };
-    }
-    return { view: 'main' as const, section };
-  };
-  const currentRoute = parseRoute();
+  const currentRoute = parseRoute(location.pathname);
   const [currentView, setCurrentView] = useState<'main' | 'boxes' | 'ctfs' | 'platform' | 'writeup' | 'ctf' | 'projects' | 'project' | 'blog' | 'blogPost' | 'skills' | 'certifications'>(currentRoute.view);
   const [selectedPlatform, setSelectedPlatform] = useState<string>(currentRoute.platform || '');
   const [selectedWriteup, setSelectedWriteup] = useState<Writeup | null>(null);
@@ -76,7 +76,7 @@ const Index = () => {
 
   // Update view based on route changes
   useEffect(() => {
-    const route = parseRoute();
+    const route = parseRoute(location.pathname);
     setCurrentView(route.view);
     setSelectedPlatform(route.platform || '');
     // Load specific items based on route
@@ -156,51 +156,12 @@ const Index = () => {
     navigate('/blog');
   };
 
-  // Handle scroll progress
-  useEffect(() => {
-    const handleScroll = () => {
-      const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const scrolled = windowHeight > 0 ? (window.scrollY / windowHeight) * 100 : 0;
-      setScrollProgress(scrolled);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   useEffect(() => {
     const section = location.pathname.split('/').filter(Boolean)[0];
     if (currentView === 'main' && section && document.getElementById(section)) {
       document.getElementById(section)?.scrollIntoView({behavior:'instant'});
     } else if (!window.location.hash) window.scrollTo(0, 0);
   }, [location.pathname, currentView]);
-
-  // Fade-in animations observer
-  useEffect(() => {
-    if (currentView !== 'main') return;
-
-    const fadeObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.remove('opacity-0');
-            entry.target.classList.add('fade-in-section');
-            fadeObserver.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    // Observe all card elements
-    const cards = document.querySelectorAll('[data-fade-in]');
-    cards.forEach((card) => {
-      card.classList.add('opacity-0');
-      fadeObserver.observe(card);
-    });
-
-    return () => fadeObserver.disconnect();
-  }, [currentView]);
 
   // Handle different views
   if (currentView === 'projects') {
@@ -240,17 +201,13 @@ const Index = () => {
     <div className="min-h-screen bg-background text-foreground cyber-grid home-page">
       <PageBackground primary="hsl(270,85%,65%)" secondary="hsl(185,95%,48%)" tertiary="hsl(325,90%,62%)" />
 
-      {/* Scroll Progress Bar */}
-      <div 
-        className="scroll-progress" 
-        style={{ width: `${scrollProgress}%` }}
-      />
-      <main id="main-content" tabIndex={-1} className="relative z-10">
+      <HomeEffects />
+      <main id="main-content" tabIndex={-1} className="home-main relative z-10">
         {/* About Section */}
-        <section id="about" className="py-10 sm:py-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section id="about">
+          <div className="home-about-content max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Hero */}
-            <div className="relative text-center mb-12">
+            <div className="relative text-center">
               <div className="relative z-10 py-8 sm:py-16 lg:py-20">
               <HeroHeading />
               <p className="hero-topics" aria-label="Red Teaming, AI Security, Automation">
@@ -288,8 +245,7 @@ const Index = () => {
 
             {/* Interactive CLI Console Preview Card */}
             <Link to="/terminal" className="content-card-link"><Card
-              className="mt-12 scroll-mt-24 border-accent/20 bg-card/60 backdrop-blur-sm overflow-hidden card-hover theme-purple cursor-pointer transition-all duration-300 group hover:border-accent/40"
-              data-fade-in
+              className="home-terminal scroll-mt-24 border-accent/20 bg-card/90 overflow-hidden theme-purple cursor-pointer transition-colors duration-200 group hover:border-accent/40"
             >
               {/* Terminal Titlebar Mock */}
               <div className="flex items-center justify-between bg-muted/50 px-4 py-2 border-b border-border/40 select-none">
@@ -306,7 +262,7 @@ const Index = () => {
                   <span className="text-[10px] text-muted-foreground font-mono">Live Session</span>
                 </div>
               </div>
-              <CardContent className="p-6 font-mono text-xs text-muted-foreground/90 space-y-3 bg-black/25">
+              <CardContent className="home-terminal-content p-6 font-mono text-xs text-muted-foreground/90 space-y-3 bg-black/25">
                 <div className="flex items-center gap-2">
                   <span className="text-success font-bold">guest@bassani.io</span>
                   <span>:</span>
@@ -330,22 +286,22 @@ const Index = () => {
         </section>
 
         {/* Projects Section */}
-        <section id="projects" className="py-10 sm:py-16">
+        <section id="projects">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <ProjectRail projects={projects} />
           </div>
         </section>
 
         {/* Blog Section */}
-        <section id="blog" className="py-10 sm:py-16">
+        <section id="blog">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl sm:text-4xl font-display font-bold mb-8 sm:mb-12 text-center tracking-tight">
+            <h2 className="home-section-title">
               <span className="site-section-title">Blog</span>
             </h2>
 
             <BlogBook posts={blogPosts} headingAs="h3" />
 
-            <div className="text-center">
+            <div className="home-section-footer">
               <Button
                 onClick={handleBlogClick}
                 size="lg"
@@ -359,18 +315,20 @@ const Index = () => {
         </section>
 
         {/* Boxes Writeups Section */}
-        <section id="boxes" className="home-archive-section archive-section">
+        <section id="boxes" className="archive-section">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="archive-preview-heading"><h2><span className="site-section-title">Box Writeups</span></h2><Button asChild variant="ghost" size="sm"><Link to="/boxes/hackthebox">View archive<ExternalLink className="action-arrow" size={15} aria-hidden="true" /></Link></Button></div>
+            <div className="archive-preview-heading"><h2 className="home-section-title"><span className="site-section-title">Box Writeups</span></h2></div>
             <BoxArchive compact />
           </div>
         </section>
 
         {/* CTF Section */}
-        <section id="ctf" className="home-archive-section archive-section">
+        <section id="ctf" className="archive-section">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="archive-preview-heading"><h2><span className="site-section-title">CTF Solves</span></h2><Button asChild variant="ghost" size="sm"><Link to="/ctf">View archive<ExternalLink className="action-arrow" size={15} aria-hidden="true" /></Link></Button></div>
+            <ScrollDecrypt>
+            <div className="archive-preview-heading"><h2 className="home-section-title"><span className="site-section-title"><DecodeText>CTF Solves</DecodeText></span></h2></div>
             <CTFArchive compact />
+            </ScrollDecrypt>
           </div>
         </section>
       </main>

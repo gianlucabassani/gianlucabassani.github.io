@@ -142,7 +142,7 @@ export default function SkillsView({ onBack }: { onBack: () => void }) {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground cyber-grid relative overflow-hidden">
+    <div className="skills-page min-h-screen bg-background text-foreground cyber-grid relative overflow-hidden">
       <PageBackground
         primary="hsl(270,85%,65%)"
         secondary="hsl(185,95%,48%)"
