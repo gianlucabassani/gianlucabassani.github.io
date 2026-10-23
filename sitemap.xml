@@ -1,68 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://gianlucabassani.github.io/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://gianlucabassani.github.io/projects</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://gianlucabassani.github.io/skills</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://gianlucabassani.github.io/certifications</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://gianlucabassani.github.io/boxes/hackthebox</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://gianlucabassani.github.io/boxes/hackthebox/airtouch</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://gianlucabassani.github.io/boxes/hackthebox/environment</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://gianlucabassani.github.io/boxes/hackthebox/editor</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://gianlucabassani.github.io/boxes/hackthebox/soulmate</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://gianlucabassani.github.io/boxes/hackthebox/puppy</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://gianlucabassani.github.io/boxes/hackthebox/darkzero</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://gianlucabassani.github.io/ctf/fittest</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://gianlucabassani.github.io/ctf/space</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
+<url><loc>https://gianlucabassani.gitlab.io/</loc></url>
+<url><loc>https://gianlucabassani.gitlab.io/about/</loc></url>
+<url><loc>https://gianlucabassani.gitlab.io/projects/</loc></url>
+<url><loc>https://gianlucabassani.gitlab.io/blog/</loc></url>
+<url><loc>https://gianlucabassani.gitlab.io/boxes/</loc></url>
+<url><loc>https://gianlucabassani.gitlab.io/ctf/</loc></url>
+<url><loc>https://gianlucabassani.gitlab.io/skills/</loc></url>
+<url><loc>https://gianlucabassani.gitlab.io/certifications/</loc></url>
+<url><loc>https://gianlucabassani.gitlab.io/boxes/hackthebox/</loc></url>
+<url><loc>https://gianlucabassani.gitlab.io/boxes/tryhackme/</loc></url>
+<url><loc>https://gianlucabassani.gitlab.io/boxes/vulnhub/</loc></url>
+<url><loc>https://gianlucabassani.gitlab.io/projects/browsint/</loc></url>
+<url><loc>https://gianlucabassani.gitlab.io/projects/ShellCy/</loc></url>
+<url><loc>https://gianlucabassani.gitlab.io/projects/browphish/</loc></url>
+<url><loc>https://gianlucabassani.gitlab.io/projects/blockcheat/</loc></url>
+<url><loc>https://gianlucabassani.gitlab.io/projects/nidavellir/</loc></url>
+<url><loc>https://gianlucabassani.gitlab.io/projects/Ida/</loc></url>
+<url><loc>https://gianlucabassani.gitlab.io/projects/gosint/</loc></url>
+<url><loc>https://gianlucabassani.gitlab.io/blog/dungeonsrev/</loc><lastmod>2026-10-11</lastmod></url>
+<url><loc>https://gianlucabassani.gitlab.io/boxes/hackthebox/devhub/</loc><lastmod>2026-05-31</lastmod></url>
+<url><loc>https://gianlucabassani.gitlab.io/boxes/hackthebox/reactor/</loc><lastmod>2026-05-24</lastmod></url>
+<url><loc>https://gianlucabassani.gitlab.io/boxes/hackthebox/airtouch/</loc><lastmod>2026-01-31</lastmod></url>
+<url><loc>https://gianlucabassani.gitlab.io/boxes/hackthebox/environment/</loc><lastmod>2024-08-31</lastmod></url>
+<url><loc>https://gianlucabassani.gitlab.io/boxes/hackthebox/editor/</loc><lastmod>2024-09-07</lastmod></url>
+<url><loc>https://gianlucabassani.gitlab.io/boxes/hackthebox/soulmate/</loc><lastmod>2025-09-11</lastmod></url>
+<url><loc>https://gianlucabassani.gitlab.io/boxes/hackthebox/puppy/</loc><lastmod>2025-09-16</lastmod></url>
+<url><loc>https://gianlucabassani.gitlab.io/boxes/hackthebox/darkzero/</loc><lastmod>2025-10-06</lastmod></url>
+<url><loc>https://gianlucabassani.gitlab.io/boxes/hackthebox/touch/</loc><lastmod>2026-10-09</lastmod></url>
+<url><loc>https://gianlucabassani.gitlab.io/ctf/webdav/</loc><lastmod>2026-03-27</lastmod></url>
+<url><loc>https://gianlucabassani.gitlab.io/ctf/fittest/</loc><lastmod>2025-11-16</lastmod></url>
+<url><loc>https://gianlucabassani.gitlab.io/ctf/space/</loc><lastmod>2025-11-26</lastmod></url>
+<url><loc>https://gianlucabassani.gitlab.io/ctf/windows/</loc><lastmod>2026-06-28</lastmod></url>
 </urlset>

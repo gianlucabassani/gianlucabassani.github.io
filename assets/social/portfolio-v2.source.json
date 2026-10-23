@@ -1,0 +1,6 @@
+{
+  "tool": "Built-in image generation",
+  "asset": "/assets/social/portfolio-v2.png",
+  "brief": "Wide typographic social card: Gianluca Bassani, 0xPr1m3, Red Teaming / AI Security / Automation, and BUILD, BREAK, REPEAT. Plum-black background, off-white squared typography, restrained cyan/lavender/pink digital graffiti strokes and outward particle trails. Clear thumbnail legibility, no Matrix code, padlocks, mascots, or fake terminal windows.",
+  "treatment": "Resized generated landscape original to 1200 \u00d7 630 PNG and stripped metadata. New filename avoids reusing the old preview image URL."
+}

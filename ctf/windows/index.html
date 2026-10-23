@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="preload" href="/assets/fonts/oxanium-variable.ttf" as="font" type="font/ttf" crossorigin />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    
+    
+    <meta name="author" content="Gianluca Bassani" />
+
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+
+    <!-- Single Page App redirect receiver for GitHub Pages -->
+    <script type="text/javascript">
+      (function(l) {
+        if (l.search[1] === '/' ) {
+          var decoded = l.search.slice(1).split('&').map(function(s) { 
+            return s.replace(/~and~/g, '&')
+          }).join('?');
+          window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location))
+    </script>
+    <script type="module" crossorigin src="/assets/index-Bt1iUacl.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-BFjX5Hv_.css">
+  
+    <link rel="stylesheet" href="/assets/ArticlePage-BEHUn5zE.css" />
+    <title>Windows eXPerience | Gianluca Bassani</title>
+    <meta name="description" content="Decode a custom Windows activation protocol, recover obfuscated license data, and generate a valid activation token to unlock the system." />
+    <link rel="canonical" href="https://gianlucabassani.gitlab.io/ctf/windows/" />
+    <meta property="og:title" content="Windows eXPerience | Gianluca Bassani" />
+    <meta property="og:description" content="Decode a custom Windows activation protocol, recover obfuscated license data, and generate a valid activation token to unlock the system." />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://gianlucabassani.gitlab.io/ctf/windows/" />
+    <meta property="og:site_name" content="Gianluca Bassani" />
+    <meta property="og:image" content="https://gianlucabassani.gitlab.io/assets/previews/ctf-windows.png" />
+    <meta property="og:image:alt" content="Windows eXPerience | Gianluca Bassani" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="article:published_time" content="2026-06-28" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Windows eXPerience | Gianluca Bassani" />
+    <meta name="twitter:description" content="Decode a custom Windows activation protocol, recover obfuscated license data, and generate a valid activation token to unlock the system." />
+    <meta name="twitter:image" content="https://gianlucabassani.gitlab.io/assets/previews/ctf-windows.png" />
+    <meta name="twitter:image:alt" content="Windows eXPerience | Gianluca Bassani" />
+</head>
+
+  <body>
+    <div id="root"><a class="skip-link" href="#route-content">Skip to content</a><div role="region" aria-label="Notifications (F8)" tabindex="-1" style="pointer-events:none"><ol tabindex="-1" class="fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]"></ol></div><header class="site-navigation"><svg class="site-navigation-frame site-navigation-frame-desktop" viewBox="0 0 1200 88" preserveAspectRatio="none" aria-hidden="true"><path class="site-navigation-surface" d="M20 1H1167L1199 25V69H440L422 87H1V20Z"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-3;--trace-next:-40;--trace-last:-74;stroke-dasharray:2.8 97.2;animation-duration:8.3s;animation-delay:-2.1s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-17;--trace-next:-54;--trace-last:-88;stroke-dasharray:1.4 98.6;animation-duration:11.7s;animation-delay:-7.6s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:270 90% 78%;--trace-start:-31;--trace-next:-68;--trace-last:-2;stroke-dasharray:3.6 96.4;animation-duration:9.1s;animation-delay:-4.8s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-44;--trace-next:-81;--trace-last:-15;stroke-dasharray:1.8 98.2;animation-duration:13.3s;animation-delay:-9.2s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-53;--trace-next:-90;--trace-last:-24;stroke-dasharray:2.4 97.6;animation-duration:7.7s;animation-delay:-1.3s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:270 90% 78%;--trace-start:-66;--trace-next:-3;--trace-last:-37;stroke-dasharray:3.2 96.8;animation-duration:10.9s;animation-delay:-6.4s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-78;--trace-next:-15;--trace-last:-49;stroke-dasharray:1.2 98.8;animation-duration:12.7s;animation-delay:-3.5s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-88;--trace-next:-25;--trace-last:-59;stroke-dasharray:2.1 97.9;animation-duration:9.7s;animation-delay:-8.1s"></path></svg><svg class="site-navigation-frame site-navigation-frame-mobile" viewBox="0 0 400 82" preserveAspectRatio="none" aria-hidden="true"><path class="site-navigation-surface" d="M10 1H389L399 11V73L391 81H1V10Z"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-3;--trace-next:-40;--trace-last:-74;stroke-dasharray:2.8 97.2;animation-duration:8.3s;animation-delay:-2.1s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-17;--trace-next:-54;--trace-last:-88;stroke-dasharray:1.4 98.6;animation-duration:11.7s;animation-delay:-7.6s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:270 90% 78%;--trace-start:-31;--trace-next:-68;--trace-last:-2;stroke-dasharray:3.6 96.4;animation-duration:9.1s;animation-delay:-4.8s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-44;--trace-next:-81;--trace-last:-15;stroke-dasharray:1.8 98.2;animation-duration:13.3s;animation-delay:-9.2s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-53;--trace-next:-90;--trace-last:-24;stroke-dasharray:2.4 97.6;animation-duration:7.7s;animation-delay:-1.3s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:270 90% 78%;--trace-start:-66;--trace-next:-3;--trace-last:-37;stroke-dasharray:3.2 96.8;animation-duration:10.9s;animation-delay:-6.4s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-78;--trace-next:-15;--trace-last:-49;stroke-dasharray:1.2 98.8;animation-duration:12.7s;animation-delay:-3.5s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-88;--trace-next:-25;--trace-last:-59;stroke-dasharray:2.1 97.9;animation-duration:9.7s;animation-delay:-8.1s"></path></svg><div class="site-navigation-inner"><a class="site-brand" aria-label="Gianluca Bassani home" href="/"><span class="site-brand-copy"><span class="site-brand-name">Gianluca<span class="site-brand-break"><br/></span> Bassani</span><small><strong>0xPr1m3</strong><span class="site-brand-separator" aria-hidden="true">·</span><span class="site-brand-role">Cybersecurity</span></small></span></a><button class="site-menu-toggle" type="button" aria-controls="site-menu" aria-expanded="false" aria-label="Open navigation"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><nav id="site-menu" aria-label="Main navigation" class="site-menu"><a href="/about">About Me</a><a href="/projects">Projects</a><a href="/blog">Blog</a><a href="/boxes">Box Writeups</a><a aria-current="page" href="/ctf">CTF Solves</a><a href="/skills">Skills</a><a class="site-console-link" href="/terminal">CLI <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a></nav></div></header><div id="route-content" tabindex="-1"><!--$--><div class="min-h-screen bg-background cyber-grid reader-page relative"><div aria-hidden="true" class="page-ambient page-ambient-scattered" style="--ambient-primary:hsl(25,95%,53%);--ambient-secondary:hsl(15,90%,55%);--ambient-tertiary:hsl(25,95%,53%)"></div><div class="fixed top-0 left-0 w-full h-1 bg-muted z-50"><div class="h-full bg-gradient-orange transition-all duration-100" style="width:0%"></div></div><div class="bg-background/80 backdrop-blur-sm border-b border-border relative z-10"><div class="reader-header mx-auto px-4 py-4"><div class="article-navigation"><nav aria-label="Article navigation"><a class="site-button inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 site-button-outline min-h-11 px-4 py-2 article-back-link" data-size="default" href="/"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left" aria-hidden="true"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>Back to Home</a></nav><div class="article-reading-tools"><span><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>5<!-- --> min read</span><button type="button"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-link" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>Copy link</button><span role="status"></span></div></div><div class="flex flex-wrap items-center gap-x-4 gap-y-2 mb-4"><div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 hover:bg-secondary/15 tag bg-destructive/20 border-destructive/40 text-destructive">HARD</div><span class="text-2xl">🚩</span><span class="text-sm text-muted-foreground font-mono">496<!-- --> pts</span></div><h1 class="text-2xl sm:text-3xl font-display font-bold reader-title mb-2">Windows eXPerience</h1><div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-foreground"><div class="flex items-center gap-1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar w-4 h-4"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>28 Jun 2026</div><div class="flex items-center gap-1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trophy w-4 h-4"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>mntcrl</div></div></div></div><main id="main-content" class="reader-layout reader-container mx-auto relative z-10 " tabindex="-1"><aside class="reader-sidebar"><div class="reader-toc reader-toc-desktop"><p>On this page</p><nav aria-label="Article chapters"><a href="#section-description" class="">Description</a><a href="#section-prerequisites" class="">Prerequisites</a><a href="#section-usage-of-llms-in-reversing" class="">Usage of LLMs in Reversing</a><a href="#section-challenge-analysis" class="">Challenge Analysis</a><a href="#section-the-desktop-activation-wizard" class="">The Desktop &amp; Activation Wizard</a><a href="#section-reconnaissance-intercepting-traffic" class="">Reconnaissance &amp; Intercepting Traffic</a><a href="#section-appjs-rpc-transport-shellghost-mapping" class="">app.js (RPC Transport &amp; shellGhost Mapping)</a><a href="#section-shellghost-obfuscation" class="reader-toc-subsection">shellGhost Obfuscation</a><a href="#section-exploitation-path" class="">Exploitation Path</a><a href="#section-1-enumeration-handshake" class="">1. Enumeration &amp; Handshake</a><a href="#section-2-reading-wpadbl" class="">2. Reading wpa.dbl</a><a href="#section-3-database-decryption-permutation-brute-force" class="">3. Database Decryption &amp; Permutation Brute-Force</a><a href="#section-4-keygen-activation" class="">4. Keygen &amp; Activation</a><a href="#section-get-the-flag" class="">Get the Flag</a><a href="#section-key-takeaways" class="">Key Takeaways</a><a href="#section-appendix-helper-utilities" class="">Appendix: Helper Utilities</a></nav></div><details class="reader-toc reader-toc-mobile"><summary>On this page <span>16<!-- --> chapters</span></summary><nav aria-label="Article chapters"><a href="#section-description" class="">Description</a><a href="#section-prerequisites" class="">Prerequisites</a><a href="#section-usage-of-llms-in-reversing" class="">Usage of LLMs in Reversing</a><a href="#section-challenge-analysis" class="">Challenge Analysis</a><a href="#section-the-desktop-activation-wizard" class="">The Desktop &amp; Activation Wizard</a><a href="#section-reconnaissance-intercepting-traffic" class="">Reconnaissance &amp; Intercepting Traffic</a><a href="#section-appjs-rpc-transport-shellghost-mapping" class="">app.js (RPC Transport &amp; shellGhost Mapping)</a><a href="#section-shellghost-obfuscation" class="reader-toc-subsection">shellGhost Obfuscation</a><a href="#section-exploitation-path" class="">Exploitation Path</a><a href="#section-1-enumeration-handshake" class="">1. Enumeration &amp; Handshake</a><a href="#section-2-reading-wpadbl" class="">2. Reading wpa.dbl</a><a href="#section-3-database-decryption-permutation-brute-force" class="">3. Database Decryption &amp; Permutation Brute-Force</a><a href="#section-4-keygen-activation" class="">4. Keygen &amp; Activation</a><a href="#section-get-the-flag" class="">Get the Flag</a><a href="#section-key-takeaways" class="">Key Takeaways</a><a href="#section-appendix-helper-utilities" class="">Appendix: Helper Utilities</a></nav></details></aside><div class="reader-body"><section class="reader-summary" aria-label="Article introduction"><p class="reader-summary-text">Decode a custom Windows activation protocol, recover obfuscated license data, and generate a valid activation token to unlock the system.</p><ul class="reader-summary-topics" aria-label="Topics"><li>Windows</li><li>JavaScript</li><li>RPC</li><li>crypto</li><li>rev</li></ul></section><div style="--hover-theme:var(--theme-orange)" class="rounded-lg border bg-card text-card-foreground shadow-sm relative overflow-hidden reader-article theme-orange border-orange-500/20 hover:ring-1 hover:ring-orange-500/20"><div class="p-6 pt-0 reader-content"><div class="prose prose-invert prose-orange reader-prose"><h2 id="section-description"><a href="#section-description" class="heading-link">Description</a></h2>
+<p>&quot;It is the year 2079. JavaScript has become so absurdly strong that Microslop is rebooting Windows XP through the web. You have been given access to a Microslop employee PC, and your task is to activate Windows XP. Are you skilled enough ?&quot;</p>
+<hr/>
+<h2 id="section-prerequisites"><a href="#section-prerequisites" class="heading-link">Prerequisites</a></h2>
+<p>This challenge revolves around reverse-engineering client-side JavaScript, abusing a custom Web RPC bridge, and reconstructing legacy Windows XP activation database (<code>wpa.dbl</code>) records.</p>
+<p>Useful stuff to know:</p>
+<ul>
+<li>HTTP requests to <code>/_vti_bin/_vti_rpc</code></li>
+<li>SHA1 request signing (<code>X-Shell-Bridge</code>)</li>
+<li>PBKDF2-HMAC-SHA1 key derivation</li>
+<li>Basic Python scripting for automation</li>
+</ul>
+<hr/>
+<h2 id="section-usage-of-llms-in-reversing"><a href="#section-usage-of-llms-in-reversing" class="heading-link">Usage of LLMs in Reversing</a></h2>
+<p>Reversing complex client-side obfuscation and debugging cryptographic mismatches manually is highly time-consuming. During this challenge, Gemini 3.5 Flash was used as an assistant during the reversing process to speed up experimentation and script generation.</p>
+<ol>
+<li><strong>De-obfuscating <code>shellGhost</code></strong>: By feeding the raw obfuscated snippet from <code>app.js</code> to the LLM, it immediately identified the character translation logic, mapping the target file paths to their opaque IDs.</li>
+<li><strong>Drafting Verification Scripts</strong>: Instead of manually implementing the reversed Base64 transport layer and SHA1 headers, the LLM generated Python verification templates in seconds, allowing immediate testing of backend endpoints.</li>
+<li><strong>Debugging Cryptographic Mismatches</strong>: When the database decryption initially failed due to an unknown step parameter and order of operations, the LLM suggested writing a permutations brute-forcer. This automated testing of all possible execution paths (rotations, XORs, nibble swaps, and endianness) against the target SHA1 hash.</li>
+</ol>
+<hr/>
+<h2 id="section-challenge-analysis"><a href="#section-challenge-analysis" class="heading-link">Challenge Analysis</a></h2>
+<h2 id="section-the-desktop-activation-wizard"><a href="#section-the-desktop-activation-wizard" class="heading-link">The Desktop &amp; Activation Wizard</a></h2>
+<p>The web desktop loads a simulated Windows XP environment. Opening the activation wizard reveals the telephone activation screen prompting for a Confirmation ID.</p>
+<p><button type="button" class="reader-image" aria-label="Enlarge image: product activation"><img src="/assets/ctf/product_activation.png" alt="product activation" width="3790" height="1758" loading="lazy" decoding="async"/><span>Tap to enlarge</span></button></p>
+<h2 id="section-reconnaissance-intercepting-traffic"><a href="#section-reconnaissance-intercepting-traffic" class="heading-link">Reconnaissance &amp; Intercepting Traffic</a></h2>
+<p>By inspecting the network traffic while navigating the web desktop (such as accessing the Recycle Bin and retrieving the deleted notes), we can intercept the backend communication.</p>
+<p><button type="button" class="reader-image" aria-label="Enlarge image: deleted note request"><img src="/assets/ctf/deleted_note_request.png" alt="deleted note request" width="3774" height="1736" loading="lazy" decoding="async"/><span>Tap to enlarge</span></button></p>
+<p>Using CyberChef to reverse and decode the base64-encoded response, we reveal the contents of the deleted support notes. These notes contain critical details for rebuilding the database (including file offsets, rotation step profiles, and validation hashes) and reveal the custom reversed-base64 transport layout used throughout the application.</p>
+<p><button type="button" class="reader-image" aria-label="Enlarge image: CyberChef deleted note"><img src="/assets/ctf/cyber_chef_deleted_note.png" alt="CyberChef deleted note" width="3030" height="1048" loading="lazy" decoding="async"/><span>Tap to enlarge</span></button></p>
+<h2 id="section-appjs-rpc-transport-shellghost-mapping"><a href="#section-appjs-rpc-transport-shellghost-mapping" class="heading-link">app.js (RPC Transport &amp; shellGhost Mapping)</a></h2>
+<p>Rather than exposing filesystem paths directly, the application referenced every protected file using a six-character opaque identifier derived from an obfuscated lookup table.
+Communication with the backend occurs through a custom RPC system:</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>javascript</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="javascript block, horizontally scrollable"><code class="hljs language-javascript"><span class="hljs-keyword">const</span> <span class="hljs-variable constant_">LEGACY_TRANSPORT</span> = {
+  <span class="hljs-attr">endpoint</span>: <span class="hljs-string">&quot;/_vti_bin/_vti_rpc&quot;</span>,
+  <span class="hljs-attr">bridgeHeader</span>: <span class="hljs-string">&quot;X-Windows-XP&quot;</span>,
+  <span class="hljs-attr">bridgeValue</span>: <span class="hljs-string">&quot;5.1&quot;</span>,
+  <span class="hljs-attr">eventCodes</span>: {
+    <span class="hljs-attr">activationStatus</span>: <span class="hljs-string">&quot;NQ&quot;</span>,
+    <span class="hljs-attr">activationSubmit</span>: <span class="hljs-string">&quot;QK&quot;</span>,
+    <span class="hljs-attr">fileRead</span>: <span class="hljs-string">&quot;R7&quot;</span>,
+  },
+};
+</code></pre></div>
+<p>All payloads sent to this endpoint are stringified JSONs that are base64-encoded and reversed:</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>javascript</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="javascript block, horizontally scrollable"><code class="hljs language-javascript"><span class="hljs-keyword">const</span> body = <span class="hljs-title function_">reverse</span>(<span class="hljs-title function_">btoa</span>(<span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(payload)));
+</code></pre></div>
+<hr/>
+<h3 id="section-shellghost-obfuscation"><a href="#section-shellghost-obfuscation" class="heading-link">shellGhost Obfuscation</a></h3>
+<p>You cannot list directory contents or read files by their raw paths. Instead, the application maps files using a custom de-obfuscation logic called <code>shellGhost</code>:</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>javascript</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="javascript block, horizontally scrollable"><code class="hljs language-javascript"><span class="hljs-keyword">const</span> shellGhost = {
+  <span class="hljs-title function_">g</span>(<span class="hljs-params">index</span>) {
+    <span class="hljs-keyword">const</span> bins = [
+      [<span class="hljs-number">90</span>, <span class="hljs-number">59</span>, <span class="hljs-number">70</span>, <span class="hljs-number">60</span>, <span class="hljs-number">74</span>, <span class="hljs-number">59</span>],
+      [<span class="hljs-number">67</span>, <span class="hljs-number">51</span>, <span class="hljs-number">64</span>, <span class="hljs-number">56</span>, <span class="hljs-number">93</span>, <span class="hljs-number">61</span>],
+      [<span class="hljs-number">70</span>, <span class="hljs-number">59</span>, <span class="hljs-number">70</span>, <span class="hljs-number">56</span>, <span class="hljs-number">90</span>, <span class="hljs-number">59</span>],
+    ];
+    <span class="hljs-keyword">const</span> order = [<span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>];
+    <span class="hljs-keyword">const</span> pad = <span class="hljs-number">11</span>;
+    <span class="hljs-keyword">const</span> fog = [<span class="hljs-number">17</span>, <span class="hljs-number">4</span>, <span class="hljs-number">22</span>, <span class="hljs-number">9</span>, <span class="hljs-number">1</span>, <span class="hljs-number">30</span>];
+
+    <span class="hljs-keyword">return</span> <span class="hljs-title class_">String</span>.<span class="hljs-title function_">fromCharCode</span>(
+      ...bins[order[index]].<span class="hljs-title function_">map</span>(
+        <span class="hljs-function">(<span class="hljs-params">value, slot</span>) =&gt;</span> (value ^ pad) - ((fog[slot] % <span class="hljs-number">2</span>) ? <span class="hljs-number">0</span> : <span class="hljs-number">0</span>)
+      )
+    );
+  },
+};
+</code></pre></div>
+<p>By computing <code>shellGhost.g(index)</code>:</p>
+<ul>
+<li><code>index = 0</code> (Recycle Bin Note) $\to$ <strong><code>M0M3Q0</code></strong></li>
+<li><code>index = 1</code> (<code>WINDOWS\system32\oobe.log</code>) $\to$ <strong><code>Q0M7A0</code></strong></li>
+<li><code>index = 2</code> (<code>WINDOWS\system32\wpa.dbl</code>) $\to$ <strong><code>H8K3V6</code></strong></li>
+</ul>
+<p>Here is a simple script to resolve the file IDs:</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>python</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="python block, horizontally scrollable"><code class="hljs language-python"><span class="hljs-comment"># shell_ghost_resolver.py</span>
+bins = [
+    [<span class="hljs-number">90</span>, <span class="hljs-number">59</span>, <span class="hljs-number">70</span>, <span class="hljs-number">60</span>, <span class="hljs-number">74</span>, <span class="hljs-number">59</span>],
+    [<span class="hljs-number">67</span>, <span class="hljs-number">51</span>, <span class="hljs-number">64</span>, <span class="hljs-number">56</span>, <span class="hljs-number">93</span>, <span class="hljs-number">61</span>],
+    [<span class="hljs-number">70</span>, <span class="hljs-number">59</span>, <span class="hljs-number">70</span>, <span class="hljs-number">56</span>, <span class="hljs-number">90</span>, <span class="hljs-number">59</span>],
+]
+order = [<span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>]
+pad = <span class="hljs-number">11</span>
+
+<span class="hljs-keyword">for</span> idx <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">3</span>):
+    s_id = <span class="hljs-string">&quot;&quot;</span>.join(<span class="hljs-built_in">chr</span>(val ^ pad) <span class="hljs-keyword">for</span> val <span class="hljs-keyword">in</span> bins[order[idx]])
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Index <span class="hljs-subst">{idx}</span>: <span class="hljs-subst">{s_id}</span>&quot;</span>)
+</code></pre></div>
+<p><strong>Output:</strong></p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>Code</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="Code block, horizontally scrollable"><code>Index 0: M0M3Q0
+Index 1: Q0M7A0
+Index 2: H8K3V6
+</code></pre></div>
+<hr/>
+<h2 id="section-exploitation-path"><a href="#section-exploitation-path" class="heading-link">Exploitation Path</a></h2>
+<p>High-level idea:</p>
+<ol>
+<li>Initialize session and grab credentials (<code>installationId</code>, <code>productId</code>, <code>shellBridge</code>) via <code>NQ</code>.</li>
+<li>Extract the Recycle Bin notes (<code>M0M3Q0</code>) to obtain the verification SHA1 hash.</li>
+<li>Download <code>wpa.dbl</code> (<code>H8K3V6</code>) and extract the 32-bit records.</li>
+<li>Compute the SHA256 mask windows and decrypt the database slots.</li>
+<li>Reorder the slots to rebuild the raw license buffer.</li>
+<li>Generate the Confirmation ID using PBKDF2-HMAC-SHA1 and activate the OS.</li>
+<li>Grab the flag.</li>
+</ol>
+<p><em>(Note: The custom encoding helper functions used below are defined in the Appendix).</em></p>
+<hr/>
+<h2 id="section-1-enumeration-handshake"><a href="#section-1-enumeration-handshake" class="heading-link">1. Enumeration &amp; Handshake</a></h2>
+<p>To interact with the backend API, we must first establish a dynamic session state. We send an empty <code>NQ</code> status handshake request to trigger session creation.</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>python</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="python block, horizontally scrollable"><code class="hljs language-python"><span class="hljs-comment"># handshake.py</span>
+<span class="hljs-keyword">import</span> requests
+<span class="hljs-keyword">from</span> utils <span class="hljs-keyword">import</span> encode_rpc_packet, decode_rpc_packet
+
+BASE_URL = <span class="hljs-string">&quot;https://windows-experience-fcb591fed802.c.mntcrl.it&quot;</span>
+ENDPOINT = BASE_URL + <span class="hljs-string">&quot;/_vti_bin/_vti_rpc&quot;</span>
+
+s = requests.Session()
+payload = encode_rpc_packet(<span class="hljs-string">&quot;NQ&quot;</span>, {})
+resp = s.post(ENDPOINT, data=payload, headers={<span class="hljs-string">&quot;Content-Type&quot;</span>: <span class="hljs-string">&quot;text/plain;charset=UTF-8&quot;</span>, <span class="hljs-string">&quot;X-Windows-XP&quot;</span>: <span class="hljs-string">&quot;5.1&quot;</span>})
+
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Handshake Response (Decoded):&quot;</span>)
+<span class="hljs-built_in">print</span>(json.dumps(decode_rpc_packet(resp.text), indent=<span class="hljs-number">2</span>))
+</code></pre></div>
+<p><strong>Handshake Response (Decoded):</strong></p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>json</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="json block, horizontally scrollable"><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;ok&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;installationId&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;473282-406875-813865-724382-218375-055588-305925-550443-92&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;productId&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;55274-640-2673064-23917&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;shellBridge&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;SzAcBn4Q0pFMNxMkhOj7UhtR&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;machineGuid&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;CE4E4312F3F2AF016229EEFC5FEDD700&quot;</span>
+<span class="hljs-punctuation">}</span>
+</code></pre></div>
+<p><em>(The raw encoded response is omitted for readability).</em></p>
+<hr/>
+<h2 id="section-2-reading-wpadbl"><a href="#section-2-reading-wpadbl" class="heading-link">2. Reading wpa.dbl</a></h2>
+<p>The activation backend only accepts authenticated requests. After obtaining the session-specific <code>shellBridge</code> token during the handshake, every subsequent request must be signed using a custom SHA1 scheme:</p>
+<p>$$\text{Signature} = \text{SHA1}(\text{eventCode} + \text{&quot;|&quot;} + \text{body} + \text{&quot;|&quot;} + \text{shellBridge} + \text{&quot;|&quot;} + \text{installation_id_digits_first_18})$$</p>
+<p>Using this signature header, we fetch the hex dump of <code>wpa.dbl</code> (<code>H8K3V6</code>):</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>python</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="python block, horizontally scrollable"><code class="hljs language-python"><span class="hljs-comment"># read_file.py</span>
+<span class="hljs-keyword">import</span> requests
+<span class="hljs-keyword">from</span> utils <span class="hljs-keyword">import</span> encode_rpc_packet, build_rpc_auth
+
+BASE_URL = <span class="hljs-string">&quot;https://windows-experience-fcb591fed802.c.mntcrl.it&quot;</span>
+ENDPOINT = BASE_URL + <span class="hljs-string">&quot;/_vti_bin/_vti_rpc&quot;</span>
+
+SB = <span class="hljs-string">&quot;SzAcBn4Q0pFMNxMkhOj7UhtR&quot;</span>
+IID = <span class="hljs-string">&quot;473282-406875-813865-724382-218375-055588-305925-550443-92&quot;</span>
+COOKIE = <span class="hljs-string">&quot;SzAcBn4Q0pFMNxMkhOj7UhtR&quot;</span>
+
+s = requests.Session()
+s.cookies.<span class="hljs-built_in">set</span>(<span class="hljs-string">&quot;XPSESSION&quot;</span>, COOKIE)
+
+payload = {<span class="hljs-string">&quot;s&quot;</span>: <span class="hljs-string">&quot;H8K3V6&quot;</span>}
+body = encode_rpc_packet(<span class="hljs-string">&quot;R7&quot;</span>, payload)
+sig = build_rpc_auth(<span class="hljs-string">&quot;R7&quot;</span>, body, SB, IID)
+
+resp = s.post(ENDPOINT, data=body, headers={
+    <span class="hljs-string">&quot;Content-Type&quot;</span>: <span class="hljs-string">&quot;text/plain;charset=UTF-8&quot;</span>,
+    <span class="hljs-string">&quot;X-Windows-XP&quot;</span>: <span class="hljs-string">&quot;5.1&quot;</span>,
+    <span class="hljs-string">&quot;X-Shell-Bridge&quot;</span>: sig
+})
+
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;wpa.dbl hex dump fetched successfully.&quot;</span>)
+</code></pre></div>
+<p><strong>Parsed Hex Dump Offsets:</strong></p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>Code</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="Code block, horizontally scrollable"><code>Offset    Value
+0x0130    b772a404
+0x01A8    fd383582
+0x0220    5ac706af
+0x0298    9ff4aee5
+0x0310    327914c8
+0x0388    38dbde11
+</code></pre></div>
+<p><em>(The raw encoded response payload is omitted for readability).</em></p>
+<hr/>
+<h2 id="section-3-database-decryption-permutation-brute-force"><a href="#section-3-database-decryption-permutation-brute-force" class="heading-link">3. Database Decryption &amp; Permutation Brute-Force</a></h2>
+<p>No single note contained the complete algorithm. Instead, multiple partial hints had to be combined and validated experimentally.</p>
+<p>Each decrypted 4-byte database slot is XORed against consecutive 4-byte windows of $\text{SHA256}(\text{ProductID} + \text{&quot;|&quot;} + \text{InstallationID50})$.</p>
+<p>However, the deleted support notes contained ambiguous instructions regarding the step sizes, rotation directions, and slot arrangements. To resolve this, a permutation brute-forcer was built. Each permutation of rotation order, nibble swapping, XOR ordering, and slot arrangement was tested against the SHA1 validation hash extracted from the deleted Recycle Bin support notes.</p>
+<p>Only one permutation successfully matched the target hash, revealing the missing rotation step (<code>2</code>) and the target slot mapping layout:</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>python</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="python block, horizontally scrollable"><code class="hljs language-python"><span class="hljs-comment"># decrypt_database.py</span>
+<span class="hljs-keyword">import</span> hashlib
+<span class="hljs-keyword">from</span> utils <span class="hljs-keyword">import</span> ror32, swap_nibbles_32
+
+PID = <span class="hljs-string">&quot;55274-640-2673064-23917&quot;</span>
+IID = <span class="hljs-string">&quot;473282-406875-813865-724382-218375-055588-305925-550443-92&quot;</span>
+
+records_hex = [<span class="hljs-string">&quot;b772a404&quot;</span>, <span class="hljs-string">&quot;fd383582&quot;</span>, <span class="hljs-string">&quot;5ac706af&quot;</span>, <span class="hljs-string">&quot;9ff4aee5&quot;</span>, <span class="hljs-string">&quot;327914c8&quot;</span>, <span class="hljs-string">&quot;38dbde11&quot;</span>]
+records_bytes = [<span class="hljs-built_in">bytes</span>.fromhex(h) <span class="hljs-keyword">for</span> h <span class="hljs-keyword">in</span> records_hex]
+
+steps = [<span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>]
+db_order = [<span class="hljs-number">6</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">5</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>]
+inst_id50 = <span class="hljs-string">&quot;&quot;</span>.join(<span class="hljs-built_in">filter</span>(<span class="hljs-built_in">str</span>.isdigit, IID))
+seed = <span class="hljs-string">f&quot;<span class="hljs-subst">{PID}</span>|<span class="hljs-subst">{inst_id50}</span>&quot;</span>
+sha = hashlib.sha256(seed.encode()).digest()
+masks = [sha[i:i+<span class="hljs-number">4</span>] <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, <span class="hljs-number">24</span>, <span class="hljs-number">4</span>)]
+
+processed = []
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">6</span>):
+    rec = <span class="hljs-built_in">int</span>.from_bytes(records_bytes[i], <span class="hljs-string">&#x27;little&#x27;</span>)
+    mask_val = <span class="hljs-built_in">int</span>.from_bytes(masks[i], <span class="hljs-string">&#x27;little&#x27;</span>)
+    
+    rotated = ror32(rec, steps[i] * <span class="hljs-number">8</span>)
+    xored = rotated ^ mask_val
+    swapped = swap_nibbles_32(xored)
+    processed.append(swapped)
+
+reordered = [<span class="hljs-literal">None</span>] * <span class="hljs-number">6</span>
+<span class="hljs-keyword">for</span> slot_idx, pos <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(db_order):
+    reordered[pos-<span class="hljs-number">1</span>] = processed[slot_idx]
+
+raw_buffer = <span class="hljs-string">b&quot;&quot;</span>.join([r.to_bytes(<span class="hljs-number">4</span>, <span class="hljs-string">&#x27;little&#x27;</span>) <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> reordered])
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Reconstructed Buffer (Hex):&quot;</span>, raw_buffer.<span class="hljs-built_in">hex</span>().upper())
+</code></pre></div>
+<p><strong>Output:</strong></p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>Code</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="Code block, horizontally scrollable"><code>Reconstructed Buffer (Hex): DB074BE20816A19F2FA3755A43EF08035AFE7A79CBA6D9FE
+</code></pre></div>
+<hr/>
+<h2 id="section-4-keygen-activation"><a href="#section-4-keygen-activation" class="heading-link">4. Keygen &amp; Activation</a></h2>
+<p>Using the reconstructed 24-byte buffer as the PBKDF2 salt and the 50-digit Installation ID as the password, the PBKDF2 seed was derived to generate the 7 groups of the Activation Confirmation ID:</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>python</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="python block, horizontally scrollable"><code class="hljs language-python"><span class="hljs-comment"># keygen.py</span>
+<span class="hljs-keyword">import</span> hashlib
+
+IID = <span class="hljs-string">&quot;473282-406875-813865-724382-218375-055588-305925-550443-92&quot;</span>
+RAW_BUFFER_HEX = <span class="hljs-string">&quot;DB074BE20816A19F2FA3755A43EF08035AFE7A79CBA6D9FE&quot;</span>
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">compute_confirmation_id</span>(<span class="hljs-params">inst_id, raw_rebuild_buffer</span>):
+    inst = <span class="hljs-string">&quot;&quot;</span>.join(<span class="hljs-built_in">filter</span>(<span class="hljs-built_in">str</span>.isdigit, inst_id))
+    seed = hashlib.pbkdf2_hmac(<span class="hljs-string">&#x27;sha1&#x27;</span>, inst.encode(<span class="hljs-string">&#x27;ascii&#x27;</span>), raw_rebuild_buffer, <span class="hljs-number">1600</span>, dklen=<span class="hljs-number">28</span>)
+    
+    carry = <span class="hljs-number">0</span>
+    groups = []
+    <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">7</span>):
+        seed_block = seed[n*<span class="hljs-number">4</span>:(n+<span class="hljs-number">1</span>)*<span class="hljs-number">4</span>]
+        seed_val = <span class="hljs-built_in">int</span>.from_bytes(seed_block, <span class="hljs-string">&#x27;big&#x27;</span>)
+        chunk = inst[n*<span class="hljs-number">7</span>:n*<span class="hljs-number">7</span>+<span class="hljs-number">7</span>]
+        install_chunk = <span class="hljs-built_in">int</span>(chunk) <span class="hljs-keyword">if</span> chunk <span class="hljs-keyword">else</span> <span class="hljs-number">0</span>
+        value = (seed_val ^ install_chunk ^ (carry &lt;&lt; <span class="hljs-number">5</span>)) % <span class="hljs-number">1000000</span>
+        carry = value % <span class="hljs-number">97</span>
+        groups.append(<span class="hljs-string">f&quot;<span class="hljs-subst">{value:06d}</span>&quot;</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;-&quot;</span>.join(groups)
+
+raw_buffer = <span class="hljs-built_in">bytes</span>.fromhex(RAW_BUFFER_HEX)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Confirmation ID:&quot;</span>, compute_confirmation_id(IID, raw_buffer))
+</code></pre></div>
+<p><strong>Output:</strong></p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>Code</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="Code block, horizontally scrollable"><code>Confirmation ID: 954848-181163-906536-121516-791720-642055-667798
+</code></pre></div>
+<p>The Confirmation ID is submitted via the <code>QK</code> event.</p>
+<hr/>
+<h2 id="section-get-the-flag"><a href="#section-get-the-flag" class="heading-link">Get the Flag</a></h2>
+<p>Once the Confirmation ID is submitted and the system is activated, we make a final signed GET request to <code>/flag</code> using the active session credentials:</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">curl -i https://windows-experience-fcb591fed802.c.mntcrl.it/flag \
+  -H <span class="hljs-string">&quot;X-Shell-Bridge: &lt;LATEST_SHELL_BRIDGE&gt;&quot;</span> \
+  -H <span class="hljs-string">&quot;Cookie: XPSESSION=&lt;YOUR_COOKIE&gt;&quot;</span>
+</code></pre></div>
+<p><strong>Output:</strong></p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>html</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="html block, horizontally scrollable"><code class="hljs language-html"><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>localhost<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">pre</span>&gt;</span>mntcrl{1_st1ll_h4t3_m1cr0sl0p_4ft3r_4ll!!!_c70b4d7d3a1a6397}<span class="hljs-tag">&lt;/<span class="hljs-name">pre</span>&gt;</span>
+</code></pre></div>
+<hr/>
+<h2 id="section-key-takeaways"><a href="#section-key-takeaways" class="heading-link">Key Takeaways</a></h2>
+<ul>
+<li>Reverse engineering the JavaScript transport revealed several undocumented RPC operations.</li>
+<li>The application relied on client-side obfuscation rather than access control.</li>
+<li>Session-specific signing prevented replay attacks but could be reproduced once the algorithm was understood.</li>
+<li>The Windows XP activation database was reconstructed by reversing its custom storage format instead of attacking the activation algorithm directly.</li>
+</ul>
+<hr/>
+<h2 id="section-appendix-helper-utilities"><a href="#section-appendix-helper-utilities" class="heading-link">Appendix: Helper Utilities</a></h2>
+<p>To avoid code duplication across the walkthrough phase scripts, the following shared functions were moved to a utility file (<code>utils.py</code>):</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>python</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="python block, horizontally scrollable"><code class="hljs language-python"><span class="hljs-comment"># utils.py</span>
+<span class="hljs-keyword">import</span> json
+<span class="hljs-keyword">import</span> base64
+<span class="hljs-keyword">import</span> hashlib
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">encode_rpc_packet</span>(<span class="hljs-params">event_code, payload</span>):
+    json_str = json.dumps({<span class="hljs-string">&quot;v&quot;</span>: <span class="hljs-number">1</span>, <span class="hljs-string">&quot;e&quot;</span>: event_code, <span class="hljs-string">&quot;d&quot;</span>: payload}, separators=(<span class="hljs-string">&quot;,&quot;</span>, <span class="hljs-string">&quot;:&quot;</span>))
+    b64 = base64.b64encode(json_str.encode()).decode()
+    <span class="hljs-keyword">return</span> b64[::-<span class="hljs-number">1</span>]
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">decode_rpc_packet</span>(<span class="hljs-params">encoded</span>):
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> encoded:
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+    <span class="hljs-keyword">try</span>:
+        rev = encoded[::-<span class="hljs-number">1</span>]
+        <span class="hljs-keyword">while</span> <span class="hljs-built_in">len</span>(rev) % <span class="hljs-number">4</span>:
+            rev += <span class="hljs-string">&quot;=&quot;</span>
+        json_str = base64.b64decode(rev).decode(<span class="hljs-string">&quot;utf-8&quot;</span>)
+        <span class="hljs-keyword">return</span> json.loads(json_str)
+    <span class="hljs-keyword">except</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">build_rpc_auth</span>(<span class="hljs-params">event_code, encoded_body, shell_bridge, installation_id</span>):
+    inst_digits = <span class="hljs-string">&quot;&quot;</span>.join(<span class="hljs-built_in">filter</span>(<span class="hljs-built_in">str</span>.isdigit, installation_id))[:<span class="hljs-number">18</span>]
+    seed = <span class="hljs-string">f&quot;<span class="hljs-subst">{event_code}</span>|<span class="hljs-subst">{encoded_body}</span>|<span class="hljs-subst">{shell_bridge}</span>|<span class="hljs-subst">{inst_digits}</span>&quot;</span>
+    <span class="hljs-keyword">return</span> hashlib.sha1(seed.encode()).hexdigest().upper()
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">ror32</span>(<span class="hljs-params">value, bits</span>):
+    <span class="hljs-keyword">return</span> ((value &gt;&gt; bits) | (value &lt;&lt; (<span class="hljs-number">32</span> - bits))) &amp; <span class="hljs-number">0xFFFFFFFF</span>
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">swap_nibbles_byte</span>(<span class="hljs-params">b</span>):
+    <span class="hljs-keyword">return</span> ((b &amp; <span class="hljs-number">0x0F</span>) &lt;&lt; <span class="hljs-number">4</span>) | ((b &amp; <span class="hljs-number">0xF0</span>) &gt;&gt; <span class="hljs-number">4</span>)
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">swap_nibbles_32</span>(<span class="hljs-params">x</span>):
+    res = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">4</span>):
+        b = (x &gt;&gt; (<span class="hljs-number">8</span>*i)) &amp; <span class="hljs-number">0xFF</span>
+        nb = swap_nibbles_byte(b)
+        res |= (nb &lt;&lt; (<span class="hljs-number">8</span>*i))
+    <span class="hljs-keyword">return</span> res
+</code></pre></div></div><dialog class="reader-image-dialog" aria-label="Enlarged article image"><button type="button" class="reader-image-close" aria-label="Close image"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button></dialog></div></div></div></main></div><!--/$--></div></div><script id="article-data" type="application/json">{"kind":"ctf","entry":{"id":"windows","title":"Windows eXPerience","competition":"mntcrl","category":"misc","difficulty":"hard","points":496,"tags":["Windows","JavaScript","RPC","crypto","rev"],"date":"2026-06-28","summary":"Decode a custom Windows activation protocol, recover obfuscated license data, and generate a valid activation token to unlock the system.","contentPath":"windows.md","previewImage":"/assets/previews/ctf-windows.png","kind":"ctf","folder":"ctf","route":"ctf/windows"},"route":"ctf/windows","content":"# Windows XP Activation CTF Writeup\n\n\n## Description\n\n\"It is the year 2079. JavaScript has become so absurdly strong that Microslop is rebooting Windows XP through the web. You have been given access to a Microslop employee PC, and your task is to activate Windows XP. Are you skilled enough ?\"\n\n---\n## Prerequisites\n\nThis challenge revolves around reverse-engineering client-side JavaScript, abusing a custom Web RPC bridge, and reconstructing legacy Windows XP activation database (`wpa.dbl`) records.\n\nUseful stuff to know:\n* HTTP requests to `/_vti_bin/_vti_rpc`\n* SHA1 request signing (`X-Shell-Bridge`)\n* PBKDF2-HMAC-SHA1 key derivation\n* Basic Python scripting for automation\n\n---\n## Usage of LLMs in Reversing\n\nReversing complex client-side obfuscation and debugging cryptographic mismatches manually is highly time-consuming. During this challenge, Gemini 3.5 Flash was used as an assistant during the reversing process to speed up experimentation and script generation.\n\n1. **De-obfuscating `shellGhost`**: By feeding the raw obfuscated snippet from `app.js` to the LLM, it immediately identified the character translation logic, mapping the target file paths to their opaque IDs.\n2. **Drafting Verification Scripts**: Instead of manually implementing the reversed Base64 transport layer and SHA1 headers, the LLM generated Python verification templates in seconds, allowing immediate testing of backend endpoints.\n3. **Debugging Cryptographic Mismatches**: When the database decryption initially failed due to an unknown step parameter and order of operations, the LLM suggested writing a permutations brute-forcer. This automated testing of all possible execution paths (rotations, XORs, nibble swaps, and endianness) against the target SHA1 hash.\n\n---\n# Challenge Analysis\n\n## The Desktop \u0026 Activation Wizard\n\nThe web desktop loads a simulated Windows XP environment. Opening the activation wizard reveals the telephone activation screen prompting for a Confirmation ID.\n\n![product activation](/assets/ctf/product_activation.png)\n\n## Reconnaissance \u0026 Intercepting Traffic\n\nBy inspecting the network traffic while navigating the web desktop (such as accessing the Recycle Bin and retrieving the deleted notes), we can intercept the backend communication.\n\n![deleted note request](/assets/ctf/deleted_note_request.png)\n\nUsing CyberChef to reverse and decode the base64-encoded response, we reveal the contents of the deleted support notes. These notes contain critical details for rebuilding the database (including file offsets, rotation step profiles, and validation hashes) and reveal the custom reversed-base64 transport layout used throughout the application.\n\n![CyberChef deleted note](/assets/ctf/cyber_chef_deleted_note.png)\n\n## app.js (RPC Transport \u0026 shellGhost Mapping)\n\nRather than exposing filesystem paths directly, the application referenced every protected file using a six-character opaque identifier derived from an obfuscated lookup table.\nCommunication with the backend occurs through a custom RPC system:\n\n```javascript\nconst LEGACY_TRANSPORT = {\n  endpoint: \"/_vti_bin/_vti_rpc\",\n  bridgeHeader: \"X-Windows-XP\",\n  bridgeValue: \"5.1\",\n  eventCodes: {\n    activationStatus: \"NQ\",\n    activationSubmit: \"QK\",\n    fileRead: \"R7\",\n  },\n};\n```\n\nAll payloads sent to this endpoint are stringified JSONs that are base64-encoded and reversed:\n```javascript\nconst body = reverse(btoa(JSON.stringify(payload)));\n```\n\n---\n### shellGhost Obfuscation\n\nYou cannot list directory contents or read files by their raw paths. Instead, the application maps files using a custom de-obfuscation logic called `shellGhost`:\n\n```javascript\nconst shellGhost = {\n  g(index) {\n    const bins = [\n      [90, 59, 70, 60, 74, 59],\n      [67, 51, 64, 56, 93, 61],\n      [70, 59, 70, 56, 90, 59],\n    ];\n    const order = [2, 0, 1];\n    const pad = 11;\n    const fog = [17, 4, 22, 9, 1, 30];\n\n    return String.fromCharCode(\n      ...bins[order[index]].map(\n        (value, slot) =\u003e (value ^ pad) - ((fog[slot] % 2) ? 0 : 0)\n      )\n    );\n  },\n};\n```\n\nBy computing `shellGhost.g(index)`:\n- `index = 0` (Recycle Bin Note) $\\to$ **`M0M3Q0`**\n- `index = 1` (`WINDOWS\\system32\\oobe.log`) $\\to$ **`Q0M7A0`**\n- `index = 2` (`WINDOWS\\system32\\wpa.dbl`) $\\to$ **`H8K3V6`**\n\nHere is a simple script to resolve the file IDs:\n\n```python\n# shell_ghost_resolver.py\nbins = [\n    [90, 59, 70, 60, 74, 59],\n    [67, 51, 64, 56, 93, 61],\n    [70, 59, 70, 56, 90, 59],\n]\norder = [2, 0, 1]\npad = 11\n\nfor idx in range(3):\n    s_id = \"\".join(chr(val ^ pad) for val in bins[order[idx]])\n    print(f\"Index {idx}: {s_id}\")\n```\n\n**Output:**\n```\nIndex 0: M0M3Q0\nIndex 1: Q0M7A0\nIndex 2: H8K3V6\n```\n\n---\n\n# Exploitation Path\n\nHigh-level idea:\n1. Initialize session and grab credentials (`installationId`, `productId`, `shellBridge`) via `NQ`.\n2. Extract the Recycle Bin notes (`M0M3Q0`) to obtain the verification SHA1 hash.\n3. Download `wpa.dbl` (`H8K3V6`) and extract the 32-bit records.\n4. Compute the SHA256 mask windows and decrypt the database slots.\n5. Reorder the slots to rebuild the raw license buffer.\n6. Generate the Confirmation ID using PBKDF2-HMAC-SHA1 and activate the OS.\n7. Grab the flag.\n\n*(Note: The custom encoding helper functions used below are defined in the Appendix).*\n\n---\n## 1. Enumeration \u0026 Handshake\n\nTo interact with the backend API, we must first establish a dynamic session state. We send an empty `NQ` status handshake request to trigger session creation.\n\n```python\n# handshake.py\nimport requests\nfrom utils import encode_rpc_packet, decode_rpc_packet\n\nBASE_URL = \"https://windows-experience-fcb591fed802.c.mntcrl.it\"\nENDPOINT = BASE_URL + \"/_vti_bin/_vti_rpc\"\n\ns = requests.Session()\npayload = encode_rpc_packet(\"NQ\", {})\nresp = s.post(ENDPOINT, data=payload, headers={\"Content-Type\": \"text/plain;charset=UTF-8\", \"X-Windows-XP\": \"5.1\"})\n\nprint(\"Handshake Response (Decoded):\")\nprint(json.dumps(decode_rpc_packet(resp.text), indent=2))\n```\n\n**Handshake Response (Decoded):**\n```json\n{\n  \"ok\": true,\n  \"installationId\": \"473282-406875-813865-724382-218375-055588-305925-550443-92\",\n  \"productId\": \"55274-640-2673064-23917\",\n  \"shellBridge\": \"SzAcBn4Q0pFMNxMkhOj7UhtR\",\n  \"machineGuid\": \"CE4E4312F3F2AF016229EEFC5FEDD700\"\n}\n```\n*(The raw encoded response is omitted for readability).*\n\n---\n## 2. Reading wpa.dbl\n\nThe activation backend only accepts authenticated requests. After obtaining the session-specific `shellBridge` token during the handshake, every subsequent request must be signed using a custom SHA1 scheme:\n\n$$\\text{Signature} = \\text{SHA1}(\\text{eventCode} + \\text{\"|\"} + \\text{body} + \\text{\"|\"} + \\text{shellBridge} + \\text{\"|\"} + \\text{installation\\_id\\_digits\\_first\\_18})$$\n\nUsing this signature header, we fetch the hex dump of `wpa.dbl` (`H8K3V6`):\n\n```python\n# read_file.py\nimport requests\nfrom utils import encode_rpc_packet, build_rpc_auth\n\nBASE_URL = \"https://windows-experience-fcb591fed802.c.mntcrl.it\"\nENDPOINT = BASE_URL + \"/_vti_bin/_vti_rpc\"\n\nSB = \"SzAcBn4Q0pFMNxMkhOj7UhtR\"\nIID = \"473282-406875-813865-724382-218375-055588-305925-550443-92\"\nCOOKIE = \"SzAcBn4Q0pFMNxMkhOj7UhtR\"\n\ns = requests.Session()\ns.cookies.set(\"XPSESSION\", COOKIE)\n\npayload = {\"s\": \"H8K3V6\"}\nbody = encode_rpc_packet(\"R7\", payload)\nsig = build_rpc_auth(\"R7\", body, SB, IID)\n\nresp = s.post(ENDPOINT, data=body, headers={\n    \"Content-Type\": \"text/plain;charset=UTF-8\",\n    \"X-Windows-XP\": \"5.1\",\n    \"X-Shell-Bridge\": sig\n})\n\nprint(\"wpa.dbl hex dump fetched successfully.\")\n```\n\n**Parsed Hex Dump Offsets:**\n```\nOffset    Value\n0x0130    b772a404\n0x01A8    fd383582\n0x0220    5ac706af\n0x0298    9ff4aee5\n0x0310    327914c8\n0x0388    38dbde11\n```\n*(The raw encoded response payload is omitted for readability).*\n\n---\n## 3. Database Decryption \u0026 Permutation Brute-Force\n\nNo single note contained the complete algorithm. Instead, multiple partial hints had to be combined and validated experimentally.\n\nEach decrypted 4-byte database slot is XORed against consecutive 4-byte windows of $\\text{SHA256}(\\text{ProductID} + \\text{\"|\"} + \\text{InstallationID50})$. \n\nHowever, the deleted support notes contained ambiguous instructions regarding the step sizes, rotation directions, and slot arrangements. To resolve this, a permutation brute-forcer was built. Each permutation of rotation order, nibble swapping, XOR ordering, and slot arrangement was tested against the SHA1 validation hash extracted from the deleted Recycle Bin support notes.\n\nOnly one permutation successfully matched the target hash, revealing the missing rotation step (`2`) and the target slot mapping layout:\n\n```python\n# decrypt_database.py\nimport hashlib\nfrom utils import ror32, swap_nibbles_32\n\nPID = \"55274-640-2673064-23917\"\nIID = \"473282-406875-813865-724382-218375-055588-305925-550443-92\"\n\nrecords_hex = [\"b772a404\", \"fd383582\", \"5ac706af\", \"9ff4aee5\", \"327914c8\", \"38dbde11\"]\nrecords_bytes = [bytes.fromhex(h) for h in records_hex]\n\nsteps = [3, 1, 2, 1, 3, 2]\ndb_order = [6, 3, 1, 5, 2, 4]\ninst_id50 = \"\".join(filter(str.isdigit, IID))\nseed = f\"{PID}|{inst_id50}\"\nsha = hashlib.sha256(seed.encode()).digest()\nmasks = [sha[i:i+4] for i in range(0, 24, 4)]\n\nprocessed = []\nfor i in range(6):\n    rec = int.from_bytes(records_bytes[i], 'little')\n    mask_val = int.from_bytes(masks[i], 'little')\n    \n    rotated = ror32(rec, steps[i] * 8)\n    xored = rotated ^ mask_val\n    swapped = swap_nibbles_32(xored)\n    processed.append(swapped)\n\nreordered = [None] * 6\nfor slot_idx, pos in enumerate(db_order):\n    reordered[pos-1] = processed[slot_idx]\n\nraw_buffer = b\"\".join([r.to_bytes(4, 'little') for r in reordered])\nprint(\"Reconstructed Buffer (Hex):\", raw_buffer.hex().upper())\n```\n\n**Output:**\n```\nReconstructed Buffer (Hex): DB074BE20816A19F2FA3755A43EF08035AFE7A79CBA6D9FE\n```\n\n---\n## 4. Keygen \u0026 Activation\n\nUsing the reconstructed 24-byte buffer as the PBKDF2 salt and the 50-digit Installation ID as the password, the PBKDF2 seed was derived to generate the 7 groups of the Activation Confirmation ID:\n\n```python\n# keygen.py\nimport hashlib\n\nIID = \"473282-406875-813865-724382-218375-055588-305925-550443-92\"\nRAW_BUFFER_HEX = \"DB074BE20816A19F2FA3755A43EF08035AFE7A79CBA6D9FE\"\n\ndef compute_confirmation_id(inst_id, raw_rebuild_buffer):\n    inst = \"\".join(filter(str.isdigit, inst_id))\n    seed = hashlib.pbkdf2_hmac('sha1', inst.encode('ascii'), raw_rebuild_buffer, 1600, dklen=28)\n    \n    carry = 0\n    groups = []\n    for n in range(7):\n        seed_block = seed[n*4:(n+1)*4]\n        seed_val = int.from_bytes(seed_block, 'big')\n        chunk = inst[n*7:n*7+7]\n        install_chunk = int(chunk) if chunk else 0\n        value = (seed_val ^ install_chunk ^ (carry \u003c\u003c 5)) % 1000000\n        carry = value % 97\n        groups.append(f\"{value:06d}\")\n    return \"-\".join(groups)\n\nraw_buffer = bytes.fromhex(RAW_BUFFER_HEX)\nprint(\"Confirmation ID:\", compute_confirmation_id(IID, raw_buffer))\n```\n\n**Output:**\n```\nConfirmation ID: 954848-181163-906536-121516-791720-642055-667798\n```\n\nThe Confirmation ID is submitted via the `QK` event.\n\n---\n# Get the Flag\n\nOnce the Confirmation ID is submitted and the system is activated, we make a final signed GET request to `/flag` using the active session credentials:\n\n```bash\ncurl -i https://windows-experience-fcb591fed802.c.mntcrl.it/flag \\\n  -H \"X-Shell-Bridge: \u003cLATEST_SHELL_BRIDGE\u003e\" \\\n  -H \"Cookie: XPSESSION=\u003cYOUR_COOKIE\u003e\"\n```\n\n**Output:**\n```html\n\u003ch1\u003elocalhost\u003c/h1\u003e\n\u003cpre\u003emntcrl{1_st1ll_h4t3_m1cr0sl0p_4ft3r_4ll!!!_c70b4d7d3a1a6397}\u003c/pre\u003e\n```\n\n---\n## Key Takeaways  \n  \n- Reverse engineering the JavaScript transport revealed several undocumented RPC operations.  \n- The application relied on client-side obfuscation rather than access control.  \n- Session-specific signing prevented replay attacks but could be reproduced once the algorithm was understood.  \n- The Windows XP activation database was reconstructed by reversing its custom storage format instead of attacking the activation algorithm directly.\n\n---\n## Appendix: Helper Utilities\n\nTo avoid code duplication across the walkthrough phase scripts, the following shared functions were moved to a utility file (`utils.py`):\n\n```python\n# utils.py\nimport json\nimport base64\nimport hashlib\n\ndef encode_rpc_packet(event_code, payload):\n    json_str = json.dumps({\"v\": 1, \"e\": event_code, \"d\": payload}, separators=(\",\", \":\"))\n    b64 = base64.b64encode(json_str.encode()).decode()\n    return b64[::-1]\n\ndef decode_rpc_packet(encoded):\n    if not encoded:\n        return None\n    try:\n        rev = encoded[::-1]\n        while len(rev) % 4:\n            rev += \"=\"\n        json_str = base64.b64decode(rev).decode(\"utf-8\")\n        return json.loads(json_str)\n    except:\n        return None\n\ndef build_rpc_auth(event_code, encoded_body, shell_bridge, installation_id):\n    inst_digits = \"\".join(filter(str.isdigit, installation_id))[:18]\n    seed = f\"{event_code}|{encoded_body}|{shell_bridge}|{inst_digits}\"\n    return hashlib.sha1(seed.encode()).hexdigest().upper()\n\ndef ror32(value, bits):\n    return ((value \u003e\u003e bits) | (value \u003c\u003c (32 - bits))) \u0026 0xFFFFFFFF\n\ndef swap_nibbles_byte(b):\n    return ((b \u0026 0x0F) \u003c\u003c 4) | ((b \u0026 0xF0) \u003e\u003e 4)\n\ndef swap_nibbles_32(x):\n    res = 0\n    for i in range(4):\n        b = (x \u003e\u003e (8*i)) \u0026 0xFF\n        nb = swap_nibbles_byte(b)\n        res |= (nb \u003c\u003c (8*i))\n    return res\n```\n\n"}</script>
+    
+    <!-- Cloudflare Web Analytics -->
+    <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6090182987b5451bb264dcd59cd2b600"}'></script>
+  </body>
+</html>

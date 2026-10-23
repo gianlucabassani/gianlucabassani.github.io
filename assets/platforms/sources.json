@@ -1,0 +1,8 @@
+{
+  "note": "Original platform logos downloaded from their official websites; kept in their original colors.",
+  "sources": {
+    "hackthebox.svg": "https://www.hackthebox.com/hubfs/raw_assets/HackTheBox/56/js_client_assets/assets/nav-logo-3JkQrnNl.svg",
+    "tryhackme.svg": "https://assets.tryhackme.com/img/logo/tryhackme_logo_full.svg",
+    "vulnhub.svg": "https://www.vulnhub.com/static/img/logo.svg"
+  }
+}

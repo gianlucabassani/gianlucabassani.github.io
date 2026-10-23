@@ -1,0 +1,6 @@
+{
+  "tool": "Built-in image generation",
+  "asset": "/assets/cyberpunk-digital-graffiti.webp",
+  "brief": "Digital cyberpunk/vaporwave graffiti: angular broken neon tag gestures, pixel-sorted fragments, dithering, CRT scanline patches, warped wireframe fragments, broken arcs and glitch slashes. Muted violet, icy blue, cyan and small hot-pink highlights on plum-black. Sparse central 65 percent; denser expressive marks at the edges. No physical spray-painted wall, bubble lettering, readable writing, city or UI panels.",
+  "treatment": "Converted the generated original to 1920px-wide WebP at quality 82. Applied as a faint screen-blended wallpaper; reading pages use a quieter opacity."
+}

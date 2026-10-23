@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="preload" href="/assets/fonts/oxanium-variable.ttf" as="font" type="font/ttf" crossorigin />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    
+    
+    <meta name="author" content="Gianluca Bassani" />
+
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+
+    <!-- Single Page App redirect receiver for GitHub Pages -->
+    <script type="text/javascript">
+      (function(l) {
+        if (l.search[1] === '/' ) {
+          var decoded = l.search.slice(1).split('&').map(function(s) { 
+            return s.replace(/~and~/g, '&')
+          }).join('?');
+          window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location))
+    </script>
+    <script type="module" crossorigin src="/assets/index-Bt1iUacl.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-BFjX5Hv_.css">
+  
+    <link rel="stylesheet" href="/assets/ArticlePage-BEHUn5zE.css" />
+    <title>Space | Gianluca Bassani</title>
+    <meta name="description" content="Reconstruct hidden coordinates from a distance matrix using MDS and PCA to reveal the flag embedded in 2D point clouds." />
+    <link rel="canonical" href="https://gianlucabassani.gitlab.io/ctf/space/" />
+    <meta property="og:title" content="Space | Gianluca Bassani" />
+    <meta property="og:description" content="Reconstruct hidden coordinates from a distance matrix using MDS and PCA to reveal the flag embedded in 2D point clouds." />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://gianlucabassani.gitlab.io/ctf/space/" />
+    <meta property="og:site_name" content="Gianluca Bassani" />
+    <meta property="og:image" content="https://gianlucabassani.gitlab.io/assets/previews/ctf-space.png" />
+    <meta property="og:image:alt" content="Space | Gianluca Bassani" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="article:published_time" content="2025-11-26" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Space | Gianluca Bassani" />
+    <meta name="twitter:description" content="Reconstruct hidden coordinates from a distance matrix using MDS and PCA to reveal the flag embedded in 2D point clouds." />
+    <meta name="twitter:image" content="https://gianlucabassani.gitlab.io/assets/previews/ctf-space.png" />
+    <meta name="twitter:image:alt" content="Space | Gianluca Bassani" />
+</head>
+
+  <body>
+    <div id="root"><a class="skip-link" href="#route-content">Skip to content</a><div role="region" aria-label="Notifications (F8)" tabindex="-1" style="pointer-events:none"><ol tabindex="-1" class="fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]"></ol></div><header class="site-navigation"><svg class="site-navigation-frame site-navigation-frame-desktop" viewBox="0 0 1200 88" preserveAspectRatio="none" aria-hidden="true"><path class="site-navigation-surface" d="M20 1H1167L1199 25V69H440L422 87H1V20Z"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-3;--trace-next:-40;--trace-last:-74;stroke-dasharray:2.8 97.2;animation-duration:8.3s;animation-delay:-2.1s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-17;--trace-next:-54;--trace-last:-88;stroke-dasharray:1.4 98.6;animation-duration:11.7s;animation-delay:-7.6s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:270 90% 78%;--trace-start:-31;--trace-next:-68;--trace-last:-2;stroke-dasharray:3.6 96.4;animation-duration:9.1s;animation-delay:-4.8s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-44;--trace-next:-81;--trace-last:-15;stroke-dasharray:1.8 98.2;animation-duration:13.3s;animation-delay:-9.2s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-53;--trace-next:-90;--trace-last:-24;stroke-dasharray:2.4 97.6;animation-duration:7.7s;animation-delay:-1.3s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:270 90% 78%;--trace-start:-66;--trace-next:-3;--trace-last:-37;stroke-dasharray:3.2 96.8;animation-duration:10.9s;animation-delay:-6.4s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-78;--trace-next:-15;--trace-last:-49;stroke-dasharray:1.2 98.8;animation-duration:12.7s;animation-delay:-3.5s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-88;--trace-next:-25;--trace-last:-59;stroke-dasharray:2.1 97.9;animation-duration:9.7s;animation-delay:-8.1s"></path></svg><svg class="site-navigation-frame site-navigation-frame-mobile" viewBox="0 0 400 82" preserveAspectRatio="none" aria-hidden="true"><path class="site-navigation-surface" d="M10 1H389L399 11V73L391 81H1V10Z"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-3;--trace-next:-40;--trace-last:-74;stroke-dasharray:2.8 97.2;animation-duration:8.3s;animation-delay:-2.1s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-17;--trace-next:-54;--trace-last:-88;stroke-dasharray:1.4 98.6;animation-duration:11.7s;animation-delay:-7.6s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:270 90% 78%;--trace-start:-31;--trace-next:-68;--trace-last:-2;stroke-dasharray:3.6 96.4;animation-duration:9.1s;animation-delay:-4.8s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-44;--trace-next:-81;--trace-last:-15;stroke-dasharray:1.8 98.2;animation-duration:13.3s;animation-delay:-9.2s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-53;--trace-next:-90;--trace-last:-24;stroke-dasharray:2.4 97.6;animation-duration:7.7s;animation-delay:-1.3s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:270 90% 78%;--trace-start:-66;--trace-next:-3;--trace-last:-37;stroke-dasharray:3.2 96.8;animation-duration:10.9s;animation-delay:-6.4s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-78;--trace-next:-15;--trace-last:-49;stroke-dasharray:1.2 98.8;animation-duration:12.7s;animation-delay:-3.5s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-88;--trace-next:-25;--trace-last:-59;stroke-dasharray:2.1 97.9;animation-duration:9.7s;animation-delay:-8.1s"></path></svg><div class="site-navigation-inner"><a class="site-brand" aria-label="Gianluca Bassani home" href="/"><span class="site-brand-copy"><span class="site-brand-name">Gianluca<span class="site-brand-break"><br/></span> Bassani</span><small><strong>0xPr1m3</strong><span class="site-brand-separator" aria-hidden="true">·</span><span class="site-brand-role">Cybersecurity</span></small></span></a><button class="site-menu-toggle" type="button" aria-controls="site-menu" aria-expanded="false" aria-label="Open navigation"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><nav id="site-menu" aria-label="Main navigation" class="site-menu"><a href="/about">About Me</a><a href="/projects">Projects</a><a href="/blog">Blog</a><a href="/boxes">Box Writeups</a><a aria-current="page" href="/ctf">CTF Solves</a><a href="/skills">Skills</a><a class="site-console-link" href="/terminal">CLI <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a></nav></div></header><div id="route-content" tabindex="-1"><!--$--><div class="min-h-screen bg-background cyber-grid reader-page relative"><div aria-hidden="true" class="page-ambient page-ambient-scattered" style="--ambient-primary:hsl(25,95%,53%);--ambient-secondary:hsl(15,90%,55%);--ambient-tertiary:hsl(25,95%,53%)"></div><div class="fixed top-0 left-0 w-full h-1 bg-muted z-50"><div class="h-full bg-gradient-orange transition-all duration-100" style="width:0%"></div></div><div class="bg-background/80 backdrop-blur-sm border-b border-border relative z-10"><div class="reader-header mx-auto px-4 py-4"><div class="article-navigation"><nav aria-label="Article navigation"><a class="site-button inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 site-button-outline min-h-11 px-4 py-2 article-back-link" data-size="default" href="/"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left" aria-hidden="true"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>Back to Home</a></nav><div class="article-reading-tools"><span><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>3<!-- --> min read</span><button type="button"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-link" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>Copy link</button><span role="status"></span></div></div><div class="flex flex-wrap items-center gap-x-4 gap-y-2 mb-4"><div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 hover:bg-secondary/15 tag bg-success/20 border-success/40 text-success">EASY</div><span class="text-2xl">🤖</span><span class="text-sm text-muted-foreground font-mono">100<!-- --> pts</span></div><h1 class="text-2xl sm:text-3xl font-display font-bold reader-title mb-2">Space</h1><div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-foreground"><div class="flex items-center gap-1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar w-4 h-4"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>26 Nov 2025</div><div class="flex items-center gap-1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trophy w-4 h-4"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>HackTheBox</div></div></div></div><main id="main-content" class="reader-layout reader-container mx-auto relative z-10 " tabindex="-1"><aside class="reader-sidebar"><div class="reader-toc reader-toc-desktop"><p>On this page</p><nav aria-label="Article chapters"><a href="#section-description" class="">Description</a><a href="#section-knowledge" class="">Knowledge</a><a href="#section-dimensionality-reduction-tools-used" class="">Dimensionality Reduction Tools Used</a><a href="#section-provided-input-data" class="">Provided Input Data</a><a href="#section-npy-file-analysis" class="">npy file analysis</a><a href="#section-exploitation-logic" class="">Exploitation Logic</a><a href="#section-code-used" class="">Code Used</a><a href="#section-step-by-step-reconstruction" class="">Step-by-Step Reconstruction</a><a href="#section-final-step-retrieve-the-flag" class="">Final Step — Retrieve the Flag</a></nav></div><details class="reader-toc reader-toc-mobile"><summary>On this page <span>9<!-- --> chapters</span></summary><nav aria-label="Article chapters"><a href="#section-description" class="">Description</a><a href="#section-knowledge" class="">Knowledge</a><a href="#section-dimensionality-reduction-tools-used" class="">Dimensionality Reduction Tools Used</a><a href="#section-provided-input-data" class="">Provided Input Data</a><a href="#section-npy-file-analysis" class="">npy file analysis</a><a href="#section-exploitation-logic" class="">Exploitation Logic</a><a href="#section-code-used" class="">Code Used</a><a href="#section-step-by-step-reconstruction" class="">Step-by-Step Reconstruction</a><a href="#section-final-step-retrieve-the-flag" class="">Final Step — Retrieve the Flag</a></nav></details></aside><div class="reader-body"><section class="reader-summary" aria-label="Article introduction"><p class="reader-summary-text">Reconstruct hidden coordinates from a distance matrix using MDS and PCA to reveal the flag embedded in 2D point clouds.</p><ul class="reader-summary-topics" aria-label="Topics"><li>MDS</li><li>PCA</li><li>Python</li><li>Distance Matrix</li><li>Dimensionality Reduction</li></ul></section><div style="--hover-theme:var(--theme-orange)" class="rounded-lg border bg-card text-card-foreground shadow-sm relative overflow-hidden reader-article theme-orange border-orange-500/20 hover:ring-1 hover:ring-orange-500/20"><div class="p-6 pt-0 reader-content"><div class="prose prose-invert prose-orange reader-prose"><hr/>
+<h2 id="section-description"><a href="#section-description" class="heading-link">Description</a></h2>
+<p>You are assigned the important mission of locating and identifying the infamous space hacker. Your investigation begins by analyzing the data patterns and breach points identified in the latest cyber-attacks. Use the provided coordinates of the last known signal origins to narrow down his potential hideouts. Utilize advanced tracking algorithms to follow the digital footprint left by the hacker.</p>
+<hr/>
+<h2 id="section-knowledge"><a href="#section-knowledge" class="heading-link">Knowledge</a></h2>
+<p><strong>Distance matrices</strong> encode pairwise distances between points.
+When analyzed correctly with dimensionality‑reduction algorithms, these distances can be interpreted as coordinates that reproduce the underlying spatial pattern.</p>
+<p>To reconstruct the original structure hidden inside the matrix we require:</p>
+<ul>
+<li>
+<p>A valid <strong>distance matrix</strong></p>
+</li>
+<li>
+<p>A <strong>dimensionality reduction method</strong> capable of handling precomputed distances</p>
+</li>
+<li>
+<p>Post‑processing to <strong>rotate</strong>, <strong>align</strong>, and <strong>visualize</strong> the revealed structure</p>
+</li>
+</ul>
+<hr/>
+<h2 id="section-dimensionality-reduction-tools-used"><a href="#section-dimensionality-reduction-tools-used" class="heading-link">Dimensionality Reduction Tools Used</a></h2>
+<p>Two main algorithms were needed:</p>
+<ul>
+<li>
+<p><strong>MDS (Multidimensional Scaling)</strong><br/>
+<!-- -->Reconstructs point positions based solely on distances.</p>
+</li>
+<li>
+<p><strong>PCA (Principal Component Analysis)</strong><br/>
+<!-- -->Rotates and aligns reconstructed points along principal axes.</p>
+</li>
+</ul>
+<p>Both contribute to converting the raw matrix into readable structure.</p>
+<hr/>
+<h2 id="section-provided-input-data"><a href="#section-provided-input-data" class="heading-link">Provided Input Data</a></h2>
+<p>The challenge included one file:</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>Code</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="Code block, horizontally scrollable"><code>distance_matrix.npy
+</code></pre></div>
+<p>This file contained a <strong>1808 × 1808</strong> symmetric distance matrix with zeros on the diagonal and no missing values.</p>
+<hr/>
+<h2 id="section-npy-file-analysis"><a href="#section-npy-file-analysis" class="heading-link">npy file analysis</a></h2>
+<ul>
+<li>
+<p>The matrix encodes <strong>pairwise distances of points in an unknown 2D space</strong>.</p>
+</li>
+<li>
+<p>If reconstructed correctly, the shape forms <strong>letters</strong>, which together reveal the hidden flag.</p>
+</li>
+<li>
+<p>Noise and orientation distort the message unless corrected.</p>
+</li>
+</ul>
+<p>Key observations:</p>
+<ul>
+<li>
+<p>Distances were consistent and clean.</p>
+</li>
+<li>
+<p>A strong concentration of small distances implied clusters forming characters.</p>
+</li>
+<li>
+<p>The hacker relied on geometric reconstruction to hide his signal.</p>
+</li>
+</ul>
+<hr/>
+<h2 id="section-exploitation-logic"><a href="#section-exploitation-logic" class="heading-link">Exploitation Logic</a></h2>
+<p>To reveal the hidden flag:</p>
+<ol>
+<li>
+<p><strong>Load the distance matrix</strong><br/>
+<!-- -->This restores the full pairwise relationship between all encoded points.</p>
+</li>
+<li>
+<p><strong>Use MDS to reconstruct 2D coordinates</strong><br/>
+<!-- -->MDS converts distances → positions while roughly preserving spatial relationships.</p>
+</li>
+<li>
+<p><strong>Center and rotate the result using PCA</strong><br/>
+<!-- -->PCA aligns the cloud of points to remove skew and random rotation, making the lettering upright.</p>
+</li>
+<li>
+<p><strong>Flip axes if necessary</strong><br/>
+<!-- -->Dimensionality‑reduction can mirror results; flipping restores correct orientation.</p>
+</li>
+<li>
+<p><strong>Plot using small markers</strong><br/>
+<!-- -->Ensures characters are crisp and easily readable.</p>
+</li>
+</ol>
+<p>After this cleaning, a clear handwritten‑style string appears.</p>
+<hr/>
+<h2 id="section-code-used"><a href="#section-code-used" class="heading-link">Code Used</a></h2>
+<p>Only the essential steps required to reconstruct and clean the hidden string:</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>python</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="python block, horizontally scrollable"><code class="hljs language-python"><span class="hljs-comment">#imports</span>
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+<span class="hljs-keyword">from</span> sklearn.manifold <span class="hljs-keyword">import</span> MDS
+<span class="hljs-keyword">from</span> sklearn.decomposition <span class="hljs-keyword">import</span> PCA
+<span class="hljs-keyword">import</span> os
+
+<span class="hljs-comment"># Load distance matrix</span>
+fn = <span class="hljs-string">&quot;distance_matrix.npy&quot;</span>
+<span class="hljs-keyword">assert</span> os.path.exists(fn), <span class="hljs-string">f&quot;<span class="hljs-subst">{fn}</span> not found&quot;</span>
+D = np.load(fn)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Matrix shape:&quot;</span>, D.shape)
+
+<span class="hljs-comment"># Check matrix properties</span>
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;dtype:&quot;</span>, D.dtype)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;min, max, mean:&quot;</span>, np.nanmin(D), np.nanmax(D), np.nanmean(D))
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Diagonal (first 10):&quot;</span>, np.diag(D)[:<span class="hljs-number">10</span>])
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Symmetry check:&quot;</span>, np.nanmax(np.<span class="hljs-built_in">abs</span>(D - D.T)))
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Any NaN or inf:&quot;</span>, np.isnan(D).<span class="hljs-built_in">any</span>(), np.isinf(D).<span class="hljs-built_in">any</span>())
+
+<span class="hljs-comment"># Multidimensional Scaling (MDS)</span>
+mds = MDS(n_components=<span class="hljs-number">2</span>, dissimilarity=<span class="hljs-string">&#x27;precomputed&#x27;</span>, random_state=<span class="hljs-number">0</span>, n_init=<span class="hljs-number">4</span>, max_iter=<span class="hljs-number">300</span>)
+coords = mds.fit_transform(D)
+
+<span class="hljs-comment"># Plot</span>
+plt.figure(figsize=(<span class="hljs-number">7</span>,<span class="hljs-number">5</span>))
+plt.scatter(coords[:,<span class="hljs-number">0</span>], coords[:,<span class="hljs-number">1</span>], s=<span class="hljs-number">6</span>)
+plt.title(<span class="hljs-string">&quot;MDS 2D projection&quot;</span>)
+plt.show()
+
+<span class="hljs-comment"># Center and rotate points using PCA</span>
+coords_centered = coords - coords.mean(<span class="hljs-number">0</span>)
+coords_pca = PCA(n_components=<span class="hljs-number">2</span>).fit_transform(coords_centered)
+
+<span class="hljs-comment"># Plot rotated</span>
+plt.figure(figsize=(<span class="hljs-number">7</span>,<span class="hljs-number">5</span>))
+plt.scatter(coords_pca[:,<span class="hljs-number">0</span>], coords_pca[:,<span class="hljs-number">1</span>], s=<span class="hljs-number">6</span>)
+plt.axis(<span class="hljs-string">&#x27;equal&#x27;</span>)
+plt.title(<span class="hljs-string">&quot;PCA-aligned projection&quot;</span>)
+plt.show()
+
+<span class="hljs-comment"># Flip Y-axis for readability</span>
+coords_pca[:,<span class="hljs-number">1</span>] *= -<span class="hljs-number">1</span>
+
+plt.figure(figsize=(<span class="hljs-number">7</span>,<span class="hljs-number">5</span>))
+plt.scatter(coords_pca[:,<span class="hljs-number">0</span>], coords_pca[:,<span class="hljs-number">1</span>], s=<span class="hljs-number">6</span>)
+plt.axis(<span class="hljs-string">&#x27;equal&#x27;</span>)
+plt.title(<span class="hljs-string">&quot;Corrected orientation&quot;</span>)
+plt.show()
+
+<span class="hljs-comment">#Final Clean Plot</span>
+plt.figure(figsize=(<span class="hljs-number">8</span>,<span class="hljs-number">6</span>))
+plt.plot(coords_pca[:,<span class="hljs-number">0</span>], coords_pca[:,<span class="hljs-number">1</span>], <span class="hljs-string">&#x27;.&#x27;</span>, ms=<span class="hljs-number">3</span>)
+plt.axis(<span class="hljs-string">&#x27;equal&#x27;</span>)
+plt.title(<span class="hljs-string">&quot;Final readable flag&quot;</span>)
+plt.show()
+
+
+</code></pre></div>
+<p>This pipeline converts the hacker’s distance signature back into readable text.</p>
+<hr/>
+<h2 id="section-step-by-step-reconstruction"><a href="#section-step-by-step-reconstruction" class="heading-link">Step-by-Step Reconstruction</a></h2>
+<ol>
+<li>
+<p><strong>MDS projection</strong><br/>
+<!-- -->Reveals a rough outline of characters hidden within point clusters.</p>
+</li>
+<li>
+<p><strong>PCA alignment</strong><br/>
+<!-- -->Fixes rotation and centralizes the structure.</p>
+</li>
+<li>
+<p><strong>Axis flip</strong><br/>
+<!-- -->Corrects the final orientation.</p>
+</li>
+<li>
+<p><strong>Fine plotting</strong><br/>
+<!-- -->Makes the flag fully legible.</p>
+</li>
+</ol>
+<hr/>
+<h2 id="section-final-step-retrieve-the-flag"><a href="#section-final-step-retrieve-the-flag" class="heading-link">Final Step — Retrieve the Flag</a></h2>
+<p>The plotted reconstruction clearly reveals:</p>
+<p><button type="button" class="reader-image" aria-label="Enlarge image: space"><img src="/assets/ctf/space.jpg" alt="space" width="1476" height="1165" loading="lazy" decoding="async"/><span>Tap to enlarge</span></button></p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>Code</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="Code block, horizontally scrollable"><code>HTB{d1s&lt;SNIP&gt;c3}
+</code></pre></div></div><dialog class="reader-image-dialog" aria-label="Enlarged article image"><button type="button" class="reader-image-close" aria-label="Close image"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button></dialog></div></div></div></main></div><!--/$--></div></div><script id="article-data" type="application/json">{"kind":"ctf","entry":{"id":"space","title":"Space","competition":"HackTheBox","category":"ai","difficulty":"easy","points":100,"tags":["MDS","PCA","Python","Distance Matrix","Dimensionality Reduction"],"date":"2025-11-26","summary":"Reconstruct hidden coordinates from a distance matrix using MDS and PCA to reveal the flag embedded in 2D point clouds.","contentPath":"space.md","previewImage":"/assets/previews/ctf-space.png","kind":"ctf","folder":"ctf","route":"ctf/space"},"route":"ctf/space","content":"# AI/ML AI Space Writeup\n\n---\n\n## Description\n\nYou are assigned the important mission of locating and identifying the infamous space hacker. Your investigation begins by analyzing the data patterns and breach points identified in the latest cyber-attacks. Use the provided coordinates of the last known signal origins to narrow down his potential hideouts. Utilize advanced tracking algorithms to follow the digital footprint left by the hacker.\n\n---\n\n# Knowledge\n\n**Distance matrices** encode pairwise distances between points. \nWhen analyzed correctly with dimensionality‑reduction algorithms, these distances can be interpreted as coordinates that reproduce the underlying spatial pattern.\n\nTo reconstruct the original structure hidden inside the matrix we require:\n\n- A valid **distance matrix**\n    \n- A **dimensionality reduction method** capable of handling precomputed distances\n    \n- Post‑processing to **rotate**, **align**, and **visualize** the revealed structure\n    \n\n---\n\n## Dimensionality Reduction Tools Used\n\nTwo main algorithms were needed:\n\n- **MDS (Multidimensional Scaling)**  \n    Reconstructs point positions based solely on distances.\n    \n- **PCA (Principal Component Analysis)**  \n    Rotates and aligns reconstructed points along principal axes.\n    \n\nBoth contribute to converting the raw matrix into readable structure.\n\n---\n\n# Provided Input Data\n\nThe challenge included one file:\n\n```\ndistance_matrix.npy\n```\n\nThis file contained a **1808 × 1808** symmetric distance matrix with zeros on the diagonal and no missing values.\n\n---\n\n## npy file analysis\n\n- The matrix encodes **pairwise distances of points in an unknown 2D space**.\n    \n- If reconstructed correctly, the shape forms **letters**, which together reveal the hidden flag.\n    \n- Noise and orientation distort the message unless corrected.\n    \n\nKey observations:\n\n- Distances were consistent and clean.\n    \n- A strong concentration of small distances implied clusters forming characters.\n    \n- The hacker relied on geometric reconstruction to hide his signal.\n    \n\n---\n\n# Exploitation Logic\n\nTo reveal the hidden flag:\n\n1. **Load the distance matrix**  \n    This restores the full pairwise relationship between all encoded points.\n    \n2. **Use MDS to reconstruct 2D coordinates**  \n    MDS converts distances → positions while roughly preserving spatial relationships.\n    \n3. **Center and rotate the result using PCA**  \n    PCA aligns the cloud of points to remove skew and random rotation, making the lettering upright.\n    \n4. **Flip axes if necessary**  \n    Dimensionality‑reduction can mirror results; flipping restores correct orientation.\n    \n5. **Plot using small markers**  \n    Ensures characters are crisp and easily readable.\n    \n\nAfter this cleaning, a clear handwritten‑style string appears.\n\n---\n\n# Code Used\n\nOnly the essential steps required to reconstruct and clean the hidden string:\n\n```python\n#imports\nimport numpy as np\nimport matplotlib.pyplot as plt\nfrom sklearn.manifold import MDS\nfrom sklearn.decomposition import PCA\nimport os\n\n# Load distance matrix\nfn = \"distance_matrix.npy\"\nassert os.path.exists(fn), f\"{fn} not found\"\nD = np.load(fn)\nprint(\"Matrix shape:\", D.shape)\n\n# Check matrix properties\nprint(\"dtype:\", D.dtype)\nprint(\"min, max, mean:\", np.nanmin(D), np.nanmax(D), np.nanmean(D))\nprint(\"Diagonal (first 10):\", np.diag(D)[:10])\nprint(\"Symmetry check:\", np.nanmax(np.abs(D - D.T)))\nprint(\"Any NaN or inf:\", np.isnan(D).any(), np.isinf(D).any())\n\n# Multidimensional Scaling (MDS)\nmds = MDS(n_components=2, dissimilarity='precomputed', random_state=0, n_init=4, max_iter=300)\ncoords = mds.fit_transform(D)\n\n# Plot\nplt.figure(figsize=(7,5))\nplt.scatter(coords[:,0], coords[:,1], s=6)\nplt.title(\"MDS 2D projection\")\nplt.show()\n\n# Center and rotate points using PCA\ncoords_centered = coords - coords.mean(0)\ncoords_pca = PCA(n_components=2).fit_transform(coords_centered)\n\n# Plot rotated\nplt.figure(figsize=(7,5))\nplt.scatter(coords_pca[:,0], coords_pca[:,1], s=6)\nplt.axis('equal')\nplt.title(\"PCA-aligned projection\")\nplt.show()\n\n# Flip Y-axis for readability\ncoords_pca[:,1] *= -1\n\nplt.figure(figsize=(7,5))\nplt.scatter(coords_pca[:,0], coords_pca[:,1], s=6)\nplt.axis('equal')\nplt.title(\"Corrected orientation\")\nplt.show()\n\n#Final Clean Plot\nplt.figure(figsize=(8,6))\nplt.plot(coords_pca[:,0], coords_pca[:,1], '.', ms=3)\nplt.axis('equal')\nplt.title(\"Final readable flag\")\nplt.show()\n\n\n```\n\nThis pipeline converts the hacker’s distance signature back into readable text.\n\n---\n\n# Step-by-Step Reconstruction\n\n1. **MDS projection**  \n    Reveals a rough outline of characters hidden within point clusters.\n    \n2. **PCA alignment**  \n    Fixes rotation and centralizes the structure.\n    \n3. **Axis flip**  \n    Corrects the final orientation.\n    \n4. **Fine plotting**  \n    Makes the flag fully legible.\n    \n\n---\n\n# Final Step — Retrieve the Flag\n\nThe plotted reconstruction clearly reveals:\n\n![space](/assets/ctf/space.jpg)\n\n```\nHTB{d1s\u003cSNIP\u003ec3}\n```"}</script>
+    
+    <!-- Cloudflare Web Analytics -->
+    <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6090182987b5451bb264dcd59cd2b600"}'></script>
+  </body>
+</html>

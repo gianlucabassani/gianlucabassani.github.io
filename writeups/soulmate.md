@@ -111,14 +111,14 @@ index.php               [Status: 200, Size: 16688, Words: 6110, Lines: 306, Dura
 
 - Main Soulmate site allows registration and login.
 
-![soulmate_1](https://gianlucabassani.github.io/assets/soulmate/soulmate_1.jpg)
+![soulmate_1](/assets/soulmate/soulmate_1.jpg)
 
 - No XSS vulnerability found.
 - No upload vulnerability found.
 
 - Subdomain ftp hosts CrushFTP with login panel.
 
-![soulmate_2](https://gianlucabassani.github.io/assets/soulmate/soulmate_2.png)
+![soulmate_2](/assets/soulmate/soulmate_2.png)
 
 ---
 
@@ -144,7 +144,7 @@ python3 cve-2025-31161.py --target_host ftp.soulmate.htb --port 80 --target_user
 
 **Access Obtained:**
 - Login successful with credentials prime1:prime123.
-![soulmate_3](https://gianlucabassani.github.io/assets/soulmate/soulmate_3.jpg)
+![soulmate_3](/assets/soulmate/soulmate_3.jpg)
 
 - File upload limited by CrushFTP configuration.
 
@@ -152,11 +152,11 @@ python3 cve-2025-31161.py --target_host ftp.soulmate.htb --port 80 --target_user
 ---
 ### Access to Ben's Account
 - Using CrushFTP's user management panel, changed password for user `ben`.
-![soulmate_4](https://gianlucabassani.github.io/assets/soulmate/soulmate_4.jpg)
+![soulmate_4](/assets/soulmate/soulmate_4.jpg)
 
 - Now possible to upload files directly to WebProd directory.
 
-![soulmate_5](https://gianlucabassani.github.io/assets/soulmate/soulmate_5.jpg)
+![soulmate_5](/assets/soulmate/soulmate_5.jpg)
 
 ---
 

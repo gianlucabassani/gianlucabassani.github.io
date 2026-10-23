@@ -1,0 +1,14 @@
+{
+  "browsint.webp": {
+    "source": "Browsint repository: docs/images/Browsint_LOGO.png",
+    "treatment": "Original logo, background removed with the built-in image generation tool; resized to WebP."
+  },
+  "gosint.webp": {
+    "source": "Sibling variant of the original Browsint logo, created with the built-in image generation tool.",
+    "brief": "Preserve the blue-and-gold armored spider, banner and shield. Use GOSINT and WEB INTELLIGENCE. Keep the emblem upright, symmetric and front-facing, with streamlined side fins and transparent background."
+  },
+  "nidavellir.webp": {
+    "source": "Nidavellir repository: cyber-range/webui/static/anvil_emblem.png",
+    "treatment": "Original project emblem, resized to WebP."
+  }
+}

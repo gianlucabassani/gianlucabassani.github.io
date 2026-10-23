@@ -1,0 +1,56 @@
+{
+  "devhub": {
+    "name": "DevHub",
+    "machineId": 903,
+    "sourcePage": "https://labs.hackthebox.com/achievement/machine/2786533/903",
+    "sourceImage": "https://cdn.services-k8s.prod.aws.htb.systems/content/machines/avatar/a1e13a3f-a4e4-4757-94e4-32b2e0d693c0-1779887169.png"
+  },
+  "reactor": {
+    "name": "Reactor",
+    "machineId": 900,
+    "sourcePage": "https://labs.hackthebox.com/achievement/machine/670935/900",
+    "sourceImage": "https://cdn.services-k8s.prod.aws.htb.systems/content/machines/avatar/a1c58c3b-0931-413d-9394-5fae4350ec4c-1778698333.png"
+  },
+  "airtouch": {
+    "name": "AirTouch",
+    "machineId": 823,
+    "sourcePage": "https://labs.hackthebox.com/achievement/machine/1069235/823",
+    "sourceImage": "https://cdn.services-k8s.prod.aws.htb.systems/content/machines/avatar/a0d795c4-82a3-45a8-941d-23fc1d0235f7.png"
+  },
+  "environment": {
+    "name": "Environment",
+    "machineId": 659,
+    "sourcePage": "https://labs.hackthebox.com/achievement/machine/4935/659",
+    "sourceImage": "https://cdn.services-k8s.prod.aws.htb.systems/content/machines/avatar/9ebe58cb-d60c-4d4b-b392-7f05c84819d5.png"
+  },
+  "editor": {
+    "name": "Editor",
+    "machineId": 684,
+    "sourcePage": "https://labs.hackthebox.com/achievement/machine/1517372/684",
+    "sourceImage": "https://cdn.services-k8s.prod.aws.htb.systems/content/machines/avatar/9f5d66d4-6fd5-4de0-808b-fd1568184c8e.png"
+  },
+  "soulmate": {
+    "name": "Soulmate",
+    "machineId": 721,
+    "sourcePage": "https://labs.hackthebox.com/achievement/machine/1984684/721",
+    "sourceImage": "https://cdn.services-k8s.prod.aws.htb.systems/content/machines/avatar/9fc816a0-cb01-44bf-a506-fb86f93bf8bd.png"
+  },
+  "puppy": {
+    "name": "Puppy",
+    "machineId": 661,
+    "sourcePage": "https://labs.hackthebox.com/achievement/machine/1655119/661",
+    "sourceImage": "https://cdn.services-k8s.prod.aws.htb.systems/content/machines/avatar/9ee8abd7-3161-462f-acb5-1cd9b72e9946.png"
+  },
+  "darkzero": {
+    "name": "DarkZero",
+    "machineId": 754,
+    "sourcePage": "https://labs.hackthebox.com/achievement/machine/392375/754",
+    "sourceImage": "https://cdn.services-k8s.prod.aws.htb.systems/content/machines/avatar/9ff4ba31-6429-4ec3-bab5-6e77f0824285.png"
+  },
+  "touch": {
+    "name": "Touch",
+    "machineId": 987,
+    "sourcePage": "https://labs.hackthebox.com/achievement/machine/2786533/987",
+    "sourceImage": "https://cdn.services-k8s.prod.aws.htb.systems/content/machines/avatar/a2cc2bba-5e0b-41f2-842e-2f3d3cee8d22-1789977906.png"
+  }
+}

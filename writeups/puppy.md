@@ -282,7 +282,7 @@ bloodhound-python -u 'levi.james' -p 'KingofAkron2025!' -d puppy.htb -ns 10.10.1
 
 BloodHound confirms 1 domain, 1 computer, 10 users, 56 groups.
 
-![puppy_1](https://gianlucabassani.github.io/assets/puppy/puppy_1.jpg)
+![puppy_1](/assets/puppy/puppy_1.jpg)
 
 ---
 ### DEV Share Access & KeePass
@@ -343,7 +343,7 @@ keepass4brute/keepass4brute.sh recovery.kdbx rockyou.txt
 
 - KeePass database password recovered: `liverpool`
 
-![puppy_2](https://gianlucabassani.github.io/assets/puppy/puppy_2.jpg)
+![puppy_2](/assets/puppy/puppy_2.jpg)
 
 Here the extracted credentials:
 `ADAM SILVER : HJKL2025!`  
@@ -377,7 +377,7 @@ bloodhound-python -u 'ant.edwards' -p 'Antman2025!' -d puppy.htb -ns 10.10.11.70
 
 ### Outbound Object Control via BloodHound
 
-![puppy_3](https://gianlucabassani.github.io/assets/puppy/puppy_3.jpg)
+![puppy_3](/assets/puppy/puppy_3.jpg)
 
 - Now we have generic all over Adam.Silver.
 
@@ -665,9 +665,9 @@ Unknown : FivethChipOnItsWay2025!
 bloodhound-python -u 'steph.cooper_adm' -p 'FivethChipOnItsWay2025!' -d puppy.htb -ns 10.10.11.70 -c All --zip
 ```
 
-![puppy_4](https://gianlucabassani.github.io/assets/puppy/puppy_4.jpg)
+![puppy_4](/assets/puppy/puppy_4.jpg)
 
-![puppy_5](https://gianlucabassani.github.io/assets/puppy/puppy_5.jpg)
+![puppy_5](/assets/puppy/puppy_5.jpg)
 
 - Analysis shows `steph.cooper_adm` has **WriteDacl**, **WriteOwner**, **GenericWrite** over `ADMINISTRATORS` group.
     

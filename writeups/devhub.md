@@ -39,11 +39,11 @@ nmap -sV -sU -T4 --top-ports 200 -oN UDPscan.nmap -Pn 10.129.2.174
 
 Navigating to `http://devhub.htb` (TCP/80) reveals a static landing page serving as an internal index for the development team. The page leaks internal routing information, pointing to an **MCP Inspector** on port `6274` and an **Analytics Dashboard** on localhost port `8888`.
 
-![devhub_1](https://gianlucabassani.github.io/assets/devhub/devhub_1.png)
+![devhub_1](/assets/devhub/devhub_1.png)
 
 Accessing the exposed port `6274` reveals the **MCPJam** application running version `v1.4.2`.
 
-![devhub_2](https://gianlucabassani.github.io/assets/devhub/devhub_2.png)
+![devhub_2](/assets/devhub/devhub_2.png)
 
 ---
 

