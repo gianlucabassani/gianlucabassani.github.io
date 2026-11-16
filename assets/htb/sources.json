@@ -52,5 +52,31 @@
     "machineId": 987,
     "sourcePage": "https://labs.hackthebox.com/achievement/machine/2786533/987",
     "sourceImage": "https://cdn.services-k8s.prod.aws.htb.systems/content/machines/avatar/a2cc2bba-5e0b-41f2-842e-2f3d3cee8d22-1789977906.png"
+  },
+  "autopilot": {
+    "name": "Autopilot",
+    "machineId": 993,
+    "sourcePage": "https://labs.hackthebox.com/achievement/machine/2123326/993",
+    "sourceImage": "https://shadowcat.sh/htb/writeups/autopilot/autopilot_56496bb8878cd50abe0c9910cb9810c9.webp",
+    "note": "Official HTB avatar mirrored by shadowcat.sh; converted locally to 256x256 PNG."
+  },
+  "stream": {
+    "name": "Stream",
+    "machineId": 990,
+    "sourcePage": "https://labs.hackthebox.com/achievement/machine/2123326/990",
+    "sourceImage": "https://shadowcat.sh/htb/writeups/stream/stream_cbfce539a6f9a63ace41a272b3b29f4d.webp",
+    "note": "Official HTB avatar mirrored by shadowcat.sh; converted locally to 256x256 PNG."
+  },
+  "layover": {
+    "name": "Layover",
+    "machineId": 984,
+    "sourcePage": "https://labs.hackthebox.com/achievement/machine/2123326/984",
+    "sourceImage": "https://shadowcat.sh/htb/writeups/layover/layover_d28e7cbd5602fe0bc3276157c20c91e6.webp",
+    "note": "Official HTB avatar mirrored by shadowcat.sh; converted locally to 256x256 PNG."
+  },
+  "unclaimed": {
+    "name": "Unclaimed",
+    "sourceImage": "local crop of the public HTB Unclaimed achievement card",
+    "note": "Cropped from the official HTB machine card and converted locally to 256x256 PNG."
   }
 }
