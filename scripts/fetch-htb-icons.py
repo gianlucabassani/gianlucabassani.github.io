@@ -12,6 +12,8 @@ MACHINES = {
     "editor": ("Editor", 684, 1517372), "soulmate": ("Soulmate", 721, 1984684),
     "puppy": ("Puppy", 661, 1655119), "darkzero": ("DarkZero", 754, 392375),
     "touch": ("Touch", 987, 2786533),
+    "layover": ("Layover", 984, 2123326),
+    "autopilot": ("Autopilot", 993, 2123326), "stream": ("Stream", 990, 2123326),
 }
 DESTINATION = Path(__file__).resolve().parents[1] / "public/assets/htb"
 

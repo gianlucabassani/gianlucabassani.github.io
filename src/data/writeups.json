@@ -159,5 +159,105 @@
     "contentPath": "touch.md",
     "previewImage": "/assets/previews/writeup-touch.png",
     "icon": "/assets/htb/touch.png"
+  },
+  {
+    "id": "autopilot",
+    "title": "Autopilot",
+    "platform": "hackthebox",
+    "difficulty": "insane",
+    "os": "windows",
+    "tags": [
+      "Nextcloud",
+      "WebDAV",
+      "PHP-FPM",
+      "Postfix",
+      "Active Directory",
+      "NTLM Relay",
+      "Thunderbird"
+    ],
+    "date": "2026-10-23",
+    "summary": "Chained a Nextcloud WebDAV upload with the exposed data directory to execute code as grofiles, pivoted through the gromox FPM socket and MySQL to the grommunio admin API, abused a Postfix dbconf hook for Linux root, then relayed WS02's recurring IMAP NTLM authentication to its unsigned SMB, recovered Stephanie's saved Thunderbird login, reversed the XOR in runas.exe for Domain Admin, and read the DC root flag.",
+    "contentPath": "autopilot.md",
+    "previewImage": "/assets/previews/writeup-autopilot.png",
+    "icon": "/assets/htb/autopilot.png"
+  },
+  {
+    "id": "dutybound",
+    "title": "DutyBound",
+    "platform": "hackthebox",
+    "difficulty": "medium",
+    "os": "linux",
+    "tags": [
+      "BCBP",
+      "SQL Injection",
+      "PostgreSQL",
+      "X11",
+      "systemd",
+      "Shell eval"
+    ],
+    "date": "2026-10-28",
+    "summary": "Used a valid IATA BCBP to reach the AirSnacks audit logger, injected a stacked query through the airline-use field, abused the database role's COPY ... TO PROGRAM capability for postgres command execution, pivoted through X11 to dutyfree-kiosk, and turned a writable duty-rate CSV into root via a systemd eval.",
+    "contentPath": "dutybound.md",
+    "previewImage": "/assets/previews/writeup-dutybound.png",
+    "icon": "/assets/htb/dutybound.png"
+  },
+  {
+    "id": "stream",
+    "title": "Stream",
+    "platform": "hackthebox",
+    "difficulty": "medium",
+    "os": "linux",
+    "tags": [
+      "Actuator",
+      "ClickHouse",
+      "Kafka",
+      "XXE",
+      "Kopia",
+      "systemd"
+    ],
+    "date": "2026-10-28",
+    "summary": "Recovered ClickHouse service credentials from an exposed Spring Boot heap dump, used an AIDX XXE to read files as svc-infra, pivoted through Kafka SASL and a bcrypt identity record to martin_cole, then leaked the ClickHouse default password from a Kopia-restored error log and abused a root DLQ timer that executes a ClickHouse user_files formatter to obtain root.",
+    "contentPath": "stream.md",
+    "previewImage": "/assets/previews/writeup-stream.png",
+    "icon": "/assets/htb/stream.png"
+  },
+  {
+    "id": "layover",
+    "title": "Layover",
+    "platform": "hackthebox",
+    "difficulty": "medium",
+    "os": "linux",
+    "tags": [
+      "WiFi",
+      "Cleartext HTTP",
+      "Craft CMS",
+      "Yii",
+      "CUPS"
+    ],
+    "date": "2026-10-28",
+    "summary": "Captured a staff member's cleartext Miles login on open airport Wi-Fi, reused it against Craft CMS, chained an authenticated element-search behavior injection to read the application secrets and decrypt the mail-relay credential, then pivoted to aporter and rooted the portal through a CUPS 2.4.16 local token leak.",
+    "contentPath": "layover.md",
+    "previewImage": "/assets/previews/writeup-layover.png",
+    "icon": "/assets/htb/layover.png"
+  },
+  {
+    "id": "unclaimed",
+    "title": "Unclaimed",
+    "platform": "hackthebox",
+    "difficulty": "medium",
+    "os": "windows",
+    "tags": [
+      "Prompt Injection",
+      "MSSQL",
+      "Impersonation",
+      "SQL Agent",
+      "WinRM",
+      "SeBackupPrivilege"
+    ],
+    "date": "2026-11-14",
+    "summary": "Leaked TracerBot's hidden support override through prompt injection, used it to run arbitrary SQL, impersonated a sysadmin SQL login to enable xp_cmdshell, decrypted a SQL Agent proxy credential by fixing the LEN()/DATALENGTH() truncation, and abused Backup Operators' SeBackupPrivilege over WinRM to read the Administrator root flag.",
+    "contentPath": "unclaimed.md",
+    "previewImage": "/assets/previews/writeup-unclaimed.png",
+    "icon": "/assets/htb/unclaimed.png"
   }
 ]
