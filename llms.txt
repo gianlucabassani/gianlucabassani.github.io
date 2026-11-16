@@ -1,0 +1,71 @@
+# Gianluca Bassani
+
+> Cybersecurity: penetration testing, OSINT tooling and AI-agent security research. Portfolio with security projects, HackTheBox and TryHackMe box writeups, CTF solutions and articles.
+
+All articles are also available as Markdown at the URLs listed under "Markdown sources", and in full in https://gianlucabassani.com/llms-full.txt.
+
+## Pages
+
+- [About](https://gianlucabassani.com/about/): Background, experience and focus areas
+- [Projects](https://gianlucabassani.com/projects/): Open-source security tools and research platforms
+- [Skills](https://gianlucabassani.com/skills/): Technical skills
+- [Certifications](https://gianlucabassani.com/certifications/): Certifications and training
+
+## Projects
+
+- [Browsint](https://gianlucabassani.com/projects/browsint/): Tool for Web OSINT Profiling (completed)
+- [ShellCy](https://gianlucabassani.com/projects/ShellCy/): POSIX Shell in C built from Codecrafters project (completed)
+- [Browphish](https://gianlucabassani.com/projects/browphish/): Basic phishing toolkit (in-progress)
+- [BlockCheat](https://gianlucabassani.com/projects/blockcheat/): A lightweight CLI for Ethereum reconnaissance and exploitation. (in-progress)
+- [Nidavellir](https://gianlucabassani.com/projects/nidavellir/): Enterprise Cyber Arena for testing AI agents & humans (in-progress)
+- [IdaMCP - IDA Pro MCP Plugin](https://gianlucabassani.com/projects/Ida/): Plugin to speed up binary reversing via AI analysis (archived)
+- [Gosint](https://gianlucabassani.com/projects/gosint/): Go-based OSINT & web reconnaissance toolkit (in-progress)
+
+## Articles and writeups
+
+- [Box writeup: Unclaimed](https://gianlucabassani.com/boxes/hackthebox/unclaimed/): Leaked TracerBot's hidden support override through prompt injection, used it to run arbitrary SQL, impersonated a sysadmin SQL login to enable xp_cmdshell, decrypted a SQL Agent proxy credential by fixing the LEN()/DATALENGTH() truncation, and abused Backup Operators' SeBackupPrivilege over WinRM to read the Administrator root flag.
+- [Box writeup: DutyBound](https://gianlucabassani.com/boxes/hackthebox/dutybound/): Used a valid IATA BCBP to reach the AirSnacks audit logger, injected a stacked query through the airline-use field, abused the database role's COPY ... TO PROGRAM capability for postgres command execution, pivoted through X11 to dutyfree-kiosk, and turned a writable duty-rate CSV into root via a systemd eval.
+- [Box writeup: Stream](https://gianlucabassani.com/boxes/hackthebox/stream/): Recovered ClickHouse service credentials from an exposed Spring Boot heap dump, used an AIDX XXE to read files as svc-infra, pivoted through Kafka SASL and a bcrypt identity record to martin_cole, then leaked the ClickHouse default password from a Kopia-restored error log and abused a root DLQ timer that executes a ClickHouse user_files formatter to obtain root.
+- [Box writeup: Layover](https://gianlucabassani.com/boxes/hackthebox/layover/): Captured a staff member's cleartext Miles login on open airport Wi-Fi, reused it against Craft CMS, chained an authenticated element-search behavior injection to read the application secrets and decrypt the mail-relay credential, then pivoted to aporter and rooted the portal through a CUPS 2.4.16 local token leak.
+- [Box writeup: Autopilot](https://gianlucabassani.com/boxes/hackthebox/autopilot/): Chained a Nextcloud WebDAV upload with the exposed data directory to execute code as grofiles, pivoted through the gromox FPM socket and MySQL to the grommunio admin API, abused a Postfix dbconf hook for Linux root, then relayed WS02's recurring IMAP NTLM authentication to its unsigned SMB, recovered Stephanie's saved Thunderbird login, reversed the XOR in runas.exe for Domain Admin, and read the DC root flag.
+- [Article: Casually Hacking Minecraft Dungeons](https://gianlucabassani.com/blog/dungeonsrev/): Speedrun in getting suspended on github by accidentally creating a Minecraft Dungeons mod for editing your character files. (I just wanted to play on linux without losing my progress)
+- [Box writeup: Touch](https://gianlucabassani.com/boxes/hackthebox/touch/): Escalated a Windows kiosk appliance from an unauthenticated device-serial leak used as the default web-console password to RDP access as KioskUser, then hunted a cleartext MySQL root password in a readable maintenance batch file and abused a writable MySQL plugin directory to load a UDF DLL, executing commands as SYSTEM.
+- [CTF solve: Windows eXPerience](https://gianlucabassani.com/ctf/windows/): Decode a custom Windows activation protocol, recover obfuscated license data, and generate a valid activation token to unlock the system.
+- [Box writeup: DevHub](https://gianlucabassani.com/boxes/hackthebox/devhub/): Exploited an RCE in MCPJam (CVE-2026-23744) for initial access, performed lateral movement by extracting a Jupyter Lab token from procfs and tunneling via SSH, and escalated to root by extracting hardcoded credentials to abuse a hidden endpoint in an internal Flask API.
+- [Box writeup: Reactor](https://gianlucabassani.com/boxes/hackthebox/reactor/): Gained initial access by exploiting a React/Next.js command execution flaw, retrieved credentials from an internal SQLite database, and escalated to root through an exposed Node.js inspector debugger session.
+- [CTF solve: WebDAV](https://gianlucabassani.com/ctf/webdav/): Discover a WebDAV endpoint via fuzzing and exploit unsafe HTTP methods to bypass file upload restrictions and achieve RCE.
+- [Box writeup: AirTouch](https://gianlucabassani.com/boxes/hackthebox/airtouch/): Compromised a multi-tier wireless environment by exploiting SNMP info leakage, pivoting through a WPA2-PSK network to a router, and executing Evil Twin attack against WPA2-Enterprise to capture administrative creds.
+- [CTF solve: Space](https://gianlucabassani.com/ctf/space/): Reconstruct hidden coordinates from a distance matrix using MDS and PCA to reveal the flag embedded in 2D point clouds.
+- [CTF solve: Fittest](https://gianlucabassani.com/ctf/fittest/): Defeat a vulnerable smart‑contract creature by reducing its life points and looting its balance using a single strong attack.
+- [Box writeup: DarkZero](https://gianlucabassani.com/boxes/hackthebox/darkzero/): Compromised a Windows domain by pivoting through MSSQL Linked Servers, escalating to SYSTEM via a Kernel race condition (CVE-2024-30088), and performing a cross-domain DCSync attack by coercing authentication to capture a TGT.
+- [Box writeup: Puppy](https://gianlucabassani.com/boxes/hackthebox/puppy/): Compromised an Active Directory domain controller by exploiting weak secrets management, abusing overly permissive ACLs, and leveraging DPAPI to recover high-privilege credentials, culminating in a full domain compromise via a DCSync attack.
+- [Box writeup: Soulmate](https://gianlucabassani.com/boxes/hackthebox/soulmate/): Exploited a CrushFTP authentication bypass vulnerability (CVE-2025-31161) to gain initial access, then used an exposed internal Erlang service to escalate privileges to root.
+- [Box writeup: Editor](https://gianlucabassani.com/boxes/hackthebox/editor/): XWiki 15.10.8 vulnerable to RCE (CVE-2025-24893) with subsequent privilege escalation via Netdata SUID binaries, resulting in full system compromise.
+- [Box writeup: Environment](https://gianlucabassani.com/boxes/hackthebox/environment/): Laravel application with login bypass, file upload vulnerability, and privilege escalation via BASH_ENV exploitation.
+
+## Markdown sources
+
+- [Unclaimed](https://gianlucabassani.com/writeups/unclaimed.md)
+- [DutyBound](https://gianlucabassani.com/writeups/dutybound.md)
+- [Stream](https://gianlucabassani.com/writeups/stream.md)
+- [Layover](https://gianlucabassani.com/writeups/layover.md)
+- [Autopilot](https://gianlucabassani.com/writeups/autopilot.md)
+- [Casually Hacking Minecraft Dungeons](https://gianlucabassani.com/blog/dungeonsrev.md)
+- [Touch](https://gianlucabassani.com/writeups/touch.md)
+- [Windows eXPerience](https://gianlucabassani.com/ctf/windows.md)
+- [DevHub](https://gianlucabassani.com/writeups/devhub.md)
+- [Reactor](https://gianlucabassani.com/writeups/reactor.md)
+- [WebDAV](https://gianlucabassani.com/ctf/webdav.md)
+- [AirTouch](https://gianlucabassani.com/writeups/airtouch.md)
+- [Space](https://gianlucabassani.com/ctf/space.md)
+- [Fittest](https://gianlucabassani.com/ctf/fittest.md)
+- [DarkZero](https://gianlucabassani.com/writeups/darkzero.md)
+- [Puppy](https://gianlucabassani.com/writeups/puppy.md)
+- [Soulmate](https://gianlucabassani.com/writeups/soulmate.md)
+- [Editor](https://gianlucabassani.com/writeups/editor.md)
+- [Environment](https://gianlucabassani.com/writeups/environment.md)
+
+## Optional
+
+- [RSS feed](https://gianlucabassani.com/feed.xml): new articles and writeups
+- [Sitemap](https://gianlucabassani.com/sitemap.xml)

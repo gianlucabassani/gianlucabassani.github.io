@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Gianluca Bassani</title>
+    <link>https://gianlucabassani.com/</link>
+    <description>Cybersecurity: penetration testing, OSINT tooling and AI-agent security research.</description>
+    <language>en</language>
+    <atom:link href="https://gianlucabassani.com/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Box writeup: Unclaimed</title>
+      <link>https://gianlucabassani.com/boxes/hackthebox/unclaimed/</link>
+      <guid isPermaLink="true">https://gianlucabassani.com/boxes/hackthebox/unclaimed/</guid>
+      <pubDate>Sat, 14 Nov 2026 00:00:00 GMT</pubDate>
+      <description>Leaked TracerBot&apos;s hidden support override through prompt injection, used it to run arbitrary SQL, impersonated a sysadmin SQL login to enable xp_cmdshell, decrypted a SQL Agent proxy credential by fixing the LEN()/DATALENGTH() truncation, and abused Backup Operators&apos; SeBackupPrivilege over WinRM to read the Administrator root flag.</description>
+      <category>Prompt Injection</category>
+      <category>MSSQL</category>
+      <category>Impersonation</category>
+      <category>SQL Agent</category>
+      <category>WinRM</category>
+      <category>SeBackupPrivilege</category>
+    </item>
+    <item>
+      <title>Box writeup: DutyBound</title>
+      <link>https://gianlucabassani.com/boxes/hackthebox/dutybound/</link>
+      <guid isPermaLink="true">https://gianlucabassani.com/boxes/hackthebox/dutybound/</guid>
+      <pubDate>Wed, 28 Oct 2026 00:00:00 GMT</pubDate>
+      <description>Used a valid IATA BCBP to reach the AirSnacks audit logger, injected a stacked query through the airline-use field, abused the database role&apos;s COPY ... TO PROGRAM capability for postgres command execution, pivoted through X11 to dutyfree-kiosk, and turned a writable duty-rate CSV into root via a systemd eval.</description>
+      <category>BCBP</category>
+      <category>SQL Injection</category>
+      <category>PostgreSQL</category>
+      <category>X11</category>
+      <category>systemd</category>
+      <category>Shell eval</category>
+    </item>
+    <item>
+      <title>Box writeup: Stream</title>
+      <link>https://gianlucabassani.com/boxes/hackthebox/stream/</link>
+      <guid isPermaLink="true">https://gianlucabassani.com/boxes/hackthebox/stream/</guid>
+      <pubDate>Wed, 28 Oct 2026 00:00:00 GMT</pubDate>
+      <description>Recovered ClickHouse service credentials from an exposed Spring Boot heap dump, used an AIDX XXE to read files as svc-infra, pivoted through Kafka SASL and a bcrypt identity record to martin_cole, then leaked the ClickHouse default password from a Kopia-restored error log and abused a root DLQ timer that executes a ClickHouse user_files formatter to obtain root.</description>
+      <category>Actuator</category>
+      <category>ClickHouse</category>
+      <category>Kafka</category>
+      <category>XXE</category>
+      <category>Kopia</category>
+      <category>systemd</category>
+    </item>
+    <item>
+      <title>Box writeup: Layover</title>
+      <link>https://gianlucabassani.com/boxes/hackthebox/layover/</link>
+      <guid isPermaLink="true">https://gianlucabassani.com/boxes/hackthebox/layover/</guid>
+      <pubDate>Wed, 28 Oct 2026 00:00:00 GMT</pubDate>
+      <description>Captured a staff member&apos;s cleartext Miles login on open airport Wi-Fi, reused it against Craft CMS, chained an authenticated element-search behavior injection to read the application secrets and decrypt the mail-relay credential, then pivoted to aporter and rooted the portal through a CUPS 2.4.16 local token leak.</description>
+      <category>WiFi</category>
+      <category>Cleartext HTTP</category>
+      <category>Craft CMS</category>
+      <category>Yii</category>
+      <category>CUPS</category>
+    </item>
+    <item>
+      <title>Box writeup: Autopilot</title>
+      <link>https://gianlucabassani.com/boxes/hackthebox/autopilot/</link>
+      <guid isPermaLink="true">https://gianlucabassani.com/boxes/hackthebox/autopilot/</guid>
+      <pubDate>Fri, 23 Oct 2026 00:00:00 GMT</pubDate>
+      <description>Chained a Nextcloud WebDAV upload with the exposed data directory to execute code as grofiles, pivoted through the gromox FPM socket and MySQL to the grommunio admin API, abused a Postfix dbconf hook for Linux root, then relayed WS02&apos;s recurring IMAP NTLM authentication to its unsigned SMB, recovered Stephanie&apos;s saved Thunderbird login, reversed the XOR in runas.exe for Domain Admin, and read the DC root flag.</description>
+      <category>Nextcloud</category>
+      <category>WebDAV</category>
+      <category>PHP-FPM</category>
+      <category>Postfix</category>
+      <category>Active Directory</category>
+      <category>NTLM Relay</category>
+      <category>Thunderbird</category>
+    </item>
+    <item>
+      <title>Article: Casually Hacking Minecraft Dungeons</title>
+      <link>https://gianlucabassani.com/blog/dungeonsrev/</link>
+      <guid isPermaLink="true">https://gianlucabassani.com/blog/dungeonsrev/</guid>
+      <pubDate>Sun, 11 Oct 2026 00:00:00 GMT</pubDate>
+      <description>Speedrun in getting suspended on github by accidentally creating a Minecraft Dungeons mod for editing your character files. (I just wanted to play on linux without losing my progress)</description>
+      <category>minecraft-dungeons</category>
+      <category>reverse-engineering</category>
+      <category>gaming</category>
+    </item>
+    <item>
+      <title>Box writeup: Touch</title>
+      <link>https://gianlucabassani.com/boxes/hackthebox/touch/</link>
+      <guid isPermaLink="true">https://gianlucabassani.com/boxes/hackthebox/touch/</guid>
+      <pubDate>Fri, 09 Oct 2026 00:00:00 GMT</pubDate>
+      <description>Escalated a Windows kiosk appliance from an unauthenticated device-serial leak used as the default web-console password to RDP access as KioskUser, then hunted a cleartext MySQL root password in a readable maintenance batch file and abused a writable MySQL plugin directory to load a UDF DLL, executing commands as SYSTEM.</description>
+      <category>Default Credentials</category>
+      <category>DeviceHub</category>
+      <category>RDP</category>
+      <category>MySQL</category>
+      <category>UDF Injection</category>
+    </item>
+    <item>
+      <title>CTF solve: Windows eXPerience</title>
+      <link>https://gianlucabassani.com/ctf/windows/</link>
+      <guid isPermaLink="true">https://gianlucabassani.com/ctf/windows/</guid>
+      <pubDate>Sun, 28 Jun 2026 00:00:00 GMT</pubDate>
+      <description>Decode a custom Windows activation protocol, recover obfuscated license data, and generate a valid activation token to unlock the system.</description>
+      <category>Windows</category>
+      <category>JavaScript</category>
+      <category>RPC</category>
+      <category>crypto</category>
+      <category>rev</category>
+    </item>
+    <item>
+      <title>Box writeup: DevHub</title>
+      <link>https://gianlucabassani.com/boxes/hackthebox/devhub/</link>
+      <guid isPermaLink="true">https://gianlucabassani.com/boxes/hackthebox/devhub/</guid>
+      <pubDate>Sun, 31 May 2026 00:00:00 GMT</pubDate>
+      <description>Exploited an RCE in MCPJam (CVE-2026-23744) for initial access, performed lateral movement by extracting a Jupyter Lab token from procfs and tunneling via SSH, and escalated to root by extracting hardcoded credentials to abuse a hidden endpoint in an internal Flask API.</description>
+      <category>MCPJam</category>
+      <category>Jupyter Lab</category>
+      <category>Procfs</category>
+      <category>API Abuse</category>
+    </item>
+    <item>
+      <title>Box writeup: Reactor</title>
+      <link>https://gianlucabassani.com/boxes/hackthebox/reactor/</link>
+      <guid isPermaLink="true">https://gianlucabassani.com/boxes/hackthebox/reactor/</guid>
+      <pubDate>Sun, 24 May 2026 00:00:00 GMT</pubDate>
+      <description>Gained initial access by exploiting a React/Next.js command execution flaw, retrieved credentials from an internal SQLite database, and escalated to root through an exposed Node.js inspector debugger session.</description>
+      <category>React2Shell</category>
+      <category>Next.js</category>
+      <category>Node.js</category>
+    </item>
+    <item>
+      <title>CTF solve: WebDAV</title>
+      <link>https://gianlucabassani.com/ctf/webdav/</link>
+      <guid isPermaLink="true">https://gianlucabassani.com/ctf/webdav/</guid>
+      <pubDate>Fri, 27 Mar 2026 00:00:00 GMT</pubDate>
+      <description>Discover a WebDAV endpoint via fuzzing and exploit unsafe HTTP methods to bypass file upload restrictions and achieve RCE.</description>
+      <category>WebDAV</category>
+      <category>RCE</category>
+    </item>
+    <item>
+      <title>Box writeup: AirTouch</title>
+      <link>https://gianlucabassani.com/boxes/hackthebox/airtouch/</link>
+      <guid isPermaLink="true">https://gianlucabassani.com/boxes/hackthebox/airtouch/</guid>
+      <pubDate>Sat, 31 Jan 2026 00:00:00 GMT</pubDate>
+      <description>Compromised a multi-tier wireless environment by exploiting SNMP info leakage, pivoting through a WPA2-PSK network to a router, and executing Evil Twin attack against WPA2-Enterprise to capture administrative creds.</description>
+      <category>WiFi</category>
+      <category>Evil Twin</category>
+      <category>WPA2</category>
+      <category>RADIUS</category>
+    </item>
+    <item>
+      <title>CTF solve: Space</title>
+      <link>https://gianlucabassani.com/ctf/space/</link>
+      <guid isPermaLink="true">https://gianlucabassani.com/ctf/space/</guid>
+      <pubDate>Wed, 26 Nov 2025 00:00:00 GMT</pubDate>
+      <description>Reconstruct hidden coordinates from a distance matrix using MDS and PCA to reveal the flag embedded in 2D point clouds.</description>
+      <category>MDS</category>
+      <category>PCA</category>
+      <category>Python</category>
+      <category>Distance Matrix</category>
+      <category>Dimensionality Reduction</category>
+    </item>
+    <item>
+      <title>CTF solve: Fittest</title>
+      <link>https://gianlucabassani.com/ctf/fittest/</link>
+      <guid isPermaLink="true">https://gianlucabassani.com/ctf/fittest/</guid>
+      <pubDate>Sun, 16 Nov 2025 00:00:00 GMT</pubDate>
+      <description>Defeat a vulnerable smart‑contract creature by reducing its life points and looting its balance using a single strong attack.</description>
+      <category>Solidity</category>
+      <category>Smart Contracts</category>
+      <category>Foundry</category>
+      <category>EVM</category>
+    </item>
+    <item>
+      <title>Box writeup: DarkZero</title>
+      <link>https://gianlucabassani.com/boxes/hackthebox/darkzero/</link>
+      <guid isPermaLink="true">https://gianlucabassani.com/boxes/hackthebox/darkzero/</guid>
+      <pubDate>Mon, 06 Oct 2025 00:00:00 GMT</pubDate>
+      <description>Compromised a Windows domain by pivoting through MSSQL Linked Servers, escalating to SYSTEM via a Kernel race condition (CVE-2024-30088), and performing a cross-domain DCSync attack by coercing authentication to capture a TGT.</description>
+      <category>Active Directory</category>
+      <category>MSSQL</category>
+      <category>DCSync</category>
+    </item>
+    <item>
+      <title>Box writeup: Puppy</title>
+      <link>https://gianlucabassani.com/boxes/hackthebox/puppy/</link>
+      <guid isPermaLink="true">https://gianlucabassani.com/boxes/hackthebox/puppy/</guid>
+      <pubDate>Tue, 16 Sep 2025 00:00:00 GMT</pubDate>
+      <description>Compromised an Active Directory domain controller by exploiting weak secrets management, abusing overly permissive ACLs, and leveraging DPAPI to recover high-privilege credentials, culminating in a full domain compromise via a DCSync attack.</description>
+      <category>Active Directory</category>
+      <category>SMB</category>
+      <category>KeePass</category>
+      <category>DPAPI</category>
+      <category>DCSync</category>
+    </item>
+    <item>
+      <title>Box writeup: Soulmate</title>
+      <link>https://gianlucabassani.com/boxes/hackthebox/soulmate/</link>
+      <guid isPermaLink="true">https://gianlucabassani.com/boxes/hackthebox/soulmate/</guid>
+      <pubDate>Thu, 11 Sep 2025 00:00:00 GMT</pubDate>
+      <description>Exploited a CrushFTP authentication bypass vulnerability (CVE-2025-31161) to gain initial access, then used an exposed internal Erlang service to escalate privileges to root.</description>
+      <category>CrushFTP</category>
+      <category>Erlang</category>
+    </item>
+    <item>
+      <title>Box writeup: Editor</title>
+      <link>https://gianlucabassani.com/boxes/hackthebox/editor/</link>
+      <guid isPermaLink="true">https://gianlucabassani.com/boxes/hackthebox/editor/</guid>
+      <pubDate>Sat, 07 Sep 2024 00:00:00 GMT</pubDate>
+      <description>XWiki 15.10.8 vulnerable to RCE (CVE-2025-24893) with subsequent privilege escalation via Netdata SUID binaries, resulting in full system compromise.</description>
+      <category>Xwiki</category>
+      <category>Jetty</category>
+      <category>Netdata</category>
+      <category>SUID</category>
+    </item>
+    <item>
+      <title>Box writeup: Environment</title>
+      <link>https://gianlucabassani.com/boxes/hackthebox/environment/</link>
+      <guid isPermaLink="true">https://gianlucabassani.com/boxes/hackthebox/environment/</guid>
+      <pubDate>Sat, 31 Aug 2024 00:00:00 GMT</pubDate>
+      <description>Laravel application with login bypass, file upload vulnerability, and privilege escalation via BASH_ENV exploitation.</description>
+      <category>Laravel</category>
+      <category>Nginx</category>
+      <category>File Upload</category>
+      <category>BASH_ENV</category>
+      <category>PGP</category>
+    </item>
+  </channel>
+</rss>
