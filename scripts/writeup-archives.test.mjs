@@ -28,6 +28,17 @@ test('writeup archives preserve destinations, publication order, and actual cate
     const previewBoxes = render(BoxArchive, { compact: true, entries: Array.from({ length: 8 }, (_, index) => ({ ...boxes[0], id: `preview-${index}` })) });
     assert.equal((previewBoxes.match(/href="\/boxes\/hackthebox\/preview-\d+"/g) ?? []).length, 3);
     assert.doesNotMatch(previewBoxes, /Show all 8 writeups/);
+    const { matchesQuery } = await server.ssrLoadModule('/src/lib/writeupArchive.ts');
+    const probe = { title: 'Autopilot', tags: ['Nextcloud', 'NTLM Relay'], os: 'windows', difficulty: 'insane' };
+    assert.ok(matchesQuery(probe, ''), 'Empty search matches everything');
+    assert.ok(matchesQuery(probe, '  autopilot '));
+    assert.ok(matchesQuery(probe, 'ntlm insane'), 'Terms match across title, tags and difficulty');
+    assert.ok(!matchesQuery(probe, 'ntlm easy'), 'Every term has to match');
+    const searchable = render(BoxArchive, { entries: boxes });
+    assert.match(searchable, /type="search"/);
+    assert.match(searchable, /aria-label="Search all HackTheBox machines/);
+    const insaneAt = searchable.indexOf('>insane<'), searchAt = searchable.indexOf('type="search"');
+    assert.ok(insaneAt > -1 && searchAt > insaneAt, 'Search sits to the right of the last difficulty');
     const { default: CTFArchive } = await server.ssrLoadModule('/src/components/CTFArchive.tsx');
     const challenges = [
       { id: 'old-web', title: 'Old web', category: 'web', competition: 'Event', difficulty: 'easy', points: 100, tags: [], date: '2025-01-01', summary: '', contentPath: 'a.md' },

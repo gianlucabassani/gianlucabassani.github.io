@@ -2138,3 +2138,24 @@ a.profile-course:hover { border-color: hsl(var(--secondary) / 0.45); background:
   .terminal-shell .terminal-cursor { display: none; }
 }
 @keyframes phone-notification-leave { to { opacity: 0; transform: translateY(-12px); } }
+
+/* HTB archive: four-row scrolling difficulty lists and global search */
+.htb-difficulty-group .archive-machine-list[data-scrollable='true'] { overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: hsl(var(--entry-color) / 0.5) transparent; padding-right: 0.25rem; }
+.htb-difficulty-group .archive-machine-list[data-scrollable='true']:focus-visible { outline: 1px solid hsl(var(--entry-color) / 0.7); outline-offset: 2px; }
+.htb-difficulty-group .archive-machine-list[data-scrollable='true']::-webkit-scrollbar { width: 6px; }
+.htb-difficulty-group .archive-machine-list[data-scrollable='true']::-webkit-scrollbar-track { background: transparent; }
+.htb-difficulty-group .archive-machine-list[data-scrollable='true']::-webkit-scrollbar-thumb { background: hsl(var(--entry-color) / 0.45); border-radius: 3px; }
+.htb-difficulty-group .archive-machine-list[data-scrollable='true'] > li:last-child { border-bottom: 1px solid hsl(var(--entry-color) / 0.13); }
+.htb-difficulty-menu { align-items: center; }
+.htb-search { position: relative; display: flex; align-items: center; flex: 0 1 260px; margin-left: auto; min-width: 0; color: hsl(var(--muted-foreground)); }
+.htb-search > svg:first-child { position: absolute; left: 0.75rem; pointer-events: none; }
+.htb-search input { width: 100%; min-height: 40px; padding: 0.5rem 2.25rem 0.5rem 2.25rem; background: hsl(218 37% 8% / 0.8); border: 1px solid hsl(var(--htb-color) / 0.25); border-radius: 2px; color: hsl(var(--foreground)); font-family: 'Oxanium', sans-serif; font-size: 0.9375rem; transition: border-color 180ms ease, background 180ms ease; }
+.htb-search input::placeholder { color: hsl(var(--muted-foreground)); }
+.htb-search input:hover { border-color: hsl(var(--htb-color) / 0.45); }
+.htb-search input:focus-visible { outline: none; border-color: hsl(var(--htb-color) / 0.85); background: hsl(var(--htb-color) / 0.05); }
+.htb-search input::-webkit-search-cancel-button { display: none; }
+.htb-difficulty-menu .htb-search-clear { position: absolute; right: 0.25rem; display: grid; place-items: center; width: 32px; min-height: 32px; padding: 0; gap: 0; color: hsl(var(--muted-foreground)); }
+.htb-difficulty-menu .htb-search-clear:hover { color: hsl(var(--foreground)); }
+@media (max-width: 767px) {
+  .htb-search { flex: 1 0 100%; margin-left: 0; }
+}

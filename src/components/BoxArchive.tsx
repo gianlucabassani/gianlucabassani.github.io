@@ -1,14 +1,35 @@
 import { useEffect, useId, useRef, useState, type CSSProperties } from 'react';
-import { ArrowUpRight, Box, Monitor, Terminal } from 'lucide-react';
+import { ArrowUpRight, Box, Monitor, Search, Terminal, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { writeups, type Writeup } from '@/data/writeups';
 import PlatformLogo from '@/components/PlatformLogo';
 import { Button } from '@/components/ui/button';
 import { ArchiveDate, Difficulty } from './ArchivePrimitives';
-import { difficulties, difficultyStyle, newestFirst } from '@/lib/writeupArchive';
+import { difficulties, difficultyStyle, matchesQuery, newestFirst } from '@/lib/writeupArchive';
 
-function MachineRows({ entries, compact }: { entries: Writeup[]; compact: boolean }) {
-  return <ul className="archive-machine-list">{entries.map(entry => <li key={entry.id} data-difficulty={entry.difficulty} style={difficultyStyle(entry.difficulty)}>
+const VISIBLE_ROWS = 4;
+/** Caps the list at the height of its first VISIBLE_ROWS rows (row height varies by breakpoint, so measure it). */
+function useRowCap(count: number, enabled: boolean) {
+  const ref = useRef<HTMLUListElement>(null);
+  useEffect(() => {
+    const list = ref.current;
+    if (!list || !enabled || count <= VISIBLE_ROWS) { list?.style.removeProperty('max-height'); return; }
+    const measure = () => {
+      const row = list.children[VISIBLE_ROWS - 1] as HTMLElement | undefined;
+      if (row) list.style.maxHeight = `${Math.ceil(row.getBoundingClientRect().bottom - list.getBoundingClientRect().top + list.scrollTop)}px`;
+    };
+    measure();
+    if (!('ResizeObserver' in window)) return;
+    const observer = new ResizeObserver(measure);
+    observer.observe(list);
+    return () => observer.disconnect();
+  }, [count, enabled]);
+  return ref;
+}
+function MachineRows({ entries, compact, scrollable = false, label }: { entries: Writeup[]; compact: boolean; scrollable?: boolean; label?: string }) {
+  const capped = scrollable && entries.length > VISIBLE_ROWS;
+  const listRef = useRowCap(entries.length, capped);
+  return <ul className="archive-machine-list" ref={listRef} data-scrollable={capped} {...(capped ? { tabIndex: 0, role: 'region', 'aria-label': `${label ?? 'Machines'} (scrollable list)` } : {})}>{entries.map(entry => <li key={entry.id} data-difficulty={entry.difficulty} style={difficultyStyle(entry.difficulty)}>
     <Link className="archive-machine" to={`/boxes/hackthebox/${entry.id}`}>
       <span className="archive-machine-icon">{entry.icon ? <img src={entry.icon} alt="" width="48" height="48" loading="lazy" /> : <Box size={25} strokeWidth={1.2} aria-hidden="true" />}</span>
       <div className="archive-machine-main"><h3>{entry.title}</h3><div className="archive-machine-techniques">{entry.tags.slice(0, compact ? 2 : 3).map(tag => <span key={tag}>{tag}</span>)}</div></div>
@@ -21,6 +42,7 @@ function MachineRows({ entries, compact }: { entries: Writeup[]; compact: boolea
 }
 export default function BoxArchive({ entries = writeups, compact = false }: { entries?: Writeup[]; compact?: boolean }) {
   const [selected, setSelected] = useState<'all' | Writeup['difficulty']>('all');
+  const [query, setQuery] = useState('');
   const listId = useId();
   const rackRef = useRef<HTMLUListElement>(null);
   const [reveal, setReveal] = useState('idle');
@@ -46,8 +68,13 @@ export default function BoxArchive({ entries = writeups, compact = false }: { en
     return () => { observer.disconnect(); preference.removeEventListener('change', changed); };
   }, [compact]);
   const machines = newestFirst(entries.filter(entry => entry.platform === 'hackthebox'));
-  const filtered = machines.filter(entry => selected === 'all' || entry.difficulty === selected);
-  const groups = (selected === 'all' ? difficulties : [selected]).map(difficulty => ({ difficulty, entries: machines.filter(entry => entry.difficulty === difficulty) }));
+  const searching = query.trim().length > 0;
+  const results = machines.filter(entry => matchesQuery(entry, query));
+  const filtered = results.filter(entry => selected === 'all' || entry.difficulty === selected);
+  const groups = (selected === 'all' ? difficulties : [selected]).map(difficulty => ({ difficulty, entries: results.filter(entry => entry.difficulty === difficulty) }));
+  const visibleGroups = searching ? groups.filter(group => group.entries.length) : groups;
+  // Searching is global: it looks across every difficulty, so it clears any difficulty filter.
+  const updateQuery = (value: string) => { setQuery(value); if (value.trim()) setSelected('all'); };
   if (compact) return <div className="htb-showcase">
     <svg className="htb-panel-frame" viewBox="0 0 1200 600" preserveAspectRatio="none" fill="none" aria-hidden="true">
       <path className="htb-panel-outline" d="M33 1H400L421 15H1040L1058 1H1167L1199 33V510L1175 534V567L1167 599H65L1 535V33Z" />
@@ -89,16 +116,21 @@ export default function BoxArchive({ entries = writeups, compact = false }: { en
   return <div className={`writeup-archive box-archive htb-archive ${compact ? 'archive-preview' : ''}`}>
     <div className="htb-archive-header"><PlatformLogo platform="hackthebox" /><span>{compact ? 'Latest machines' : `${machines.length} machine writeups`}</span></div>
     {!compact && <div className="htb-difficulty-menu" role="group" aria-label="Filter HackTheBox writeups by difficulty">
-      <button type="button" aria-pressed={selected === 'all'} aria-controls={listId} onClick={() => setSelected('all')}>All difficulties<span>{machines.length}</span></button>
-      {difficulties.map(difficulty => <button key={difficulty} type="button" style={difficultyStyle(difficulty)} aria-pressed={selected === difficulty} aria-controls={listId} onClick={() => setSelected(difficulty)}><Difficulty value={difficulty} /><span>{machines.filter(entry => entry.difficulty === difficulty).length}</span></button>)}
+      <button type="button" aria-pressed={selected === 'all'} aria-controls={listId} onClick={() => setSelected('all')}>All difficulties<span>{results.length}</span></button>
+      {difficulties.map(difficulty => <button key={difficulty} type="button" style={difficultyStyle(difficulty)} aria-pressed={selected === difficulty} aria-controls={listId} onClick={() => setSelected(difficulty)}><Difficulty value={difficulty} /><span>{results.filter(entry => entry.difficulty === difficulty).length}</span></button>)}
+      <div className="htb-search" role="search">
+        <Search size={15} aria-hidden="true" />
+        <input type="search" value={query} onChange={event => updateQuery(event.target.value)} onKeyDown={event => { if (event.key === 'Escape') updateQuery(''); }} placeholder="Search machines" aria-label="Search all HackTheBox machines by name, technique or OS" aria-controls={listId} autoComplete="off" spellCheck={false} />
+        {query && <button type="button" className="htb-search-clear" aria-label="Clear search" onClick={() => updateQuery('')}><X size={14} aria-hidden="true" /></button>}
+      </div>
     </div>}
     <div className="htb-difficulty-grid" data-filtered={selected !== 'all'} id={listId} key={selected}>
-      {machines.length ? groups.map(group => <section className="htb-difficulty-group" key={group.difficulty} style={difficultyStyle(group.difficulty)} aria-label={`${group.difficulty} machines`}>
+      {machines.length && (!searching || results.length) ? visibleGroups.map(group => <section className="htb-difficulty-group" key={group.difficulty} style={difficultyStyle(group.difficulty)} aria-label={`${group.difficulty} machines`}>
         <svg className="htb-group-frame" viewBox="0 0 600 400" preserveAspectRatio="none" aria-hidden="true"><path d="M1 66V20L20 1H160M440 1H580L599 20V100M599 330V380L580 399H440M160 399H20L1 380V300" /></svg>
         <div className="htb-difficulty-heading"><span className="htb-difficulty-symbol" aria-hidden="true"><Box size={21} strokeWidth={1.4} /></span><h2>{group.difficulty}</h2><span>{group.entries.length} {group.entries.length === 1 ? 'machine' : 'machines'}</span></div>
-        {group.entries.length ? <MachineRows entries={group.entries} compact={false} /> : <div className="archive-empty htb-group-empty"><p>No {group.difficulty} writeups yet.</p>{selected !== 'all' && <button type="button" onClick={() => setSelected('all')}>Show all difficulties</button>}</div>}
-      </section>) : <div className="archive-empty"><p>No writeups published yet.</p></div>}
+        {group.entries.length ? <MachineRows entries={group.entries} compact={false} scrollable label={`${group.difficulty} machines`} /> : <div className="archive-empty htb-group-empty"><p>No {group.difficulty} writeups yet.</p>{selected !== 'all' && <button type="button" onClick={() => setSelected('all')}>Show all difficulties</button>}</div>}
+      </section>) : searching ? <div className="archive-empty"><p>No machines match “{query.trim()}”.</p><button type="button" onClick={() => updateQuery('')}>Clear search</button></div> : <div className="archive-empty"><p>No writeups published yet.</p></div>}
     </div>
-    <p className="sr-only" role="status">{filtered.length} HackTheBox writeups{selected === 'all' ? '' : ` at ${selected} difficulty`}. Newest first within each difficulty.</p>
+    <p className="sr-only" role="status">{filtered.length} HackTheBox writeups{searching ? ` matching ${query.trim()}` : ''}{selected === 'all' ? '' : ` at ${selected} difficulty`}. Newest first within each difficulty.</p>
   </div>;
 }
