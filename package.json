@@ -10,7 +10,7 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit -p tsconfig.app.json",
     "preview": "vite preview",
-    "deploy": "npm run build && gh-pages -d dist",
+    "deploy": "npm run build && gh-pages -d dist -r https://github.com/gianlucabassani/gianlucabassani.github.io.git",
     "test": "node --test scripts/*.test.mjs"
   },
   "dependencies": {
