@@ -16,7 +16,7 @@ export default function SectionMetadata() {
     if (isArticle) return;
     const label = sections[segments[0]];
     document.title = label ? `${label} | Gianluca Bassani` : 'Portfolio - Gianluca Bassani';
-    const url = `https://gianlucabassani.gitlab.io${pathname.replace(/\/$/, '')}/`;
+    const url = `https://gianlucabassani.com${pathname.replace(/\/$/, '')}/`;
     const canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
     if (canonical) canonical.href = url;
     const description = label ? `${label} by Gianluca Bassani: cybersecurity research, projects, and practical security lessons.` : 'Cybersecurity enthusiast, developer, and problem solver sharing knowledge through writeups, CTF solutions, and security projects.';

@@ -37,7 +37,7 @@ async function preview(entry, kind) {
     <g font-family="Liberation Sans"><text x="64" y="98" font-size="22" fill="${accent}">${escape(label.toUpperCase())}</text>
     ${title}<text x="64" y="${Math.max(408, 254 + lines.length * 70)}" font-size="21" fill="#bbb3c7">${escape(entry.tags.slice(0,3).join(' / '))}</text>
     <text x="64" y="546" font-size="24" font-weight="700" fill="#f9f7ff">Gianluca Bassani</text>
-    <text x="64" y="582" font-size="20" fill="#a39bb0">gianlucabassani.gitlab.io</text></g>
+    <text x="64" y="582" font-size="20" fill="#a39bb0">gianlucabassani.com</text></g>
   </svg>`;
   const renderer = new Resvg(svg, {font:{loadSystemFonts:false, fontFiles:[resolve('scripts/assets/LiberationSans-Regular.ttf'),resolve('scripts/assets/LiberationSans-Bold.ttf')]}});
   const path = join('public',entry.previewImage);

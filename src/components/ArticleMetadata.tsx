@@ -5,7 +5,7 @@ interface ArticleMetadataProps { title:string; summary:string; path:string; date
 /** Keep browser metadata aligned when navigating between client-side routes. */
 export default function ArticleMetadata({title, summary, path, date, previewImage}: ArticleMetadataProps) {
   useEffect(() => {
-    const site = 'https://gianlucabassani.gitlab.io';
+    const site = 'https://gianlucabassani.com';
     const fullTitle = `${title} | Gianluca Bassani`;
     const homeTitle = 'Portfolio - Gianluca Bassani';
     const homeDescription = 'Cybersecurity enthusiast, developer, and problem solver sharing knowledge through writeups, CTF solutions, and security projects. Explore HackTheBox writeups, penetration testing tutorials, and open-source security tools.';

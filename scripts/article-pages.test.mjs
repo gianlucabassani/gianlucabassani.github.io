@@ -41,10 +41,10 @@ test('article links contain crawler-readable metadata and retain the app entry p
       assert.match(html, /property="og:description" content="Preview &amp; description"/);
       assert.match(html, /property="og:type" content="article"/);
       assert.match(html, /name="twitter:card" content="summary_large_image"/);
-      assert.ok(html.includes(`href="https://gianlucabassani.gitlab.io/${route}/"`));
+      assert.ok(html.includes(`href="https://gianlucabassani.com/${route}/"`));
       assert.match(html, /src="\/assets\/app.js"/);
       assert.equal((html.match(/property="og:title"/g) || []).length, 1);
-      assert.match(html, /property="og:image" content="https:\/\/gianlucabassani.gitlab.io\/assets\/previews\/example.png"/);
+      assert.match(html, /property="og:image" content="https:\/\/gianlucabassani.com\/assets\/previews\/example.png"/);
       assert.match(html, /Article body without JavaScript/);
       assert.match(html, /echo/);
       assert.match(html, /<nav aria-label="Article navigation"><a[^>]*href="\/">[\s\S]*?Back to Home<\/a><\/nav>/);
@@ -65,7 +65,7 @@ test('article links contain crawler-readable metadata and retain the app entry p
       assert.match(html, /My projects/);
     }
     const fallbackPreview = await readFile(join(outputDir, 'blog/no-preview/index.html'), 'utf8');
-    assert.match(fallbackPreview, /property="og:image" content="https:\/\/gianlucabassani.gitlab.io\/assets\/social\/portfolio-v2.png"/);
+    assert.match(fallbackPreview, /property="og:image" content="https:\/\/gianlucabassani.com\/assets\/social\/portfolio-v2.png"/);
     const emptyRelated = await readFile(join(outputDir, 'blog/empty-related/index.html'), 'utf8');
     assert.doesNotMatch(emptyRelated, /aria-label="Related links"/);
     const sitemap = await readFile(join(outputDir,'sitemap.xml'),'utf8');
@@ -73,7 +73,7 @@ test('article links contain crawler-readable metadata and retain the app entry p
     assert.match(sitemap, /boxes\/hackthebox\/example\//);
     for (const route of ['blog', 'projects', 'ctf', 'boxes/hackthebox']) {
       const html = await readFile(join(outputDir, route, 'index.html'), 'utf8');
-      assert.ok(html.includes(`href="https://gianlucabassani.gitlab.io/${route}/"`));
+      assert.ok(html.includes(`href="https://gianlucabassani.com/${route}/"`));
       assert.match(html, /src="\/assets\/app.js"/);
     }
     const blog = await readFile(join(outputDir, 'blog/index.html'), 'utf8');
