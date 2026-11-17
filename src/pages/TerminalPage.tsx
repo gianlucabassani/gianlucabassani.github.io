@@ -29,7 +29,7 @@ export default function TerminalPage() {
 
         <div className="flex items-center gap-2 text-sm font-bold text-accent">
           <TerminalIcon className="w-4 h-4" />
-          <span>guest@bassani.io:~$ CLI Console</span>
+          <span>guest@0xpr1m3:~$</span>
         </div>
       </header>
 

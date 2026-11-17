@@ -67,14 +67,14 @@ export async function generateArticlePages({outputDir = 'dist', dataDir = 'src/d
     await writeFile(join(destination, 'index.html'), html);
   }
   } finally { await server.close(); }
-  const staticRoutes = ['', 'about/', 'projects/', 'blog/', 'boxes/', 'ctf/', 'skills/', 'certifications/', 'boxes/hackthebox/', 'boxes/tryhackme/', 'boxes/vulnhub/'];
+  const staticRoutes = ['', 'about/', 'projects/', 'blog/', 'boxes/', 'ctf/', 'skills/', 'certifications/', 'contact/', 'boxes/hackthebox/', 'boxes/tryhackme/', 'boxes/vulnhub/'];
   const projects = JSON.parse(await readFile(join(dataDir, 'projects.json'), 'utf8').catch(error => {
     if (error.code === 'ENOENT') return '[]';
     throw error;
   }));
   // GitLab Pages serves these paths directly instead of falling through to
   // its authenticated missing-page handling. Each index has its own canonical.
-  const labels = {about:'About Me', projects:'Projects', blog:'Blog', boxes:'Box Writeups', ctf:'CTF Solves', skills:'Technical Skills', certifications:'Certifications', terminal:'CLI Console'};
+  const labels = {about:'About Me', projects:'Projects', blog:'Blog', boxes:'Box Writeups', ctf:'CTF Solves', skills:'Technical Skills', certifications:'Certifications', contact:'Contact', terminal:'CLI Console'};
   const indexRoutes = [...staticRoutes.filter(Boolean), 'terminal/', ...projects.map(entry => `projects/${encodeURIComponent(entry.id)}/`)];
   for (const route of indexRoutes) {
     const label = labels[route.split('/')[0]];

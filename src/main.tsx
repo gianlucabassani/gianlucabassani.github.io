@@ -2,6 +2,7 @@ import { createRoot, hydrateRoot } from 'react-dom/client';
 import App from './App';
 import type { InitialArticle } from './data/article';
 import './index.css';
+import './styles/portfolio.css';
 
 const root = document.getElementById('root')!;
 const data = document.getElementById('article-data');

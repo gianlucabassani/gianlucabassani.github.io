@@ -2,6 +2,9 @@ import { createContext, useContext, useEffect, useRef, useState, type ReactNode 
 
 const DecodeProgress = createContext(1);
 const cipher = '01ABCDEF#$%/<>{}';
+/** Milliseconds the cipher holds once in view, then takes to resolve into text. */
+const DECODE_HOLD = 200;
+const DECODE_RUN = 900;
 
 export function DecodeText({ children }: { children: string | number }) {
   const progress = useContext(DecodeProgress);
@@ -49,9 +52,9 @@ export default function ScrollDecrypt({ children }: { children: ReactNode }) {
       let previous = -Infinity;
       const tick = (now: number) => {
         const elapsed = now - start;
-        if (elapsed >= 3000 || document.hidden) { finish(); return; }
+        if (elapsed >= DECODE_HOLD + DECODE_RUN || document.hidden) { finish(); return; }
         if (now - previous >= 45) {
-          setProgress((elapsed - 1000) / 2000);
+          setProgress((elapsed - DECODE_HOLD) / DECODE_RUN);
           previous = now;
         }
         frame = requestAnimationFrame(tick);

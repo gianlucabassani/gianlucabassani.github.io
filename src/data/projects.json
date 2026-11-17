@@ -98,6 +98,20 @@
       "Human-in-the-Loop: Fully drivable by human testers with no model required, plus a mission-control dashboard."
     ],
     "featured": true,
+    "spotlight": {
+      "tagline": "A bring-your-own-agent arena for security work on real running systems.",
+      "pitch": "Nidavellir starts reproducible targets in Docker, gives a human or an external agent a scoped place to work, checks every finding against the target, and keeps the evidence after the arena is gone. It ships no autonomous pentester: it is the environment, the boundary and the referee.",
+      "points": [
+        ["Engagement", "One human or agent researches one target, pinned to an exact Git commit, image digest or source bundle."],
+        ["Evaluation", "Pinned agent builds run repeated trials over a challenge suite and are compared on verified capability."],
+        ["Evidence", "Findings, traces and an append-only event history stay reviewable after teardown."]
+      ],
+      "facts": [
+        ["Stack", "FastAPI · Flask · Celery · PostgreSQL · React"],
+        ["Verified provider", "Docker-local"],
+        ["License", "AGPL-3.0"]
+      ]
+    },
     "githubUrl": "https://github.com/gianlucabassani/Nidavellir",
     "gitlabUrl": "https://gitlab.com/gianlucabassani/nidavellir",
     "liveUrl": "https://gianlucabassani.com/Nidavellir/"

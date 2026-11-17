@@ -7,6 +7,7 @@ import type { ArticlePageProps } from './pages/ArticlePage';
 import LatestPublication from './components/LatestPublication';
 import SectionMetadata from './components/SectionMetadata';
 import SiteNavigation from './components/SiteNavigation';
+import CommandPalette from './components/CommandPalette';
 
 const Index = lazy(() => import('./pages/Index'));
 const ArticlePage = lazy(() => import('./pages/ArticlePage'));
@@ -24,9 +25,10 @@ export function AppContent({initialArticle, ArticleComponent = ArticlePage}: App
     <SectionMetadata />
     <Toaster />
     <SiteNavigation />
+    <CommandPalette />
     <div id="route-content" tabIndex={-1}><Suspense fallback={<div className="route-loading" role="status">Loading page...</div>}>
       <Routes>
-        {['/', '/about', '/projects', '/projects/:id', '/boxes', '/boxes/:platform', '/ctf', '/blog', '/skills', '/certifications'].map(path => <Route key={path} path={path} element={<Index />} />)}
+        {['/', '/about', '/projects', '/projects/:id', '/boxes', '/boxes/:platform', '/ctf', '/blog', '/skills', '/certifications', '/contact'].map(path => <Route key={path} path={path} element={<Index />} />)}
         <Route path="/blog/:id" element={<ArticleComponent kind="blog" initialArticle={initialArticle} />} />
         <Route path="/boxes/:platform/:id" element={<ArticleComponent kind="writeup" initialArticle={initialArticle} />} />
         <Route path="/ctf/:id" element={<ArticleComponent kind="ctf" initialArticle={initialArticle} />} />

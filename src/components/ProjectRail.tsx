@@ -1,11 +1,11 @@
-import { useEffect, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent } from 'react';
+import { useEffect, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
 import type { Project } from '@/data/projects';
 import ProjectShowcase from '@/components/ProjectShowcase';
 import { Button } from '@/components/ui/button';
 
-export default function ProjectRail({projects}: {projects:Project[]}) {
+export default function ProjectRail({projects, lead}: {projects:Project[]; lead?:ReactNode}) {
   const items = useMemo(() => [...projects].sort((a,b) => Number(Boolean(b.featured)) - Number(Boolean(a.featured))), [projects]);
   const copies = items.length > 1 ? Math.min(2, items.length) : 0;
   const sequence = useMemo(() => copies ? [...items.slice(-copies), ...items, ...items.slice(0, copies)] : items, [items, copies]);
@@ -83,6 +83,7 @@ export default function ProjectRail({projects}: {projects:Project[]}) {
   if (!items.length) return null;
   return <div className="project-rail" ref={rail}>
     <h2 className="project-rail-title home-section-title"><span className="site-section-title">Projects</span></h2>
+    {lead}
     <p id="project-rail-help" className="sr-only">Browse all {items.length} projects using the side arrows, swipe, or focus the gallery and use the arrow keys.</p>
     <div className="project-channel">
       <div className="project-channel-particles" aria-hidden="true">

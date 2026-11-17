@@ -7,11 +7,13 @@ import BlogBook from '@/components/BlogBook';
 import BoxArchive from '@/components/BoxArchive';
 import CTFArchive from '@/components/CTFArchive';
 import ScrollDecrypt, { DecodeText } from '@/components/ScrollDecrypt';
+import ProjectSpotlight from '@/components/ProjectSpotlight';
+import ContactCard from '@/components/ContactCard';
+import ShellEgg from '@/components/ShellEgg';
 import { lazy, useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Terminal, Github, Gitlab, ExternalLink, ChevronDown } from 'lucide-react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { ExternalLink, ChevronDown, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
 import { Writeup } from '@/data/writeups';
 import { CTFWriteup, ctfWriteups } from '@/data/ctf';
 import { Project, projects } from '@/data/projects';
@@ -60,6 +62,14 @@ const parseRoute = (path: string) => {
   }
   return { view: 'main' as const, section };
 };
+
+// The featured project that carries spotlight copy gets the large panel above the rail.
+const flagship = projects.find(project => project.featured && project.spotlight);
+// Home rail order: keeps the two OSINT toolkits (Gosint, Browsint) from sitting side by side.
+// Projects not listed here follow in their projects.json order.
+const railOrder = ['gosint', 'ShellCy', 'browphish', 'blockcheat', 'browsint', 'Ida'];
+const railRank = (id: string) => { const index = railOrder.indexOf(id); return index < 0 ? railOrder.length : index; };
+const railProjects = projects.filter(project => project !== flagship).sort((a, b) => railRank(a.id) - railRank(b.id));
 
 const Index = () => {
   const location = useLocation();
@@ -229,66 +239,29 @@ const Index = () => {
                     <ChevronDown className="action-arrow-down" aria-hidden="true" />
                   </Button>
                   <Button
-                      onClick={() => navigate('/terminal')}
+                      onClick={() => scrollToSection('contact')}
                       variant="outline"
                       size="lg"
                       className="hero-cli-action"
                     >
-                      Launch CLI Console
-                      <Terminal aria-hidden="true" />
+                      Get in touch
+                      <Send aria-hidden="true" />
                   </Button>
                 </div>
               </div>
+              <ShellEgg spot="hero" />
             </div>
 
             <AboutProfile />
 
-            {/* Interactive CLI Console Preview Card */}
-            <Link to="/terminal" className="content-card-link"><Card
-              className="home-terminal scroll-mt-24 border-accent/20 bg-card/90 overflow-hidden theme-purple cursor-pointer transition-colors duration-200 group hover:border-accent/40"
-            >
-              {/* Terminal Titlebar Mock */}
-              <div className="flex items-center justify-between bg-muted/50 px-4 py-2 border-b border-border/40 select-none">
-                <div className="flex items-center gap-2">
-                  <span className="w-3 h-3 rounded-full bg-destructive/80" />
-                  <span className="w-3 h-3 rounded-full bg-warning/80" />
-                  <span className="w-3 h-3 rounded-full bg-success/80" />
-                  <span className="text-[11px] font-mono text-muted-foreground ml-2">
-                    guest@bassani.io: ~ (bash)
-                  </span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <span className="h-2 w-2 rounded-full bg-success animate-pulse" />
-                  <span className="text-[10px] text-muted-foreground font-mono">Live Session</span>
-                </div>
-              </div>
-              <CardContent className="home-terminal-content p-6 font-mono text-xs text-muted-foreground/90 space-y-3 bg-black/25">
-                <div className="flex items-center gap-2">
-                  <span className="text-success font-bold">guest@bassani.io</span>
-                  <span>:</span>
-                  <span className="text-accent">~</span>
-                  <span>$</span>
-                  <span className="text-foreground">./init_console.sh</span>
-                </div>
-                <div className="text-muted-foreground pl-4 space-y-1">
-                  <p>[System] Booting virtual developer environment...</p>
-                  <p>[System] Interactive modules loaded: pong (game), joke (memes), ascii (art)</p>
-                  <p>[System] Hoping to not end up in kernel panic...</p>
-                  <p className="text-accent font-bold animate-pulse">Click this card to enter full screen terminal console &gt;</p>
-                </div>
-                <div className="flex items-center gap-2 pt-2 text-[11px] text-muted-foreground border-t border-border/20 justify-between select-none">
-                  <span className="flex items-center gap-1"><Terminal className="w-3.5 h-3.5 text-accent" /> Click to launch shell</span>
-                  <span className="text-accent/80 group-hover:translate-x-1 transition-transform">Run terminal &rarr;</span>
-                </div>
-              </CardContent>
-            </Card></Link>
           </div>
         </section>
 
         {/* Projects Section */}
         <section id="projects">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <ProjectRail projects={projects} />
+          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <ShellEgg spot="projects" />
+            <ProjectRail projects={railProjects} lead={flagship && <ProjectSpotlight project={flagship} />} />
           </div>
         </section>
 
@@ -329,6 +302,14 @@ const Index = () => {
             <div className="archive-preview-heading"><h2 className="home-section-title"><span className="site-section-title"><DecodeText>CTF Solves</DecodeText></span></h2></div>
             <CTFArchive compact />
             </ScrollDecrypt>
+          </div>
+        </section>
+
+        <section id="contact">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="home-section-title"><span className="site-section-title">Contact</span></h2>
+            <ContactCard />
+            <ShellEgg spot="contact" hotkey />
           </div>
         </section>
       </main>

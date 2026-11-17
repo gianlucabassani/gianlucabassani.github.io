@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 
 const sections: Record<string, string> = {
   blog:'Blog', projects:'Projects', boxes:'Box Writeups', ctf:'CTF Solves',
-  skills:'Technical Skills', certifications:'Certifications', about:'About Me', terminal:'CLI Console',
+  skills:'Technical Skills', certifications:'Certifications', about:'About Me', terminal:'CLI Console', contact:'Contact',
 };
 
 export default function SectionMetadata() {

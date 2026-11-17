@@ -10,6 +10,8 @@ export interface Project {
   description: string;
   features: string[];
   featured?: boolean;
+  /** Extra copy for the large home-page panel of a flagship project. */
+  spotlight?: { tagline: string; pitch: string; points: [string, string][]; facts: [string, string][] };
   logo?: string;
   githubUrl?: string;
   gitlabUrl?: string;

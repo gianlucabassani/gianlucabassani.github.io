@@ -11,10 +11,10 @@ export default function ProfileLearning() {
 
   return <section className="profile-learning" aria-labelledby={headingId}>
     <div className="profile-skills-heading">
-      <h3 id={headingId}>Courses & certifications</h3>
+      <h3 id={headingId}>Training</h3>
       <Button asChild variant="outline"><Link to="/certifications">Full roadmap <ArrowUpRight className="action-arrow" size={19} aria-hidden="true" /></Link></Button>
     </div>
-    <h4 className="profile-learning-label">In progress</h4>
+    <h4 className="profile-learning-label">Exam prep</h4>
     <ul className="profile-studies">
       {studying.map(cert => {
         const progress = cert.progress === undefined ? undefined : Math.min(100, Math.max(0, cert.progress));
@@ -28,7 +28,7 @@ export default function ProfileLearning() {
         </li>;
       })}
     </ul>
-    <h4 className="profile-learning-label profile-learning-completed"><Check size={13} aria-hidden="true" />Completed courses</h4>
+    <h4 className="profile-learning-label profile-learning-completed"><Check size={13} aria-hidden="true" />Courses completed</h4>
     <ul className="profile-courses">
       {completed.map(cert => <li key={cert.id}>
         {cert.link ? <a className="profile-course" href={cert.link} target="_blank" rel="noopener noreferrer">

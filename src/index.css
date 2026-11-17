@@ -2134,7 +2134,7 @@ a.profile-course:hover { border-color: hsl(var(--secondary) / 0.45); background:
   .terminal-output { font-size: 0.8125rem; overflow-wrap: anywhere; }
   .terminal-output pre { max-width: 100%; overflow-x: auto; }
   .terminal-shell form { flex-wrap: wrap; }
-  .terminal-shell form input { flex: 1 0 100%; min-height: 44px; margin: 0.5rem 0 0; caret-color: #39ff14; }
+  .terminal-shell form input { flex: 1 0 100%; min-height: 44px; margin: 0.5rem 0 0; caret-color: hsl(var(--secondary)); }
   .terminal-shell .terminal-cursor { display: none; }
 }
 @keyframes phone-notification-leave { to { opacity: 0; transform: translateY(-12px); } }

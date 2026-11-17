@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ArrowUpRight, Menu, X } from 'lucide-react';
+import { Menu, Search, X } from 'lucide-react';
 
 const destinations = [
   {path:'/about', label:'About Me'},
@@ -44,6 +44,8 @@ export default function SiteNavigation() {
   const {pathname} = useLocation();
   const [open, setOpen] = useState(false);
   const toggle = useRef<HTMLButtonElement>(null);
+  const [shortcut, setShortcut] = useState('Ctrl K');
+  useEffect(() => { if (/Mac|iPhone|iPad/.test(navigator.platform)) setShortcut('⌘ K'); }, []);
   useEffect(() => {
     setOpen(false);
     if (!window.location.hash) window.scrollTo(0, 0);
@@ -56,6 +58,8 @@ export default function SiteNavigation() {
     document.addEventListener('keydown', escape);
     return () => document.removeEventListener('keydown', escape);
   }, [open]);
+  // The console is a full-screen page with its own way back.
+  if (pathname.replace(/\/$/, '') === '/terminal') return null;
   return <header className="site-navigation">
     <NavigationFrame />
     <NavigationFrame mobile />
@@ -72,7 +76,12 @@ export default function SiteNavigation() {
           aria-current={pathname === path || pathname.startsWith(`${path}/`) || (path === '/about' && pathname === '/') ? 'page' : undefined}>
           {label}
         </Link>)}
-        <Link to="/terminal" className="site-console-link" onClick={() => setOpen(false)}>CLI <ArrowUpRight size={14} aria-hidden="true" /></Link>
+        <div className="site-menu-tools">
+          <button type="button" className="site-search-trigger" aria-label="Search the site" aria-keyshortcuts="Control+K Meta+K" onClick={() => { setOpen(false); window.dispatchEvent(new Event('open-command-palette')); }}>
+            <Search size={15} aria-hidden="true" /><span>Search</span><kbd aria-hidden="true">{shortcut}</kbd>
+          </button>
+          <Link to="/contact" className="site-button site-contact-link" onClick={() => setOpen(false)} aria-current={pathname === '/contact' ? 'page' : undefined}>Contact</Link>
+        </div>
       </nav>
     </div>
   </header>;
