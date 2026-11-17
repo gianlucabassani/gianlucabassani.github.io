@@ -1,0 +1,1 @@
+import{j as o}from"./index-BqGqnkP1.js";import r from"./WriteupArchiveView-B9Bm2-nG.js";import"./button-BF6jdH62.js";import"./PageBackground-C_0JPIkj.js";import"./Index-DnhS3NEM.js";import"./skillGroups-0mg0pMZS.js";const x=()=>o.jsx(r,{kind:"boxes"});export{x as default};
